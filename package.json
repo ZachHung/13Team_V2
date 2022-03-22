@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Upgraded version for 13Team Website",
   "main": "index.js",
+  "nodemonConfig": {
+    "ignore": "frontend/"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node backend/server.js",
