@@ -58,7 +58,7 @@ class CheckoutController {
         },
         { $set: { "list.$.num": req.body.value } }
       )
-      .then(() => res.jsonStatus(200))
+      .then(() => res.status(200).json())
       .catch(next);
   }
 
@@ -72,7 +72,7 @@ class CheckoutController {
         { $pull: { list: { optionID: req.params.id } } }
       )
       .then(() => res.redirect("back"))
-      .catch(next);
+      .catch((err) => res.status(500).json());
   }
 
   //POST /checkout/purchase
@@ -89,7 +89,7 @@ class CheckoutController {
         const p = new purchase(data);
         p.save();
       })
-      .catch(next);
+      .catch();
   }
 }
 module.exports = new CheckoutController();

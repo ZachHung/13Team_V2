@@ -1,0 +1,11 @@
+; uri để kết nốt với csdl, để tránh nhầm lẫn, t đã tạo một csdl mới, ko xài cái cũ nữa, chỉ cần đổi tên chỗ databse cũ từ Website_13Team thành 13Team_V2
+MONGODB_URI = 
+; cổng cho backend chạy, mặc định 5000
+PORT= 5000
+; development hoặc production, mặc định để development>
+NODE_ENV = development
+; key jsonwebtoken - dùng cho backend : liên hệ hưng để lấy
+JWT_SECRET = 
+; key giải mã mật khẩu người dùng - dùng cho backend : liên hệ hưng để lấy
+PASS_SECRET = 
+; sau khi đã chỉnh các biến trên xong hãy đổi tên file này thành .env và lưu lại
