@@ -21,7 +21,7 @@ function route(app) {
   app.use("/api/checkout", checkoutrouter);
   app.use("/api/phone", phonerouter);
   app.use("/api/user", userrouter);
-  app.get("/", (req, res) => {
+  app.get("/api", (req, res) => {
     res.send("13Team API");
   });
 }
