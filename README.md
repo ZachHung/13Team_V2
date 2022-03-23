@@ -22,8 +22,7 @@ npm i
 cd frontend && npm i
 ```
 
-4. Set up các biến môi trường
-   Set up các biến môi trường như các hướng dẫn trong file `.envexample`
+4. Set up các biến môi trường như các hướng dẫn trong file `.envexample`
 
 ## 📃 Hướng dẫn sử dụng
 
