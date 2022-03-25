@@ -1,6 +1,6 @@
 import logo from "./logo.svg";
 import "./App.scss";
-import Login from "./pages/login";
+import Login from "./pages/login/login";
 function App() {
   return <Login></Login>;
 }

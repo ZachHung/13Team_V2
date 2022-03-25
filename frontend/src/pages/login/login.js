@@ -9,7 +9,7 @@ import {
   faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
 
-import "../styles/pages/login.scss";
+import "./login.scss";
 import { useState } from "react";
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
