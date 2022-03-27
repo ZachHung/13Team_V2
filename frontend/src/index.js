@@ -1,21 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import './index.scss';
 import App from './App';
-import PhonePage from '../src/pages/PhonePages/PhonePage';
-import LaptopPage from '../src/pages/LaptopPages/LaptopPage';
+import reportWebVitals from './reportWebVitals';
+
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/phone" element={<PhonePage />} />
-        <Route path="/laptop" element={<LaptopPage />} />
-      </Routes>
-    </BrowserRouter>
-  </React.StrictMode>,
+  <BrowserRouter>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 

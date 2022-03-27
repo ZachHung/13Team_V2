@@ -1,18 +1,29 @@
-import './App.scss';
-import Login from './pages/login/login';
-import { Link } from 'react-router-dom';
+import LoginPage from './pages/login/login';
+import Footer from './components/footer';
+import Header from './components/header';
+import { Route, Routes } from 'react-router-dom';
+import HomePage from './pages/home';
+import PhonePage from './pages/PhonePages/PhonePage';
+// import Header from './components/header';
+// import Footer from './components/footer';
+
 function App() {
   return (
     <>
-      <div className="App">
-        <h1>markintosh</h1>
-        <nav className="navBar">
-          <Link to="/phone">Điện THoại |</Link>
-          <Link to="/laptop"> Laptop |</Link>
-          <Link to="/login"> Đăng nhập |</Link>
-        </nav>
-        {/* <Login></Login> */}
-      </div>
+      <Header></Header>
+
+      <Routes>
+        <Route exact path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/phone" element={<PhonePage />} />
+        <Route />
+        <Route />
+        <Route />
+        <Route />
+        <Route />
+        <Route />
+      </Routes>
+      <Footer></Footer>
     </>
   );
 }

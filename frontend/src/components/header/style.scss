@@ -1,0 +1,201 @@
+@keyframes growDown {
+  0% {
+    transform: scaleY(0);
+  }
+  80% {
+    transform: scaleY(1.1);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+header {
+  background-color: black;
+  top: 0;
+  right: 0;
+  left: 0;
+
+  .header-container {
+    position: relative;
+    display: flex;
+    color: #fff;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    @media only screen and (max-width: 739px) {
+      flex-direction: column;
+      align-items: flex-start;
+      .links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        animation: growDown 300ms ease-in-out forwards;
+        transform-origin: top center;
+        &.active {
+          display: flex;
+        }
+      }
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      img {
+        height: 2rem;
+      }
+    }
+    .links > a,
+    .utility .icon {
+      color: #fff;
+      text-transform: none;
+      font-size: 1.3rem;
+      padding: 4px 16px;
+      @media only screen and (max-width: 739px) {
+        font-size: 1.5rem;
+        width: 100%;
+        padding: 1.25rem 0.5rem;
+      }
+    }
+    .links > a {
+      position: relative;
+      z-index: 1;
+      @media only screen and (max-width: 739px) {
+        &:first-child {
+          padding-top: 2rem;
+        }
+        &::after {
+          bottom: -2px;
+        }
+      }
+      &::after {
+        position: absolute;
+        content: "";
+        width: 0%;
+        height: 4px;
+        background-color: white;
+        left: 50%;
+        bottom: -0.5rem;
+        transition: all 0.25s ease-in-out;
+        z-index: -1;
+        border-radius: 100vh;
+      }
+      &:hover::after {
+        width: 100%;
+        left: 0;
+      }
+    }
+    .toggle-menu {
+      position: absolute;
+      top: 0.2rem;
+      right: 0.5rem;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      display: none;
+      padding: 0;
+      @media only screen and (max-width: 739px) {
+        display: flex;
+      }
+      .line {
+        fill: none;
+        stroke: white;
+        stroke-width: 6;
+        transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
+          stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .line1 {
+        stroke-dasharray: 60 207;
+        stroke-width: 6;
+      }
+      .line2 {
+        stroke-dasharray: 60 60;
+        stroke-width: 6;
+      }
+      .line3 {
+        stroke-dasharray: 60 207;
+        stroke-width: 6;
+      }
+      &.opened .line1 {
+        stroke-dasharray: 90 207;
+        stroke-dashoffset: -134;
+        stroke-width: 6;
+      }
+      &.opened .line2 {
+        stroke-dasharray: 1 60;
+        stroke-dashoffset: -30;
+        stroke-width: 6;
+      }
+      &.opened .line3 {
+        stroke-dasharray: 90 207;
+        stroke-dashoffset: -134;
+        stroke-width: 6;
+      }
+    }
+    .utility {
+      display: flex;
+      align-items: center;
+      @media only screen and (max-width: 739px) {
+        display: none;
+        flex-direction: column;
+        align-items: flex-end;
+        animation: growDown 300ms ease-in-out forwards;
+        transform-origin: top center;
+        &.active {
+          display: flex;
+        }
+      }
+      .searchbox {
+        width: fit-content;
+        height: fit-content;
+        display: flex;
+        position: relative;
+        &.icon {
+          padding: 4px -1px;
+          @media only screen and (max-width: 739px) {
+            font-size: 1.5rem;
+          }
+        }
+        .input {
+          margin-left: 0.5rem;
+          padding: unset;
+          height: 2rem;
+          width: 0rem;
+          border-style: none;
+          font-size: 1.3rem;
+          outline: none;
+          border-radius: 100vh;
+          transition: all 0.5s ease-in;
+          background-color: transparent;
+          color: rgba(255, 255, 255, 0.8);
+          &:focus {
+            width: 250px;
+            border-radius: 0px;
+            background-color: transparent;
+            border-bottom: 1px solid white;
+            transition: all 0.25s ease-in-out;
+          }
+        }
+        .submit {
+          width: 1.5rem;
+          border-style: none;
+          font-size: 1.3rem;
+          outline: none;
+          border-radius: 100vh;
+          transition: all 0.5s ease-in;
+          background-color: transparent;
+          color: #fff;
+          @media only screen and (max-width: 739px) {
+            font-size: 1.5rem;
+            padding: unset;
+          }
+          &:focus ~ .input {
+            width: 250px;
+            border-radius: 0px;
+            background-color: transparent;
+            border-bottom: 1px solid white;
+            transition: all 0.25s ease-in-out;
+          }
+        }
+      }
+    }
+  }
+}
