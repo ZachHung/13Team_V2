@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import logo from "../../logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMagnifyingGlass,
+  faCartShopping,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import "./style.scss";
 import { Link } from "react-router-dom";
-
-// const handleHamburgerMenu = (e) => {
-//   e.target.classList.toggle("opened");
-//   e.target.setAttribute("aria-expanded", e.target.classList.contains("opened"));
-// };
 
 const Header = () => {
   const [menuState, setMenuState] = useState(false);
@@ -69,10 +68,10 @@ const Header = () => {
           </div>
 
           <Link to="/cart" className="icon">
-            <FontAwesomeIcon icon={faMagnifyingGlass} />
+            <FontAwesomeIcon icon={faCartShopping} />
           </Link>
           <Link to="/login" className="icon">
-            <FontAwesomeIcon icon={faMagnifyingGlass} />
+            <FontAwesomeIcon icon={faUser} />
           </Link>
         </div>
       </div>
