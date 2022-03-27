@@ -13,10 +13,6 @@ import {
 import "./Login.scss";
 import { useState } from "react";
 export default function Login() {
-  const [showPassword, setShowPassword] = useState(false);
-  // const handdleShowPassword = () => {
-  //   setShowPassword((value) => !value);
-  // };
   return (
     <div className="container_login">
       <div className="login row container-md">

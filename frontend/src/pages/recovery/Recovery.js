@@ -14,20 +14,13 @@ export default function Recovery() {
     <div className="container_recovery">
       <div className="recovery row container-md">
         <div className="title col-xl-6 col-12">
-          <p>Don't Worry! This Is Just Small Problem! </p>
+          <p>Don't Worry! This Is Just a Small Problem! </p>
         </div>
         <div className="form_container col-xl-6 col-12">
           <div className="form_wrapper">
             <form>
               <p className="form_title">Recovery</p>
-              {/* <div className="Textinput row">
-                <FontAwesomeIcon icon={faMailBulk} className="icon col-1" />
-                <input
-                  className="col-9"
-                  type="text"
-                  placeholder="Nhập Email"
-                ></input>
-              </div> */}
+
               <TextInPut
                 icon={faMailBulk}
                 type="email"
