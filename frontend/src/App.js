@@ -22,6 +22,9 @@ function App() {
         <Route />
         <Route />
         <Route />
+        <Route />
+        <Route />
+        <Route />
       </Routes>
       <Footer></Footer>
     </>
