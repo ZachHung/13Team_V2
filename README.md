@@ -6,20 +6,22 @@ Phiên bản nâng cấp của trang web 13Team theo hướng MERN stack.
 
 1. Clone repo này về
 
-```bash
-git clone https://github.com/ZachHung/13Team_V2.git && cd 13Team_V2
+```shell
+git clone https://github.com/ZachHung/13Team_V2.git
+cd 13Team_V2
 ```
 
 2. Tải các node module cho backend
 
-```bash
+```shell
 npm i
 ```
 
 3. Tải các node module cho frontend
 
-```bash
-cd frontend && npm i
+```shell
+cd frontend
+npm i
 ```
 
 4. Set up các biến môi trường như các hướng dẫn trong file `.envexample`
@@ -37,4 +39,3 @@ cd frontend && npm i
 Để giải thiểu phát sinh lỗi khi cài đặt và sử dụng hãy nhớ các lưu ý sau đây:
 
 - Chú ý là mình đang ở thư mục **frontend** hoặc **backend** trước khi chạy các lệnh npm.
-- Frontend hiện giờ chỉ đang là 1 React App mặc định được tạo từ create-react-app.
