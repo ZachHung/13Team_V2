@@ -1,18 +1,18 @@
-const express = require("express");
-const morgan = require("morgan");
-const cors = require("cors");
-const path = require("path");
+const express = require('express');
+const morgan = require('morgan');
+const cors = require('cors');
+const path = require('path');
 const app = express();
-const route = require("./routes");
-const compression = require("compression");
-const { errorHandler } = require("./middlewares/errorHandler");
-require("dotenv").config();
+const route = require('./routes');
+const compression = require('compression');
+const { errorHandler } = require('./middlewares/errorHandler');
+require('dotenv').config();
 
 // Compression and https redirection when in production mode
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === 'production') {
   app.use((req, res, next) => {
-    if (req.header("x-forwarded-proto") !== "https")
-      res.redirect(301, `https://${req.header("host")}${req.url}`);
+    if (req.header('x-forwarded-proto') !== 'https')
+      res.redirect(301, `https://${req.header('host')}${req.url}`);
     else next();
   });
   app.use(
@@ -22,32 +22,32 @@ if (process.env.NODE_ENV === "production") {
   );
 }
 //HTTP logger (only when in dev mode)
-process.env.NODE_ENV !== "production" && app.use(morgan("combined"));
+process.env.NODE_ENV !== 'production' && app.use(morgan('combined'));
 
 // API calls
 app.use(cors());
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.json({ limit: "1mb" }));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // DB connect
-const db = require("./config/db");
+const db = require('./config/db');
 db.connect();
 
 //route//
 route(app);
 
-app.use(express.static(path.join(__dirname, "public")));
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
+app.use(express.static(path.join(__dirname, 'public')));
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../frontend/build')));
 
-  app.get("*", (req, res) =>
+  app.get('*', (req, res) =>
     res.sendFile(
-      path.resolve(__dirname, "../", "frontend", "build", "index.html")
+      path.resolve(__dirname, '../', 'frontend', 'build', 'index.html')
     )
   );
 } else {
-  app.get("/", (req, res) => res.send("Please set to production"));
+  app.get('/', (req, res) => res.send('Please set to production'));
 }
 
 app.listen(process.env.PORT, () => {
