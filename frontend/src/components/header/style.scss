@@ -53,19 +53,19 @@ header {
         align-self: center;
       }
       img {
-        height: 2rem;
+        height: 3rem;
       }
     }
     .links > a,
     .utility .icon {
       color: #fff;
       text-transform: none;
-      font-size: 1.3rem;
+      font-size: 2.2rem;
       padding: 4px 16px;
       @media only screen and (max-width: 739px) {
-        font-size: 1.5rem;
+        font-size: 2.2rem;
         width: 100%;
-        padding: 1rem 0.5rem;
+        padding: 1.25rem 0.5rem;
       }
     }
     .links > a {
@@ -73,7 +73,7 @@ header {
       z-index: 1;
       @media only screen and (max-width: 739px) {
         &:first-child {
-          padding-top: 2rem;
+          padding-top: 2.2rem;
         }
         &::after {
           bottom: -2px;
@@ -165,7 +165,7 @@ header {
         &.icon {
           padding: 4px -1px;
           @media only screen and (max-width: 739px) {
-            font-size: 1.5rem;
+            font-size: 2.2rem;
           }
         }
         @media only screen and (max-width: 739px) {
@@ -178,7 +178,7 @@ header {
           height: 2rem;
           width: 0rem;
           border-style: none;
-          font-size: 1.3rem;
+          font-size: 2rem;
           outline: none;
           border-radius: 100vh;
           transition: all 0.5s ease-in;
@@ -202,14 +202,14 @@ header {
         .submit {
           width: 1.5rem;
           border-style: none;
-          font-size: 1.3rem;
+          font-size: 2rem;
           outline: none;
           border-radius: 100vh;
           transition: all 0.5s ease-in;
           background-color: transparent;
           color: #fff;
           @media only screen and (max-width: 739px) {
-            font-size: 1.5rem;
+            font-size: 2.2rem;
             padding: unset;
           }
           &:focus ~ .input {
