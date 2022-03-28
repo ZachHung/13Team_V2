@@ -9,6 +9,7 @@
     transform: scaleY(1);
   }
 }
+
 .header-spacer {
   aspect-ratio: 1080/100;
   width: 100%;
@@ -22,7 +23,6 @@ header {
   top: 0;
   right: 0;
   left: 0;
-
   .header-container {
     position: relative;
     display: flex;

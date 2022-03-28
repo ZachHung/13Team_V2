@@ -8,10 +8,13 @@ import {
 import "./style.scss";
 import logo from "../../logo.svg";
 
-const Footer = () => {
+const Footer = ({ color }) => {
   return (
     <>
-      <div className="footer-spacer"></div>
+      <div
+        className="footer-spacer"
+        style={{ backgroundColor: `#${color}` }}
+      ></div>
       <footer>
         <div className="contact">
           <div className="logo">
