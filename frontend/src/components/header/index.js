@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 const Header = () => {
   const [menuState, setMenuState] = useState(false);
   const handleMenuBtn = () => {
-    menuState ? setMenuState(false) : setMenuState(true);
+    setMenuState(!menuState);
   };
   return (
     <>
@@ -84,7 +84,6 @@ const Header = () => {
                 </>
               )}
             </div>
-
             <Link to="/cart" className="icon">
               <FontAwesomeIcon icon={faCartShopping} />
             </Link>
