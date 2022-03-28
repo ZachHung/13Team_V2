@@ -350,28 +350,13 @@
       display: grid;
       // grid-template-columns: repeat(autofit, minmax(25rem, 0fr));
       // grid-template-columns: 30px 30px;
-      grid-template-columns: repeat(2, 170px); // lặp lại số sp trên 1 dòng
+      grid-template-columns: repeat(2, 190px); // lặp lại số sp trên 1 dòng
       gap: 1rem;
       // max-width: 100rem;
       // margin: 0 auto;
       padding: 0 0.5rem;
     }
-    // .container {
-    //   max-width: 70rem;
-    //   margin: 0 auto;
-    // }
-    // // .filter h3 {
-    //   font-size: 2rem;
-    //   font-weight: inherit;
-    //   padding-left: 1rem;
-    // }
-    // .block-content li label {
-    //   color: var(--grey2);
-    //   margin-left: 0.5rem;
-    // }
-    // ul {
-    //   padding-left: 1rem;
-    // }
+
     .product {
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
       border-radius: 10px;
@@ -410,6 +395,18 @@
       padding: 3rem 1rem 2rem 0;
       gap: 1rem;
       justify-content: right;
+    }
+    .config {
+      padding: 0.5rem 1.5rem 0;
+
+      margin-bottom: 0.5rem;
+    }
+
+    .config-param span {
+      line-height: 19px;
+      margin-bottom: 0rem;
+      margin-right: 0.2rem;
+      position: relative;
     }
   }
 }
