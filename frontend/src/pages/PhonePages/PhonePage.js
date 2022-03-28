@@ -4,6 +4,14 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faMobile,
+  faMicrochip,
+  faMemory,
+  faHardDrive,
+} from '@fortawesome/free-solid-svg-icons';
+
 const api = axios.create({
   baseURL: 'http://localhost:5000/api',
 });
@@ -176,26 +184,38 @@ function PhonePage() {
                       <div className="config-param">
                         <span data-title="CPU">
                           <p>
-                            <i className="fad fa-microchip"></i>
+                            <FontAwesomeIcon
+                              icon={faMicrochip}
+                              style={{ paddingRight: '5px' }}
+                            />
                             {phone.techInfo[2].infoDetail[0].infoNum}
                           </p>
                         </span>
                         <span data-title="Màn hình">
                           <p>
-                            <i className="fad fa-mobile"></i>
+                            <FontAwesomeIcon
+                              icon={faMobile}
+                              style={{ paddingRight: '5px' }}
+                            />
                             {phone.techInfo[0].infoDetail[0].infoNum}
                           </p>
                         </span>
                         <span data-title="RAM">
                           <p>
-                            <i className="fad fa-memory"></i>
+                            <FontAwesomeIcon
+                              icon={faMemory}
+                              style={{ paddingRight: '5px' }}
+                            />
                             {phone.techInfo[3].infoDetail[0].infoNum}
                           </p>
                         </span>
 
                         <span data-title="ROM">
                           <p>
-                            <i className="fad fa-compact-disc"></i>
+                            <FontAwesomeIcon
+                              icon={faHardDrive}
+                              style={{ paddingRight: '5px' }}
+                            />
                             {phone.slug[0].detail}
                           </p>
                         </span>
