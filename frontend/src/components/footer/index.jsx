@@ -11,10 +11,7 @@ import logo from "../../logo.svg";
 const Footer = ({ color }) => {
   return (
     <>
-      <div
-        className="footer-spacer"
-        style={{ backgroundColor: `#${color}` }}
-      ></div>
+      <div className="footer-spacer" style={{ backgroundColor: color }}></div>
       <footer>
         <div className="contact">
           <div className="logo">
@@ -22,13 +19,25 @@ const Footer = ({ color }) => {
           </div>
 
           <div className="social">
-            <a href="https://www.facebook.com/Tnhut813" className="icon">
+            <a
+              target="_blank"
+              href="https://www.facebook.com/Tnhut813"
+              className="icon"
+            >
               <FontAwesomeIcon icon={faFacebookSquare} />
             </a>
-            <a href="https://twitter.com/CaptainSeapunk" className="icon">
+            <a
+              target="_blank"
+              href="https://twitter.com/CaptainSeapunk"
+              className="icon"
+            >
               <FontAwesomeIcon icon={faTwitterSquare} />
             </a>
-            <a href="https://www.instagram.com/_makimasimp_/" className="icon">
+            <a
+              target="_blank"
+              href="https://www.instagram.com/_makimasimp_/"
+              className="icon"
+            >
               <FontAwesomeIcon icon={faInstagramSquare} />
             </a>
           </div>

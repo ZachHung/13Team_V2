@@ -1,25 +1,25 @@
-import React from 'react';
-import './PhonePage.scss';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import "./PhonePage.scss";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMobile,
   faMicrochip,
   faMemory,
   faHardDrive,
-} from '@fortawesome/free-solid-svg-icons';
+} from "@fortawesome/free-solid-svg-icons";
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: "http://localhost:5000/api",
 });
 
 function PhonePage() {
   const [phoneList, setPhoneList] = useState([]);
   useEffect(() => {
-    api.get('/phone').then((res) => {
+    api.get("/phone").then((res) => {
       console.log(res.data);
       setPhoneList(res.data.items);
     });
@@ -31,7 +31,7 @@ function PhonePage() {
         <div className="filter-box">
           <div className="asc-price" id="sort-asc-phone">
             <Link to={`/`}>
-              {' '}
+              {" "}
               <i className="fas fa-sort-amount-up"></i>Giá thấp
             </Link>
           </div>
@@ -50,44 +50,44 @@ function PhonePage() {
               <ul className="block-content filter-brand">
                 <li>
                   <input type="checkbox" id="checkAllBrand" checked />
-                  <label for="checkAllbrand">
+                  <label htmlFor="checkAllbrand">
                     <span>Tất cả</span>
                   </label>
                 </li>
 
                 <li>
                   <input type="checkbox" name="Brandids[]" value="apple" />
-                  <label for="">
+                  <label htmlFor="">
                     <span>Apple</span>
                   </label>
                 </li>
                 <li>
                   <input type="checkbox" name="Brandids[]" value="samsung" />
-                  <label for="">
+                  <label htmlFor="">
                     <span>Samsung</span>
                   </label>
                 </li>
                 <li>
                   <input type="checkbox" name="Brandids[]" value="asus" />
-                  <label for="">
+                  <label htmlFor="">
                     <span>Asus</span>
                   </label>
                 </li>
                 <li>
                   <input type="checkbox" name="Brandids[]" value="oppo" />
-                  <label for="">
+                  <label htmlFor="">
                     <span>Oppo</span>
                   </label>
                 </li>
                 <li>
                   <input type="checkbox" name="Brandids[]" value="xiaomi" />
-                  <label for="">
+                  <label htmlFor="">
                     <span>Xiaomi</span>
                   </label>
                 </li>
                 <li>
                   <input type="checkbox" name="Brandids[]" value="realme" />
-                  <label for="">
+                  <label htmlFor="">
                     <span>Realme</span>
                   </label>
                 </li>
@@ -101,7 +101,7 @@ function PhonePage() {
               <ul className="block-content">
                 <li>
                   <input type="checkbox" id="checkAllPrice" />
-                  <label for="checkAllPrice">
+                  <label htmlFor="checkAllPrice">
                     <span>Tất cả</span>
                   </label>
                 </li>
@@ -111,7 +111,7 @@ function PhonePage() {
                     name="Priceids[]"
                     value="duoi-2-trieu"
                   />
-                  <label for="">
+                  <label htmlFor="">
                     <span>Dưới 2 triệu</span>
                   </label>
                 </li>
@@ -121,7 +121,7 @@ function PhonePage() {
                     name="Priceids[]"
                     value="tu-2-5-trieu"
                   />
-                  <label for="">
+                  <label htmlFor="">
                     <span>Từ 2 đến 5 triệu</span>
                   </label>
                 </li>
@@ -131,7 +131,7 @@ function PhonePage() {
                     name="Priceids[]"
                     value="tu-5-14-trieu"
                   />
-                  <label for="">
+                  <label htmlFor="">
                     <span>Từ 5 đến 14 triệu</span>
                   </label>
                 </li>
@@ -141,7 +141,7 @@ function PhonePage() {
                     name="Priceids[]"
                     value="tren-14-trieu"
                   />
-                  <label for="">
+                  <label htmlFor="">
                     <span>Trên 14 triệu</span>
                   </label>
                 </li>
@@ -166,7 +166,7 @@ function PhonePage() {
                         //   src="https://cdn.hoanghamobile.com/i/productlist/dsp/Uploads/2021/04/22/image-removebg-preview_637547045799326930.png"
                         src={`http://localhost:5000/${phone.image[0]}`}
                         //   src="http://localhost:5000/image/realme/c11/c11-2021_blue.jpg"
-                        alt="picture about mobile phone"
+                        alt={phone.name}
                       />
                     </Link>
                   </div>
@@ -186,7 +186,7 @@ function PhonePage() {
                           <p>
                             <FontAwesomeIcon
                               icon={faMicrochip}
-                              style={{ paddingRight: '5px' }}
+                              style={{ paddingRight: "5px" }}
                             />
                             {phone.techInfo[2].infoDetail[0].infoNum}
                           </p>
@@ -195,7 +195,7 @@ function PhonePage() {
                           <p>
                             <FontAwesomeIcon
                               icon={faMobile}
-                              style={{ paddingRight: '5px' }}
+                              style={{ paddingRight: "5px" }}
                             />
                             {phone.techInfo[0].infoDetail[0].infoNum}
                           </p>
@@ -204,7 +204,7 @@ function PhonePage() {
                           <p>
                             <FontAwesomeIcon
                               icon={faMemory}
-                              style={{ paddingRight: '5px' }}
+                              style={{ paddingRight: "5px" }}
                             />
                             {phone.techInfo[3].infoDetail[0].infoNum}
                           </p>
@@ -214,7 +214,7 @@ function PhonePage() {
                           <p>
                             <FontAwesomeIcon
                               icon={faHardDrive}
-                              style={{ paddingRight: '5px' }}
+                              style={{ paddingRight: "5px" }}
                             />
                             {phone.slug[0].detail}
                           </p>
