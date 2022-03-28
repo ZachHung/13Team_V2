@@ -12,13 +12,13 @@ footer {
   text-align: center;
   padding: 1.5rem 0;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
   @media only screen and (max-width: 739px) {
     flex-direction: column;
   }
   .logo {
-    height: 2rem;
+    height: 3.2rem;
     justify-content: center;
     display: flex;
   }
@@ -31,7 +31,7 @@ footer {
       margin-left: 1rem;
     }
     .icon {
-      font-size: 2.2rem;
+      font-size: 3.6rem;
       color: rgba(255, 255, 255, 0.8);
     }
     @media only screen and (max-width: 739px) {
@@ -45,7 +45,7 @@ footer {
     justify-content: center;
     img {
       margin-bottom: 1rem;
-      width: 5rem;
+      width: 7rem;
     }
     @media only screen and (max-width: 739px) {
       margin-top: 0.25rem;
