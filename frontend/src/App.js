@@ -1,17 +1,15 @@
-import LoginPage from './pages/login/login';
-import Footer from './components/footer';
-import Header from './components/header';
-import { Route, Routes } from 'react-router-dom';
-import HomePage from './pages/home';
-import PhonePage from './pages/PhonePages/PhonePage';
+import LoginPage from "./pages/login/login";
+import Footer from "./components/footer";
+import Header from "./components/header";
+import { Route, Routes } from "react-router-dom";
+import HomePage from "./pages/home";
+import PhonePage from "./pages/PhonePages/PhonePage";
 // import Header from './components/header';
 // import Footer from './components/footer';
 
 function App() {
   return (
     <>
-      <Header></Header>
-
       <Routes>
         <Route exact path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -26,7 +24,6 @@ function App() {
         <Route />
         <Route />
       </Routes>
-      <Footer></Footer>
     </>
   );
 }

@@ -287,10 +287,6 @@ section .glide__nav .glide__bullet--active::after {
 .spotlight__item button:hover::after {
   transform: scaleX(1);
 }
-.header-spacer,
-.footer-spacer {
-  background-color: #f5f5f5;
-}
 
 /* Responsive */
 @media only screen and (max-width: 739px) {

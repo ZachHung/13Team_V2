@@ -9,6 +9,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import Header from "../../components/header";
+import Footer from "../../components/footer";
 
 const HomePage = () => {
   // Mount sliders
@@ -48,7 +50,7 @@ const HomePage = () => {
 
   return (
     <>
-      {" "}
+      <Header color="#f5f5f5" />{" "}
       <div className="landing-page">
         <section className="hero">
           <div className="glide" id="glide_1">
@@ -371,6 +373,7 @@ const HomePage = () => {
           </div>
         </section>
       </div>
+      <Footer color="#f5f5f5" />
     </>
   );
 };
