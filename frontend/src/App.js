@@ -1,12 +1,16 @@
-import LoginPage from "./pages/login/login";
 import Footer from "./components/footer";
 import Header from "./components/header";
-import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/home";
 import PhonePage from "./pages/PhonePages/PhonePage";
 // import Header from './components/header';
 // import Footer from './components/footer';
 
+import logo from "./logo.svg";
+import "./App.scss";
+import Login from "./pages/login/Login";
+import Register from "./pages/register/Register";
+import Recovery from "./pages/recovery/Recovery";
+import { Route, Routes } from "react-router-dom";
 function App() {
   return (
     <>
@@ -14,15 +18,9 @@ function App() {
         <Route exact path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/phone" element={<PhonePage />} />
-        <Route />
-        <Route />
-        <Route />
-        <Route />
-        <Route />
-        <Route />
-        <Route />
-        <Route />
-        <Route />
+        <Route path="/login" element={<Login></Login>}></Route>
+        <Route path="/register" element={<Register></Register>}></Route>
+        <Route path="/recovery" element={<Recovery></Recovery>}></Route>
       </Routes>
     </>
   );
