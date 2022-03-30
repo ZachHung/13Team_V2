@@ -180,7 +180,7 @@ class PurchaseController {
                 }
               )
               .then((info) => {
-                res.redirect("/checkout");
+                res.redirect("/cart");
               });
             break;
           }
@@ -195,7 +195,7 @@ class PurchaseController {
               }
             )
             .then((info) => {
-              res.redirect("/checkout");
+              res.redirect("/cart");
             });
         }
         // res.json(data)

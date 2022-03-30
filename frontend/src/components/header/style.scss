@@ -11,7 +11,7 @@
 }
 
 .header-spacer {
-  aspect-ratio: 1080/100;
+  aspect-ratio: 960/70;
   width: 100%;
   background-repeat: no-repeat;
   background-position: center;
@@ -175,13 +175,13 @@ header {
         .input {
           margin-left: 0.5rem;
           padding: unset;
-          height: 2rem;
+          height: fit-content;
           width: 0rem;
           border-style: none;
           font-size: 2rem;
           outline: none;
           border-radius: 100vh;
-          transition: all 0.5s ease-in;
+          transition: all 0.35s ease-in;
           background-color: transparent;
           color: rgba(255, 255, 255, 0.8);
           &:focus {
@@ -191,24 +191,24 @@ header {
             border-bottom: 1px solid white;
             transition: all 0.25s ease-in-out;
             @media only screen and (max-width: 739px) {
-              width: 80vw;
+              width: 90vw;
               border: none;
             }
           }
           @media only screen and (max-width: 739px) {
-            width: 80vw;
+            width: 90vw;
           }
         }
         .submit {
-          width: 1.5rem;
           border-style: none;
           font-size: 2rem;
           outline: none;
           border-radius: 100vh;
-          transition: all 0.5s ease-in;
+          transition: all 0.35s ease-in;
           background-color: transparent;
           color: #fff;
           @media only screen and (max-width: 739px) {
+            display: none;
             font-size: 2.2rem;
             padding: unset;
           }
@@ -219,7 +219,7 @@ header {
             border-bottom: 1px solid white;
             transition: all 0.25s ease-in-out;
             @media only screen and (max-width: 739px) {
-              width: 80vw;
+              width: 90vw;
               border: none;
             }
           }

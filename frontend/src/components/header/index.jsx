@@ -19,7 +19,7 @@ const Header = ({ color }) => {
       <header>
         <div className="header-container">
           <Link to="/" className="logo">
-            <img src={logo} />
+            <img src={logo} alt="" />
           </Link>
           <button
             aria-expanded={menuState}

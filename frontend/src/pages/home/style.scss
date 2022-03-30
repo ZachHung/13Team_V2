@@ -27,7 +27,6 @@
   }
   .hero .glide__bullet {
     border: none;
-
     border-radius: 5px;
     background-color: rgba(0, 0, 0, 0.5);
     width: 4rem;
@@ -249,7 +248,7 @@
     border: none;
     font-weight: bold;
     background-color: white;
-    border-radius: 2rem;
+    border-radius: 100vh;
     padding: 1.2rem 2.5rem;
     font-size: 1.5rem;
     position: absolute;
@@ -273,7 +272,7 @@
     animation: buttonFlyin 0.25s ease-in;
   }
   .spotlight__item button::after {
-    border-radius: 2rem;
+    border-radius: 100vh;
     content: "";
     top: 0;
     left: 0;

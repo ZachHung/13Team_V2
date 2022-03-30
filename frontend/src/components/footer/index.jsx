@@ -15,12 +15,13 @@ const Footer = ({ color }) => {
       <footer>
         <div className="contact">
           <div className="logo">
-            <img src={logo} />
+            <img src={logo} alt="" />
           </div>
 
           <div className="social">
             <a
               target="_blank"
+              rel="noreferrer"
               href="https://www.facebook.com/Tnhut813"
               className="icon"
             >
@@ -28,6 +29,7 @@ const Footer = ({ color }) => {
             </a>
             <a
               target="_blank"
+              rel="noreferrer"
               href="https://twitter.com/CaptainSeapunk"
               className="icon"
             >
@@ -35,6 +37,7 @@ const Footer = ({ color }) => {
             </a>
             <a
               target="_blank"
+              rel="noreferrer"
               href="https://www.instagram.com/_makimasimp_/"
               className="icon"
             >
@@ -49,7 +52,7 @@ const Footer = ({ color }) => {
             alt="Logo UIT"
           />
           <div className="copyright-text">
-            &copy; 2022. Sản phẩm của Trường Đại Học Công Nghệ Thông Tin
+            &copy; 2022. Trường Đại Học Công Nghệ Thông Tin
           </div>
         </div>
       </footer>

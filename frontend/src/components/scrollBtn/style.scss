@@ -1,0 +1,23 @@
+.scrollToTopBtn {
+  opacity: 0.5;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 5%;
+  bottom: 40px;
+  z-index: 1;
+  cursor: pointer;
+  color: whitesmoke;
+  &:hover {
+    opacity: 1;
+  }
+
+  .icon {
+    border-radius: 50%;
+    background-color: #808080;
+    height: 2.4rem;
+    width: 2.4rem;
+    padding: 8px;
+  }
+}

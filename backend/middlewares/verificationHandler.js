@@ -5,17 +5,17 @@ const verifyToken = (req, res, next) => {
   if (authHeader) {
     const token = authHeader.split(" ")[1];
     jwt.verify(token, process.env.JWT_SECRET, (err, userData) => {
-      err && res.status(403).json("Token của bạn không đúng!");
+      err && res.status(403).json("Token is invalid!");
       req.user = userData;
       next();
     });
-  } else return res.status(401).json("Bạn chưa được xác thực");
+  } else return res.status(401).json("You are not authenticated");
 };
 const verifyTokenAuth = (req, res, next) => {
   verifyToken(req, res, () => {
     if (req.user.id === req.params.id || req.user.isAdmin) {
       next();
-    } else return res.status(403).json("Bạn không được phép làm điều đó");
+    } else return res.status(403).json("You don't have the rights to do that");
   });
 };
 
@@ -23,7 +23,7 @@ const verifyTokenAdmin = (req, res, next) => {
   verifyToken(req, res, () => {
     if (req.user.isAdmin) {
       next();
-    } else return res.status(403).json("Bạn không được phép làm điều đó");
+    } else return res.status(403).json("You don't have the rights to do that");
   });
 };
 
