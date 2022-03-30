@@ -73,13 +73,8 @@ const Register = () => {
       publicRequest
         .post("account/register/confirm", { ...formData, ...formCode })
         .then((res) => {
-          if(res.status === 202)
-          {
+          if (res.status === 202) {
             setErrorText(res.data.message);
-          }
-          else
-          {
-            Navigate({to = "/login"})
           }
         })
         .catch((err) => {

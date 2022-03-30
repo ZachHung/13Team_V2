@@ -17,13 +17,18 @@ import ScrollButton from "./components/scrollBtn";
 function App() {
   const isAdmin = useSelector((state) => state.user.isAdmin);
   return (
-<<<<<<< HEAD
     <Routes>
       {/* start publicRoute */}
       <Route path="*" element={<NotFound />} />
       <Route path="/" element={<HomePage />} />
       <Route path="/phone" element={<PhonePage />} />
       {/* end publicRoute */}
+
+      {/* start private Route */}
+      <Route path="/*" element={<PrivateRoute></PrivateRoute>}>
+        <Route path="cart" element={<LoginPage></LoginPage>} />
+      </Route>
+      {/* end private Route */}
 
       {/* start authRoute */}
       <Route path="/*" element={<AuthUserRoute></AuthUserRoute>}>
@@ -41,22 +46,6 @@ function App() {
       )}
       {/* end adminRoute */}
     </Routes>
-=======
-    <>
-      <Routes>
-        <Route path="*" element={<NotFound />} />
-        <Route path="/" element={<HomePage />} />
-        <Route path="/*" element={<AuthUserRoute></AuthUserRoute>}>
-          <Route path="login" element={<LoginPage></LoginPage>} />
-          <Route path="register" element={<Register></Register>}></Route>
-          <Route path="recovery" element={<Recovery></Recovery>}></Route>
-          <Route path="admin" element={<Admin></Admin>}></Route>
-        </Route>
-        <Route path="/phone" element={<PhonePage />} />
-      </Routes>
-      <ScrollButton />
-    </>
->>>>>>> ef1fbcb3dbccded3751b8129859c8b16768927c2
   );
 }
 
