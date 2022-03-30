@@ -1,10 +1,9 @@
 import React from "react";
 import "./Register.scss";
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
+import { Link, Navigate } from "react-router-dom";
 import TextInPut from "../../components/TextInPut/TextInPut";
-import VerifyPasswordInput from "../../components/VerifyPasswordInput/VerifyPasswordInput";
+import { publicRequest } from "../../utils/CallApi";
 import {
   faPhone,
   faUser,
@@ -52,7 +51,40 @@ const Register = () => {
     ) {
       setErrorText("Thông Tin Không Chính Xác Vui Lòng Kiểm Tra Lại");
     } else {
-      setSendCode(true);
+      publicRequest
+        .post("account/register", { email: formData.email })
+        .then((res) => {
+          if (res.status === 202) {
+            setErrorText(res.data.message);
+            console.log(res.status, res.data.message);
+          } else setSendCode(true);
+        })
+        .catch((err) => {
+          setErrorText("Hệ Thống Bị Lỗi Vui Lòng Điền Lại Thông Tin");
+        });
+    }
+  };
+  const handleSendCode = (e) => {
+    e.preventDefault();
+    console.log(isValidCode);
+    if (!isValidCode) {
+      setErrorText("Vui Lòng Nhập Mã Xác Nhận");
+    } else {
+      publicRequest
+        .post("account/register/confirm", { ...formData, ...formCode })
+        .then((res) => {
+          if(res.status === 202)
+          {
+            setErrorText(res.data.message);
+          }
+          else
+          {
+            Navigate({to = "/login"})
+          }
+        })
+        .catch((err) => {
+          setErrorText("Hệ Thống Bị Lỗi Vui Lòng Điền Lại Thông Tin");
+        });
     }
   };
   return (
@@ -129,7 +161,7 @@ const Register = () => {
                 checkValid={(value) => setIsValidCode(value)}
               ></TextInPut>
 
-              <input type="submit" onClick={(e) => handleSubmit(e)}></input>
+              <input type="submit" onClick={(e) => handleSendCode(e)}></input>
             </form>
             <div className="login_footer">
               <Link
