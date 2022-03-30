@@ -5,7 +5,7 @@ const accessoryController = require("../api/controllers/AccessoryController");
 
 router.get("/:slug", itemController.detailItemAccessory);
 router.post("/addcart", accessoryController.addCart);
-router.post("/checkout", accessoryController.checkout);
+router.post("/cart", accessoryController.checkout);
 router.get("/totalproduct", accessoryController.totalproduct);
 router.get("/info", accessoryController.info);
 router.get("/", accessoryController.index);
