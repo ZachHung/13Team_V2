@@ -225,7 +225,7 @@ function PhonePage() {
                       <form
                         className="buy-btn"
                         method="POST"
-                        action="phone/checkout?itemID={{phone._id}}"
+                        action="phone/cart?itemID={{phone._id}}"
                         data="{{phone._id}}"
                       >
                         <button className="btn btn-buy btn-sm" type="submit">
