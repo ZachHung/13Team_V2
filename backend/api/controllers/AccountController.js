@@ -6,7 +6,7 @@ const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 var recoveryCode = 9450;
 var confirmCode = 1234;
-var emailRecovery = "tnhut80567@outlook.com";
+var emailRecovery = "tnhut1234@outlook.com";
 var password = "Trannhut1";
 let transporter = nodemailer.createTransport({
   host: "smtp-mail.outlook.com",
@@ -38,7 +38,7 @@ class AccountController {
   register(req, res, next) {
     user.find({ email: req.body.email }).then((users) => {
       if (users.length !== 0) {
-        res.json({
+        res.status(202).json({
           status: "false",
           message: "Email Đã Được Sử Dụng",
         });
@@ -48,6 +48,7 @@ class AccountController {
           req.body.email,
           "Mã Xác Thực gmail của bạn là :"
         );
+        console.log(confirmCode);
       }
     });
   }
@@ -122,12 +123,15 @@ class AccountController {
           } else {
             const accessToken = jwt.sign(
               {
-                id: user._id,
-                isAdmin: user.isAdmin,
+                id: users._id,
+                isAdmin: users.isAdmin,
               },
               process.env.JWT_SECRET,
               { expiresIn: "3d" }
             );
+            jwt.verify(accessToken, process.env.JWT_SECRET, (err, userData) => {
+              console.log(userData);
+            });
             const { password, ...others } = users._doc;
             res.status(200).json({ ...others, accessToken });
           }
