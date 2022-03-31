@@ -3,10 +3,10 @@ import TextInPut from "../../components/TextInPut/TextInPut";
 import { publicRequest } from "../../utils/CallApi";
 import { Link } from "react-router-dom";
 import { faKey, faMailBulk } from "@fortawesome/free-solid-svg-icons";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import "./login.scss";
-import { loginFail, loginStart, loginSuccess } from "../../redux/userRedux";
-import { useState, useEffect } from "react";
+import { loginStart, loginSuccess } from "../../redux/userRedux";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 export default function Login() {
   const [formData, setFormData] = useState({});
@@ -28,7 +28,7 @@ export default function Login() {
       publicRequest
         .post("account/login", formData)
         .then((res) => {
-          if (res.status == 202) {
+          if (res.status === 202) {
             setErrorText(res.data.message);
             console.log(res.data.message);
           } else {

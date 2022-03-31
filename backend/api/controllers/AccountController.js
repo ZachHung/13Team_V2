@@ -129,9 +129,7 @@ class AccountController {
               process.env.JWT_SECRET,
               { expiresIn: "3d" }
             );
-            jwt.verify(accessToken, process.env.JWT_SECRET, (err, userData) => {
-              console.log(userData);
-            });
+
             const { password, ...others } = users._doc;
             res.status(200).json({ ...others, accessToken });
           }
@@ -270,6 +268,70 @@ class AccountController {
           status: "true",
         });
       });
+  }
+  addCart(req, res, next) {
+    cart
+      .find({
+        userID: req.session.user._id,
+        "list.optionID": req.body.idOption,
+        "list.color": req.body.color,
+      })
+      .then((data) => {
+        if (data.length == 0) {
+          var item = {
+            optionID: req.body.idOption,
+            num: 1,
+            color: req.body.color,
+          };
+          cart
+            .updateOne(
+              { userID: req.session.user._id },
+              { $push: { list: item } }
+            )
+            .then((data) => {
+              res.json({
+                status: "true",
+              });
+            })
+            .catch((err) => {
+              res.json({
+                status: "false",
+              });
+            });
+        } else {
+          data = data.map((data) => data.toObject());
+
+          var lists = data[0].list;
+          lists.forEach((item) => {
+            if (
+              item.optionID == req.body.idOption &&
+              item.color == req.body.color
+            ) {
+              item.num = item.num + 1;
+            }
+          });
+          cart
+            .updateOne(
+              {
+                userID: req.session.user._id,
+              },
+              {
+                list: lists,
+              }
+            )
+            .then((data) => {
+              res.json({
+                status: "true",
+              });
+            })
+            .catch((err) => {
+              res.json({
+                status: "false",
+              });
+            });
+        }
+      })
+      .catch((err) => {});
   }
 }
 module.exports = new AccountController();

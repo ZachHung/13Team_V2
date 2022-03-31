@@ -1,7 +1,7 @@
 import React from "react";
 import "./Register.scss";
 import { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TextInPut from "../../components/TextInPut/TextInPut";
 import { publicRequest } from "../../utils/CallApi";
 import {
@@ -22,7 +22,7 @@ const Register = () => {
   const [isValidVeifyPassword, setIsValidVerifyPassword] = useState(false);
   const [errorText, setErrorText] = useState("");
   const [isValidCode, setIsValidCode] = useState(false);
-
+  const navigate = useNavigate();
   console.log({
     isValidName,
     isValidPhone,
@@ -75,6 +75,8 @@ const Register = () => {
         .then((res) => {
           if (res.status === 202) {
             setErrorText(res.data.message);
+          } else {
+            navigate("/login");
           }
         })
         .catch((err) => {
