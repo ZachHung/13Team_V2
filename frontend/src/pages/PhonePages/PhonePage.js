@@ -12,6 +12,8 @@ import {
   faHardDrive,
 } from '@fortawesome/free-solid-svg-icons';
 
+import Swiper from '../../components/swiper/Swiper';
+
 const api = axios.create({
   baseURL: 'http://localhost:5000/api',
 });
@@ -28,6 +30,8 @@ function PhonePage() {
   return (
     <div className="products-container">
       <section className="section products">
+        <div className="swiper-content"></div>
+        <Swiper></Swiper>
         <div className="filter-box">
           <div className="asc-price" id="sort-asc-phone">
             <Link to={`/`}>
