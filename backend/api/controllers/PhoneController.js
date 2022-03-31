@@ -404,7 +404,7 @@ class PhoneController {
   brand(req, res, next) {
     items
       .find({ type: 'phone' })
-      .distinct('brandImage')
+      .distinct('brand')
 
       .then((items) => {
         res.json(items);

@@ -30,7 +30,10 @@ export default () => {
       >
         {brand.map((brand) => (
           <SwiperSlide onClick={handleOnClickSwiper}>
-            <img src={`http://localhost:5000/${brand}`} alt="logoBrand"></img>
+            <img
+              src={`http://localhost:5000/${brand.brandImage}`}
+              alt={`logo ${brand.name}`}
+            ></img>
           </SwiperSlide>
         ))}
         {/* <SwiperSlide onClick={handleOnClickSwiper}>Slide 1</SwiperSlide>
