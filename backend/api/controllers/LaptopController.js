@@ -141,7 +141,7 @@ class LaptopController {
                     }
                   )
                   .then((info) => {
-                    res.redirect("/checkout");
+                    res.redirect("/cart");
                   });
                 break;
               }
@@ -156,7 +156,7 @@ class LaptopController {
                   }
                 )
                 .then((info) => {
-                  res.redirect("/checkout");
+                  res.redirect("/cart");
                 });
             }
           });

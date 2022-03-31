@@ -1,5 +1,5 @@
 .footer-spacer {
-  aspect-ratio: 1080/100;
+  aspect-ratio: 960/70;
   width: 100%;
   background-repeat: no-repeat;
   background-position: center;
@@ -45,10 +45,10 @@ footer {
     justify-content: center;
     img {
       margin-bottom: 1rem;
-      width: 7rem;
+      width: 8rem;
     }
     @media only screen and (max-width: 739px) {
-      margin-top: 0.25rem;
+      margin-top: 3rem;
     }
   }
 }

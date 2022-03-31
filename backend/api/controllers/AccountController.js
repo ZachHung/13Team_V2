@@ -2,9 +2,11 @@ const nodemailer = require("nodemailer");
 const user = require("../models/User");
 const cart = require("../models/Cart");
 const address = require("../models/Address");
+const CryptoJS = require("crypto-js");
+const jwt = require("jsonwebtoken");
 var recoveryCode = 9450;
 var confirmCode = 1234;
-var emailRecovery = "tnhut80567@outlook.com";
+var emailRecovery = "tnhut1234@outlook.com";
 var password = "Trannhut1";
 let transporter = nodemailer.createTransport({
   host: "smtp-mail.outlook.com",
@@ -36,7 +38,7 @@ class AccountController {
   register(req, res, next) {
     user.find({ email: req.body.email }).then((users) => {
       if (users.length !== 0) {
-        res.json({
+        res.status(202).json({
           status: "false",
           message: "Email Đã Được Sử Dụng",
         });
@@ -46,6 +48,7 @@ class AccountController {
           req.body.email,
           "Mã Xác Thực gmail của bạn là :"
         );
+        console.log(confirmCode);
       }
     });
   }
@@ -55,7 +58,10 @@ class AccountController {
       user
         .create({
           email: req.body.email,
-          password: req.body.password,
+          password: CryptoJS.AES.encrypt(
+            req.body.password,
+            process.env.PASS_SECRET
+          ),
           phone: req.body.phone,
           name: req.body.name,
         })
@@ -67,6 +73,7 @@ class AccountController {
             })
             .then((cartItem) => {
               res.json({
+                ...userItem,
                 status: "true",
               });
             })
@@ -93,35 +100,39 @@ class AccountController {
   login(req, res, next) {
     const loginInfo = req.body;
     let email = loginInfo.email;
-    let password = loginInfo.password;
 
     user
-      .find({ email: email })
+      .findOne({ email: email })
       .then((users) => {
-        if (users.length === 0) {
-          res.json({
-            status: "false",
-            err: "email",
+        if (users === null) {
+          res.status(202).json({
             message: "Email Không Tồn Tại Vui Lòng Đăng Kí Tài Khoản",
           });
         } else {
-          user.find({ email: email, password: password }).then((users) => {
-            if (users.length === 0)
-              res.json({
-                status: "false",
-                err: "password",
-                message: "Mật Khẩu Không Chính Xác",
-              });
-            else {
-              req.session.user = users[0];
-              req.session.save();
+          const hashedPassword = CryptoJS.AES.decrypt(
+            users.password,
+            process.env.PASS_SECRET
+          );
 
-              res.json({
-                name: `${req.session.user.name}`,
-                status: "true",
-              });
-            }
-          });
+          const originPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
+
+          if (originPassword !== req.body.password) {
+            res.status(202).json({
+              message: "Mật Khẩu Không Chính Xác",
+            });
+          } else {
+            const accessToken = jwt.sign(
+              {
+                id: users._id,
+                isAdmin: users.isAdmin,
+              },
+              process.env.JWT_SECRET,
+              { expiresIn: "3d" }
+            );
+
+            const { password, ...others } = users._doc;
+            res.status(200).json({ ...others, accessToken });
+          }
         }
       })
       .catch(next);

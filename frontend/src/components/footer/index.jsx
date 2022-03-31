@@ -8,24 +8,39 @@ import {
 import "./style.scss";
 import logo from "../../logo.svg";
 
-const Footer = () => {
+const Footer = ({ color }) => {
   return (
     <>
-      <div className="footer-spacer"></div>
+      <div className="footer-spacer" style={{ backgroundColor: color }}></div>
       <footer>
         <div className="contact">
           <div className="logo">
-            <img src={logo} />
+            <img src={logo} alt="" />
           </div>
 
           <div className="social">
-            <a href="https://www.facebook.com/Tnhut813" className="icon">
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://www.facebook.com/Tnhut813"
+              className="icon"
+            >
               <FontAwesomeIcon icon={faFacebookSquare} />
             </a>
-            <a href="https://twitter.com/CaptainSeapunk" className="icon">
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://twitter.com/CaptainSeapunk"
+              className="icon"
+            >
               <FontAwesomeIcon icon={faTwitterSquare} />
             </a>
-            <a href="https://www.instagram.com/_makimasimp_/" className="icon">
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://www.instagram.com/_makimasimp_/"
+              className="icon"
+            >
               <FontAwesomeIcon icon={faInstagramSquare} />
             </a>
           </div>
@@ -37,7 +52,7 @@ const Footer = () => {
             alt="Logo UIT"
           />
           <div className="copyright-text">
-            &copy; 2022. Sản phẩm của Trường Đại Học Công Nghệ Thông Tin
+            &copy; 2022. Trường Đại Học Công Nghệ Thông Tin
           </div>
         </div>
       </footer>

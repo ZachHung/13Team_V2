@@ -9,6 +9,10 @@ const user = new Schema(
     gender: { type: String, default: "Nam" },
     birthday: { type: String, default: "2001-02-19" },
     name: { type: String, default: "" },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
     address: {
       type: Object,
       default: {

@@ -1,0 +1,73 @@
+.error404 {
+  box-sizing: border-box;
+  position: relative;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media only screen and (max-width: 739px) {
+    flex-direction: column;
+  }
+  .error-img img {
+    width: 100%;
+    max-width: 80vw;
+    min-width: 40vw;
+    @media only screen and (max-width: 739px) {
+      margin-top: 2rem;
+    }
+  }
+  .error-content {
+    margin-left: -15vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    @media only screen and (max-width: 739px) {
+      margin: 3rem 0 0;
+    }
+    h3 {
+      text-align: center;
+      width: 70%;
+      font-size: 3.2rem;
+      @media only screen and (max-width: 739px) {
+        font-size: 2.4rem;
+        width: 80%;
+      }
+    }
+    .list-contact {
+      display: flex;
+    }
+    .itemct {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 70%;
+      text-align: center;
+      a {
+        border: 3px solid white;
+        height: 3rem;
+        color: white;
+        padding: 2.4rem 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: black;
+        border-radius: 100vh;
+        &:hover {
+          border: 3px solid black;
+        }
+        @media only screen and (max-width: 739px) {
+          padding: 2.5rem 1rem;
+        }
+      }
+      p {
+        font-size: 1.8rem;
+      }
+    }
+    .logo {
+      width: 9rem;
+    }
+  }
+}

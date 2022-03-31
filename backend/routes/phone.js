@@ -4,7 +4,7 @@ const itemController = require('../api/controllers/ItemController');
 const phoneController = require('../api/controllers/PhoneController');
 
 router.post('/addcart', phoneController.addCart);
-router.post('/checkout', phoneController.checkout);
+router.post('/cart', phoneController.checkout);
 router.get('/totalproduct', phoneController.totalproduct);
 router.get('/info', phoneController.info);
 router.get('/brand', phoneController.brand);
