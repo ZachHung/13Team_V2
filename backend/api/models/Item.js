@@ -9,8 +9,7 @@ const Item = new Schema(
     description: String,
     slug: String,
     techInfo: Array,
-    brand: String,
-    brandImage: String,
+    brand: Object,
   },
   { timestamps: true },
   {
