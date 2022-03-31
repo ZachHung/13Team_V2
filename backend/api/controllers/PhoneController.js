@@ -1,6 +1,6 @@
-const items = require("../models/Item");
+const items = require('../models/Item');
 
-const cart = require("../models/Cart");
+const cart = require('../models/Cart');
 
 class PhoneController {
   addCart(req, res, next) {
@@ -13,24 +13,24 @@ class PhoneController {
                 _id: req.query.itemID,
               },
               {
-                type: "phone",
+                type: 'phone',
               },
             ],
           },
         },
         {
           $lookup: {
-            from: "options",
-            localField: "slug",
-            foreignField: "slug",
-            as: "slug",
+            from: 'options',
+            localField: 'slug',
+            foreignField: 'slug',
+            as: 'slug',
           },
         },
         {
           $project: {
-            "slug._id": 1,
+            'slug._id': 1,
             _id: 1,
-            "slug.color": 1,
+            'slug.color': 1,
           },
         },
       ])
@@ -52,14 +52,14 @@ class PhoneController {
                   .updateOne(
                     {
                       userID: req.session.user._id,
-                      "list.optionID": object.optionID,
+                      'list.optionID': object.optionID,
                     },
                     {
-                      $inc: { "list.$.num": 1 },
+                      $inc: { 'list.$.num': 1 },
                     }
                   )
                   .then((info) => {
-                    res.redirect("back");
+                    res.redirect('back');
                   });
                 break;
               }
@@ -74,7 +74,7 @@ class PhoneController {
                   }
                 )
                 .then((info) => {
-                  res.redirect("back");
+                  res.redirect('back');
                 });
             }
           });
@@ -94,24 +94,24 @@ class PhoneController {
                 _id: req.query.itemID,
               },
               {
-                type: "phone",
+                type: 'phone',
               },
             ],
           },
         },
         {
           $lookup: {
-            from: "options",
-            localField: "slug",
-            foreignField: "slug",
-            as: "slug",
+            from: 'options',
+            localField: 'slug',
+            foreignField: 'slug',
+            as: 'slug',
           },
         },
         {
           $project: {
-            "slug._id": 1,
+            'slug._id': 1,
             _id: 1,
-            "slug.color": 1,
+            'slug.color': 1,
           },
         },
       ])
@@ -134,14 +134,14 @@ class PhoneController {
                   .updateOne(
                     {
                       userID: req.session.user._id,
-                      "list.optionID": object.optionID,
+                      'list.optionID': object.optionID,
                     },
                     {
-                      $inc: { "list.$.num": 1 },
+                      $inc: { 'list.$.num': 1 },
                     }
                   )
                   .then((info) => {
-                    res.redirect("/checkout");
+                    res.redirect('/checkout');
                   });
                 break;
               }
@@ -156,7 +156,7 @@ class PhoneController {
                   }
                 )
                 .then((info) => {
-                  res.redirect("/checkout");
+                  res.redirect('/checkout');
                 });
             }
           });
@@ -174,15 +174,15 @@ class PhoneController {
       .aggregate([
         {
           $match: {
-            type: "phone",
+            type: 'phone',
           },
         },
         {
           $lookup: {
-            from: "options",
-            localField: "slug",
-            foreignField: "slug",
-            as: "slug",
+            from: 'options',
+            localField: 'slug',
+            foreignField: 'slug',
+            as: 'slug',
           },
         },
       ])
@@ -192,21 +192,22 @@ class PhoneController {
       })
 
       .catch(next);
+    // res.send('hello');
   }
   totalproduct(req, res, next) {
     items
       .aggregate([
         {
           $match: {
-            type: "phone",
+            type: 'phone',
           },
         },
         {
           $lookup: {
-            from: "options",
-            localField: "slug",
-            foreignField: "slug",
-            as: "slug",
+            from: 'options',
+            localField: 'slug',
+            foreignField: 'slug',
+            as: 'slug',
           },
         },
       ])
@@ -225,7 +226,7 @@ class PhoneController {
     var sort = req.query.sort;
     var temp;
     if (sort != undefined) {
-      if (sort == "asc") {
+      if (sort == 'asc') {
         temp = 1;
       } else {
         temp = -1;
@@ -239,33 +240,33 @@ class PhoneController {
     let from14 = 100000000000;
 
     if (paramBrand == undefined) {
-      paramBrand = "";
+      paramBrand = '';
     }
     if (paramPrice == undefined) {
-      paramPrice = "";
+      paramPrice = '';
     }
 
-    if (paramBrand != "" || paramPrice != "") {
-      if (paramPrice == "") {
+    if (paramBrand != '' || paramPrice != '') {
+      if (paramPrice == '') {
         paramPrice = 0;
       } else {
-        if (paramPrice.search("duoi-2-trieu") >= 0) {
+        if (paramPrice.search('duoi-2-trieu') >= 0) {
           to2 = 2000000;
         }
-        if (paramPrice.search("tu-2-5-trieu") >= 0) {
+        if (paramPrice.search('tu-2-5-trieu') >= 0) {
           from2 = 2000000;
           to5 = 5000000;
         }
-        if (paramPrice.search("tu-5-14-trieu") >= 0) {
+        if (paramPrice.search('tu-5-14-trieu') >= 0) {
           from5 = 5000000;
           to14 = 14000000;
         }
-        if (paramPrice.search("tren-14-trieu") >= 0) {
+        if (paramPrice.search('tren-14-trieu') >= 0) {
           from14 = 14000000;
         }
       }
       //  paramPrice = parseFloat(paramPrice)
-      let strParam = paramBrand.split(",");
+      let strParam = paramBrand.split(',');
       // strParam = strParam.StringSplitOptions.RemoveEmptyEntries;
       let brand1 = strParam[0];
       let brand2 = strParam[1];
@@ -273,13 +274,13 @@ class PhoneController {
       let brand4 = strParam[3];
       let brand5 = strParam[4];
       let brand6 = strParam[5];
-      if (paramBrand == "" && paramPrice != "") {
-        brand1 = "apple";
-        brand2 = "samsung";
-        brand3 = "asus";
-        brand4 = "oppo";
-        brand5 = "xiaomi";
-        brand6 = "realme";
+      if (paramBrand == '' && paramPrice != '') {
+        brand1 = 'apple';
+        brand2 = 'samsung';
+        brand3 = 'asus';
+        brand4 = 'oppo';
+        brand5 = 'xiaomi';
+        brand6 = 'realme';
       } // for paramPrice still work when paramBrand is empty
 
       items
@@ -310,7 +311,7 @@ class PhoneController {
                   ],
                 },
                 {
-                  type: "phone",
+                  type: 'phone',
                 },
               ],
             },
@@ -318,10 +319,10 @@ class PhoneController {
 
           {
             $lookup: {
-              from: "options",
-              localField: "slug",
-              foreignField: "slug",
-              as: "slug",
+              from: 'options',
+              localField: 'slug',
+              foreignField: 'slug',
+              as: 'slug',
             },
           },
 
@@ -358,7 +359,7 @@ class PhoneController {
           },
         ])
         .sort({
-          "slug.color.price": temp,
+          'slug.color.price': temp,
         })
         .skip(perPage * page - perPage)
         .limit(perPage)
@@ -374,20 +375,20 @@ class PhoneController {
         .aggregate([
           {
             $match: {
-              type: "phone",
+              type: 'phone',
             },
           },
           {
             $lookup: {
-              from: "options",
-              localField: "slug",
-              foreignField: "slug",
-              as: "slug",
+              from: 'options',
+              localField: 'slug',
+              foreignField: 'slug',
+              as: 'slug',
             },
           },
         ])
         .sort({
-          "slug.color.price": temp,
+          'slug.color.price': temp,
         })
         .skip(perPage * page - perPage)
         .limit(perPage)
@@ -399,6 +400,16 @@ class PhoneController {
 
         .catch(next);
     }
+  }
+  brand(req, res, next) {
+    items
+      .find({ type: 'phone' })
+      .distinct('brandImage')
+
+      .then((items) => {
+        res.json(items);
+      })
+      .catch(next);
   }
 }
 module.exports = new PhoneController();
