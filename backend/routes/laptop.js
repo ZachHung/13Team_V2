@@ -4,7 +4,7 @@ const itemController = require("../api/controllers/ItemController");
 const laptopController = require("../api/controllers/LaptopController");
 
 router.post("/addcart", laptopController.addCart);
-router.post("/checkout", laptopController.checkout);
+router.post("/cart", laptopController.checkout);
 router.get("/totalproduct", laptopController.totalproduct);
 router.get("/info", laptopController.info);
 router.get("/:slug", itemController.detailItemLaptop);

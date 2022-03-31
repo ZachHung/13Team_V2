@@ -9,7 +9,7 @@ import {
 import "./style.scss";
 import { Link } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ color }) => {
   const [menuState, setMenuState] = useState(false);
   const handleMenuBtn = () => {
     setMenuState(!menuState);
@@ -19,7 +19,7 @@ const Header = () => {
       <header>
         <div className="header-container">
           <Link to="/" className="logo">
-            <img src={logo} />
+            <img src={logo} alt="" />
           </Link>
           <button
             aria-expanded={menuState}
@@ -93,7 +93,7 @@ const Header = () => {
           </div>
         </div>
       </header>
-      <div className="header-spacer"></div>
+      <div className="header-spacer" style={{ backgroundColor: color }}></div>
     </>
   );
 };

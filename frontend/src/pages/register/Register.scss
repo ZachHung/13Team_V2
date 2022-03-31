@@ -1,10 +1,10 @@
-.container_login {
+.container_register {
   background-color: #cae5e8;
   display: flex;
   height: 100vh;
   justify-content: center;
 
-  .login {
+  .register {
     display: flex;
     @media only screen and (max-width: 739px) {
       display: block;
@@ -26,6 +26,11 @@
         padding: 0;
       }
     }
+    .form_error {
+      color: red;
+      font-size: 14px;
+      font-weight: bold;
+    }
     .form_container {
       padding: 50px;
       display: flex;
@@ -44,6 +49,9 @@
         @media only screen and (max-width: 739px) {
           width: 90%;
         }
+        .hide {
+          display: none !important;
+        }
         form {
           width: 80%;
           margin: 0 auto;
@@ -54,11 +62,7 @@
             text-align: center;
             margin: 20px 0px;
           }
-          .form_error {
-            color: red;
-            font-size: 14px;
-            font-weight: bold;
-          }
+
           input[type="submit"] {
             background: #000;
             color: #fff;
@@ -71,13 +75,8 @@
           input[type="submit"]:hover {
             background-color: rgba($color: #000000, $alpha: 0.7);
           }
-          .login_recovery {
+          p {
             margin-top: 30px;
-            color: #000;
-            text-decoration: none !important;
-          }
-          .login_recovery:hover {
-            cursor: pointer;
           }
         }
         .login_footer {
@@ -90,6 +89,7 @@
           border-radius: 0 0 10px 10px;
           font-size: 20px;
           padding: 10px;
+          margin-top: 20px;
           p {
             margin: 0;
           }

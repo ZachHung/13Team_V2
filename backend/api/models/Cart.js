@@ -1,20 +1,18 @@
 const mongoose = require("mongoose");
-const user = require("./User");
-const option = require("./Option");
 const Schema = mongoose.Schema;
+
 const Cart = new Schema(
   {
     userID: {
-      type: Schema.Types.ObjectId,
-      ref: "user",
+      type: String,
     },
     list: [
       {
         optionID: {
-          type: Schema.Types.ObjectId,
+          type: String,
           ref: "Option",
         },
-        num: Number,
+        quantity: { type: Number, default: 1 },
         color: String,
       },
     ],

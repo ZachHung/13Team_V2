@@ -9,10 +9,16 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import Header from "../../components/header";
+import Footer from "../../components/footer";
 
 const HomePage = () => {
   // Mount sliders
+  useEffect(() => {}, []);
+  useEffect(() => {}, []);
+
   useEffect(() => {
+    // Mount slide1
     new Glide("#glide_1", {
       focusAt: "center",
       type: "carousel",
@@ -23,8 +29,8 @@ const HomePage = () => {
       animationDuration: 500,
       animationTimingFunc: "linear",
     }).mount();
-  }, []);
-  useEffect(() => {
+
+    // Mount slide2
     new Glide("#glide_2", {
       focusAt: "center",
       type: "carousel",
@@ -33,10 +39,8 @@ const HomePage = () => {
       animationDuration: 500,
       animationTimingFunc: "linear",
     }).mount();
-  }, []);
 
-  // Initialize AOS when page load
-  useEffect(() => {
+    // Initialize AOS when page load
     AOS.init({
       offset: 50, //trigger offset in px
       duration: 350, // values from 0 to 3000, with step 50ms
@@ -47,8 +51,8 @@ const HomePage = () => {
   }, []);
 
   return (
-    <>
-      {" "}
+    <div className="homePage">
+      <Header color="#f5f5f5" />{" "}
       <div className="landing-page">
         <section className="hero">
           <div className="glide" id="glide_1">
@@ -371,7 +375,8 @@ const HomePage = () => {
           </div>
         </section>
       </div>
-    </>
+      <Footer color="#f5f5f5" />
+    </div>
   );
 };
 

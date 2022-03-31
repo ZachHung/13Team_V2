@@ -1,24 +1,22 @@
 const mongoose = require("mongoose");
-const user = require("./User");
-const option = require("./Option");
-
 const Schema = mongoose.Schema;
+
 const Purchase = new Schema(
   {
     userID: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
+      type: String,
     },
     list: [
       {
         optionID: {
-          type: mongoose.Schema.Types.ObjectId,
+          type: String,
           ref: "Option",
         },
-        num: Number,
+        quantity: { type: Number, default: 1 },
         color: String,
       },
     ],
+    status: { type: String, default: "Đang giao" },
   },
   { timestamps: true },
   { collection: "purchases" }

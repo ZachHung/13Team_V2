@@ -1,33 +1,52 @@
-import LoginPage from './pages/login/login';
-import Footer from './components/footer';
-import Header from './components/header';
-import { Route, Routes } from 'react-router-dom';
-import HomePage from './pages/home';
-import PhonePage from './pages/PhonePages/PhonePage';
-// import Header from './components/header';
-// import Footer from './components/footer';
+import HomePage from "./pages/home";
+import PhonePage from "./pages/PhonePages/PhonePage";
+import NotFound from "./pages/NotFound";
 
+import "./App.scss";
+import LoginPage from "./pages/login/Login";
+import Register from "./pages/register/Register";
+import Recovery from "./pages/recovery/Recovery";
+import { Route, Routes } from "react-router-dom";
+import { useSelector } from "react-redux";
+import React from "react";
+
+import PrivateRoute from "./routes/PrivateRoute";
+import AuthUserRoute from "./routes/AuthUserRoute";
+import Admin from "./pages/Admin";
+import ScrollButton from "./components/scrollBtn";
 function App() {
+  const isAdmin = useSelector((state) => state.user.isAdmin);
   return (
-    <>
-      <Header></Header>
+    <Routes>
+      {/* start publicRoute */}
+      <Route path="*" element={<NotFound />} />
+      <Route path="/" element={<HomePage />} />
+      <Route path="/phone" element={<PhonePage />} />
+      {/* end publicRoute */}
 
-      <Routes>
-        <Route exact path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/phone" element={<PhonePage />} />
-        <Route />
-        <Route />
-        <Route />
-        <Route />
-        <Route />
-        <Route />
-        <Route />
-        <Route />
-        <Route />
-      </Routes>
-      <Footer></Footer>
-    </>
+      {/* start private Route */}
+      <Route path="/*" element={<PrivateRoute></PrivateRoute>}>
+        <Route path="cart" element={<LoginPage></LoginPage>} />
+      </Route>
+      {/* end private Route */}
+
+      {/* start authRoute */}
+      <Route path="/*" element={<AuthUserRoute></AuthUserRoute>}>
+        <Route path="login" element={<LoginPage></LoginPage>} />
+        <Route path="register" element={<Register></Register>}></Route>
+        <Route path="recovery" element={<Recovery></Recovery>}></Route>
+      </Route>
+      {/* end authRoute */}
+
+      {/* start adminRoute */}
+      {isAdmin ? (
+        <Route path="/admin" element={<Admin></Admin>}></Route>
+      ) : (
+        <React.Fragment></React.Fragment>
+      )}
+
+      {/* end adminRoute */}
+    </Routes>
   );
 }
 
