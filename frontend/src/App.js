@@ -6,10 +6,10 @@ import "./App.scss";
 import LoginPage from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Recovery from "./pages/recovery/Recovery";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
-import React, { useState } from "react";
-import AdminRoute from "./routes/AdminRoute";
+import React from "react";
+
 import PrivateRoute from "./routes/PrivateRoute";
 import AuthUserRoute from "./routes/AuthUserRoute";
 import Admin from "./pages/Admin";
@@ -44,6 +44,7 @@ function App() {
       ) : (
         <React.Fragment></React.Fragment>
       )}
+
       {/* end adminRoute */}
     </Routes>
   );
