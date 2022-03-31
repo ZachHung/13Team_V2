@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const Option = "./Option";
 
 const Cart = new Schema(
   {
@@ -17,7 +18,6 @@ const Cart = new Schema(
       },
     ],
   },
-  { timestamps: true },
   { collection: "carts" }
 );
 module.exports = mongoose.model("Cart", Cart);

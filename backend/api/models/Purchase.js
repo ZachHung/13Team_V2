@@ -12,7 +12,7 @@ const Purchase = new Schema(
           type: String,
           ref: "Option",
         },
-        quantity: { type: Number, default: 1 },
+        quantity: { type: Number },
         color: String,
       },
     ],

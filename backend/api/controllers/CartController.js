@@ -1,66 +1,87 @@
 const cart = require("../models/Cart");
 const purchase = require("../models/Purchase");
-var ID = "624338b03a6839390c6a00f4";
+const options = require("../models/Option");
 class CheckoutController {
-  // Add item to cart
-  // POST /cart/add
+  // @desc Add item to cart
+  // @route POST /cart/add/:userID
+  // @body:
+  // @  optionID: optionID of item
+  // @  color: color of that option
   addCart(req, res, next) {
-    cart
-      .find({
-        userID: ID,
-        "list.optionID": req.body.optionID,
-      })
-      .then((data) => {
-        if (data.length === 0) {
-          var item = {
-            optionID: req.body.optionID,
-            color: req.body.color,
-          };
+    const color = req.body.color;
+    options
+      .findById(req.body.optionID)
+      .then((dataOption) => {
+        if (!dataOption) res.status(500).json("That optionID does not exist");
+        else {
           cart
-            .updateOne({ userID: ID }, { $push: { list: item } })
-            .then((data) => {
-              res.json("Added to cart successful");
+            .findOne({
+              userID: req.params.userID,
             })
-            .catch((err) => {
-              res.json("Added to cart failed");
-            });
-        } else {
-          data = data.map((data) => data.toObject());
-          var lists = data[0].list;
-          lists.forEach((item) => {
-            if (
-              item.optionID == req.body.optionID &&
-              item.color == req.body.color
-            ) {
-              item.quantity = item.quantity + 1;
-            }
-          });
-          cart
-            .updateOne(
-              {
-                userID: ID,
-              },
-              {
-                list: lists,
-              }
+            .populate(
+              "list.optionID",
+              "detail color.name color.image color.price"
             )
-            .then((data) => {
-              res.status(200).json("Added to cart successful");
+            .then((dataCart) => {
+              dataCart = dataCart.toObject();
+              dataOption = dataOption.toObject();
+              let colors = dataOption.color.map((color) => color.name);
+              if (colors.includes(color)) {
+                let singleItem = dataCart.list.filter(
+                  (item) =>
+                    item.optionID._id == req.body.optionID &&
+                    item.color == color
+                );
+                if (singleItem.length) {
+                  cart
+                    .updateOne(
+                      {
+                        userID: req.params.userID,
+                        list: {
+                          $elemMatch: {
+                            optionID: req.body.optionID,
+                            color: color,
+                          },
+                        },
+                      },
+                      { $inc: { "list.$.quantity": 1 } }
+                    )
+                    .then(() =>
+                      res.status(200).json("Added to cart successful")
+                    )
+                    .catch((err) => res.status(500).json(err));
+                } else {
+                  cart
+                    .updateOne(
+                      { userID: req.params.userID },
+                      {
+                        $push: {
+                          list: {
+                            optionID: req.body.optionID,
+                            quantity: 1,
+                            color: color,
+                          },
+                        },
+                      }
+                    )
+                    .then(() =>
+                      res.status(200).json("Added to cart successful")
+                    )
+                    .catch((err) => res.status(500).json(err));
+                }
+              } else res.status(500).json("That color doesn't exist");
             })
-            .catch((err) => {
-              res.status(500).json("Added to cart failed");
-            });
+            .catch((err) => res.status(500).json(err));
         }
       })
-      .catch((err) => {
-        res.status(500).json(err);
-      });
+      .catch((err) => res.status(500).json(err));
   }
-  // Get cart of login user
-  //GET /cart
+
+  // @desc Get cart of login user
+  // @route GET /cart/:userID
   getCart(req, res, next) {
     cart
-      .findOne({ userID: "623e6456532a339f852a26bf" })
+      .findOne({ userID: req.params.userID })
       .populate("list.optionID", "detail color.name color.image color.price")
       .populate({
         path: "list.optionID",
@@ -94,73 +115,76 @@ class CheckoutController {
   }
 
   // @desc Update items in user's Cart
-  // @route PUT /cart/:optionID
-  // @queries:
-  // @  quantity: update quantity
+  // @route PUT /cart/:userID
+  // @body:
+  // @  optionID: optionID of item
+  // @  color: color of item
+  // @  quantity: quantity to change to
   updateItem(req, res, next) {
-    let update = {};
     const quantity = req.body.quantity;
     const color = req.body.color;
-    let payload = {
-      quantity,
-      color,
-    };
-    payload.quantity &&
-      (update.$set = { "list.$.quantity": req.query.quantity });
-    cart
-      .findOne({
-        userID: ID,
-      })
-      .populate("list.optionID", "detail color.name color.image color.price")
-      .populate({
-        path: "list.optionID",
-        populate: {
-          path: "item",
-          select: "name type",
-        },
-      })
-      .then((data) => {
-        let list = data.list.filter(
-          (item) => item.optionID._id === req.params.optionID
-        );
-        res.json(list);
-      });
-    // cart
-    //   .updateOne(
-    //     {
-    //       userID: ID,
-    //       "list.optionID": req.params.optionID,
-    //     },
-    //     update
-    //   )
-    //   .then((updatedCart) => {
-    //     return (data = updatedCart);
-    //   })
-    //   .catch((err) => {
-    //     res.status(500).json(err);
-    //   });
+    if (quantity <= 0) res.status(500).json("Invalid quantity");
+    else
+      cart
+        .updateOne(
+          {
+            userID: req.params.userID,
+            list: {
+              $elemMatch: {
+                optionID: req.body.optionID,
+                color: color,
+              },
+            },
+          },
+          {
+            $set: { "list.$.quantity": quantity },
+          }
+        )
+        .then((data) =>
+          data.modifiedCount
+            ? res.status(200).json("Updated item successful")
+            : res.status(500).json("Nothing was updated")
+        )
+        .catch((err) => res.status(500).json(err));
   }
 
   // @desc Delete item in cart
-  // @route DELETE /cart/:optionID
+  // @route DELETE /cart/:userID
+  // @body
+  // @  optionID: optionID of item
+  // @  color: color of item
   removeItem(req, res, next) {
+    const color = req.body.color;
     cart
       .updateOne(
         {
-          userID: ID,
+          userID: req.params.userID,
         },
-        { $pull: { list: { optionID: req.params.optionID } } }
+        {
+          $pull: {
+            list: {
+              optionID: req.body.optionID,
+              color: color,
+            },
+          },
+        }
       )
-      .then(() => res.status(500).json("Cart items has been deleted"))
+      .then((data) =>
+        res.status(200).json({
+          matched: data.matchedCount,
+          modified: data.modifiedCount,
+        })
+      )
       .catch((err) => res.status(500).json(err));
   }
 
   //POST /cart/purchase
   purchaseCart(req, res, next) {
     cart
-      .findOneAndUpdate({ userID: ID }, { $set: { list: [] } })
+      .findOneAndUpdate({ userID: req.params.userID }, { $set: { list: [] } })
       .then((data) => {
-        delete data._id;
+        data = data.toObject();
+        res.json(data);
         const p = new purchase(data);
         p.save();
         res.status(200).json("Purchased successful");
@@ -205,6 +229,7 @@ class CheckoutController {
         res.status(500).json(err);
       });
   }
+
   // @desc Get ALL user cart
   // @route GET /cart/find
   getAllCart(req, res, next) {
