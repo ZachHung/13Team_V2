@@ -8,6 +8,8 @@ import "./login.scss";
 import { loginStart, loginSuccess } from "../../redux/userRedux";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "../../components/header";
+import Footer from "../../components/footer";
 export default function Login() {
   const [formData, setFormData] = useState({});
   const [isValidEmail, setIsValidEmail] = useState(false);
@@ -44,54 +46,58 @@ export default function Login() {
   };
 
   return (
-    <div className="container_login">
-      <div className="login row container-md">
-        <div className="title col-xl-6 col-12">
-          <p>Welcome Back!</p>
-        </div>
+    <>
+      <Header color="#CAE5E8" />
+      <div className="container_login">
+        <div className="login row container-md">
+          <div className="title col-xl-6 col-12">
+            <p>Welcome Back!</p>
+          </div>
 
-        <div className="form_container col-xl-6 col-12">
-          <div className="form_wrapper">
-            <form>
-              <p className="form_title">Login</p>
-              <p className="form_error">{errorText}</p>
-              <TextInPut
-                icon={faMailBulk}
-                type="email"
-                placeholder="Nhập Email"
-                name="email"
-                getInput={handleInput}
-                checkValid={(value) => setIsValidEmail(value)}
-              ></TextInPut>
-              <TextInPut
-                icon={faKey}
-                type="password"
-                placeholder="Nhập Mật Khẩu"
-                name="password"
-                getInput={handleInput}
-                checkValid={(value) => setIsValidPassword(value)}
-                valuePassword={formData.verifyPassword}
-              ></TextInPut>
+          <div className="form_container col-xl-6 col-12">
+            <div className="form_wrapper">
+              <form>
+                <p className="form_title">Login</p>
+                <p className="form_error">{errorText}</p>
+                <TextInPut
+                  icon={faMailBulk}
+                  type="email"
+                  placeholder="Nhập Email"
+                  name="email"
+                  getInput={handleInput}
+                  checkValid={(value) => setIsValidEmail(value)}
+                ></TextInPut>
+                <TextInPut
+                  icon={faKey}
+                  type="password"
+                  placeholder="Nhập Mật Khẩu"
+                  name="password"
+                  getInput={handleInput}
+                  checkValid={(value) => setIsValidPassword(value)}
+                  valuePassword={formData.verifyPassword}
+                ></TextInPut>
 
-              <input type="submit" onClick={handleSubmit}></input>
-              <Link
-                to="/recovery"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                <p className="login_recovery">Forgot your password?</p>
-              </Link>
-            </form>
-            <div className="login_footer">
-              <Link
-                to="/register"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                <p>Want to create a new account Sign Up here? </p>
-              </Link>
+                <input type="submit" onClick={handleSubmit}></input>
+                <Link
+                  to="/recovery"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <p className="login_recovery">Forgot your password?</p>
+                </Link>
+              </form>
+              <div className="login_footer">
+                <Link
+                  to="/register"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <p>Want to create a new account Sign Up here? </p>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      <Footer color="#CAE5E8" />
+    </>
   );
 }
