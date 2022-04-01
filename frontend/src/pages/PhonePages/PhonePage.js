@@ -10,6 +10,7 @@ import {
   faMicrochip,
   faMemory,
   faHardDrive,
+  faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 
 import Swiper from '../../components/swiper/Swiper';
@@ -30,13 +31,81 @@ function PhonePage() {
     });
   }, []);
   // console.log('phoneList', phoneList[0].techInfo[0].infoType);
+  // filter
+  const [brand, setBrand] = useState([]);
+  const [checkedBrand, setCheckedBrand] = useState([]);
+  const [checkedPrice, setCheckedPrice] = useState([]);
+  useEffect(() => {
+    api.get('/phone/brand').then((res) => {
+      console.log(res.data);
+      setBrand(res.data);
+    });
+  }, []);
+
+  const handleCheckBrand = (name) => {
+    setCheckedBrand((prev) => {
+      const isExist = checkedBrand.includes(name);
+      if (isExist) {
+        return checkedBrand.filter((item) => item !== name);
+      } else {
+        return [...prev, name];
+      }
+    });
+  };
+  console.log(checkedBrand);
+  const handleCheckPrice = (name) => {
+    setCheckedPrice((prev) => {
+      const isExist = checkedPrice.includes(name);
+      if (isExist) {
+        return checkedPrice.filter((item) => item !== name);
+      } else {
+        return [...prev, name];
+      }
+    });
+  };
+  console.log(checkedPrice);
+
   return (
     <>
       <Header />
       <div className="products-container">
         <section className="section products">
           <SwiperPromotion className="swiper-promotion"></SwiperPromotion>
-          <Swiper></Swiper>
+          <Swiper
+            updateBrand={handleCheckBrand}
+            updatePrice={handleCheckPrice}
+          ></Swiper>
+          <div className="filter-checkbox">
+            <span style={{ fontWeight: 500, paddingRight: '1rem' }}>
+              Lọc theo:
+            </span>
+            {checkedBrand.map((item) => (
+              <span key={item} className="filter-span">
+                {item}
+                <FontAwesomeIcon
+                  icon={faXmark}
+                  style={{
+                    paddingRight: '5px',
+                    paddingLeft: '5px',
+                    fontWeight: '300',
+                  }}
+                />
+              </span>
+            ))}
+            {checkedPrice.map((item) => (
+              <span key={item} className="filter-span">
+                {item}
+                <FontAwesomeIcon
+                  icon={faXmark}
+                  style={{
+                    paddingRight: '5px',
+                    paddingLeft: '5px',
+                    fontWeight: '300',
+                  }}
+                />
+              </span>
+            ))}
+          </div>
           <div className="filter-box">
             <div className="asc-price" id="sort-asc-phone">
               <Link to={`/`}>
@@ -58,48 +127,25 @@ function PhonePage() {
                 </div>
                 <ul className="block-content filter-brand">
                   <li>
-                    <input type="checkbox" id="checkAllBrand" checked />
+                    <input type="checkbox" id="checkAllBrand" />
                     <label htmlFor="checkAllbrand">
                       <span>Tất cả</span>
                     </label>
                   </li>
-
-                  <li>
-                    <input type="checkbox" name="Brandids[]" value="apple" />
-                    <label htmlFor="">
-                      <span>Apple</span>
-                    </label>
-                  </li>
-                  <li>
-                    <input type="checkbox" name="Brandids[]" value="samsung" />
-                    <label htmlFor="">
-                      <span>Samsung</span>
-                    </label>
-                  </li>
-                  <li>
-                    <input type="checkbox" name="Brandids[]" value="asus" />
-                    <label htmlFor="">
-                      <span>Asus</span>
-                    </label>
-                  </li>
-                  <li>
-                    <input type="checkbox" name="Brandids[]" value="oppo" />
-                    <label htmlFor="">
-                      <span>Oppo</span>
-                    </label>
-                  </li>
-                  <li>
-                    <input type="checkbox" name="Brandids[]" value="xiaomi" />
-                    <label htmlFor="">
-                      <span>Xiaomi</span>
-                    </label>
-                  </li>
-                  <li>
-                    <input type="checkbox" name="Brandids[]" value="realme" />
-                    <label htmlFor="">
-                      <span>Realme</span>
-                    </label>
-                  </li>
+                  {brand.map((item) => (
+                    <li
+                      key={item.name}
+                      onClick={() => handleCheckBrand(item.name)}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={checkedBrand.includes(item.name)}
+                      />
+                      <label>
+                        <span>{item.name}</span>
+                      </label>
+                    </li>
+                  ))}
                 </ul>
               </div>
 
@@ -109,48 +155,44 @@ function PhonePage() {
                 </div>
                 <ul className="block-content">
                   <li>
-                    <input type="checkbox" id="checkAllPrice" />
-                    <label htmlFor="checkAllPrice">
+                    <input type="checkbox" />
+                    <label>
                       <span>Tất cả</span>
                     </label>
                   </li>
-                  <li>
+                  <li onClick={() => handleCheckPrice('duoi-2-trieu')}>
                     <input
                       type="checkbox"
-                      name="Priceids[]"
-                      value="duoi-2-trieu"
+                      checked={checkedPrice.includes('duoi-2-trieu')}
                     />
-                    <label htmlFor="">
+                    <label>
                       <span>Dưới 2 triệu</span>
                     </label>
                   </li>
-                  <li>
+                  <li onClick={() => handleCheckPrice('tu-2-5-trieu')}>
                     <input
                       type="checkbox"
-                      name="Priceids[]"
-                      value="tu-2-5-trieu"
+                      checked={checkedPrice.includes('tu-2-5-trieu')}
                     />
-                    <label htmlFor="">
+                    <label>
                       <span>Từ 2 đến 5 triệu</span>
                     </label>
                   </li>
-                  <li>
+                  <li onClick={() => handleCheckPrice('tu-5-14-trieu')}>
                     <input
+                      checked={checkedPrice.includes('tu-5-14-trieu')}
                       type="checkbox"
-                      name="Priceids[]"
-                      value="tu-5-14-trieu"
                     />
-                    <label htmlFor="">
+                    <label>
                       <span>Từ 5 đến 14 triệu</span>
                     </label>
                   </li>
-                  <li>
+                  <li onClick={() => handleCheckPrice('tren-14-trieu')}>
                     <input
                       type="checkbox"
-                      name="Priceids[]"
-                      value="tren-14-trieu"
+                      checked={checkedPrice.includes('tren-14-trieu')}
                     />
-                    <label htmlFor="">
+                    <label>
                       <span>Trên 14 triệu</span>
                     </label>
                   </li>
