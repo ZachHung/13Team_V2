@@ -11,10 +11,10 @@ const api = axios.create({
   baseURL: 'http://localhost:5000/api',
 });
 
-export default () => {
+export default ({ updateBrand, updatePrice }) => {
   const [brand, setBrand] = useState([]);
-  const [checkedBrand, setCheckedBrand] = useState([]);
-  const [checkedPrice, setCheckedPrice] = useState([]);
+  // const [checkedBrand, setCheckedBrand] = useState([]);
+  // const [checkedPrice, setCheckedPrice] = useState([]);
   useEffect(() => {
     api.get('/phone/brand').then((res) => {
       console.log(res.data);
@@ -22,56 +22,36 @@ export default () => {
     });
   }, []);
 
-  const handleCheckBrand = (name) => {
-    setCheckedBrand((prev) => {
-      const isExist = checkedBrand.includes(name);
-      if (isExist) {
-        return checkedBrand.filter((item) => item !== name);
-      } else {
-        return [...prev, name];
-      }
-    });
-  };
-  console.log(checkedBrand);
-  const handleCheckPrice = (name) => {
-    setCheckedPrice((prev) => {
-      const isExist = checkedPrice.includes(name);
-      if (isExist) {
-        return checkedPrice.filter((item) => item !== name);
-      } else {
-        return [...prev, name];
-      }
-    });
-  };
-  console.log(checkedPrice);
+  // const handleCheckBrand = (name) => {
+  //   setCheckedBrand((prev) => {
+  //     const isExist = checkedBrand.includes(name);
+  //     if (isExist) {
+  //       return checkedBrand.filter((item) => item !== name);
+  //     } else {
+  //       return [...prev, name];
+  //     }
+  //   });
+  // };
+  // console.log(checkedBrand);
+  // const handleCheckPrice = (name) => {
+  //   setCheckedPrice((prev) => {
+  //     const isExist = checkedPrice.includes(name);
+  //     if (isExist) {
+  //       return checkedPrice.filter((item) => item !== name);
+  //     } else {
+  //       return [...prev, name];
+  //     }
+  //   });
+  // };
+  // console.log(checkedPrice);
   return (
     <div className="filter-product">
-      <Swiper
-        className="brand-swiper"
-        spaceBetween={10}
-        slidesPerView={4}
-        // breakpoints={{
-        //   640: {
-        //     slidesPerView: 2,
-        //     spaceBetween: 2,
-        //   },
-        //   768: {
-        //     slidesPerView: 4,
-        //     spaceBetween: 4,
-        //   },
-        //   1024: {
-        //     slidesPerView: 5,
-        //     spaceBetween: 5,
-        //   },
-        // }}
-        // onSlideChange={() => console.log('slide change')}
-        // onSwiper={(swiper) => console.log(swiper)}
-      >
+      <Swiper className="brand-swiper" spaceBetween={10} slidesPerView={4}>
         {brand.map((brand) => (
           <SwiperSlide
             key={brand.name}
             className="slide"
-            onClick={() => handleCheckBrand(brand.name)}
+            onClick={() => updateBrand(brand.name)}
           >
             <img
               src={`http://localhost:5000/${brand.brandImage}`}
@@ -87,20 +67,20 @@ export default () => {
         // onSlideChange={() => console.log('slide change')}
         // onSwiper={(swiper) => console.log(swiper)}
       >
-        <SwiperSlide onClick={() => handleCheckPrice('duoi-2-trieu')}>
+        <SwiperSlide onClick={() => updatePrice('duoi-2-trieu')}>
           Dưới 2 triệu
         </SwiperSlide>
-        <SwiperSlide onClick={() => handleCheckPrice('tu-2-5-trieu')}>
+        <SwiperSlide onClick={() => updatePrice('tu-2-5-trieu')}>
           Từ 2 đến 5 triệu
         </SwiperSlide>
-        <SwiperSlide onClick={() => handleCheckPrice('tu-5-14-trieu')}>
+        <SwiperSlide onClick={() => updatePrice('tu-5-14-trieu')}>
           Từ 5 đến 14 triệu
         </SwiperSlide>
-        <SwiperSlide onClick={() => handleCheckPrice('tren-14-trieu')}>
+        <SwiperSlide onClick={() => updatePrice('tren-14-trieu')}>
           Trên 14 triệu
         </SwiperSlide>
       </Swiper>
-      <div>
+      {/* <div>
         <span style={{ fontWeight: 500, paddingRight: '1rem' }}>Lọc theo:</span>
         {checkedBrand.map((item) => (
           <span key={item} className="filter-span">
@@ -128,7 +108,7 @@ export default () => {
             />
           </span>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

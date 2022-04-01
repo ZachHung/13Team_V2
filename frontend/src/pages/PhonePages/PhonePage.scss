@@ -1,7 +1,43 @@
 .products-container {
-  .swiper-promotion{
+  .filter-checkbox{
+    .brand-swiper, .price-swiper {
+      margin-bottom: 2rem;
+      margin-top: 1rem;
+      cursor: pointer;
+  
+    }
     
+    .filter-span{
+      display: inline-flex;
+      -webkit-box-align: center;
+      align-items: center;
+      height: 23px;
+      line-height: 23px;
+      font-size: 12px;
+      padding: 0 8px 0 8px;
+      color: #8392a5;
+      border-radius: 4px;
+      border: solid 1px #b4bdce;
+      margin: 0 10px 6px 0;
+      cursor: pointer;
+      &:hover{
+        font-weight: bold;
+      }
+    }
+    margin-left: 40rem;
+    margin-top: 2rem;
+    @media screen and (max-width: 480px) {
+      margin-left: 3rem;
+      margin-top: 2rem;
+      .slide{
+        img{
+          width: 85%;
+        }
+      }
+    }
   }
+  
+  
   .filter-box {
     display: flex;
     flex-direction: row;
