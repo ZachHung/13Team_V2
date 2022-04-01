@@ -49,12 +49,30 @@ export default () => {
       <Swiper
         className="brand-swiper"
         spaceBetween={10}
-        slidesPerView={5}
-        onSlideChange={() => console.log('slide change')}
-        onSwiper={(swiper) => console.log(swiper)}
+        slidesPerView={4}
+        // breakpoints={{
+        //   640: {
+        //     slidesPerView: 2,
+        //     spaceBetween: 2,
+        //   },
+        //   768: {
+        //     slidesPerView: 4,
+        //     spaceBetween: 4,
+        //   },
+        //   1024: {
+        //     slidesPerView: 5,
+        //     spaceBetween: 5,
+        //   },
+        // }}
+        // onSlideChange={() => console.log('slide change')}
+        // onSwiper={(swiper) => console.log(swiper)}
       >
         {brand.map((brand) => (
-          <SwiperSlide onClick={() => handleCheckBrand(brand.name)}>
+          <SwiperSlide
+            key={brand.name}
+            className="slide"
+            onClick={() => handleCheckBrand(brand.name)}
+          >
             <img
               src={`http://localhost:5000/${brand.brandImage}`}
               alt={`logo ${brand.name}`}
@@ -66,8 +84,8 @@ export default () => {
         className="price-swiper"
         spaceBetween={10}
         slidesPerView={4}
-        onSlideChange={() => console.log('slide change')}
-        onSwiper={(swiper) => console.log(swiper)}
+        // onSlideChange={() => console.log('slide change')}
+        // onSwiper={(swiper) => console.log(swiper)}
       >
         <SwiperSlide onClick={() => handleCheckPrice('duoi-2-trieu')}>
           Dưới 2 triệu
