@@ -13,6 +13,7 @@ import React from "react";
 import PrivateRoute from "./routes/PrivateRoute";
 import AuthUserRoute from "./routes/AuthUserRoute";
 import Admin from "./pages/Admin";
+import CartPage from "./pages/Cart";
 import ScrollButton from "./components/scrollBtn";
 function App() {
   const isAdmin = useSelector((state) => state.user.isAdmin);
@@ -26,7 +27,7 @@ function App() {
 
       {/* start private Route */}
       <Route path="/*" element={<PrivateRoute></PrivateRoute>}>
-        <Route path="cart" element={<Admin></Admin>} />
+        <Route path="cart" element={<CartPage></CartPage>} />
       </Route>
       {/* end private Route */}
 
