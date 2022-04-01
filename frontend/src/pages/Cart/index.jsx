@@ -10,6 +10,7 @@ const CartPage = () => {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
+    console.log(user);
     userRequest.get(`cart/${user.current._id}`).then((res) => {
       setCart(res.data.list);
       setTotal(res.data.total);

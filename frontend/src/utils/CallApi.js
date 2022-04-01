@@ -6,7 +6,7 @@ const user = JSON.parse(localStorage.getItem("persist:root"))
   ? JSON.parse(localStorage.getItem("persist:root")).current
   : undefined;
 const current = user !== undefined && JSON.parse(user);
-const TOKEN = user === undefined || user === "null" ? "" : user.accessToken;
+const TOKEN = user === undefined || user === "null" ? "" : current.accessToken;
 
 export const publicRequest = axios.create({
   baseURL: BASE_URL,
