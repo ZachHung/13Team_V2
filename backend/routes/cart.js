@@ -1,15 +1,22 @@
 const express = require("express");
-const AccountController = require("../api/controllers/AccountController");
 const router = express.Router();
 const CheckoutController = require("../api/controllers/CartController");
+const {
+  verifyTokenAdmin,
+  verifyTokenAuth,
+} = require("../middlewares/verificationHandler");
 
 // @access PRIVATE
-router.get("/", CheckoutController.getCart);
-router.put("/:optionID", CheckoutController.updateItem);
-router.delete("/:optionID", CheckoutController.removeItem);
-router.post("/add", CheckoutController.addCart);
-router.post("/purchase", CheckoutController.purchaseCart);
+router.get("/:userID", verifyTokenAuth, CheckoutController.getCart);
+router.put("/:userID", verifyTokenAuth, CheckoutController.updateItem);
+router.delete("/:userID", verifyTokenAuth, CheckoutController.removeItem);
+router.post("/add/:userID", verifyTokenAuth, CheckoutController.addCart);
+router.post(
+  "/purchase/:userID",
+  verifyTokenAuth,
+  CheckoutController.purchaseCart
+);
 // @access ADMIN
-router.get("/find", CheckoutController.getAllCart);
-router.get("/find/:userID", CheckoutController.getAnyCart);
+router.get("/find", verifyTokenAdmin, CheckoutController.getAllCart);
+router.get("/find/:userID", verifyTokenAdmin, CheckoutController.getAnyCart);
 module.exports = router;
