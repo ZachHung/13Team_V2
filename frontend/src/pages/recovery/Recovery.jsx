@@ -6,9 +6,11 @@ import { Link } from "react-router-dom";
 import "./Recovery.scss";
 import { useState } from "react";
 export default function Recovery() {
-  const [showPassword, setShowPassword] = useState(false);
-  const handdleShowPassword = () => {
-    setShowPassword((value) => !value);
+  const [formEmail, setFormEmail] = useState({});
+  const [isValidEmail, setIsValidEmail] = useState(false);
+  const handleInput = (name, value) => {
+    setErrorText("");
+    setFormEmail({ ...formEmail, [name]: `${value}` });
   };
   return (
     <div className="container_recovery">
@@ -24,10 +26,11 @@ export default function Recovery() {
               <TextInPut
                 icon={faMailBulk}
                 type="email"
-                placeholder="Nhập Email Đã Đăng Kí"
+                placeholder="Nhập Email"
                 name="email"
+                getInput={handleInput}
+                checkValid={(value) => setIsValidEmail(value)}
               ></TextInPut>
-              <input type="submit"></input>
             </form>
             <div className="login_footer">
               <Link
