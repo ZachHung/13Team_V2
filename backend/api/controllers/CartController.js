@@ -143,7 +143,7 @@ class CheckoutController {
         .then((data) =>
           data.modifiedCount
             ? res.status(200).json("Updated item successful")
-            : res.status(500).json("Nothing was updated")
+            : res.status(200).json("Nothing was change")
         )
         .catch((err) => res.status(500).json(err));
   }
@@ -170,10 +170,9 @@ class CheckoutController {
         }
       )
       .then((data) =>
-        res.status(200).json({
-          matched: data.matchedCount,
-          modified: data.modifiedCount,
-        })
+        data.modifiedCount
+          ? res.status(200).json("Removed item successful")
+          : res.status(200).json("Nothing was change")
       )
       .catch((err) => res.status(500).json(err));
   }
