@@ -26,7 +26,7 @@ function App() {
 
       {/* start private Route */}
       <Route path="/*" element={<PrivateRoute></PrivateRoute>}>
-        <Route path="cart" element={<LoginPage></LoginPage>} />
+        <Route path="cart" element={<Admin></Admin>} />
       </Route>
       {/* end private Route */}
 
