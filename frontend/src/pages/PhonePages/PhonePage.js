@@ -13,6 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import Swiper from '../../components/swiper/Swiper';
+import SwiperPromotion from '../../components/swiperPromotion/SwiperPromotion';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
 
@@ -28,13 +29,13 @@ function PhonePage() {
       setPhoneList(res.data.items);
     });
   }, []);
-  //   console.log('phoneList', phoneList[0].techInfo[0].infoType);
+  // console.log('phoneList', phoneList[0].techInfo[0].infoType);
   return (
     <>
       <Header />
       <div className="products-container">
         <section className="section products">
-          <div className="swiper-content"></div>
+          <SwiperPromotion className="swiper-promotion"></SwiperPromotion>
           <Swiper></Swiper>
           <div className="filter-box">
             <div className="asc-price" id="sort-asc-phone">

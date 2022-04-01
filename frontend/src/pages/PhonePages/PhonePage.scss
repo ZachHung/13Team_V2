@@ -1,16 +1,19 @@
 .products-container {
+  .swiper-promotion{
+    
+  }
   .filter-box {
     display: flex;
     flex-direction: row;
-    padding: 3rem 5rem 5rem 0;
-
+    padding: 3rem 9rem 5rem 0;
     gap: 2rem;
     justify-content: right;
   }
   .filter {
     align-self: flex-start;
-    position: sticky;
-    top: 5rem;
+    position: absolute;
+    top: 74%;
+    left: 7%;
   }
   .asc-price {
     background-color: #f8dede;
@@ -32,16 +35,15 @@
   // chia cột lọc thương hiệu, giá 1 cột, danh sách sản phẩm 3 cột
   .products-layout {
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns:  3fr;
     gap: 0 1rem;
+    margin-right: 2rem;
   }
 
   .list-products {
     display: grid;
-    grid-template-columns: repeat(autofit, minmax(30rem, 1fr));
-    grid-template-columns: repeat(3, 1fr); // lặp lại số sp trên 1 dòng
+    grid-template-columns: repeat(4, 0.5fr); // lặp lại số sp trên 1 dòng
     gap: 3rem;
-    max-width: 160rem;
     margin: 0 auto;
     padding: 0 1.6rem;
   }
