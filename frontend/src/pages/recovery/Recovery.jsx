@@ -9,6 +9,7 @@ import "./Recovery.scss";
 import { useState } from "react";
 export default function Recovery() {
   const [formEmail, setFormEmail] = useState({});
+  const [errorText, setErrorText] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(false);
   const handleInput = (name, value) => {
     setErrorText("");
