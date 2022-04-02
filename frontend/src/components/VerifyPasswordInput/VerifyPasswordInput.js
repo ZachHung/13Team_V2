@@ -1,66 +1,77 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCoffee,
-  faUser,
-  faKey,
-  faEye,
-  faEyeSlash,
-} from "@fortawesome/free-solid-svg-icons";
-const VerifyPasswordInput = ({
-  placeholder,
-  icon,
-  type,
-  name,
-  valuePassword,
-  checkValid,
-  getInput,
-}) => {
-  const [valueError, setValueError] = useState("");
-  const [valueText, setValueText] = useState("");
-  const [valuePass, setValuePass] = useState();
-
-  const handleTextChange = (e, name) => {
-    setValueText(e.target.name);
-    getInput(e.target.name, e.target.value);
-    handleVerifyPasswordTextChange(e.target.value);
+import { faKey, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+const VerifyPasswordInput = () => {
+  const [passwordValue, setPasswordValue] = useState("");
+  const [verifyPassword, setShowPassword] = useState("");
+  const [openPassword, setOpenPassword] = useState(false);
+  const [openVerifyPassword, setOpenVerifyPassword] = useState(false);
+  const [errorPassword, setErrorPassword] = useState("");
+  const [errorVerify, setErrorVerify] = useState("");
+  const handleShowPassword = () => {
+    setOpenPassword((value) => !value);
   };
-
-  const handleVerifyPasswordTextChange = (value) => {
-    if (value === "") {
-      setValueError("Trường Này Không Được Trống");
-      checkValid(false);
-    } else if (value.length < 6) {
-      setValueError("Mật Khẩu Có Ít Nhất 6 Kí Tự");
-      checkValid(false);
-    } else if (
-      typeof valuePassword === "undefined" ||
-      valuePassword !== value
-    ) {
-      checkValid(false);
-      setValueError("Không Khớp Với Mật Khẩu");
-    } else {
-      setValueError("");
-      checkValid(true);
+  const handdleShowVerifyPassword = () => {
+    setOpenVerifyPassword((value) => !value);
+  };
+  const handlePasswordChange = (e) => {
+    setPasswordValue(e.target.value);
+  };
+  const handleVerifyChange = (e) => {
+    setShowPassword(e.target.value);
+  };
+  const handleBlurPass = () => {
+    if (passwordValue === "null") {
+      setErrorPassword("Vui Lòng Nhập Trường Này");
+    } else if (passwordValue.length <= 6) {
+      setErrorPassword("Trường Này Ít Nhất 6 Kí Tự");
+    } else if (verifyPassword !== "null" && passwordValue !== verifyPassword) {
+      setErrorPassword("Mật ");
     }
   };
-
   return (
-    <div>
-      <div className="Textinput row">
-        <FontAwesomeIcon icon={icon} className="icon col-1" />
-
-        <input
-          value={valueText}
-          className="col-9"
-          type={type}
-          placeholder={placeholder}
-          onChange={(e) => handleTextChange(e, name)}
-          name={name}
-        ></input>
+    <>
+      <div>
+        <div className="Textinput row">
+          <FontAwesomeIcon icon={faKey} className="icon col-1" />
+          <input
+            value={passwordValue}
+            className="col-8"
+            type={openPassword ? "test" : "password"}
+            placeholder="Nhập Mật Khẩu"
+            onChange={(e) => handlePasswordChange(e)}
+            name="password"
+            onBlur={handleBlurPass}
+          ></input>
+          <FontAwesomeIcon
+            icon={openPassword ? faEye : faEyeSlash}
+            className="icon col-1 icon_eye"
+            onClick={handleShowPassword}
+          />
+        </div>
+        <p className="Error">{errorPassword}</p>
       </div>
-      <p className="Error">{valueError}</p>
-    </div>
+      <div>
+        <div className="Textinput row">
+          <FontAwesomeIcon icon={faKey} className="icon col-1" />
+
+          <input
+            value={verifyPassword}
+            className="col-8"
+            type={openVerifyPassword ? "test" : "password"}
+            placeholder="Xác Nhận Mật Khẩu"
+            onChange={(e) => handleVerifyChange(e)}
+            name="verifypassword"
+          ></input>
+          <FontAwesomeIcon
+            icon={openVerifyPassword ? faEye : faEyeSlash}
+            className="icon col-1 icon_eye"
+            onClick={handdleShowVerifyPassword}
+          />
+        </div>
+        <p className="Error">{errorVerify}</p>
+      </div>
+    </>
   );
 };
 
