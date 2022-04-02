@@ -44,6 +44,21 @@
         @media only screen and (max-width: 739px) {
           width: 90%;
         }
+        .form_title {
+          font-size: 36px;
+          font-weight: 600;
+          text-align: center;
+          margin: 20px 0px;
+        }
+        .form_error {
+          color: red;
+          font-size: 14px;
+          font-weight: bold;
+          text-align: center;
+        }
+        .hide {
+          display: none !important;
+        }
         form {
           width: 80%;
           margin: 0 auto;
