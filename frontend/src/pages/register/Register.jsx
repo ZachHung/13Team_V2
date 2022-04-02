@@ -53,6 +53,8 @@ const Register = () => {
       )
     ) {
       setErrorText("Thông Tin Không Chính Xác Vui Lòng Kiểm Tra Lại");
+    } else if (formData.password !== formData.verifyPassword) {
+      setErrorText("Mật Khẩu Không Khớp");
     } else {
       publicRequest
         .post("account/register", { email: formData.email })
@@ -97,10 +99,9 @@ const Register = () => {
           </div>
           <div className="form_container col-xl-6 col-12">
             <div className="form_wrapper">
+              <p className="form_title">Sign Up</p>
+              <p className="form_error">{errorText}</p>
               <form className={sendCode ? "hide" : "form"}>
-                <p className="form_title">Sign Up</p>
-                <p className="form_error">{errorText}</p>
-
                 <TextInPut
                   icon={faUser}
                   type="text"
@@ -151,9 +152,6 @@ const Register = () => {
                 <input type="submit" onClick={(e) => handleSubmit(e)}></input>
               </form>
               <form className={sendCode ? "form" : "hide"}>
-                <p className="form_title">Sign Up</p>
-                <p className="form_error"></p>
-
                 <TextInPut
                   icon={faCode}
                   type="text"
