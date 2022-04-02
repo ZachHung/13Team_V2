@@ -8,15 +8,7 @@ import {
   faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
 import "./TextInPut.scss";
-const TextInPut = ({
-  icon,
-  type,
-  placeholder,
-  name,
-  getInput,
-  checkValid,
-  valuePassword,
-}) => {
+const TextInPut = ({ icon, type, placeholder, name, getInput, checkValid }) => {
   const [valueText, setValueText] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const handdleShowPassword = () => {
@@ -67,12 +59,6 @@ const TextInPut = ({
     } else if (value.length < 6) {
       setValueError("Mật Khẩu Có Ít Nhất 6 Kí Tự");
       checkValid(false);
-    } else if (
-      typeof valuePassword === "undefined" ||
-      valuePassword !== value
-    ) {
-      checkValid(false);
-      setValueError("Không Khớp Với Mật Khẩu");
     } else {
       setValueError("");
       checkValid(true);
@@ -111,7 +97,7 @@ const TextInPut = ({
               value={valueText}
               className="col-8"
               type={showPassword ? "test" : "password"}
-              placeholder="Nhập Mật Khẩu"
+              placeholder={placeholder}
               onChange={(e) => handleTextChange(e, name)}
               name={name}
             ></input>

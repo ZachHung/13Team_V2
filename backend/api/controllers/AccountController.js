@@ -6,14 +6,15 @@ const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 var recoveryCode = 9450;
 var confirmCode = 1234;
-var emailRecovery = "tnhut1234@outlook.com";
+var emailRecovery = "tnhut806@gmail.com";
+var sender = "tnhut1234@outlook.com";
 var password = "Trannhut1";
 let transporter = nodemailer.createTransport({
   host: "smtp-mail.outlook.com",
   port: 587,
   secureConnection: false,
   auth: {
-    user: `${emailRecovery}`, // generated ethereal user
+    user: `${sender}`, // generated ethereal user
     pass: `${password}`, // generated ethereal password
   },
   tls: {
@@ -27,11 +28,12 @@ function getRandom(min, max) {
 function sendMail(desMail, Message) {
   var code = getRandom(1000, 10000);
   transporter.sendMail({
-    from: `${emailRecovery}`, // sender address
+    from: `${sender}`, // sender address
     to: `${desMail}`, // list of receivers
     subject: "Mã Xác Thực Gmail", // Subject line
     text: `${Message} ${code}`, // plain text body
   });
+  console.log(code);
   return code;
 }
 class AccountController {
@@ -147,34 +149,52 @@ class AccountController {
     }
   }
   recovery(req, res, next) {
-    recoveryCode = sendMail(req.body.email, "Mã Khôi Phục Của Bạn Là: ");
-
-    res.json(false);
+    user.find({ email: req.body.email }).then((users) => {
+      if (users.length === 0) {
+        res.status(202).json({
+          status: "false",
+          message: "Không Tồn Tại Tài Khoản Phù Hợp Với Email Này",
+        });
+      } else {
+        recoveryCode = sendMail(req.body.email, "Mã Khôi Phục Của Bạn Là: ");
+        res.json({
+          status: "true",
+        });
+      }
+    });
   }
   recoveryConfirm(req, res, next) {
+    console.log(req.body, recoveryCode);
     if (req.body.code == recoveryCode) {
       emailRecovery = req.body.email;
       res.json({
         status: "true",
       });
     } else {
-      res.json({
+      res.status(202).json({
         status: "false",
         message: "Mã Xác Minh Không Chính Xác",
       });
     }
   }
   recoveryUpdate(req, res, next) {
+    console.log(req.body, emailRecovery);
+    var password = CryptoJS.AES.encrypt(
+      req.body.password,
+      process.env.PASS_SECRET
+    );
+
     user
-      .updateMany(
+      .updateOne(
         {
           email: `${emailRecovery}`,
         },
         {
-          password: `${req.body.password}`,
+          password: `${password}`,
         }
       )
       .then((data) => {
+        console.log(data);
         res.json({
           status: "true",
         });
