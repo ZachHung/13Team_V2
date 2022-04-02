@@ -411,5 +411,153 @@ class PhoneController {
       })
       .catch(next);
   }
+  home(req, res, next) {
+    let paramBrand = req.query.brand;
+    let paramPrice = req.query.price;
+    var arrayBrand = paramBrand.split(',');
+    // var arrayPrice = paramPrice.split(',');
+    // console.log(arrayBrand);
+    // console.log(arrayPrice);
+    let perPage = 9;
+    let page = req.query.page || 1;
+    var sort = req.query.sort;
+    var temp;
+    if (sort != undefined) {
+      if (sort == 'asc') {
+        temp = 1;
+      } else {
+        temp = -1;
+      }
+    }
+    let to2 = 0;
+    let from2 = -1;
+    let to5 = 0;
+    let from5 = -1;
+    let to14 = 0;
+    let from14 = 100000000000;
+
+    if (paramPrice == undefined) {
+      paramPrice = '';
+    }
+
+    if (paramPrice != '') {
+      if (paramPrice.search('duoi-2-trieu') >= 0) {
+        to2 = 2000000;
+      }
+      if (paramPrice.search('tu-2-5-trieu') >= 0) {
+        from2 = 2000000;
+        to5 = 5000000;
+      }
+      if (paramPrice.search('tu-5-14-trieu') >= 0) {
+        from5 = 5000000;
+        to14 = 14000000;
+      }
+      if (paramPrice.search('tren-14-trieu') >= 0) {
+        from14 = 14000000;
+      }
+      items
+        .aggregate([
+          {
+            $match: {
+              $and: [
+                {
+                  'brand.name': { $in: arrayBrand },
+                },
+                {
+                  type: 'phone',
+                },
+              ],
+            },
+          },
+          {
+            $lookup: {
+              from: 'options',
+              localField: 'slug',
+              foreignField: 'slug',
+              as: 'slug',
+            },
+          },
+          {
+            $match: {
+              $or: [
+                {
+                  slug: {
+                    $elemMatch: {
+                      color: { $elemMatch: { price: { $gte: paramPrice } } },
+                    },
+                  },
+                },
+
+                {
+                  slug: {
+                    $elemMatch: {
+                      color: {
+                        $elemMatch: { price: { $gte: from5, $lt: to14 } },
+                      },
+                    },
+                  },
+                },
+
+                {
+                  slug: {
+                    $elemMatch: {
+                      color: { $elemMatch: { price: { $gte: from14 } } },
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        ])
+        .sort({
+          'slug.color.price': temp,
+        })
+        .skip(perPage * page - perPage)
+        .limit(perPage)
+        .then((items) => {
+          res.json({
+            items: items,
+          });
+        })
+
+        .catch(next);
+    } else {
+      items
+        .aggregate([
+          {
+            $match: {
+              $and: [
+                {
+                  'brand.name': { $in: arrayBrand },
+                },
+                {
+                  type: 'phone',
+                },
+              ],
+            },
+          },
+          {
+            $lookup: {
+              from: 'options',
+              localField: 'slug',
+              foreignField: 'slug',
+              as: 'slug',
+            },
+          },
+        ])
+        .sort({
+          'slug.color.price': temp,
+        })
+        .skip(perPage * page - perPage)
+        .limit(perPage)
+        .then((items) => {
+          res.json({
+            items: items,
+          });
+        })
+
+        .catch(next);
+    }
+  }
 }
 module.exports = new PhoneController();

@@ -9,5 +9,5 @@ router.get('/totalproduct', phoneController.totalproduct);
 router.get('/info', phoneController.info);
 router.get('/brand', phoneController.brand);
 router.get('/:slug', itemController.detailItem);
-router.get('/', phoneController.index);
+router.get('/', phoneController.home);
 module.exports = router;
