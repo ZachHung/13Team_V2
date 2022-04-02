@@ -24,13 +24,7 @@ const api = axios.create({
 
 function PhonePage() {
   const [phoneList, setPhoneList] = useState([]);
-  useEffect(() => {
-    api.get('/phone').then((res) => {
-      console.log(res.data);
-      setPhoneList(res.data.items);
-    });
-  }, []);
-  // console.log('phoneList', phoneList[0].techInfo[0].infoType);
+
   // filter
   const [brand, setBrand] = useState([]);
   const [checkedBrand, setCheckedBrand] = useState([]);
@@ -41,6 +35,35 @@ function PhonePage() {
       setBrand(res.data);
     });
   }, []);
+  // array a[]
+  // let text  = a.join(',')
+  // có chọn brand và chọn giá và k chọn giá
+  var urlString = '';
+  if (checkedBrand.length != 0 && checkedPrice.length != 0) {
+    let paramStringBrand = checkedBrand.join(',');
+    let paramStringPrice = checkedPrice.join(',');
+    urlString = `?brand=${paramStringBrand}&price=${paramStringPrice}`;
+  }
+  if (checkedBrand.length == 0 && checkedPrice.length != 0) {
+    let paramStringPrice = checkedPrice.join(',');
+    urlString = `?price=${paramStringPrice}`;
+  }
+  if (checkedBrand.length != 0 && checkedPrice.length == 0) {
+    let paramStringBrand = checkedBrand.join(',');
+    urlString = `?brand=${paramStringBrand}`;
+  }
+
+  // call api
+  useEffect(() => {
+    api.get(`/phone${urlString}`).then((res) => {
+      console.log(res.data);
+      setPhoneList(res.data.items);
+    });
+  }, [urlString]);
+  console.log('phoneList', phoneList);
+  console.log('urlString: ', urlString);
+
+  console.log('pathname: ', `/phone${urlString}`);
 
   const handleCheckBrand = (name) => {
     setCheckedBrand((prev) => {
