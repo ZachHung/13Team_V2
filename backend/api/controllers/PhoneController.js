@@ -411,15 +411,28 @@ class PhoneController {
       })
       .catch(next);
   }
+  brandName(req, res, next) {
+    items
+      .find({ type: 'phone' })
+      .distinct('brand.name')
+
+      .then((items) => {
+        res.json(items);
+      })
+      .catch(next);
+  }
   home(req, res, next) {
-    let paramBrand = req.query.brand;
-    let paramPrice = req.query.price;
-    var arrayBrand = paramBrand.split(',');
-    // var arrayPrice = paramPrice.split(',');
-    // console.log(arrayBrand);
-    // console.log(arrayPrice);
+    var paramBrand = req.query.brand;
+    var paramPrice = req.query.price;
+    var arrayBrand;
+    if (paramBrand != undefined) {
+      arrayBrand = paramBrand.split(',');
+    } else {
+      arrayBrand = ['apple', 'asus', 'oppo', 'realme', 'samsung', 'xiaomi'];
+    }
     let perPage = 9;
     let page = req.query.page || 1;
+    console.log('pageeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee: ', page);
     var sort = req.query.sort;
     var temp;
     if (sort != undefined) {
