@@ -154,7 +154,6 @@ class CheckoutController {
   // @  optionID: optionID of item
   // @  color: color of item
   removeItem(req, res, next) {
-    const color = req.body.color;
     cart
       .updateOne(
         {
@@ -164,7 +163,7 @@ class CheckoutController {
           $pull: {
             list: {
               optionID: req.body.optionID,
-              color: color,
+              color: req.body.color,
             },
           },
         }
@@ -172,7 +171,7 @@ class CheckoutController {
       .then((data) =>
         data.modifiedCount
           ? res.status(200).json("Removed item successful")
-          : res.status(200).json("Nothing was change")
+          : res.status(200).json("Nothing was changed")
       )
       .catch((err) => res.status(500).json(err));
   }
@@ -183,7 +182,7 @@ class CheckoutController {
       .findOneAndUpdate({ userID: req.params.userID }, { $set: { list: [] } })
       .then((data) => {
         data = data.toObject();
-        res.json(data);
+        delete data._id;
         const p = new purchase(data);
         p.save();
         res.status(200).json("Purchased successful");
