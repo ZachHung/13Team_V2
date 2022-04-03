@@ -5,14 +5,22 @@ import {
   faMagnifyingGlass,
   faCartShopping,
   faUser,
+  faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import "./style.scss";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/userRedux";
 
 const Header = ({ color }) => {
   const [menuState, setMenuState] = useState(false);
+  const dispatch = useDispatch();
   const handleMenuBtn = () => {
     setMenuState(!menuState);
+  };
+  const user = useSelector((state) => state.user.current);
+  const handleLogout = () => {
+    dispatch(logout());
   };
   return (
     <>
@@ -90,6 +98,16 @@ const Header = ({ color }) => {
             <Link to="/login" className="icon">
               <FontAwesomeIcon icon={faUser} />
             </Link>
+            {user && (
+              <Link
+                to=""
+                className="icon"
+                onClick={handleLogout}
+                title="Đăng xuất"
+              >
+                <FontAwesomeIcon icon={faRightFromBracket} />
+              </Link>
+            )}
           </div>
         </div>
       </header>
