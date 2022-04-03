@@ -19,6 +19,7 @@ const Header = ({ color }) => {
     setMenuState(!menuState);
   };
   const user = useSelector((state) => state.user.current);
+  const cartQuantity = useSelector((state) => state.cart.quantity);
   const handleLogout = () => {
     dispatch(logout());
   };
@@ -94,6 +95,7 @@ const Header = ({ color }) => {
             </div>
             <Link to="/cart" className="icon">
               <FontAwesomeIcon icon={faCartShopping} />
+              {user && <div className="cartBadge">{cartQuantity}</div>}
             </Link>
             <Link to="/login" className="icon">
               <FontAwesomeIcon icon={faUser} />
