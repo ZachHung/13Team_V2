@@ -17,6 +17,7 @@ import Swiper from '../../components/swiper/Swiper';
 import SwiperPromotion from '../../components/swiperPromotion/SwiperPromotion';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
+import Pagination from '../../components/pagination';
 
 const api = axios.create({
   baseURL: 'http://localhost:5000/api',
@@ -34,14 +35,8 @@ function PhonePage() {
       setBrandName(res.data);
     });
   }, []);
-  // console.log('checkbrandname log 1: ', brandName);
 
   const [checkedBrand, setCheckedBrand] = useState([]);
-  // useEffect(() => {
-  //   setCheckedBrand(brandName);
-  //   console.log('setCheckedBrand change: ', checkedBrand);
-  // }, [brandName]);
-  // console.log('checkbrand log 1: ', checkedBrand);
   const [checkedPrice, setCheckedPrice] = useState([]);
   useEffect(() => {
     api.get('/phone/brand').then((res) => {
@@ -65,12 +60,14 @@ function PhonePage() {
   }
 
   // call api
+
   useEffect(() => {
     api.get(`/phone${urlString}`).then((res) => {
       console.log(res.data);
       setPhoneList(res.data.items);
     });
   }, [urlString]);
+
   console.log('phoneList', phoneList);
   console.log('urlString: ', urlString);
 
@@ -109,6 +106,17 @@ function PhonePage() {
       'tu-5-14-trieu',
     ]);
   };
+  // pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage, setProductPerPage] = useState(2);
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProduct = phoneList.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+  // change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   return (
     <>
       <Header />
@@ -255,22 +263,13 @@ function PhonePage() {
             </div>
 
             <div className="list-products">
-              {/* {phoneList.map((phone) => (
-            <div key={phone._id}>
-              <h3>Name: {phone.name}</h3>
-              <h3>Description: {phone.techInfo[0].infoType}</h3>
-            </div>
-          ))} */}
-
-              {phoneList.map((phone) => (
+              {currentProduct.map((phone) => (
                 <div key={phone._id} className="product-layout">
                   <div className="product">
                     <div className="img-container">
                       <Link to={`/`}>
                         <img
-                          //   src="https://cdn.hoanghamobile.com/i/productlist/dsp/Uploads/2021/04/22/image-removebg-preview_637547045799326930.png"
                           src={`http://localhost:5000/${phone.image[0]}`}
-                          //   src="http://localhost:5000/image/realme/c11/c11-2021_blue.jpg"
                           alt={phone.name}
                         />
                       </Link>
@@ -357,17 +356,11 @@ function PhonePage() {
               ))}
             </div>
           </div>
-          <ul className="pagination">
-            <span id="page1">1</span>
-            <span id="page2">2</span>
-            <span id="page3">3</span>
-            <span id="page4">4</span>
-
-            <span className="icon">...</span>
-            <span className="last" id="pageLast">
-              Last
-            </span>
-          </ul>
+          <Pagination
+            productPerpage={productsPerPage}
+            totalProducts={phoneList.length}
+            paginate={paginate}
+          />
         </section>
       </div>
       <Footer />
