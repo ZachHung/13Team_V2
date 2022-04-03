@@ -59,17 +59,17 @@ function UpdateItemDetail() {
 
                                                 <div className="mb-4">
                                                     <label htmlFor="number" className="form-label lable_level_3">Số lượng còn lại</label>
-                                                    <input className="form-control my-input-tag number" id="number" name="number" defaultValue={color.number} />
+                                                    <input type="number" className="form-control my-input-tag number" id="number" name="number" defaultValue={color.number} />
                                                 </div>
 
                                                 <div className="mb-4">
                                                     <label htmlFor="price" className="form-label lable_level_3">Giá</label>
-                                                    <input className="form-control my-input-tag price" id="price" name="price" defaultValue={color.price} />
+                                                    <input type="number" className="form-control my-input-tag price" id="price" name="price" defaultValue={color.price} />
                                                 </div>
 
                                                 <div className="mb-4">
                                                     <label htmlFor="discount" className="form-label lable_level_3">Giảm giá (%)</label>
-                                                    <input className="form-control my-input-tag discount" id="discount" name="discount" defaultValue={color.discount} />
+                                                    <input type="number" className="form-control my-input-tag discount" id="discount" name="discount" defaultValue={color.discount} />
                                                 </div>
                                             </div>
                                         </div>

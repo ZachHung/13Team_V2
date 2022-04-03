@@ -28,7 +28,31 @@ class Address {
         let ward = districtSelected[0].wards;
         res.json(ward);
       })
-      .catch((err) => {});
+      .catch((err) => { });
+  }
+
+  GetAllAddress(req, res, next) {
+    address.find({}).then(address => res.json({ address: address }))
+      .catch(next);
+  }
+
+  GetDistrict(req, res, next) {
+    address.findOne({ name: req.params.name })
+      .then(address => res.json({ address: address }))
+      .catch(next);
+  }
+
+  GetWard(req, res, next) {
+    address.findOne({ name: req.params.name1 })
+      .then(address => {
+        address.districts.forEach(element => {
+          if(element.name == req.params.name2){
+            res.json({ address: element})
+          }
+        });
+        
+      })
+      .catch(next);
   }
 }
 module.exports = new Address();

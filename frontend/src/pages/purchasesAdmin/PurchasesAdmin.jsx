@@ -30,9 +30,7 @@ function PurchasesAdmin () {
       }
       else {}
     }
-    const onEdit = (id) => {
-      
-    }
+
   return (
     <div className="listPurchasesAdminTitle d-flex flex-column">
       <section className="p-3">
@@ -47,14 +45,14 @@ function PurchasesAdmin () {
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">ID</th>
-              <th scope="col">ID Khách hàng</th>
-              <th scope="col">Tổng tiền</th>
-              <th scope="col">Phương thức thanh toán</th>
-              <th scope="col">Tình trạng thanh toán</th>
-              <th scope="col">Tình trạng xác nhận</th>
+              <th scope="col">Mã đơn hàng</th>
+              <th scope="col">Mã Khách hàng</th>
+              {/* <th scope="col">Tổng tiền</th> */}
+              {/* <th scope="col">Phương thức thanh toán</th> */}
+              {/* <th scope="col">Tình trạng thanh toán</th> */}
+              <th scope="col">Trạng thái đơn hàng</th>
               <th scope="col">Cập nhật lúc</th>
-              <th scope="col">Tùy chọn</th>
+              <th scope="col" className='text-center'>Tùy chọn</th>
             </tr>
           </thead>
           <tbody>
@@ -68,23 +66,23 @@ function PurchasesAdmin () {
                   </a>
                 </td>
               <td>{purchase.userID}</td>
-              <td>D5</td>
+              {/* <td>D5</td>
               <td>D6</td>
-              <td>D7</td>
+              <td>D7</td> */}
               <td>{purchase.status}</td>
               <td>{format(new Date(purchase.updatedAt), 'yyyy-MM-dd kk:mm:ss')}</td>
-              <td>
-                  {/* <a className='formMethod' href='/admin/purchases/edit/'> */}
-                      <button className=" formMethod btnDeletePurchase btn btn-outline-primary" onClick={()=> onEdit(purchase._id)}>
-                        Sửa <FontAwesomeIcon icon={faFileEdit} />
+              <td className='text-center'>
+                  <a className='formMethod' href={`/admin/orders/update/${purchase._id}`}>
+                      <button className=" formMethod btnDeletePurchase btn btn-outline-primary" >
+                        Cập nhật trạng thái <FontAwesomeIcon icon={faFileEdit} />
                       </button>
-                  {/* </a> */}
+                  </a>
                   &nbsp;
-                  {/* <a className='formMethod' href>                   */}
+                  <div className='mt-4'>                  
                       <button className=" formMethod btnDeletePurchase btn btn-outline-danger" onClick={()=> onDelete(purchase._id)}>                       
                         Xóa <FontAwesomeIcon icon={faTrashAlt}/>
                       </button>                   
-                  {/* </a> */}
+                  </div>
                 </td>
             </tr>
               ))}

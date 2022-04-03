@@ -1,8 +1,11 @@
 const purchase = require("../models/Purchase");
 const util = require("../../util/mongoose");
 const cart = require("../models/Cart");
-var ObjectId = require ('mongodb').ObjectID;
+var ObjectId = require('mongodb').ObjectId;
 // const ID = req.session.user._id; //userID của người dùng đã đăng nhập
+
+const URL = "http://localhost:3000/";
+
 
 class PurchaseController {
   index(req, res, next) {
@@ -70,7 +73,7 @@ class PurchaseController {
                   $set: { status: "Đã giao" },
                 }
               )
-              .then(() => {});
+              .then(() => { });
           }
         }
         res.json(data);
@@ -211,33 +214,45 @@ class PurchaseController {
       .then(() => res.redirect("back"))
       .catch(next);
   }
-  async getPurchasesAdmin (req, res, next) {
-    const purchasesPerPage = await purchase.countDocuments ({});
+  async getPurchasesAdmin(req, res, next) {
+    const purchasesPerPage = await purchase.countDocuments({});
     //let itemsPerPage = 22;
-    let page = req.query.page ? parseInt (req.query.page) : 1;
+    let page = req.query.page ? parseInt(req.query.page) : 1;
     purchase
-      .find ({})
-      .skip (purchasesPerPage * (page - 1))
-      .limit (purchasesPerPage)
-      .then (purchases => {
-        res.json ({
+      .find({})
+      .skip(purchasesPerPage * (page - 1))
+      .limit(purchasesPerPage)
+      .then(purchases => {
+        res.json({
           purchase: purchases,
         });
       })
-      .catch (next);
+      .catch(next);
   }
-  async deletePurchasesAdmin (req, res, next) {
+  async deletePurchasesAdmin(req, res, next) {
     const purchaseId = req.params.id;
 
-    const purchaseDelete = await purchase.findOne ({_id: ObjectId(purchaseId)});
+    const purchaseDelete = await purchase.findOne({ _id: ObjectId(purchaseId) });
     if (purchaseDelete) {
       try {
-        const deletePurchase = await purchaseDelete.deleteOne ({_id: ObjectId(purchaseId)});
+        const deletePurchase = await purchaseDelete.deleteOne({ _id: ObjectId(purchaseId) });
       } catch (e) {
-        console.error (`[Error] ${e}`);
-        throw Error ('Có lỗi xảy ra, vui lòng thử lại!!');
+        console.error(`[Error] ${e}`);
+        throw Error('Có lỗi xảy ra, vui lòng thử lại!!');
       }
     }
+  }
+
+  edit(req, res, next) {
+    purchase.findById(req.params.id)
+      .then(purchase => res.json({ purchase: purchase }))
+      .catch(next)
+  }
+
+  updatePurchase(req, res, next) {
+    purchase.updateOne({ _id: req.params.id }, req.body)
+      .then(() => res.redirect(URL + 'admin/orders/update/' + req.params.id))
+      .catch(next)
   }
 }
 module.exports = new PurchaseController();

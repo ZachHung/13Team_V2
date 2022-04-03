@@ -76,11 +76,11 @@ function UsersAdmin () {
                 <td>{format(new Date(user.updatedAt), 'yyyy-MM-dd kk:mm:ss')}</td>
 
                 <td>
-                  {/* <a className='formMethod' href='/admin/customers/edit/'> */}
+                  <a className='formMethod' href={`/admin/customers/update/${user._id}`}>
                       <button className=" formMethod btnDeletePurchase btn btn-outline-primary" onClick={()=>onEdit(user._id)}>
                         Sửa <FontAwesomeIcon icon={faFileEdit} />
                       </button>
-                  {/* </a> */}
+                  </a>
                   &nbsp;
                   {/* <a className='formMethod' href>                   */}
                       <button className=" formMethod btnDeletePurchase btn btn-outline-danger" onClick={()=> onDelete(user._id)}>                       
