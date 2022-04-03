@@ -1,6 +1,7 @@
 const purchase = require("../models/Purchase");
 const util = require("../../util/mongoose");
 const cart = require("../models/Cart");
+var ObjectId = require ('mongodb').ObjectID;
 // const ID = req.session.user._id; //userID của người dùng đã đăng nhập
 
 class PurchaseController {
@@ -209,6 +210,34 @@ class PurchaseController {
       )
       .then(() => res.redirect("back"))
       .catch(next);
+  }
+  async getPurchasesAdmin (req, res, next) {
+    const purchasesPerPage = await purchase.countDocuments ({});
+    //let itemsPerPage = 22;
+    let page = req.query.page ? parseInt (req.query.page) : 1;
+    purchase
+      .find ({})
+      .skip (purchasesPerPage * (page - 1))
+      .limit (purchasesPerPage)
+      .then (purchases => {
+        res.json ({
+          purchase: purchases,
+        });
+      })
+      .catch (next);
+  }
+  async deletePurchasesAdmin (req, res, next) {
+    const purchaseId = req.params.id;
+
+    const purchaseDelete = await purchase.findOne ({_id: ObjectId(purchaseId)});
+    if (purchaseDelete) {
+      try {
+        const deletePurchase = await purchaseDelete.deleteOne ({_id: ObjectId(purchaseId)});
+      } catch (e) {
+        console.error (`[Error] ${e}`);
+        throw Error ('Có lỗi xảy ra, vui lòng thử lại!!');
+      }
+    }
   }
 }
 module.exports = new PurchaseController();

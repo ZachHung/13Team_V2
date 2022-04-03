@@ -4,6 +4,7 @@ const cart = require("../models/Cart");
 const address = require("../models/Address");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
+var ObjectId = require ('mongodb').ObjectID;
 var recoveryCode = 9450;
 var confirmCode = 1234;
 var emailRecovery = "tnhut806@gmail.com";
@@ -288,6 +289,38 @@ class AccountController {
           status: "true",
         });
       });
+  }
+  async getUsersAdmin (req, res, next) {
+    const usersPerPage = await user.countDocuments ({});
+    const page = Number (req.query.page) || 1;
+    //const count = user.find ({}).countDocuments ({});
+    // const isLogin = req.session.user ? true : false;
+    // const user = req.session.user ? req.session.user : {};
+    //let itemsPerPage = 22;
+    user
+      .find ({})
+      .skip (usersPerPage * (page - 1))
+      .limit (usersPerPage)
+      .then (user => {
+        res.json ({
+          user: user,
+        });
+      })
+      .catch (next);
+  }
+
+  async deleteUsersAdmin (req, res, next) {
+    const userId = req.params.id;
+    const userDelete = await user.findOne ({"_id": ObjectId(userId)});
+    console.log(userDelete);
+    if (userDelete) {
+      try {
+        const deleteUser = await userDelete.deleteOne ({"_id": ObjectId(userId)});
+      } catch (e) {
+        console.error (`[Error] ${e}`);
+        throw Error ('Có lỗi xảy ra, vui lòng thử lại!!');
+      }
+    }
   }
 }
 module.exports = new AccountController();

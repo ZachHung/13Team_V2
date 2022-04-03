@@ -1,5 +1,6 @@
 const items = require("../models/Item");
 const options = require("../models/Option");
+var ObjectId = require ('mongodb').ObjectID;
 class ItemController {
   detailItem(req, res, next) {
     let param = req.params.slug;
@@ -244,6 +245,79 @@ class ItemController {
           .catch(next);
       })
       .catch(next);
+  }
+  async getItemsAdmin (req, res, next) {
+    const itemsPerPage = await items.countDocuments ({});
+    //let itemsPerPage = 22;
+    let page = req.query.page ? parseInt (req.query.page) : 1;
+    items
+      .aggregate ([
+        {
+          $match: {
+            type: {$regex: /^/},
+          },
+        },
+        {
+          $lookup: {
+            from: 'options',
+            localField: 'slug',
+            foreignField: 'slug',
+            as: 'slug',
+          },
+        },
+      ])
+      .skip (itemsPerPage * (page - 1))
+      .limit (itemsPerPage)
+      .then (items => {
+        res.json ({
+          items: items,
+        });
+      })
+      .catch (next);
+  }
+
+  async deleteItemAdmin (req, res, next) {
+    const itemId = req.params.id;
+
+    const itemDelete = await items.findOne ({_id: itemId});
+    if (itemDelete) {
+      try {
+        const deleteProduct = await itemDelete.deleteOne ({_id: itemId});
+      } catch (e) {
+        console.error (`[Error] ${e}`);
+        throw Error ('Có lỗi xảy ra, vui lòng thử lại!!');
+      }
+      //const deleteOption = await options.find({'item': itemId});
+      //     var opts = [];
+      //     opts.push (itemId);
+      //     items.aggregate ([
+      //       {$match: {_id: itemId}},
+      //       {
+      //         $lookup: {
+      //           from: 'options',
+      //           localField: 'item',
+      //           foreignField: '_id',
+      //           as: 'options',
+      //         },
+      //       },
+      //     ])
+      //     .then((data)=>{
+      //       console.log(data);
+      //       //options.deleteMany ({item: opts[0].toString ()});
+      //     })
+
+      //     //console.log(opts);
+      //     //const optionDelete = options.find({item: opts[0].toString() }).remove();
+      //     //console.log(optionDelete);
+      //     //optionDelete.({item: opts[0].toString() });
+      //     //console.log(optionDelete);
+      //   } catch (e) {
+      //     console.error (`[Error] ${e}`);
+      //     throw Error ('Có lỗi xảy ra, vui lòng thử lại!!');
+      //   }
+      // }
+      // const optionDelete = await options.find({'item': id.toString()});
+    }
   }
 }
 module.exports = new ItemController();
