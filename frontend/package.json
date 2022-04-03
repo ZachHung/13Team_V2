@@ -23,7 +23,10 @@
     "redux-persist": "^6.0.0",
     "sass": "^1.49.9",
     "swiper": "^8.0.7",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "chart.js": "^3.7.0",
+    "react-chartjs-2": "^4.0.0",
+    "react-circular-progressbar": "^2.0.4"
   },
   "scripts": {
     "start": "react-scripts start",

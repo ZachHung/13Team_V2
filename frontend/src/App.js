@@ -15,6 +15,13 @@ import AuthUserRoute from "./routes/AuthUserRoute";
 import Admin from "./pages/Admin";
 import CartPage from "./pages/Cart";
 import ScrollButton from "./components/scrollBtn";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Blank from "./pages/Blank";
+
+//import scss va boxicon cho dashboard
+import './assets/libs/boxicons-2.1.1/css/boxicons.min.css'
+import './scss/App.scss'
+
 function App() {
   const isAdmin = useSelector((state) => state.user.isAdmin);
   return (
@@ -46,6 +53,14 @@ function App() {
         <React.Fragment></React.Fragment>
       )}
 
+      <Route path="/admin/*" element={<Admin />}>
+        <Route index element={<Dashboard />} />
+        <Route path="orders" element={<Blank />} />
+        <Route path="products" element={<Blank />} />
+        <Route path="customers" element={<Blank />} />
+        <Route path="settings" element={<Blank />} />
+        <Route path="stats" element={<Blank />} />
+      </Route>  
       {/* end adminRoute */}
     </Routes>
   );
