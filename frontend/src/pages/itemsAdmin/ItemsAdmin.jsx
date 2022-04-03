@@ -29,6 +29,7 @@ function ItemsAdmin () {
     window.location.reload(false); }
     else {}
   }
+
     
   return (
     
@@ -69,11 +70,11 @@ function ItemsAdmin () {
                 <td>{item.brand.name}</td>
                 {/* <td>{format(new Date(item.updatedAt), 'yyyy-MM-dd kk:mm:ss')}</td> */}
                 <td>
-                  {/* <a className='formMethod' href='admin/products/edit/'> */}
-                      <button className=" formMethod btnEditItem btn btn-outline-primary">
+                  <a className='formMethod' href={`/admin/products/update/${item._id}`}>
+                      <button className=" formMethod btnEditItem btn btn-outline-primary" >
                         Sửa <FontAwesomeIcon icon={faFileEdit} />
                       </button>
-                  {/* </a> */}
+                  </a>
                   &nbsp;
                   {/* <a className='formMethod' href>                   */}
                       <button className=" formMethod btnDeleteItem btn btn-outline-danger" onClick={()=> onDelete(item._id)}>                       

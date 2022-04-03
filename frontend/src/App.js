@@ -17,6 +17,8 @@ import CartPage from "./pages/Cart";
 import ScrollButton from "./components/scrollBtn";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import ItemsAdmin from "./pages/itemsAdmin/ItemsAdmin";
+import UpdateItem from "./pages/updateItem/UpdateItem";
+import UpdateItemDetail from "./pages/updateItem/UpdateItemDetail";
 import UsersAdmin from "./pages/usersAdmin/UsersAdmin";
 import PurchasesAdmin from "./pages/purchasesAdmin/PurchasesAdmin";
 import Blank from "./pages/Blank";
@@ -59,11 +61,13 @@ function App() {
       <Route path="/admin/*" element={<Admin />}>
         <Route index element={<Dashboard />} />
         <Route path="orders" element={<PurchasesAdmin />} />
-        <Route path="products" element={<ItemsAdmin />} />
+        <Route path="products/*" element={<ItemsAdmin />} />
+        <Route path="products/update/:id" element={<UpdateItem />} />
+        <Route path="products/updateDetail/:id" element={<UpdateItemDetail />} />
         <Route path="customers" element={<UsersAdmin />} />
         <Route path="settings" element={<Blank />} />
         <Route path="stats" element={<Blank />} />
-      </Route>  
+      </Route>
       {/* end adminRoute */}
     </Routes>
   );
