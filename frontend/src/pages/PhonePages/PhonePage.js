@@ -24,20 +24,31 @@ const api = axios.create({
 
 function PhonePage() {
   const [phoneList, setPhoneList] = useState([]);
-
   // filter
   const [brand, setBrand] = useState([]);
+  const [brandName, setBrandName] = useState([]);
+  // retrive name brand array
+  useEffect(() => {
+    api.get('/phone/brand/name').then((res) => {
+      console.log('checkbrandname log 1: ', res.data);
+      setBrandName(res.data);
+    });
+  }, []);
+  // console.log('checkbrandname log 1: ', brandName);
+
   const [checkedBrand, setCheckedBrand] = useState([]);
+  // useEffect(() => {
+  //   setCheckedBrand(brandName);
+  //   console.log('setCheckedBrand change: ', checkedBrand);
+  // }, [brandName]);
+  // console.log('checkbrand log 1: ', checkedBrand);
   const [checkedPrice, setCheckedPrice] = useState([]);
   useEffect(() => {
     api.get('/phone/brand').then((res) => {
-      console.log(res.data);
       setBrand(res.data);
     });
   }, []);
-  // array a[]
-  // let text  = a.join(',')
-  // có chọn brand và chọn giá và k chọn giá
+
   var urlString = '';
   if (checkedBrand.length != 0 && checkedPrice.length != 0) {
     let paramStringBrand = checkedBrand.join(',');
@@ -87,7 +98,17 @@ function PhonePage() {
     });
   };
   console.log(checkedPrice);
-
+  const handleCheckAllBrand = () => {
+    setCheckedBrand(brandName);
+  };
+  const handleCheckAllPrice = () => {
+    setCheckedPrice([
+      'tren-14-trieu',
+      'duoi-2-trieu',
+      'tu-2-5-trieu',
+      'tu-5-14-trieu',
+    ]);
+  };
   return (
     <>
       <Header />
@@ -149,9 +170,14 @@ function PhonePage() {
                   <h3>Thương hiệu</h3>
                 </div>
                 <ul className="block-content filter-brand">
-                  <li>
-                    <input type="checkbox" id="checkAllBrand" />
-                    <label htmlFor="checkAllbrand">
+                  <li onClick={() => handleCheckAllBrand()}>
+                    <input
+                      type="checkbox"
+                      checked={
+                        checkedBrand.length == 6 || checkedBrand.length == 0
+                      }
+                    />
+                    <label>
                       <span>Tất cả</span>
                     </label>
                   </li>
@@ -177,8 +203,13 @@ function PhonePage() {
                   <h3>Mức giá</h3>
                 </div>
                 <ul className="block-content">
-                  <li>
-                    <input type="checkbox" />
+                  <li onClick={() => handleCheckAllPrice()}>
+                    <input
+                      type="checkbox"
+                      checked={
+                        checkedPrice.length == 4 || checkedPrice.length == 0
+                      }
+                    />
                     <label>
                       <span>Tất cả</span>
                     </label>
