@@ -3,7 +3,7 @@ import Header from "../../components/header";
 import Footer from "../../components/footer";
 import "./style.scss";
 import { userRequest } from "../../utils/CallApi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faXmark,
@@ -12,6 +12,7 @@ import {
   faSadTear,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
+import { setQuantity } from "../../redux/cart";
 
 const currentChange = (price) => {
   price = new Intl.NumberFormat("vi-VN", {
@@ -45,12 +46,20 @@ const CartPage = () => {
   const [ReItem, setReItem] = useState({ optionID: "", color: "" });
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const getCart = () => {
     userRequest
       .get(`cart/${user.current._id}`)
       .then((res) => {
         setCart(res.data.list);
+        dispatch(
+          setQuantity({
+            quantity: res.data.list.reduce((a, b) => {
+              return a + b.quantity;
+            }, 0),
+          })
+        );
         setIsLoading(false);
       })
       .catch((err) => console.log(err));
@@ -78,12 +87,12 @@ const CartPage = () => {
   };
 
   const handleQuantity = (target, optionID, color) => {
-    if (isValid(target.value)) changeQuantity(optionID, color, target.value);
+    if (isValid(target.value) && target.value <= 99)
+      changeQuantity(optionID, color, target.value);
   };
   const handleRemoveItem = (optionID, color) => {
     setModalState(true);
     setReItem({ optionID, color });
-    console.log(ReItem);
   };
   const handlePurchase = () => {
     userRequest
