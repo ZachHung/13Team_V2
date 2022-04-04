@@ -53,13 +53,7 @@ const CartPage = () => {
       .get(`cart/${user.current._id}`)
       .then((res) => {
         setCart(res.data.list);
-        dispatch(
-          setQuantity({
-            quantity: res.data.list.reduce((a, b) => {
-              return a + b.quantity;
-            }, 0),
-          })
-        );
+        dispatch(setQuantity(res.data.list));
         setIsLoading(false);
       })
       .catch((err) => console.log(err));

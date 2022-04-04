@@ -38,13 +38,7 @@ export default function Login() {
           } else {
             dispatch(loginSuccess(res.data));
             userRequest.get(`cart/${res.data._id}`).then((res) => {
-              dispatch(
-                setQuantity({
-                  quantity: res.data.list.reduce((a, b) => {
-                    return a + b.quantity;
-                  }, 0),
-                })
-              );
+              dispatch(setQuantity(res.data.list));
             });
             navigate("/");
           }
