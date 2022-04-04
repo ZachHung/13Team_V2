@@ -430,7 +430,7 @@ class PhoneController {
     } else {
       arrayBrand = ['apple', 'asus', 'oppo', 'realme', 'samsung', 'xiaomi'];
     }
-    let perPage = 9;
+    let perPage = 6;
     let page = req.query.page || 1;
     console.log('pageeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee: ', page);
     var sort = req.query.sort;

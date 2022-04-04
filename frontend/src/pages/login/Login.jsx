@@ -1,11 +1,12 @@
 import React from "react";
 import TextInPut from "../../components/TextInPut/TextInPut";
-import { publicRequest } from "../../utils/CallApi";
+import { publicRequest, userRequest } from "../../utils/CallApi";
 import { Link } from "react-router-dom";
 import { faKey, faMailBulk } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./login.scss";
 import { loginStart, loginSuccess } from "../../redux/userRedux";
+import { setQuantity } from "../../redux/cart";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/header";
@@ -17,6 +18,7 @@ export default function Login() {
   const [errorText, setErrorText] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector((state) => state.user.current);
   const handleInput = (name, value) => {
     setErrorText("");
     setFormData({ ...formData, [name]: `${value}` });
@@ -34,14 +36,23 @@ export default function Login() {
             setErrorText(res.data.message);
             console.log(res.data.message);
           } else {
-            console.log(res.data);
             dispatch(loginSuccess(res.data));
+            userRequest.get(`cart/${res.data._id}`).then((res) => {
+              dispatch(
+                setQuantity({
+                  quantity: res.data.list.reduce((a, b) => {
+                    return a + b.quantity;
+                  }, 0),
+                })
+              );
+            });
             navigate("/");
           }
         })
         .catch((res) => {
           console.log(res);
         });
+      console.log(user);
     }
   };
 
