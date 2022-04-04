@@ -194,10 +194,15 @@ class AccountController {
         }
       )
       .then((data) => {
-        console.log(data);
-        res.json({
-          status: "true",
-        });
+        if (data.modifiedCount !== 0) {
+          res.json({
+            status: "true",
+          });
+        } else {
+          res.status(202).json({
+            message: "Lỗi Hệ Thống",
+          });
+        }
       })
       .catch((err) => {
         res.json({
