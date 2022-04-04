@@ -80,6 +80,10 @@ header {
         font-size: 1.5rem;
         font-weight: bold;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 3px;
+        @media only screen and (max-width: 739px) {
+          top: 1.75rem;
+          right: 3.5rem;
+        }
       }
     }
     .links > a {
