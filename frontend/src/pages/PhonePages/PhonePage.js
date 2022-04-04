@@ -1,9 +1,8 @@
 import React from 'react';
-import './PhonePage.scss';
+import { orderBy } from 'lodash';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMobile,
@@ -18,6 +17,8 @@ import SwiperPromotion from '../../components/swiperPromotion/SwiperPromotion';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
 import Pagination from '../../components/pagination';
+import SortProduct from '../../components/sortProduct';
+import './PhonePage.scss';
 
 const api = axios.create({
   baseURL: 'http://localhost:5000/api',
@@ -108,7 +109,7 @@ function PhonePage() {
   };
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage, setProductPerPage] = useState(2);
+  const [productsPerPage, setProductPerPage] = useState(6);
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProduct = phoneList.slice(
@@ -117,6 +118,24 @@ function PhonePage() {
   );
   // change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  // sort
+  // const [sortedProducts, setSortedProducts] = useState([]);
+  // // var temp = orderBy(currentProduct, 'name', 'desc');
+  // // setSortedProducts(temp);
+  // const [type, setType] = useState((prev) => 'asc');
+
+  // const handleSortAsc = (newType) => {
+  //   setType(newType);
+  //   console.log('clicked asc', type);
+  // };
+  // const handleSortDesc = (newType) => {
+  //   setType(newType);
+  //   console.log('clicked desc', type);
+  // };
+  // useEffect(() => {
+  //   setSortedProducts(orderBy(currentProduct, 'name', type));
+  // }, [type]);
+
   return (
     <>
       <Header />
@@ -158,19 +177,10 @@ function PhonePage() {
               </span>
             ))}
           </div>
-          <div className="filter-box">
-            <div className="asc-price" id="sort-asc-phone">
-              <Link to={`/`}>
-                {' '}
-                <i className="fas fa-sort-amount-up"></i>Giá thấp
-              </Link>
-            </div>
-            <div className="desc-price" id="sort-desc-phone">
-              <Link to={`/`}>
-                <i className="fas fa-sort-amount-up-alt"></i>Giá cao
-              </Link>
-            </div>
-          </div>
+          {/* <SortProduct
+            handleSortAsc={handleSortAsc}
+            handleSortDesc={handleSortDesc}
+          /> */}
           <div className="products-layout container">
             <div className="filter">
               <div>

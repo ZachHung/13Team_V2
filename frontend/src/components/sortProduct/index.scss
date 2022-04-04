@@ -1,0 +1,18 @@
+.filter-box {
+    padding: 3rem 1rem 2rem 0;
+    gap: 1rem;
+    font-size: 10px;
+    font-weight: bold;
+
+    .asc-price {
+      background-color: #f8dede;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .desc-price {
+      background-color: #f8dede;
+      padding: 1rem;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  }

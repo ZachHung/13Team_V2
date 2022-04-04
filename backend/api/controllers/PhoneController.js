@@ -522,11 +522,11 @@ class PhoneController {
             },
           },
         ])
-        .sort({
-          'slug.color.price': temp,
-        })
-        .skip(perPage * page - perPage)
-        .limit(perPage)
+        // .sort({
+        //   'slug.color.price': temp,
+        // })
+        // .skip(perPage * page - perPage)
+        // .limit(perPage)
         .then((items) => {
           res.json({
             items: items,
@@ -558,11 +558,11 @@ class PhoneController {
             },
           },
         ])
-        .sort({
-          'slug.color.price': temp,
-        })
-        .skip(perPage * page - perPage)
-        .limit(perPage)
+        // .sort({
+        //   'slug.color.price': temp,
+        // })
+        // .skip(perPage * page - perPage)
+        // .limit(perPage)
         .then((items) => {
           res.json({
             items: items,
