@@ -2,6 +2,10 @@ import React from 'react';
 import { orderBy } from 'lodash';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { userRequest } from '../../utils/CallApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { setQuantity } from '../../redux/cart';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -25,7 +29,35 @@ const api = axios.create({
 });
 
 function PhonePage() {
+  const user = useSelector((state) => state.user.current);
+  const dispatch = useDispatch();
   const [phoneList, setPhoneList] = useState([]);
+  // add cart
+  const handleAddCart = (optionParam, colorParam) => {
+    userRequest
+      .post(`cart/add/${user._id}`, {
+        optionID: optionParam,
+        color: colorParam,
+      })
+      .then((res) => {
+        // dispatch(setQuantity(res.data.list));
+      })
+      .catch((err) => console.log(err));
+  };
+  // buy product
+  const navigateCart = useNavigate();
+  const handleBuyProduct = (optionParam, colorParam) => {
+    userRequest
+      .post(`cart/add/${user._id}`, {
+        optionID: optionParam,
+        color: colorParam,
+      })
+      .then((res) => {
+        // dispatch(setQuantity(res.data.list));
+      })
+      .catch((err) => console.log(err));
+    navigateCart('../cart');
+  };
   // filter
   const [brand, setBrand] = useState([]);
   const [brandName, setBrandName] = useState([]);
@@ -338,23 +370,38 @@ function PhonePage() {
                       <div className="product-btn">
                         <form
                           className="buy-btn"
-                          method="POST"
-                          action="phone/cart?itemID={{phone._id}}"
-                          data="{{phone._id}}"
+                          // method="POST"
+                          // action="phone/cart?itemID={{phone._id}}"
+                          // data="{{phone._id}}"
                         >
-                          <button className="btn btn-buy btn-sm" type="submit">
+                          <button
+                            className="btn btn-buy btn-sm"
+                            type="submit"
+                            onClick={() =>
+                              handleBuyProduct(
+                                phone.slug[0]._id,
+                                phone.slug[0].color[0].name
+                              )
+                            }
+                          >
                             <p>MUA</p>
                           </button>
                         </form>
                         <form
                           className="add-btn"
-                          method="POST"
-                          action="phone/addcart?itemID={{phone._id}}"
-                          data="{{phone._id}}"
+                          // method="POST"
+                          // action="phone/addcart?itemID={{phone._id}}"
+                          // data="{{phone._id}}"
                         >
                           <button
                             className="btn btn-addCart btn-sm"
                             type="submit"
+                            onClick={() =>
+                              handleAddCart(
+                                phone.slug[0]._id,
+                                phone.slug[0].color[0].name
+                              )
+                            }
                           >
                             <p>THÊM VÀO GIỎ</p>
                           </button>
