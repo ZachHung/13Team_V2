@@ -101,11 +101,13 @@ export default function Recovery() {
       <div className="container_recovery">
         <div className="recovery row container-md">
           <div className="title col-xl-6 col-12">
-            <p>Don't Worry! This Is Just a Small Problem! </p>
+            <p>
+              Đừng Lo Lắng! <br></br> Chúng Tôi Sẽ Hỗ Trợ Bạn!{" "}
+            </p>
           </div>
           <div className="form_container col-xl-6 col-12">
             <div className="form_wrapper">
-              <p className="form_title">Recovery</p>
+              <p className="form_title">Khôi Phục Tài Khoản</p>
               <p className="form_error">{errorText}</p>
               <form className={openNormalForm ? "form" : "hide"}>
                 <TextInPut
@@ -121,6 +123,7 @@ export default function Recovery() {
                   onClick={(e) => {
                     handleSubmitEmail(e);
                   }}
+                  value="Gửi"
                 ></input>
               </form>
               <form className={openCodeForm ? "form" : "hide"}>
@@ -136,6 +139,7 @@ export default function Recovery() {
                 <input
                   type="submit"
                   onClick={(e) => handleSubmitCode(e)}
+                  value="Xác Nhận"
                 ></input>
               </form>
 
@@ -161,6 +165,7 @@ export default function Recovery() {
                 <input
                   type="submit"
                   onClick={(e) => handleSubmitPassword(e)}
+                  value="Xác Nhận"
                 ></input>
               </form>
               <div className="login_footer">
@@ -168,7 +173,7 @@ export default function Recovery() {
                   style={{ textDecoration: "none", color: "inherit" }}
                   to="/login"
                 >
-                  <p>Turn Back Login Here </p>
+                  <p>Quay Lại Đăng Nhập </p>
                 </Link>
               </div>
             </div>

@@ -38,13 +38,7 @@ export default function Login() {
           } else {
             dispatch(loginSuccess(res.data));
             userRequest.get(`cart/${res.data._id}`).then((res) => {
-              dispatch(
-                setQuantity({
-                  quantity: res.data.list.reduce((a, b) => {
-                    return a + b.quantity;
-                  }, 0),
-                })
-              );
+              dispatch(setQuantity(res.data.list));
             });
             navigate("/");
           }
@@ -52,7 +46,6 @@ export default function Login() {
         .catch((res) => {
           console.log(res);
         });
-      console.log(user);
     }
   };
 
@@ -62,13 +55,13 @@ export default function Login() {
       <div className="container_login">
         <div className="login row container-md">
           <div className="title col-xl-6 col-12">
-            <p>Welcome Back!</p>
+            <p>Chào Mừng Trở Lại!</p>
           </div>
 
           <div className="form_container col-xl-6 col-12">
             <div className="form_wrapper">
               <form>
-                <p className="form_title">Login</p>
+                <p className="form_title">Đăng Nhập</p>
                 <p className="form_error">{errorText}</p>
                 <TextInPut
                   icon={faMailBulk}
@@ -88,12 +81,16 @@ export default function Login() {
                   valuePassword={formData.verifyPassword}
                 ></TextInPut>
 
-                <input type="submit" onClick={handleSubmit}></input>
+                <input
+                  type="submit"
+                  onClick={handleSubmit}
+                  value="Đăng Nhập"
+                ></input>
                 <Link
                   to="/recovery"
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
-                  <p className="login_recovery">Forgot your password?</p>
+                  <p className="login_recovery">Bạn Quên Mật Khẩu?</p>
                 </Link>
               </form>
               <div className="login_footer">
@@ -101,7 +98,7 @@ export default function Login() {
                   to="/register"
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
-                  <p>Want to create a new account Sign Up here? </p>
+                  <p>Bạn Muốn Tạo Tài Khoản Mới? </p>
                 </Link>
               </div>
             </div>

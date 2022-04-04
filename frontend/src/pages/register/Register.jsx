@@ -95,11 +95,11 @@ const Register = () => {
       <div className="container_register">
         <div className="register row container-md">
           <div className="title col-xl-6 col-12">
-            <p>Hi! My New Friend</p>
+            <p>Hân Hạnh Đồng Hành Cùng Với Bạn!</p>
           </div>
           <div className="form_container col-xl-6 col-12">
             <div className="form_wrapper">
-              <p className="form_title">Sign Up</p>
+              <p className="form_title">Đăng Ký</p>
               <p className="form_error">{errorText}</p>
               <form className={sendCode ? "hide" : "form"}>
                 <TextInPut
@@ -149,7 +149,11 @@ const Register = () => {
                   valuePassword={formData.password}
                 ></TextInPut>
 
-                <input type="submit" onClick={(e) => handleSubmit(e)}></input>
+                <input
+                  type="submit"
+                  onClick={(e) => handleSubmit(e)}
+                  value="Đăng Ký"
+                ></input>
               </form>
               <form className={sendCode ? "form" : "hide"}>
                 <TextInPut
@@ -161,14 +165,18 @@ const Register = () => {
                   checkValid={(value) => setIsValidCode(value)}
                 ></TextInPut>
 
-                <input type="submit" onClick={(e) => handleSendCode(e)}></input>
+                <input
+                  type="submit"
+                  onClick={(e) => handleSendCode(e)}
+                  value="Xác Nhận"
+                ></input>
               </form>
               <div className="login_footer">
                 <Link
                   style={{ textDecoration: "none", color: "inherit" }}
                   to="/login"
                 >
-                  <p>Turn Back Login Here </p>
+                  <p>Quay Lại Đăng Nhập </p>
                 </Link>
               </div>
             </div>
