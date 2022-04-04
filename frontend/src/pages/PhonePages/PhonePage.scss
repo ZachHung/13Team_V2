@@ -425,24 +425,7 @@
       height: 2.5rem;
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     }
-    .filter-box {
-      padding: 3rem 1rem 2rem 0;
-      gap: 1rem;
-      font-size: 10px;
-      font-weight: bold;
-
-      .asc-price {
-        background-color: #f8dede;
-        cursor: pointer;
-        border-radius: 5px;
-      }
-      .desc-price {
-        background-color: #f8dede;
-        padding: 1rem;
-        cursor: pointer;
-        border-radius: 5px;
-      }
-    }
+    
     .config {
       padding: 0.5rem 1.5rem 0;
 
