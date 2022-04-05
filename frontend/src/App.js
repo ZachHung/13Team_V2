@@ -25,12 +25,13 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/phone" element={<PhonePage />} />
-        <Route path="/purchase" element={<Purchase />} />
+
         {/* end publicRoute */}
 
         {/* start private Route */}
         <Route path="/*" element={<PrivateRoute></PrivateRoute>}>
           <Route path="cart" element={<CartPage></CartPage>} />
+          <Route path="purchase" element={<Purchase />} />
         </Route>
         {/* end private Route */}
 
