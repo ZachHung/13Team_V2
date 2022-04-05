@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
 import { Link } from 'react-router-dom';
@@ -7,14 +8,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import './Purchase.scss';
-import { hostServer } from '../../utils/const';
-
+import { hostServer, currentChange, formatDate } from '../../utils/const';
+import ModalPopUp from '../modal';
 const api = axios.create({
   baseURL: 'http://localhost:5000/api',
 });
 
 export default function Purchase() {
   const [productsList, setProductsList] = useState([]);
+  const [modalState, setModalState] = useState(false);
 
   useEffect(() => {
     api.get(`/purchase/all`).then((res) => {
@@ -22,7 +24,12 @@ export default function Purchase() {
       setProductsList(res.data);
     });
   }, []);
-
+  const handelClickConfirm = () => {
+    setModalState(false);
+  };
+  const handelClickCancel = () => {
+    setModalState(false);
+  };
   return (
     <>
       <Header />
@@ -64,7 +71,9 @@ export default function Purchase() {
                           {item.optionID.item.brand.name}{' '}
                         </strong>{' '}
                         | Ngày mua:{' '}
-                        <strong id="dateProduct">{product.createdAt}</strong>
+                        <strong id="dateProduct">
+                          {moment(product.createAt).format('LLLL')}
+                        </strong>
                       </p>
                     </div>
                     <div class="status">
@@ -99,7 +108,7 @@ export default function Purchase() {
                     <div class="price_one_product">
                       <p>
                         <strong id="priceProduct">
-                          {item.optionID.color[0].price}&nbsp;₫
+                          {currentChange(item.optionID.color[0].price)}
                         </strong>{' '}
                       </p>
                     </div>
@@ -107,52 +116,37 @@ export default function Purchase() {
                   <hr />
                 </div>
                 <div class="price">
-                  <p id="totalPrice">
-                    Tổng số tiền:{' '}
-                    <strong id="totalPriceProduct">
-                      {item.optionID.color[0].price * item.quantity}&nbsp;₫
-                    </strong>
-                  </p>
-                </div>
-
-                <div class="action">
-                  <form
-                    class=" btn_form "
-                    method="POST"
-                    action="/purchase/repurchase?optionID=61a749feaf9aeae6a5bf6c3f&amp;num=1&amp;color=Đen"
-                  >
-                    <button class="btn  " type="submit">
+                  <div class="action" style={{ marginBottom: '3rem' }}>
+                    <button
+                      class="btn  "
+                      type="submit"
+                      onClick={() => setModalState(true)}
+                    >
                       Mua lại
                     </button>
-                  </form>
-                  <form
-                    class="btn_form "
-                    id="btnDelete"
-                    method="POST"
-                    action="/purchase/61a749feaf9aeae6a5bf6c3f?_method=DELETE"
-                  >
-                    <button class="btn ">Xóa</button>
-                  </form>
-                </div>
-                <div class="remove-modal">
-                  <div class="modal-container">
-                    <div class="modal__content">
-                      Xóa sản phẩm khỏi giỏ hàng?
-                    </div>
-                    <div class="modal__footer">
-                      <button class="modal__button--confirm confirm-btn">
-                        Xoá
-                      </button>
-                      <button class="modal__button--cancel cancel-btn">
-                        Huỷ
-                      </button>
-                    </div>
+                    <button class="btn " onClick={() => setModalState(true)}>
+                      Xóa
+                    </button>
                   </div>
+                  <p id="totalPrice">
+                    Tổng số tiền:{' '}
+                    <strong>
+                      {currentChange(
+                        item.optionID.color[0].price * item.quantity
+                      )}
+                    </strong>
+                  </p>
                 </div>
               </div>
             ))}
           </div>
         ))}
+        <ModalPopUp
+          name={'lịch sử mua hàng'}
+          modalState={modalState}
+          handelClickConfirm={handelClickConfirm}
+          handelClickCancel={handelClickCancel}
+        />
       </section>
       <Footer />
     </>
