@@ -21,7 +21,7 @@ class PurchaseController {
 
   all(req, res, next) {
     purchase
-      .find({ userID: useId })
+      .find({ userID: req.params.userID })
 
       .populate('userID', 'name')
       .populate('list.optionID')
@@ -48,16 +48,6 @@ class PurchaseController {
           var diff = Math.abs(new Date() - result.date);
           diff = diff / 60000;
 
-          var options = {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-          };
-          // var dateFormated = result.date.toLocaleDateString('vi-VN', options);
-          // result.date = dateFormated;
           if (diff >= 0.5) {
             purchase
               .updateOne(
@@ -77,7 +67,7 @@ class PurchaseController {
   }
   delivered(req, res, next) {
     purchase
-      .find({ userID: useId })
+      .find({ userID: req.params.userID })
 
       .populate('userID', 'name')
       .populate('list.optionID')
@@ -101,23 +91,13 @@ class PurchaseController {
               return color.name === item.color;
             });
           }
-          var options = {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-          };
-          var dateFormated = result.date.toLocaleDateString('vi-VN', options);
-          result.date = dateFormated;
         }
         res.json(data);
       });
   }
   delivering(req, res, next) {
     purchase
-      .find({ userID: useId })
+      .find({ userID: req.params.userID })
 
       .populate('userID', 'name')
       .populate('list.optionID')
@@ -141,16 +121,6 @@ class PurchaseController {
               return color.name === item.color;
             });
           }
-          var options = {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-          };
-          var dateFormated = result.date.toLocaleDateString('vi-VN', options);
-          result.date = dateFormated;
         }
 
         res.json(data);

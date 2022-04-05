@@ -4,25 +4,46 @@ import moment from 'moment';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
 import { Link } from 'react-router-dom';
+import { userRequest } from '../../utils/CallApi';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import './Purchase.scss';
 import { hostServer, currentChange, formatDate } from '../../utils/const';
 import ModalPopUp from '../modal';
-const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
-});
 
 export default function Purchase() {
   const [productsList, setProductsList] = useState([]);
   const [modalState, setModalState] = useState(false);
+  const user = useSelector((state) => state.user);
+
+  // get all purchase
+  const getPurchase = () => {
+    userRequest()
+      .get(`purchase/all/${user.current._id}`)
+      .then((res) => {
+        setProductsList(res.data);
+      });
+  };
+  const getDeliveringPurchase = () => {
+    userRequest()
+      .get(`purchase/delivering/${user.current._id}`)
+      .then((res) => {
+        setProductsList(res.data);
+      });
+  };
+  const getDeliveredPurchase = () => {
+    userRequest()
+      .get(`purchase/delivered/${user.current._id}`)
+      .then((res) => {
+        setProductsList(res.data);
+      });
+  };
 
   useEffect(() => {
-    api.get(`/purchase/all`).then((res) => {
-      console.log(res.data);
-      setProductsList(res.data);
-    });
+    getPurchase();
   }, []);
   const handelClickConfirm = () => {
     setModalState(false);
@@ -30,18 +51,38 @@ export default function Purchase() {
   const handelClickCancel = () => {
     setModalState(false);
   };
+  const handleClickAllProduct = () => {
+    console.log('all');
+    getPurchase();
+  };
+  const handleClickDelivering = () => {
+    console.log('delivering');
+
+    getDeliveringPurchase();
+  };
+  const handleClickDelivered = () => {
+    console.log('delovered');
+
+    getDeliveredPurchase();
+  };
   return (
     <>
       <Header />
       <section className="container_purchase">
         <div className="status_menu">
-          <div className="statusAll">
+          <div className="statusAll" onClick={() => handleClickAllProduct()}>
             <a>Tất cả</a>
           </div>
-          <div className="statusDelivering">
+          <div
+            className="statusDelivering"
+            onClick={() => handleClickDelivering()}
+          >
             <a>Đang giao </a>
           </div>
-          <div className="statusDelivered">
+          <div
+            className="statusDelivered"
+            onClick={() => handleClickDelivered()}
+          >
             <a>Đã giao</a>
           </div>
         </div>
