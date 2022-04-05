@@ -1,17 +1,17 @@
-const purchase = require("../models/Purchase");
-const util = require("../../util/mongoose");
-const cart = require("../models/Cart");
-// const ID = req.session.user._id; //userID của người dùng đã đăng nhập
-
+const purchase = require('../models/Purchase');
+const util = require('../../util/mongoose');
+const cart = require('../models/Cart');
+// const ID = useId; //userID của người dùng đã đăng nhập
+const useId = '624a9edb4eb751d723d37e7f';
 class PurchaseController {
   index(req, res, next) {
-    res.render("purchase");
+    res.render('purchase');
   }
 
   EmptyList(req, res, next) {
     purchase
       .deleteOne({
-        userID: req.session.user._id,
+        userID: useId,
         list: { $size: 0 },
       })
       .then((data) => {
@@ -21,15 +21,15 @@ class PurchaseController {
 
   all(req, res, next) {
     purchase
-      .find({ userID: req.session.user._id })
+      .find({ userID: useId })
 
-      .populate("userID", "name")
-      .populate("list.optionID")
+      .populate('userID', 'name')
+      .populate('list.optionID')
       .populate({
-        path: "list.optionID",
+        path: 'list.optionID',
         populate: {
-          path: "item",
-          select: "name type brand",
+          path: 'item',
+          select: 'name type brand',
         },
       })
 
@@ -49,24 +49,24 @@ class PurchaseController {
           diff = diff / 60000;
 
           var options = {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "numeric",
-            minute: "numeric",
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
           };
-          var dateFormated = result.date.toLocaleDateString("vi-VN", options);
-          result.date = dateFormated;
+          // var dateFormated = result.date.toLocaleDateString('vi-VN', options);
+          // result.date = dateFormated;
           if (diff >= 0.5) {
             purchase
               .updateOne(
                 {
-                  userID: req.session.user._id,
+                  userID: useId,
                   _id: result._id,
                 },
                 {
-                  $set: { status: "Đã giao" },
+                  $set: { status: 'Đã giao' },
                 }
               )
               .then(() => {});
@@ -77,18 +77,18 @@ class PurchaseController {
   }
   delivered(req, res, next) {
     purchase
-      .find({ userID: req.session.user._id })
+      .find({ userID: useId })
 
-      .populate("userID", "name")
-      .populate("list.optionID")
+      .populate('userID', 'name')
+      .populate('list.optionID')
       .populate({
-        path: "list.optionID",
+        path: 'list.optionID',
         populate: {
-          path: "item",
-          select: "name type brand",
+          path: 'item',
+          select: 'name type brand',
         },
       })
-      .find({ status: "Đã giao" })
+      .find({ status: 'Đã giao' })
       .then((data) => {
         data = util.mutipleMongooseToObject(data);
 
@@ -102,14 +102,14 @@ class PurchaseController {
             });
           }
           var options = {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "numeric",
-            minute: "numeric",
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
           };
-          var dateFormated = result.date.toLocaleDateString("vi-VN", options);
+          var dateFormated = result.date.toLocaleDateString('vi-VN', options);
           result.date = dateFormated;
         }
         res.json(data);
@@ -117,18 +117,18 @@ class PurchaseController {
   }
   delivering(req, res, next) {
     purchase
-      .find({ userID: req.session.user._id })
+      .find({ userID: useId })
 
-      .populate("userID", "name")
-      .populate("list.optionID")
+      .populate('userID', 'name')
+      .populate('list.optionID')
       .populate({
-        path: "list.optionID",
+        path: 'list.optionID',
         populate: {
-          path: "item",
-          select: "name type brand",
+          path: 'item',
+          select: 'name type brand',
         },
       })
-      .find({ status: "Đang giao" })
+      .find({ status: 'Đang giao' })
       .then((data) => {
         data = util.mutipleMongooseToObject(data);
 
@@ -142,14 +142,14 @@ class PurchaseController {
             });
           }
           var options = {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "numeric",
-            minute: "numeric",
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
           };
-          var dateFormated = result.date.toLocaleDateString("vi-VN", options);
+          var dateFormated = result.date.toLocaleDateString('vi-VN', options);
           result.date = dateFormated;
         }
 
@@ -158,7 +158,7 @@ class PurchaseController {
   }
   checkout(req, res, next) {
     cart
-      .find({ userID: req.session.user._id })
+      .find({ userID: useId })
 
       .then((data) => {
         var object = {
@@ -172,15 +172,15 @@ class PurchaseController {
             cart
               .updateOne(
                 {
-                  userID: req.session.user._id,
-                  "list.optionID": object.optionID,
+                  userID: useId,
+                  'list.optionID': object.optionID,
                 },
                 {
-                  $inc: { "list.$.num": object.num },
+                  $inc: { 'list.$.num': object.num },
                 }
               )
               .then((info) => {
-                res.redirect("/cart");
+                res.redirect('/cart');
               });
             break;
           }
@@ -189,13 +189,13 @@ class PurchaseController {
         if (count.toString() == data[0].list.length.toString()) {
           cart
             .updateOne(
-              { userID: req.session.user._id },
+              { userID: useId },
               {
                 $push: { list: object },
               }
             )
             .then((info) => {
-              res.redirect("/cart");
+              res.redirect('/cart');
             });
         }
         // res.json(data)
@@ -204,10 +204,10 @@ class PurchaseController {
   removeItem(req, res, next) {
     purchase
       .updateOne(
-        { userID: req.session.user._id },
+        { userID: useId },
         { $pull: { list: { optionID: req.params.id } } }
       )
-      .then(() => res.redirect("back"))
+      .then(() => res.redirect('back'))
       .catch(next);
   }
 }
