@@ -49,7 +49,7 @@ const CartPage = () => {
   const dispatch = useDispatch();
 
   const getCart = () => {
-    userRequest
+    userRequest()
       .get(`cart/${user.current._id}`)
       .then((res) => {
         setCart(res.data.list);
@@ -60,7 +60,7 @@ const CartPage = () => {
   };
 
   const changeQuantity = (optionID, color, quantity) => {
-    userRequest
+    userRequest()
       .put(`cart/${user.current._id}`, {
         optionID: optionID,
         quantity: quantity,
@@ -70,7 +70,7 @@ const CartPage = () => {
   };
 
   const deleteItem = (item) => {
-    userRequest
+    userRequest()
       .delete(`cart/${user.current._id}`, {
         data: item,
       })
@@ -89,7 +89,7 @@ const CartPage = () => {
     setReItem({ optionID, color });
   };
   const handlePurchase = () => {
-    userRequest
+    userRequest()
       .post(`cart/purchase/${user.current._id}`)
       .then()
       .catch((err) => console.log(err));

@@ -18,7 +18,7 @@ export default function Login() {
   const [errorText, setErrorText] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user.current);
+
   const handleInput = (name, value) => {
     setErrorText("");
     setFormData({ ...formData, [name]: `${value}` });
@@ -37,10 +37,14 @@ export default function Login() {
             console.log(res.data.message);
           } else {
             dispatch(loginSuccess(res.data));
-            userRequest.get(`cart/${res.data._id}`).then((res) => {
-              dispatch(setQuantity(res.data.list));
-            });
-            navigate("/");
+            setTimeout(() => {
+              userRequest()
+                .get(`cart/${res.data._id}`)
+                .then((res) => {
+                  dispatch(setQuantity(res.data.list));
+                });
+              navigate("/");
+            }, 500);
           }
         })
         .catch((res) => {
