@@ -3,172 +3,6 @@ const items = require('../models/Item');
 const cart = require('../models/Cart');
 
 class PhoneController {
-  addCart(req, res, next) {
-    items
-      .aggregate([
-        {
-          $match: {
-            $and: [
-              {
-                _id: req.query.itemID,
-              },
-              {
-                type: 'phone',
-              },
-            ],
-          },
-        },
-        {
-          $lookup: {
-            from: 'options',
-            localField: 'slug',
-            foreignField: 'slug',
-            as: 'slug',
-          },
-        },
-        {
-          $project: {
-            'slug._id': 1,
-            _id: 1,
-            'slug.color': 1,
-          },
-        },
-      ])
-
-      .then((items) => {
-        var object = {
-          optionID: items[0].slug[0]._id,
-          num: 1,
-          color: items[0].slug[0].color[0].name,
-        };
-        cart
-          .find({ userID: req.session.user._id })
-
-          .then((data) => {
-            let count = 0;
-            for (let item of data[0].list) {
-              if (item.optionID.toString() == object.optionID.toString()) {
-                cart
-                  .updateOne(
-                    {
-                      userID: req.session.user._id,
-                      'list.optionID': object.optionID,
-                    },
-                    {
-                      $inc: { 'list.$.num': 1 },
-                    }
-                  )
-                  .then((info) => {
-                    res.redirect('back');
-                  });
-                break;
-              }
-              ++count;
-            }
-            if (count.toString() == data[0].list.length.toString()) {
-              cart
-                .updateOne(
-                  { userID: req.session.user._id },
-                  {
-                    $push: { list: object },
-                  }
-                )
-                .then((info) => {
-                  res.redirect('back');
-                });
-            }
-          });
-
-        //	res.json(object)
-      })
-
-      .catch(next);
-  }
-  checkout(req, res, next) {
-    items
-      .aggregate([
-        {
-          $match: {
-            $and: [
-              {
-                _id: req.query.itemID,
-              },
-              {
-                type: 'phone',
-              },
-            ],
-          },
-        },
-        {
-          $lookup: {
-            from: 'options',
-            localField: 'slug',
-            foreignField: 'slug',
-            as: 'slug',
-          },
-        },
-        {
-          $project: {
-            'slug._id': 1,
-            _id: 1,
-            'slug.color': 1,
-          },
-        },
-      ])
-
-      .then((items) => {
-        // items = mongoose.mutipleMongooseToObject(items);
-        var object = {
-          optionID: items[0].slug[0]._id,
-          num: 1,
-          color: items[0].slug[0].color[0].name,
-        };
-        cart
-          .find({ userID: req.session.user._id })
-
-          .then((data) => {
-            let count = 0;
-            for (let item of data[0].list) {
-              if (item.optionID.toString() == object.optionID.toString()) {
-                cart
-                  .updateOne(
-                    {
-                      userID: req.session.user._id,
-                      'list.optionID': object.optionID,
-                    },
-                    {
-                      $inc: { 'list.$.num': 1 },
-                    }
-                  )
-                  .then((info) => {
-                    res.redirect('/cart');
-                  });
-                break;
-              }
-              ++count;
-            }
-            if (count.toString() == data[0].list.length.toString()) {
-              cart
-                .updateOne(
-                  { userID: req.session.user._id },
-                  {
-                    $push: { list: object },
-                  }
-                )
-                .then((info) => {
-                  res.redirect('/cart');
-                });
-            }
-          });
-
-        //	res.json(object)
-      })
-
-      .catch(next);
-
-    // res.json("i love u")
-  }
-
   info(req, res, next) {
     items
       .aggregate([
@@ -430,9 +264,6 @@ class PhoneController {
     } else {
       arrayBrand = ['apple', 'asus', 'oppo', 'realme', 'samsung', 'xiaomi'];
     }
-    let perPage = 6;
-    let page = req.query.page || 1;
-    console.log('pageeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee: ', page);
     var sort = req.query.sort;
     var temp;
     if (sort != undefined) {
@@ -522,11 +353,6 @@ class PhoneController {
             },
           },
         ])
-        // .sort({
-        //   'slug.color.price': temp,
-        // })
-        // .skip(perPage * page - perPage)
-        // .limit(perPage)
         .then((items) => {
           res.json({
             items: items,
@@ -558,11 +384,6 @@ class PhoneController {
             },
           },
         ])
-        // .sort({
-        //   'slug.color.price': temp,
-        // })
-        // .skip(perPage * page - perPage)
-        // .limit(perPage)
         .then((items) => {
           res.json({
             items: items,
