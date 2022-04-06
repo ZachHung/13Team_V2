@@ -12,7 +12,6 @@ export default ({ updateBrand, updatePrice }) => {
   const [brand, setBrand] = useState([]);
   useEffect(() => {
     api.get('/phone/brand').then((res) => {
-      console.log(res.data);
       setBrand(res.data);
     });
   }, []);

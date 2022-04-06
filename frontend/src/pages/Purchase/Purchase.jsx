@@ -16,6 +16,11 @@ import ModalPopUp from '../modal';
 
 export default function Purchase() {
   const [productsList, setProductsList] = useState([]);
+  const [activeStatus, setActiveStatus] = useState({
+    all: true,
+    delivering: false,
+    delivered: false,
+  });
   const [modalState, setModalState] = useState(false);
   const user = useSelector((state) => state.user);
 
@@ -54,33 +59,60 @@ export default function Purchase() {
   const handleClickAllProduct = () => {
     console.log('all');
     getPurchase();
+    setActiveStatus({
+      all: true,
+      delivering: false,
+      delivered: false,
+    });
   };
   const handleClickDelivering = () => {
     console.log('delivering');
 
     getDeliveringPurchase();
+    setActiveStatus({
+      all: false,
+      delivering: true,
+      delivered: false,
+    });
   };
   const handleClickDelivered = () => {
     console.log('delovered');
 
     getDeliveredPurchase();
+    setActiveStatus({
+      all: false,
+      delivering: false,
+      delivered: true,
+    });
   };
+
   return (
     <>
       <Header />
       <section className="container_purchase">
         <div className="status_menu">
-          <div className="statusAll" onClick={() => handleClickAllProduct()}>
+          <div
+            className={activeStatus.all ? 'statusAll active' : 'statusAll'}
+            onClick={() => handleClickAllProduct()}
+          >
             <a>Tất cả</a>
           </div>
           <div
-            className="statusDelivering"
+            className={
+              activeStatus.delivering
+                ? 'statusDelivering active'
+                : 'statusDelivering'
+            }
             onClick={() => handleClickDelivering()}
           >
             <a>Đang giao </a>
           </div>
           <div
-            className="statusDelivered"
+            className={
+              activeStatus.delivered
+                ? 'statusDelivered active'
+                : 'statusDelivered'
+            }
             onClick={() => handleClickDelivered()}
           >
             <a>Đã giao</a>

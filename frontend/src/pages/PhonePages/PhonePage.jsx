@@ -34,29 +34,39 @@ function PhonePage() {
   const [phoneList, setPhoneList] = useState([]);
   // add cart
   const handleAddCart = (optionParam, colorParam) => {
-    userRequest
-      .post(`cart/add/${user._id}`, {
-        optionID: optionParam,
-        color: colorParam,
-      })
-      .then((res) => {
-        // dispatch(setQuantity(res.data.list));
-      })
-      .catch((err) => console.log(err));
+    // if user is guest
+    if (user == null || user == undefined) {
+      navigateCart('../login');
+    }
+    // if user is costumer
+    else {
+      userRequest()
+        .post(`cart/add/${user._id}`, {
+          optionID: optionParam,
+          color: colorParam,
+        })
+        .then((res) => {})
+        .catch((err) => console.log(err));
+    }
   };
   // buy product
   const navigateCart = useNavigate();
   const handleBuyProduct = (optionParam, colorParam) => {
-    userRequest
-      .post(`cart/add/${user._id}`, {
-        optionID: optionParam,
-        color: colorParam,
-      })
-      .then((res) => {
-        // dispatch(setQuantity(res.data.list));
-      })
-      .catch((err) => console.log(err));
-    navigateCart('../cart');
+    // if user is guest
+    if (user == null || user == undefined) {
+      navigateCart('../login');
+    }
+    // if user is costumer
+    else {
+      userRequest()
+        .post(`cart/add/${user._id}`, {
+          optionID: optionParam,
+          color: colorParam,
+        })
+        .then((res) => {})
+        .catch((err) => console.log(err));
+      navigateCart('../cart');
+    }
   };
   // filter
   const [brand, setBrand] = useState([]);
@@ -64,7 +74,6 @@ function PhonePage() {
   // retrive name brand array
   useEffect(() => {
     api.get('/phone/brand/name').then((res) => {
-      console.log('checkbrandname log 1: ', res.data);
       setBrandName(res.data);
     });
   }, []);
@@ -96,15 +105,9 @@ function PhonePage() {
 
   useEffect(() => {
     api.get(`/phone${urlString}`).then((res) => {
-      console.log(res.data);
       setPhoneList(res.data.items);
     });
   }, [urlString]);
-
-  console.log('phoneList', phoneList);
-  console.log('urlString: ', urlString);
-
-  console.log('pathname: ', `/phone${urlString}`);
 
   const handleCheckBrand = (name) => {
     setCheckedBrand((prev) => {
@@ -116,7 +119,6 @@ function PhonePage() {
       }
     });
   };
-  console.log(checkedBrand);
   const handleCheckPrice = (name) => {
     setCheckedPrice((prev) => {
       const isExist = checkedPrice.includes(name);
@@ -127,7 +129,6 @@ function PhonePage() {
       }
     });
   };
-  console.log(checkedPrice);
   const handleCheckAllBrand = () => {
     setCheckedBrand(brandName);
   };
@@ -226,6 +227,7 @@ function PhonePage() {
                       checked={
                         checkedBrand.length == 6 || checkedBrand.length == 0
                       }
+                      onChange={() => console.log('fix checked warning')}
                     />
                     <label>
                       <span>Tất cả</span>
@@ -239,6 +241,7 @@ function PhonePage() {
                       <input
                         type="checkbox"
                         checked={checkedBrand.includes(item.name)}
+                        onChange={() => console.log('fix checked warning')}
                       />
                       <label>
                         <span>{item.name}</span>
@@ -259,6 +262,7 @@ function PhonePage() {
                       checked={
                         checkedPrice.length == 4 || checkedPrice.length == 0
                       }
+                      onChange={() => console.log('fix checked warning')}
                     />
                     <label>
                       <span>Tất cả</span>
@@ -268,6 +272,7 @@ function PhonePage() {
                     <input
                       type="checkbox"
                       checked={checkedPrice.includes('duoi-2-trieu')}
+                      onChange={() => console.log('fix checked warning')}
                     />
                     <label>
                       <span>Dưới 2 triệu</span>
@@ -277,6 +282,7 @@ function PhonePage() {
                     <input
                       type="checkbox"
                       checked={checkedPrice.includes('tu-2-5-trieu')}
+                      onChange={() => console.log('fix checked warning')}
                     />
                     <label>
                       <span>Từ 2 đến 5 triệu</span>
@@ -286,6 +292,7 @@ function PhonePage() {
                     <input
                       checked={checkedPrice.includes('tu-5-14-trieu')}
                       type="checkbox"
+                      onChange={() => console.log('fix checked warning')}
                     />
                     <label>
                       <span>Từ 5 đến 14 triệu</span>
@@ -295,6 +302,7 @@ function PhonePage() {
                     <input
                       type="checkbox"
                       checked={checkedPrice.includes('tren-14-trieu')}
+                      onChange={() => console.log('fix checked warning')}
                     />
                     <label>
                       <span>Trên 14 triệu</span>
@@ -368,12 +376,7 @@ function PhonePage() {
                         </div>
                       </div>
                       <div className="product-btn">
-                        <form
-                          className="buy-btn"
-                          // method="POST"
-                          // action="phone/cart?itemID={{phone._id}}"
-                          // data="{{phone._id}}"
-                        >
+                        <form className="buy-btn">
                           <button
                             className="btn btn-buy btn-sm"
                             type="submit"
@@ -387,12 +390,7 @@ function PhonePage() {
                             <p>MUA</p>
                           </button>
                         </form>
-                        <form
-                          className="add-btn"
-                          // method="POST"
-                          // action="phone/addcart?itemID={{phone._id}}"
-                          // data="{{phone._id}}"
-                        >
+                        <form className="add-btn">
                           <button
                             className="btn btn-addCart btn-sm"
                             type="submit"

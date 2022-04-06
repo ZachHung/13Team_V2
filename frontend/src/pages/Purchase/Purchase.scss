@@ -25,21 +25,20 @@
       .statusAll {
         display: flex;
         justify-content: center;
-        background-color: black;
+        background-color: white;
         /* padding: 1.5rem; */
         width: 33.33%;
         height: 100%;
       }
       
-      .statusAll a {
-        color: #fff;
-      }
+      // .statusAll a {
+      //   color: #fff;
+      // }
       
       .statusDelivering {
         display: flex;
         justify-content: center;
         background-color: white;
-        /* padding: 1.5rem; */
         width: 33.33%;
         height: 100%;
       }
@@ -48,11 +47,15 @@
         display: flex;
         justify-content: center;
         background-color: white;
-        /* padding: 1.5rem; */
         width: 33.33%;
         height: 100%;
       }
-      
+      .active{
+        background-color: black;
+        a{
+          color: #fff;
+        }
+      }
       .search {
         padding-top: 1rem;
         display: flex;
