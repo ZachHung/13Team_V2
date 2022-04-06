@@ -58,6 +58,7 @@ header {
     }
     .links > a,
     .utility .icon {
+      cursor: pointer;
       position: relative;
       color: #fff;
       text-transform: none;
@@ -173,6 +174,73 @@ header {
         transform-origin: top center;
         &.active {
           display: flex;
+        }
+      }
+      .dropdown {
+        user-select: none;
+        position: relative;
+        ul {
+          li:nth-child(2) {
+            border-top: 1px solid gray;
+            border-radius: 1rem;
+          }
+          li:not(:first-child) svg {
+            background-color: rgb(69, 69, 69);
+            color: whitesmoke;
+            padding: 1rem;
+            border-radius: 50%;
+            margin: 0 1.25rem;
+            width: 2.5rem;
+            height: 2.5rem;
+          }
+          padding: 1rem;
+          border-radius: 1rem;
+          border: 1px solid gray;
+          z-index: 10;
+          background-color: black;
+          position: absolute;
+          @media only screen and (max-width: 739px) {
+            li:first-child svg {
+              width: 2.5rem;
+            }
+            padding: 0 0 0 2rem;
+            position: initial;
+            border: none;
+            align-items: flex-end;
+            li:not(:first-child) {
+              flex-direction: row-reverse;
+              justify-content: flex-start;
+            }
+          }
+          right: 1rem;
+          top: 4.5rem;
+          display: none;
+          &.opened {
+            display: flex;
+          }
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          width: 40rem;
+          margin: 0 0;
+          li {
+            &:not(:first-child):hover {
+              cursor: pointer;
+              background-color: rgb(44, 44, 44);
+            }
+            &:first-child {
+              justify-content: center;
+            }
+            display: flex;
+            border-radius: 1rem;
+            align-items: center;
+            justify-content: flex-start;
+            @media only screen and (max-width: 739px) {
+              justify-content: flex-end;
+            }
+            padding: 1rem 0.5rem;
+            width: 100%;
+          }
         }
       }
       .searchbox {

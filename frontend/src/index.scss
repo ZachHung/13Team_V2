@@ -10,6 +10,7 @@ a,
 a:hover,
 a:visited {
   text-decoration: none;
+  color: unset;
 }
 /* width */
 ::-webkit-scrollbar {
