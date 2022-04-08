@@ -27,7 +27,7 @@ class ItemController {
               { name: data[0].name, href: "" },
             ];
             let mainItem = options.filter((option) => {
-              return (option.detail = capacity);
+              return option.detail === capacity;
             });
 
             let item = data.filter((phone) => phone.slug == type)[0];
@@ -88,7 +88,7 @@ class ItemController {
               { name: data[0].name, href: "" },
             ];
             let mainItem = options.filter((option) => {
-              return (option.detail = capacity);
+              return option.detail === capacity;
             });
 
             let item = data.filter((phone) => phone.slug == type)[0];

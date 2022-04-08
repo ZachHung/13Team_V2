@@ -1,21 +1,22 @@
-import HomePage from './pages/home';
-import PhonePage from './pages/PhonePages/PhonePage';
-import NotFound from './pages/NotFound';
-import Purchase from './pages/Purchase/Purchase';
+import HomePage from "./pages/home";
+import PhonePage from "./pages/PhonePages/PhonePage";
+import NotFound from "./pages/NotFound";
+import Purchase from "./pages/Purchase/Purchase";
 
-import './App.scss';
-import LoginPage from './pages/login/Login';
-import Register from './pages/register/Register';
-import Recovery from './pages/recovery/Recovery';
-import { Route, Routes } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import React from 'react';
+import "./App.scss";
+import LoginPage from "./pages/login/Login";
+import Register from "./pages/register/Register";
+import Recovery from "./pages/recovery/Recovery";
+import { Route, Routes } from "react-router-dom";
+import { useSelector } from "react-redux";
+import React from "react";
 
-import PrivateRoute from './routes/PrivateRoute';
-import AuthUserRoute from './routes/AuthUserRoute';
-import Admin from './pages/Admin';
-import CartPage from './pages/Cart';
-import ScrollButton from './components/scrollBtn';
+import ProductPage from "./pages/Product/ProductPage";
+import PrivateRoute from "./routes/PrivateRoute";
+import AuthUserRoute from "./routes/AuthUserRoute";
+import Admin from "./pages/Admin";
+import CartPage from "./pages/Cart";
+import ScrollButton from "./components/scrollBtn";
 function App() {
   const isAdmin = useSelector((state) => state.user.isAdmin);
   return (
@@ -25,7 +26,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/phone" element={<PhonePage />} />
-
+        <Route path="/phone/:id" element={<ProductPage></ProductPage>}></Route>
         {/* end publicRoute */}
 
         {/* start private Route */}

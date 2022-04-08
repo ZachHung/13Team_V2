@@ -1,0 +1,100 @@
+.swiper__container {
+  .swiper-button-prev {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 3rem 2rem 3rem 4rem;
+    border-radius: 50% 50%;
+    left: -30px;
+    right: auto;
+    transition: transform ease 1s;
+  }
+
+  .swiper-button-prev::after {
+    content: "prev";
+    font-size: 20px;
+    font-weight: 900;
+  }
+  .swiper-button-next {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 3rem 4rem 3rem 2rem;
+    border-radius: 50% 50%;
+    right: -30px;
+    left: auto;
+    transition: transform ease 1s;
+    animation: nextIcon ease-in 0.25s;
+  }
+
+  .swiper-button-next::after {
+    content: "next";
+    font-size: 20px;
+    font-weight: 900;
+  }
+  .swiper-button-disabled {
+    opacity: 0.5;
+    cursor: default !important;
+    transform: scale(50%);
+  }
+  .swiper-button-disabled::after {
+    font-size: 10px !important;
+  }
+  .mySwiper2 {
+    padding: 2rem 1rem;
+    box-shadow: 0 0 1rem rgb(0 0 0 / 60%);
+    border-radius: 1rem 1rem;
+    position: relative;
+    height: 40rem;
+    .swiper-slide {
+      background-size: cover;
+      background-position: center;
+      margin-right: 1rem !important;
+
+      img {
+        height: unset;
+        width: 100%;
+      }
+    }
+  }
+  .mySwiper2:hover .swiper-button-next {
+    display: flex;
+  }
+  .mySwiper2:hover .swiper-button-prev {
+    display: flex;
+  }
+  .mySwiper {
+    height: 80px;
+    box-sizing: border-box;
+    padding: 10px 0;
+    .swiper-slide {
+      height: 5.5rem;
+      border: 1px solid #ccc;
+      border-radius: 1rem;
+      padding: 0.5rem 0.5rem;
+      width: 5.5rem !important;
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .swiper-slide-thumb-active {
+      border: 1px solid #ff0000;
+    }
+  }
+  @keyframes nextIcon {
+    from {
+      transform: translateX(10px);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  @keyframes prevIcon {
+    from {
+      transform: translateX(-10px);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+}

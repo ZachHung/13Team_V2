@@ -1,0 +1,34 @@
+.product__container {
+  box-shadow: 0 4px 5px -2px #ccc;
+  padding-bottom: 2rem;
+  .product {
+    .product__name {
+      height: 5rem;
+      padding: 1.6rem 0 1.6rem 20rem;
+      border-bottom: 1px solid #ccc;
+      font-weight: bold;
+      font-size: 2rem;
+      h1 {
+        line-height: 2rem;
+      }
+    }
+    .product__detail {
+      display: flex;
+      margin: 2rem 200px;
+
+      .product__swiper {
+        width: 33%;
+      }
+      .product__options {
+        width: 33%;
+
+        margin-left: 1rem;
+      }
+      .product__about {
+        width: 33%;
+
+        margin-left: 1rem;
+      }
+    }
+  }
+}
