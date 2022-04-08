@@ -1,0 +1,109 @@
+.productSame__container {
+  margin: 2rem 20rem;
+  .productSame__title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .swiper-button-prev {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 3rem 2rem 3rem 4rem;
+    border-radius: 50% 50%;
+    left: -30px;
+    right: auto;
+    transition: transform ease 1s;
+    animation: prevIcon ease 1s;
+  }
+
+  .swiper-button-prev::after {
+    content: "prev";
+    font-size: 20px;
+    font-weight: 900;
+    color: white;
+  }
+  .swiper-button-next {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 3rem 4rem 3rem 2rem;
+    border-radius: 50% 50%;
+    right: -30px;
+    left: auto;
+    transition: transform ease 1s;
+    animation: nextIcon ease 0.5s;
+  }
+
+  .swiper-button-next::after {
+    content: "next";
+    font-size: 20px;
+    font-weight: 900;
+    color: white;
+  }
+  .swiper-button-disabled {
+    opacity: 0.5;
+    cursor: default !important;
+    transform: scale(50%);
+  }
+  .swiper-button-disabled::after {
+    font-size: 10px !important;
+  }
+  .mySwiper {
+    height: 30rem;
+    padding: 12px 1px;
+
+    .swiper-slide {
+      box-shadow: 0 0 4px rgb(0 0 0 / 60%);
+      width: 250;
+      height: 100%;
+      border-radius: 2rem;
+      text-align: none;
+      transition: transform ease 0.2s;
+
+      img {
+        width: 80%;
+        display: block;
+        margin: 2rem auto 1rem auto;
+      }
+      .product__info {
+        margin-left: 2rem;
+        .product__name {
+          font-weight: bold;
+        }
+        .product__newPrice {
+          color: #d70018;
+        }
+        .product__oldPrice {
+          margin-left: 1rem;
+          text-decoration: line-through;
+        }
+      }
+    }
+    .swiper-slide:hover {
+      transform: scale(102%);
+      box-shadow: 0 0 8px rgba(0 0 0 / 80%);
+      cursor: pointer;
+      transition: transform ease 0.5s;
+    }
+  }
+  .mySwiper:hover .swiper-button-next {
+    display: flex;
+  }
+  .mySwiper:hover .swiper-button-prev {
+    display: flex;
+  }
+  @keyframes nextIcon {
+    from {
+      transform: translateX(10px);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  @keyframes prevIcon {
+    from {
+      transform: translateX(-10px);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+}
