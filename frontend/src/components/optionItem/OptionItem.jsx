@@ -3,7 +3,8 @@ import "./OptionItem.scss";
 import { Link } from "react-router-dom";
 const OptionItem = ({
   name,
-  price,
+  newPrice,
+  oldPrice,
   img,
   alt,
   active,
@@ -11,23 +12,27 @@ const OptionItem = ({
   style,
   index,
   clickColor,
+  number,
+  disable,
 }) => {
-  const handle = (e) => {
-    clickColor(index);
+  const handleColor = (e) => {
+    if (number !== 0) clickColor(index, newPrice, oldPrice, name);
   };
+
   return (
     <>
       {img ? (
         <div
-          className={active ? "item active" : "item"}
+          className={`item ${active && "active"} ${disable && "disable"}`}
           style={style && style}
-          onClick={(e) => handle(e)}
+          onClick={(e) => handleColor(e)}
+          num={number}
         >
           <img src={img} alt={alt} />
 
           <div className="item__info">
             <p className="item__name">{name}</p>
-            <p className="item__price">{price}</p>
+            <p className="item__price">{newPrice}</p>
           </div>
         </div>
       ) : (
@@ -36,9 +41,9 @@ const OptionItem = ({
             className={active ? "item active" : "item"}
             style={style && style}
           >
-            <div className="item__info">
+            <div className="item__info ">
               <p className="item__name">{name}</p>
-              <p className="item__price">{price}</p>
+              <p className="item__price">{newPrice}</p>
             </div>
           </div>
         </Link>

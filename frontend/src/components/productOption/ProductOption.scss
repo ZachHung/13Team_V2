@@ -1,5 +1,4 @@
 .productOption__container {
-  margin-left: 1rem;
   .product__newPrice {
     font-size: 18px;
     font-weight: bold;
@@ -19,6 +18,7 @@
     margin-top: 2rem;
     .colorOption__title {
       font-weight: bold;
+      font-size: 18px;
     }
     .colorOption {
       display: flex;

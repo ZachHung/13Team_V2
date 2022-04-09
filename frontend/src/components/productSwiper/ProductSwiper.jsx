@@ -16,10 +16,8 @@ import { FreeMode, Navigation, Thumbs } from "swiper";
 export default function ProductSwiper({ swiperArray }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const controlSwiper = useRef();
-  const pathImage = "http://localhost:5000";
-  const handle = () => {
-    console.log(typeof controlSwiper.current.swiper.slideTo(1, 1000));
-  };
+  const pathImage = process.env.REACT_APP_IMG;
+
   return (
     <div className="swiper__container">
       <Swiper
@@ -55,7 +53,6 @@ export default function ProductSwiper({ swiperArray }) {
           </SwiperSlide>
         ))}
       </Swiper>
-      <button onClick={handle}>Click</button>
     </div>
   );
 }

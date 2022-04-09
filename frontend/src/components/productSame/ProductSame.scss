@@ -1,5 +1,8 @@
 .productSame__container {
   margin: 2rem 20rem;
+  @media only screen and (max-width: 739px) {
+    margin: 2rem 2rem;
+  }
   .productSame__title {
     font-size: 18px;
     font-weight: bold;
@@ -57,6 +60,9 @@
       border-radius: 2rem;
       text-align: none;
       transition: transform ease 0.2s;
+      @media only screen and (max-width: 768px) {
+        height: 85%;
+      }
 
       img {
         width: 80%;
@@ -65,15 +71,30 @@
       }
       .product__info {
         margin-left: 2rem;
+        @media only screen and (max-width: 768px) {
+          margin-left: 1rem;
+        }
         .product__name {
           font-weight: bold;
+          font-size: 1.4rem;
+          @media only screen and (max-width: 768px) {
+            font-size: 1.2rem;
+          }
         }
         .product__newPrice {
           color: #d70018;
+          font-size: 1.4rem;
+          @media only screen and (max-width: 768px) {
+            font-size: 1.2rem;
+          }
         }
         .product__oldPrice {
           margin-left: 1rem;
+          font-size: 1.4rem;
           text-decoration: line-through;
+          @media only screen and (max-width: 768px) {
+            font-size: 1.2rem;
+          }
         }
       }
     }

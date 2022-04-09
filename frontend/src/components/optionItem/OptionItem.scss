@@ -5,6 +5,7 @@
   align-items: center;
   border-radius: 1rem;
   width: 11rem;
+  max-width: 11rem;
   padding: 0 1px;
   margin-top: 10px;
   img {
@@ -29,23 +30,4 @@
 }
 .item:hover {
   cursor: pointer;
-}
-.active {
-  border: 1px solid #ff0000 !important;
-  position: relative;
-}
-.active::after {
-  content: "";
-  width: 15px;
-  height: 10px;
-  border-radius: 0.5rem 0 0.5rem 0;
-  background: #d70018;
-  background-image: url(https://cdn.cellphones.com.vn/media/icons/checkmark.svg);
-  background-size: 50%;
-  background-repeat: no-repeat;
-  background-position: center;
-  color: white;
-  position: absolute;
-  top: -1px;
-  left: -1px;
 }
