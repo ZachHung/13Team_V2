@@ -7,6 +7,7 @@ import ProductSwiper from "../../components/productSwiper/ProductSwiper";
 import ProductOption from "../../components/productOption/ProductOption";
 import ProductSame from "../../components/productSame/ProductSame";
 import ProductAbout from "../../components/productAbout/ProductAbout";
+import ProductInfo from "../../components/productInfo/ProductInfo";
 import { publicRequest } from "../../utils/CallApi";
 import { useEffect, useState } from "react";
 import "./ProductPage.scss";
@@ -14,9 +15,10 @@ import "./ProductPage.scss";
 const ProductPage = () => {
   const location = useLocation();
   const [data, setData] = useState();
+  const [openInfo, setOpenInfo] = useState(false);
+  const SwiperChild = useRef();
   let route = location.pathname;
   route = route.slice(1, route.length);
-  const SwiperChild = useRef();
   const changeSlide = (index) => {
     SwiperChild.current
       .getElementsByClassName("swiper")[0]
@@ -27,7 +29,12 @@ const ProductPage = () => {
       setData(res.data);
     });
   }, [route]);
-
+  const handleOpenInfo = () => {
+    setOpenInfo(true);
+  };
+  const handleCloseInfo = () => {
+    setOpenInfo(false);
+  };
   return !data ? (
     <></>
   ) : (
@@ -40,10 +47,10 @@ const ProductPage = () => {
             <h1>{data.item.name}</h1>
           </div>
           <div className="product__detail">
-            <div className="product__swiper" ref={SwiperChild}>
+            <div className="product__swiper col-md-4" ref={SwiperChild}>
               <ProductSwiper swiperArray={data.color}></ProductSwiper>
             </div>
-            <div className="product__options">
+            <div className="product__options col-md-4">
               <ProductOption
                 capacityOptions={data.options}
                 colorOptions={data.color}
@@ -52,13 +59,23 @@ const ProductPage = () => {
                 changeSlide={changeSlide}
               ></ProductOption>
             </div>
-            <div className="product__about">
-              <ProductAbout></ProductAbout>
+            <div className="product__about col-md-4">
+              <ProductAbout
+                demoArray={data.demoinfo}
+                handleOpenInfo={handleOpenInfo}
+              ></ProductAbout>
             </div>
           </div>
         </div>
       </div>
-      <ProductSame></ProductSame>
+      <ProductSame sameArray={data.sameItem}></ProductSame>
+      {openInfo && (
+        <ProductInfo
+          infoArray={data.item.techInfo}
+          handleCloseInfo={handleCloseInfo}
+        ></ProductInfo>
+      )}
+
       <Footer color="#f5f5f5" />
     </>
   );

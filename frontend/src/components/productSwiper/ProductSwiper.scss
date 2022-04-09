@@ -77,6 +77,9 @@
         height: 100%;
       }
     }
+    .swiper-slide:hover {
+      cursor: pointer !important;
+    }
     .swiper-slide-thumb-active {
       border: 1px solid #ff0000;
     }
