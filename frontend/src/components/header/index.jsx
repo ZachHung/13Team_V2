@@ -131,22 +131,28 @@ const Header = ({ color }) => {
                     {user.name}
                   </li>
                   <li>
-                    <FontAwesomeIcon icon={faUserGear} className="icon" />
-                    <Link to="">Cài đặt người dùng</Link>
+                    <Link to="">
+                      <FontAwesomeIcon icon={faUserGear} className="icon" />
+                      Cài đặt người dùng
+                    </Link>
                   </li>
                   <li>
-                    <FontAwesomeIcon
-                      icon={faClockRotateLeft}
-                      className="icon"
-                    />
-                    <Link to="/purchase">Lịch sử đơn hàng</Link>
+                    <Link to="/purchase">
+                      <FontAwesomeIcon
+                        icon={faClockRotateLeft}
+                        className="icon"
+                      />
+                      Lịch sử đơn hàng
+                    </Link>
                   </li>
                   <li onClick={() => dispatch(logout())}>
-                    <FontAwesomeIcon
-                      icon={faRightFromBracket}
-                      className="icon"
-                    />
-                    Đăng xuất
+                    <Link to="#">
+                      <FontAwesomeIcon
+                        icon={faRightFromBracket}
+                        className="icon"
+                      />
+                      Đăng xuất
+                    </Link>
                   </li>
                 </ul>
               </div>

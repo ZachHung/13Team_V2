@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import "./style.scss";
 import { userRequest } from "../../utils/CallApi";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { currentChange } from "../../utils/const";
 import {
   faXmark,
   faPlus,
@@ -13,14 +14,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { setQuantity } from "../../redux/cart";
-
-const currentChange = (price) => {
-  price = new Intl.NumberFormat("vi-VN", {
-    style: "currency",
-    currency: "VND",
-  }).format(price);
-  return price;
-};
 const getTotal = (cart) => {
   var total = 0;
   for (let item of cart) {
@@ -39,9 +32,9 @@ function isValid(str) {
 
 const CartPage = () => {
   const user = useSelector((state) => state.user);
+  const removeModalRef = useRef();
   const [cart, setCart] = useState([]);
-  const [deviveryFee, setDeviveryFee] = useState(0);
-  const [modalState, setModalState] = useState(false);
+  const [deliveryFee, setDeliveryFee] = useState(30000);
   const [isChanged, setIsChanged] = useState(false);
   const [ReItem, setReItem] = useState({ optionID: "", color: "" });
   const [isLoading, setIsLoading] = useState(true);
@@ -76,7 +69,7 @@ const CartPage = () => {
       })
       .then(() => {
         setIsChanged(!isChanged);
-        setModalState(false);
+        removeModalRef.current.classList.add("out");
       });
   };
 
@@ -85,8 +78,11 @@ const CartPage = () => {
       changeQuantity(optionID, color, target.value);
   };
   const handleRemoveItem = (optionID, color) => {
-    setModalState(true);
     setReItem({ optionID, color });
+    const removeModal = removeModalRef.current;
+    if (!removeModal.classList.contains("opened"))
+      removeModal.classList.add("opened");
+    else removeModal.classList.remove("out");
   };
   const handlePurchase = () => {
     userRequest()
@@ -105,7 +101,7 @@ const CartPage = () => {
       <>
         <Header></Header>
         <div className="cartPage">
-          <section className="checkout-page">
+          <section className="content">
             <p>Đang tải...</p>
           </section>
         </div>
@@ -116,7 +112,28 @@ const CartPage = () => {
     <>
       <Header />
       <div className="cartPage">
-        <section className="checkout-page">
+        <div className={`remove-modal`} ref={removeModalRef}>
+          <div className="modal-background">
+            <div className="modal-container">
+              <div className="modal__content">Xóa sản phẩm khỏi giỏ hàng?</div>
+              <div className="modal__footer">
+                <button
+                  className="modal__button--confirm confirm-btn"
+                  onClick={() => deleteItem(ReItem)}
+                >
+                  Xoá
+                </button>
+                <button
+                  className="modal__button--cancel cancel-btn"
+                  onClick={() => removeModalRef.current.classList.add("out")}
+                >
+                  Huỷ
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section className="content">
           <aside className="box cart-container">
             <div className="box__heading">
               <span>1</span>
@@ -144,7 +161,7 @@ const CartPage = () => {
                         >
                           <img
                             src={
-                              "http://localhost:5000/" +
+                              process.env.REACT_APP_IMG +
                               item.optionID.color[0].image
                             }
                           />
@@ -228,7 +245,7 @@ const CartPage = () => {
                   <dl className="order__summary shipping-fee">
                     <dt className="order__summary--label">Phí vận chuyển</dt>
                     <dd className="order__summary--decription">
-                      {currentChange(deviveryFee)}
+                      {currentChange(deliveryFee)}
                     </dd>
                   </dl>
                 </div>
@@ -236,7 +253,7 @@ const CartPage = () => {
                   <dl className="order__summary">
                     <dt className="order__summary--label">Tổng cộng</dt>
                     <dd className="order__summary--decription">
-                      {currentChange(getTotal(cart) + deviveryFee)}
+                      {currentChange(getTotal(cart) + deliveryFee)}
                     </dd>
                   </dl>
                 </div>
@@ -319,9 +336,6 @@ const CartPage = () => {
                     <label htmlFor="house-number">
                       Số nhà, toà nhà, tên đường
                     </label>
-                    <small id="home-number-help">
-                      VD: 24 Toà nhà 3 Dương Kỳ Hiệp
-                    </small>
                   </div>
                   <div className="formBtn">
                     <button
@@ -344,28 +358,6 @@ const CartPage = () => {
           ) : (
             <></>
           )}
-          <div
-            className="remove-modal"
-            style={{ display: `${modalState ? "flex" : "none"}` }}
-          >
-            <div className="modal-container">
-              <div className="modal__content">Xóa sản phẩm khỏi giỏ hàng?</div>
-              <div className="modal__footer">
-                <button
-                  className="modal__button--confirm confirm-btn"
-                  onClick={() => deleteItem(ReItem)}
-                >
-                  Xoá
-                </button>
-                <button
-                  className="modal__button--cancel cancel-btn"
-                  onClick={() => setModalState(false)}
-                >
-                  Huỷ
-                </button>
-              </div>
-            </div>
-          </div>
         </section>
       </div>
       <Footer />
