@@ -147,7 +147,7 @@ const HomePage = () => {
                     <div className="grid-col-1">
                       <div className="spotlight__item">
                         <img
-                          src="http://localhost:5000/image/landing_page/slide2/asus-rog-phone-5s.jpg"
+                          src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/asus-rog-phone-5s.jpg`}
                           alt="Ảnh sản phẩm"
                         />
                         <p className="name">Asus Rog Phone 5s</p>
@@ -157,7 +157,7 @@ const HomePage = () => {
                       </div>
                       <div className="spotlight__item">
                         <img
-                          src="http://localhost:5000/image/landing_page/slide2/xiaomi-mi-11.png"
+                          src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/xiaomi-mi-11.png`}
                           alt="Ảnh sản phẩm"
                         />
                         <p className="name">Xiaomi Mi 11</p>
@@ -168,7 +168,7 @@ const HomePage = () => {
                     </div>
                     <div className="spotlight__item">
                       <img
-                        src="http://localhost:5000/image/landing_page/slide2/samsung-galaxy-s21-ultra.jpg"
+                        src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/samsung-galaxy-s21-ultra.jpg`}
                         alt="Samsung Week"
                       />
                       <p className="name">Galaxy S21 Ultra</p>
@@ -179,7 +179,7 @@ const HomePage = () => {
                     <div className="grid-col-1">
                       <div className="spotlight__item">
                         <img
-                          src="http://localhost:5000/image/landing_page/slide2/redmi-k40.jpg"
+                          src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/redmi-k40.jpg`}
                           alt="Ảnh sản phẩm"
                         />
                         <p className="name">Redmi K40</p>
@@ -189,7 +189,7 @@ const HomePage = () => {
                       </div>
                       <div className="spotlight__item">
                         <img
-                          src="http://localhost:5000/image/landing_page/slide2/iphone-11-pro-max-trang.jpg"
+                          src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/iphone-11-pro-max-trang.jpg`}
                           alt="Ảnh sản phẩm"
                         />
                         <p className="name">iPhone 11 Pro Max</p>
@@ -205,7 +205,7 @@ const HomePage = () => {
                     <div className="grid-col-1">
                       <div className="spotlight__item">
                         <img
-                          src="http://localhost:5000/image/landing_page/slide2/acer-aspire-7-a715.jpg"
+                          src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/acer-aspire-7-a715.jpg`}
                           alt="Ảnh sản phẩm"
                         />
                         <p className="name">Acer Aspire 7 A715</p>
@@ -215,7 +215,7 @@ const HomePage = () => {
                       </div>
                       <div className="spotlight__item">
                         <img
-                          src="http://localhost:5000/image/landing_page/slide2/acer-aspire-a315.jpg"
+                          src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/acer-aspire-a315.jpg`}
                           alt="Ảnh sản phẩm"
                         />
                         <p className="name">Acer Aspire A315</p>
@@ -227,7 +227,7 @@ const HomePage = () => {
                     <div className="grid-col-1">
                       <div className="spotlight__item">
                         <img
-                          src="http://localhost:5000/image/landing_page/slide2/hp-pavilion-15-eg0505tx.jpg"
+                          src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/hp-pavilion-15-eg0505tx.jpg`}
                           alt="Ảnh sản phẩm"
                         />
                         <p className="name">HP Pavilion 15</p>
@@ -237,7 +237,7 @@ const HomePage = () => {
                       </div>
                       <div className="spotlight__item">
                         <img
-                          src="http://localhost:5000/image/landing_page/slide2/macbook-air-m1-2020.jpg"
+                          src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/macbook-air-m1-2020.jpg`}
                           alt="Ảnh sản phẩm"
                         />
                         <p className="name">Macbook Air M1 2020</p>
@@ -248,7 +248,7 @@ const HomePage = () => {
                     </div>
                     <div className="spotlight__item">
                       <img
-                        src="http://localhost:5000/image/landing_page/slide2/acer-nitro-5.jpg"
+                        src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/acer-nitro-5.jpg`}
                         alt="Ảnh sản phẩm"
                       />
                       <p className="name">Acer Nitro 5 AN515 57</p>
@@ -262,7 +262,7 @@ const HomePage = () => {
                   <div className="spotlight grid-col-1-1-1">
                     <div className="spotlight__item">
                       <img
-                        src="http://localhost:5000/image/landing_page/slide2/ipad-mini-6.png"
+                        src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/ipad-mini-6.png`}
                         alt="Ảnh sản phẩm"
                       />
                       <p className="name">iPad Mini 6</p>
@@ -272,7 +272,7 @@ const HomePage = () => {
                     </div>
                     <div className="spotlight__item mobile-hiden">
                       <img
-                        src="http://localhost:5000/image/landing_page/slide2/ipad-pro-2021.png"
+                        src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/ipad-pro-2021.png`}
                         alt="Ảnh sản phẩm"
                       />
                       <p className="name"> iPad Pro 2021</p>
@@ -282,7 +282,7 @@ const HomePage = () => {
                     </div>
                     <div className="spotlight__item mobile-hiden">
                       <img
-                        src="http://localhost:5000/image/landing_page/slide2/samsung-galaxy-tab-s7.png"
+                        src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/samsung-galaxy-tab-s7.png`}
                         alt="Ảnh sản phẩm"
                       />
                       <p className="name">Galaxy Tab S7</p>
@@ -296,7 +296,7 @@ const HomePage = () => {
                   <div className="spotlight grid-col-1-1">
                     <div className="spotlight__item">
                       <img
-                        src="http://localhost:5000/image/landing_page/slide2/jbl_450_black.webp"
+                        src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/jbl_450_black.webp`}
                         alt="Ảnh sản phẩm"
                       />
                       <p className="name">Tai nghe JBL T450</p>
@@ -306,7 +306,7 @@ const HomePage = () => {
                     </div>
                     <div className="spotlight__item">
                       <img
-                        src="http://localhost:5000/image/landing_page/slide2/Remax-Proda-10000-mAh.jpg"
+                        src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/Remax-Proda-10000-mAh.jpg`}
                         alt="Ảnh sản phẩm"
                       />
                       <p className="name">Sạc dự phòng Remax Proda 10000mAh</p>
@@ -325,7 +325,7 @@ const HomePage = () => {
           <div className="spotlight grid-col-2-1-1">
             <div className="spotlight__item">
               <img
-                src="http://localhost:5000/image/landing_page/slide2/promotion2.webp"
+                src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/promotion2.webp`}
                 alt="Samsung Week"
               />
               <Link to="/phone?brand=samsung">
@@ -335,7 +335,7 @@ const HomePage = () => {
             <div className="grid-col-1">
               <div className="spotlight__item">
                 <img
-                  src="http://localhost:5000/image/landing_page/slide2/promotion1.webp"
+                  src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/promotion1.webp`}
                   alt="Ảnh sản phẩm"
                 />
                 <Link to="/phone/s21ultra-128GB">
@@ -344,7 +344,7 @@ const HomePage = () => {
               </div>
               <div className="spotlight__item">
                 <img
-                  src="http://localhost:5000/image/landing_page/slide2/promotion.webp"
+                  src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/promotion.webp`}
                   alt="Ảnh sản phẩm"
                 />
                 <Link to="/phone?brand=samsung">
@@ -355,7 +355,7 @@ const HomePage = () => {
             <div className="grid-col-1">
               <div className="spotlight__item">
                 <img
-                  src="http://localhost:5000/image/landing_page/slide2/promotion1.webp"
+                  src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/promotion1.webp`}
                   alt="Ảnh sản phẩm"
                 />
                 <Link to="/phone/s21ultra-128GB">
@@ -364,7 +364,7 @@ const HomePage = () => {
               </div>
               <div className="spotlight__item">
                 <img
-                  src="http://localhost:5000/image/landing_page/slide2/promotion1.webp"
+                  src={`${process.env.REACT_APP_IMG}/image/landing_page/slide2/promotion1.webp`}
                   alt="Ảnh sản phẩm"
                 />
                 <Link to="/phone/s21ultra-128GB">
