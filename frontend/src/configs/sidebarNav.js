@@ -21,7 +21,7 @@ const sidebarNav = [
         link: '/admin/customers',
         section: 'customers',
         icon: <i className='bx bx-user'></i>,
-        text: 'Khách hàng'
+        text: 'Người dùng'
     },
     {
         link: '/admin/stats',
