@@ -5,12 +5,12 @@ const Option = "./Option";
 const Cart = new Schema(
   {
     userID: {
-      type: String,
+      type: Schema.Types.ObjectId,
     },
     list: [
       {
         optionID: {
-          type: String,
+          type: Schema.Types.ObjectId,
           ref: "Option",
         },
         quantity: { type: Number, default: 1 },

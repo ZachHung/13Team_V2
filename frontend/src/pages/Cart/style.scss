@@ -17,9 +17,11 @@
     width: 80%;
     margin-left: auto;
     margin-right: auto;
+    gap: 2rem;
     @media only screen and (max-width: 770px) {
       flex-direction: column;
       width: 85%;
+      gap: 1rem;
     }
   }
   .box {
@@ -62,7 +64,6 @@
     position: -webkit-sticky;
     position: sticky;
     top: 2rem;
-    margin-right: 2rem;
     @media only screen and (max-width: 770px) {
       align-self: unset;
       margin-right: 0;
@@ -82,7 +83,7 @@
     justify-content: center;
     @media only screen and (max-width: 770px) {
       flex-direction: column;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
     }
   }
   .cart__item:not(:last-child) {
@@ -114,7 +115,7 @@
   .item__detail {
     font-size: 1.3rem;
     @media only screen and (max-width: 739px) {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
     }
   }
   .item__detail .fa-times {
@@ -156,7 +157,7 @@
     }
   }
   .detail__item-price {
-    font-weight: 500;
+    font-weight: 600;
     font-size: 1.6rem;
     @media only screen and (max-width: 770px) {
       font-size: 2rem;
@@ -209,7 +210,7 @@
     .sub-heading {
       padding: 1rem 3rem;
       @media only screen and (max-width: 770px) {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
       }
     }
     flex: 2;
@@ -227,6 +228,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    @media only screen and (max-width: 770px) {
+      margin: 3rem 0;
+    }
   }
   .user-information form {
     position: relative;
@@ -410,7 +414,7 @@
           animation: scaleUp 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
         }
       }
-      + .content {
+      + * {
         animation: scaleBack 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
       }
       &.out {
@@ -422,7 +426,7 @@
               forwards;
           }
         }
-        + .content {
+        + * {
           animation: scaleForward 0.5s cubic-bezier(0.165, 0.84, 0.44, 1)
             forwards;
         }
@@ -483,12 +487,12 @@
     background: rgba(0, 0, 0, 0);
   }
   100% {
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.7);
   }
 }
 @keyframes fadeOut {
   0% {
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.7);
   }
   100% {
     background: rgba(0, 0, 0, 0);
@@ -520,12 +524,12 @@
     transform: scale(1);
   }
   100% {
-    transform: scale(0.9);
+    transform: scale(0.92);
   }
 }
 @keyframes scaleForward {
   0% {
-    transform: scale(0.9);
+    transform: scale(0.92);
   }
   100% {
     transform: scale(1);
