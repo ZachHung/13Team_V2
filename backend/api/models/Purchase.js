@@ -1,24 +1,25 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const Purchase = new Schema(
   {
     userID: {
       type: String,
+      ref: 'user',
     },
     list: [
       {
         optionID: {
           type: String,
-          ref: "Option",
+          ref: 'Option',
         },
         quantity: { type: Number },
         color: String,
       },
     ],
-    status: { type: String, default: "Đang giao" },
+    status: { type: String, default: 'Đang giao' },
   },
   { timestamps: true },
-  { collection: "purchases" }
+  { collection: 'purchases' }
 );
-module.exports = mongoose.model("Purchase", Purchase);
+module.exports = mongoose.model('Purchase', Purchase);

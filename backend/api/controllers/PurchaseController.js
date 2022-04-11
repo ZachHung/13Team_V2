@@ -1,7 +1,10 @@
+const moment = require('moment');
 const purchase = require('../models/Purchase');
 const util = require('../../util/mongoose');
 const cart = require('../models/Cart');
+const { type } = require('express/lib/response');
 // const ID = useId; //userID của người dùng đã đăng nhập
+const year = '2022';
 const useId = '624a9edb4eb751d723d37e7f';
 class PurchaseController {
   index(req, res, next) {
@@ -178,6 +181,157 @@ class PurchaseController {
         { $pull: { list: { optionID: req.params.id } } }
       )
       .then(() => res.redirect('back'))
+      .catch(next);
+  }
+
+  // admin zone
+  getAllPurchase(req, res, next) {
+    purchase
+      .find()
+      .populate('userID', 'name')
+      .populate('list.optionID')
+      .populate({
+        path: 'list.optionID',
+        populate: {
+          path: 'item',
+          select: 'name type brand',
+        },
+      })
+      .then((data) => {
+        data = util.mutipleMongooseToObject(data);
+        // lọc ra những sản phẩm đã xóa, filter optionID = null
+        for (let result of data) {
+          result.list = result.list.filter((list) => {
+            return list.optionID !== null;
+          });
+          // lọc ra đúng sp đã mua, vì trong option có nhiều sp,
+
+          for (let item of result.list) {
+            item.optionID.color = item.optionID.color.filter((color) => {
+              return color.name === item.color;
+            });
+          }
+        }
+        res.json(data);
+        console.log('typeeeeeeeeeeeeeeeeee:', typeof data);
+      })
+      .catch(next);
+  }
+  // get all purchase by year
+  getAllPurchaseByYear(req, res, next) {
+    purchase
+      .find()
+      .populate('userID', 'name')
+      .populate('list.optionID')
+      .populate({
+        path: 'list.optionID',
+        populate: {
+          path: 'item',
+          select: 'name type brand',
+        },
+      })
+      .then((data) => {
+        data = util.mutipleMongooseToObject(data);
+        const start_date_of_the_year = `${req.query.year}-01-01`;
+        const end_date_of_the_year = `${req.query.year}-02-30`;
+        // lọc ra những sản phẩm đã xóa, filter optionID = null
+        for (let result of data) {
+          result.list = result.list.filter((list) => {
+            return list.optionID !== null;
+          });
+          // lọc ra đúng sp đã mua, vì trong option có nhiều sp,
+
+          for (let item of result.list) {
+            item.optionID.color = item.optionID.color.filter((color) => {
+              return color.name === item.color;
+            });
+          }
+
+          // get only year value
+          console.log(
+            'result.createdAt: ',
+            result.createdAt,
+            typeof result.createdAt
+          );
+          // example
+          // "createdAt": "Sat Apr 02 2022 20:57:09 GMT+0700 (Indochina Time)",
+          // "updatedAt": "2022-04-04T06:52:08.525Z"
+          // result.createdAt = result.createdAt.toString().slice(11, 15);
+        }
+        //filter by year
+        // data = data.filter((item) => item.createdAt == req.query.year);
+        console.log(
+          'start_date_of_the_year: ',
+          start_date_of_the_year,
+          'typeof: ',
+          start_date_of_the_year
+        );
+        console.log('end_date_of_the_year: ', end_date_of_the_year);
+        purchase
+          .find({
+            createdAt: {
+              $gte: start_date_of_the_year,
+              $lte: end_date_of_the_year,
+            },
+          })
+          .then((item) => {
+            res.json(item);
+          });
+        // res.json(data);
+      })
+      .catch(next);
+  }
+  getAllPurchaseByMonth(req, res, next) {
+    purchase
+      .find()
+      .populate('userID', 'name')
+      .populate('list.optionID')
+      .populate({
+        path: 'list.optionID',
+        populate: {
+          path: 'item',
+          select: 'name type brand',
+        },
+      })
+      .then((data) => {
+        data = util.mutipleMongooseToObject(data);
+        // lọc ra những sản phẩm đã xóa, filter optionID = null
+        for (let result of data) {
+          result.list = result.list.filter((list) => {
+            return list.optionID !== null;
+          });
+          // lọc ra đúng sp đã mua, vì trong option có nhiều sp,
+
+          for (let item of result.list) {
+            item.optionID.color = item.optionID.color.filter((color) => {
+              return color.name === item.color;
+            });
+          }
+
+          // get only year value
+          console.log(
+            'result.createdAt: ',
+            result.createdAt,
+            typeof result.createdAt
+          );
+          // example
+          // "createdAt": "Sat Apr 02 2022 20:57:09 GMT+0700 (Indochina Time)",
+          // "updatedAt": "2022-04-04T06:52:08.525Z"
+          result.createdAt = result.createdAt.toString().slice(4, 7);
+        }
+        //filter by month
+        const start_date_of_the_year = moment(year);
+        const end_date_of_the_year = moment(year).endOf('year');
+        console.log(
+          'start_date_of_the_year: ',
+          start_date_of_the_year,
+          'typeof: ',
+          start_date_of_the_year
+        );
+        console.log('end_date_of_the_year: ', end_date_of_the_year);
+        data = data.filter((item) => item.createdAt == req.query.month);
+        res.json(data);
+      })
       .catch(next);
   }
 }
