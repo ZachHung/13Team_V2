@@ -21,7 +21,7 @@ function UpdatePurchase() {
     return (
         <div className="container mt-4 mb-4">
             <h1 className="text-center heading">Cập nhật trạng thái đơn hàng</h1>
-            <form className="mt-4" method="POST" action={URL + "admin/purchases/update/" + purchase._id + "?_method=PUT"}>
+            <form className="mt-4" method="POST" action={URL + "admin/orders/update/" + purchase._id + "?_method=PUT"}>
                 <div className="mb-4">
                     <label className="form-label label_level_1">Mã đơn hàng</label>
                     <input disabled type="text" className="form-control my-input-tag" defaultValue={purchase._id} />
