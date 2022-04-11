@@ -6,6 +6,8 @@ const app = express();
 const route = require("./routes");
 const compression = require("compression");
 const { errorHandler } = require("./middlewares/errorHandler");
+const methodOverride = require('method-override');
+
 require("dotenv").config();
 
 // Compression and https redirection when in production mode
@@ -33,6 +35,10 @@ app.use(express.urlencoded({ extended: true }));
 // DB connect
 const db = require("./config/db");
 db.connect();
+
+//Override method (PUT, DELETE)
+app.use(methodOverride('_method'))
+
 
 //route//
 route(app);

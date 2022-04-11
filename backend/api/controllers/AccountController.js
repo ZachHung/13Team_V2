@@ -4,12 +4,14 @@ const cart = require("../models/Cart");
 const address = require("../models/Address");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
-var ObjectId = require ('mongodb').ObjectID;
+var ObjectId = require ('mongodb').Objectid;
 var recoveryCode = 9450;
 var confirmCode = 1234;
 var emailRecovery = "tnhut806@gmail.com";
 var sender = "tnhut1234@outlook.com";
 var password = "Trannhut1";
+var URL = "http://localhost:3000/"
+
 let transporter = nodemailer.createTransport({
   host: "smtp-mail.outlook.com",
   port: 587,
@@ -340,6 +342,25 @@ class AccountController {
     //     throw Error ('Có lỗi xảy ra, vui lòng thử lại!!');
     //   }
     // }
+  }
+
+  edit(req, res, next) {
+    user.findById(req.params.id)
+      .then(user => res.json({ user: user }))
+      .catch(next)
+  }
+
+  updateUser(req, res, next) {
+    if(req.body.isAdmin == "on"){
+      req.body.isAdmin = true;
+    }else{
+      req.body.isAdmin = false;
+    }
+    console.log(req.body)
+
+    user.updateOne({ _id: req.params.id }, req.body)
+      .then(() => res.redirect(URL + 'admin/customers/update/' + req.params.id))
+      .catch(next) 
   }
 }
 module.exports = new AccountController();

@@ -348,7 +348,6 @@ class ItemController {
   }
 
   updateItem(req, res, next) {
-
     var techInfoConvert = {
       techInfo: [
         {
@@ -403,6 +402,11 @@ class ItemController {
     }
 
     req.body.techInfo = techInfoConvert.techInfo;
+    if (req.file != null) {
+      const pathImage = '/' + req.file.path.split('\\').splice(1).join('/').split('/').slice(1).join('/')
+      req.body.image[req.body.image.length] = pathImage;
+    }
+
     console.log(req.body)
     items.updateOne({ _id: req.params.id }, req.body)
       .then(() => res.redirect(URL + 'admin/products/update/' + req.params.id))
@@ -412,6 +416,11 @@ class ItemController {
   updateItemDetail(req, res, next) {
     var BD = req.body;
     var str = "";
+
+    if (req.file != null) {
+      const pathImage = '/' + req.file.path.split('\\').splice(1).join('/').split('/').slice(1).join('/')
+      BD.image[BD.image.length - 1] = pathImage;
+    }
 
     req.body.name.forEach((element, index) => {
       str = str +
@@ -424,6 +433,7 @@ class ItemController {
     str = '{"detail": "' + BD.detail + '", "color": [' + str + ']}'
     str = str.replace(', ]', ']')
     console.log(str)
+    
     str = JSON.parse(str);
 
     options.updateOne({ _id: req.params.id }, str)
