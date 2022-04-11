@@ -1,0 +1,33 @@
+.item {
+  border: 1px solid #000;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  border-radius: 1rem;
+  width: 11rem;
+  max-width: 11rem;
+  padding: 0 1px;
+  margin-top: 10px;
+  img {
+    display: block;
+    width: 26px;
+    height: 26px;
+  }
+  .item__info {
+    margin-left: 1px;
+    flex: 1;
+    text-align: center;
+    .item__name {
+      font-size: 12px;
+      font-weight: bold;
+      margin: 0;
+    }
+    .item__price {
+      font-size: 12px;
+      margin: 0;
+    }
+  }
+}
+.item:hover {
+  cursor: pointer;
+}

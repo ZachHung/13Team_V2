@@ -9,7 +9,7 @@ const verifyToken = (req, res, next) => {
       req.user = userData;
       next();
     });
-  } else return res.status(401).json("You are not authenticated");
+  } else return res.status(401).json("You are not authenticated"); //When not logged in
 };
 const verifyTokenAuth = (req, res, next) => {
   verifyToken(req, res, () => {

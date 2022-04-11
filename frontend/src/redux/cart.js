@@ -13,7 +13,11 @@ const cartSlice = createSlice({
         return a + b.quantity;
       }, 0);
     },
+    addQuantity: (state) => {
+      state.quantity++;
+    },
   },
 });
-export const { setQuantity } = cartSlice.actions;
+export const { setQuantity, addQuantity } = cartSlice.actions;
+
 export default cartSlice.reducer;

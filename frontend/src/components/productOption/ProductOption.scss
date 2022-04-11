@@ -1,0 +1,32 @@
+.productOption__container {
+  .product__newPrice {
+    font-size: 18px;
+    font-weight: bold;
+    color: #d70018;
+  }
+  .product__oldPrice {
+    font-size: 18px;
+    text-decoration: line-through;
+    margin-left: 1rem;
+  }
+  .capacityOption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .colorOption__container {
+    margin-top: 2rem;
+    .colorOption__title {
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .colorOption {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+  }
+  .productOption__btn {
+    margin-top: 3rem;
+  }
+}

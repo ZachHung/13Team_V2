@@ -1,5 +1,7 @@
 const items = require("../models/Item");
 const options = require("../models/Option");
+const ObjectId = require('mongodb').ObjectId;
+const URL = "http://localhost:3000/";
 class ItemController {
   detailItem(req, res, next) {
     let param = req.params.slug;
@@ -27,7 +29,7 @@ class ItemController {
               { name: data[0].name, href: "" },
             ];
             let mainItem = options.filter((option) => {
-              return (option.detail = capacity);
+              return option.detail === capacity;
             });
 
             let item = data.filter((phone) => phone.slug == type)[0];
@@ -88,7 +90,7 @@ class ItemController {
               { name: data[0].name, href: "" },
             ];
             let mainItem = options.filter((option) => {
-              return (option.detail = capacity);
+              return option.detail === capacity;
             });
 
             let item = data.filter((phone) => phone.slug == type)[0];
@@ -244,6 +246,199 @@ class ItemController {
           .catch(next);
       })
       .catch(next);
+  }
+  async getItemsAdmin (req, res, next) {
+    const itemsPerPage = await items.countDocuments ({});
+    //let itemsPerPage = 22;
+    let page = req.query.page ? parseInt (req.query.page) : 1;
+    items
+      .aggregate ([
+        {
+          $match: {
+            type: {$regex: /^/},
+          },
+        },
+        {
+          $lookup: {
+            from: 'options',
+            localField: 'slug',
+            foreignField: 'slug',
+            as: 'slug',
+          },
+        },
+      ])
+      .skip (itemsPerPage * (page - 1))
+      .limit (itemsPerPage)
+      .then (items => {
+        res.json ({
+          items: items,
+        });
+      })
+      .catch (next);
+  }
+
+  async deleteItemAdmin (req, res, next) {
+    const itemId = req.params.id;
+
+    const itemDelete = await items.findOne ({_id: itemId});
+    if (itemDelete) {
+      try {
+        const deleteProduct = await itemDelete.deleteOne ({_id: itemId});
+      } catch (e) {
+        console.error (`[Error] ${e}`);
+        throw Error ('Có lỗi xảy ra, vui lòng thử lại!!');
+      }
+      //const deleteOption = await options.find({'item': itemId});
+      //     var opts = [];
+      //     opts.push (itemId);
+      //     items.aggregate ([
+      //       {$match: {_id: itemId}},
+      //       {
+      //         $lookup: {
+      //           from: 'options',
+      //           localField: 'item',
+      //           foreignField: '_id',
+      //           as: 'options',
+      //         },
+      //       },
+      //     ])
+      //     .then((data)=>{
+      //       console.log(data);
+      //       //options.deleteMany ({item: opts[0].toString ()});
+      //     })
+
+      //     //console.log(opts);
+      //     //const optionDelete = options.find({item: opts[0].toString() }).remove();
+      //     //console.log(optionDelete);
+      //     //optionDelete.({item: opts[0].toString() });
+      //     //console.log(optionDelete);
+      //   } catch (e) {
+      //     console.error (`[Error] ${e}`);
+      //     throw Error ('Có lỗi xảy ra, vui lòng thử lại!!');
+      //   }
+      // }
+      // const optionDelete = await options.find({'item': id.toString()});
+    }
+  }
+
+  edit(req, res, next) {
+    const id = ObjectId(req.params.id)
+    console.log(id);
+    items
+      .aggregate([
+        {
+          $match: {
+            _id: id
+          },
+        },
+        {
+          $lookup: {
+            from: "options",
+            localField: "slug",
+            foreignField: "slug",
+            as: "slug",
+          },
+        },
+      ]).then((items) => {
+        res.json({
+          items: items,
+        });
+      })
+      .catch(next);
+  }
+
+  updateItem(req, res, next) {
+    var techInfoConvert = {
+      techInfo: [
+        {
+          infoType: "Màn hình",
+          infoDetail: [
+            {
+              infoName: "kích Thước Màn Hình",
+              infoNum: req.body.infoNum[0]
+            },
+            {
+              infoName: "Công nghệ màn hình",
+              infoNum: req.body.infoNum[1]
+            },
+            {
+              infoName: "Độ phân giải màn hình",
+              infoNum: req.body.infoNum[2]
+            }
+          ]
+        },
+        {
+          infoType: "Camera sau",
+          infoDetail: [
+            {
+              infoName: "Camera sau",
+              infoNum: req.body.infoNum[3]
+            },
+            {
+              infoName: "Quay video",
+              infoNum: req.body.infoNum[4]
+            }
+          ]
+        },
+        {
+          infoType: "CPU",
+          infoDetail: [
+            {
+              infoName: "Chip xử lí",
+              infoNum: req.body.infoNum[5]
+            }
+          ]
+        },
+        {
+          infoType: "RAM",
+          infoDetail: [
+            {
+              infoName: "Bộ nhớ trong",
+              infoNum: req.body.infoNum[6]
+            }
+          ]
+        }
+      ]
+    }
+
+    req.body.techInfo = techInfoConvert.techInfo;
+    if (req.file != null) {
+      const pathImage = '/' + req.file.path.split('\\').splice(1).join('/').split('/').slice(1).join('/')
+      req.body.image[req.body.image.length] = pathImage;
+    }
+
+    console.log(req.body)
+    items.updateOne({ _id: req.params.id }, req.body)
+      .then(() => res.redirect(URL + 'admin/products/update/' + req.params.id))
+      .catch(next)
+  }
+
+  updateItemDetail(req, res, next) {
+    var BD = req.body;
+    var str = "";
+
+    if (req.file != null) {
+      const pathImage = '/' + req.file.path.split('\\').splice(1).join('/').split('/').slice(1).join('/')
+      BD.image[BD.image.length - 1] = pathImage;
+    }
+
+    req.body.name.forEach((element, index) => {
+      str = str +
+        '{"name": "' + element +
+        '", "image": "' + BD.image[index] +
+        '", "number": ' + + BD.number[index] +
+        ', "price": ' + BD.price[index] +
+        ', "discount": ' + BD.discount[index] + "\}, ";
+    });
+    str = '{"detail": "' + BD.detail + '", "color": [' + str + ']}'
+    str = str.replace(', ]', ']')
+    console.log(str)
+    
+    str = JSON.parse(str);
+
+    options.updateOne({ _id: req.params.id }, str)
+      .then(() => res.redirect(URL + 'admin/products/updateDetail/' + BD.id))
+      .catch(next)
   }
 }
 module.exports = new ItemController();

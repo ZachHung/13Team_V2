@@ -1,0 +1,90 @@
+.heading{
+    color: blue;
+    font-size: 30px;
+}
+
+.my-input-tag{
+    height: 35px;
+    font-size: 16px
+}
+
+.label_level_1{
+    font-size: 22px;
+    font-weight: bold;
+    color:darkred;
+}
+.label_level_2{
+    font-size: 18px;
+    font-weight: bold;
+    color: cornflowerblue;
+}
+.label_level_3{
+    font-weight: bold;
+    font-size: 16px;
+}
+.my-area-tag{
+    height: fit-content;
+    font-size: 16px;
+}
+.lavel_2{
+    margin-left: 50px;
+}
+
+.my-bnt{
+    padding: 3px 10px;
+    font-size: 16px;
+    font-weight: bold;
+    float: right;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+    margin-left: 20px;
+}
+
+.bnt-more{
+    padding: 3px 10px;
+    font-size: 20px;
+    border-radius: 10px;
+    float: right;
+}
+br{
+    clear: both;
+}
+.add-info, .add-image{
+    display: none;
+}
+.addbnt{
+    margin-left: 20px;
+    font-weight: bolder;
+    font-size: 18px;
+    padding: 0 10px;
+    background-color:bisque;
+    color: black;
+}
+.remove-image{
+    font-weight: bolder;
+    font-size: 18px;
+    padding: 0 10px;
+    background-color:bisque;
+    color: black;
+    float: right;
+}
+
+.bnt-back{
+    background-color:burlywood
+}
+.bnt-back:hover{
+    background-color:chocolate;
+}
+.decri{
+    color: red;
+}
+
+.my-check-tag{
+    height: 25px;
+    width: 25px;
+    margin-right: 10px;
+}
+.check{
+    float: right;
+}

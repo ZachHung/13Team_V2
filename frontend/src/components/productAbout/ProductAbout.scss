@@ -1,0 +1,14 @@
+.ProductAbout__container {
+  font-size: 1.4rem;
+  box-shadow: rgb(60 64 67 / 10%) 0px 0px 2px 0px,
+    rgb(60 64 67 / 15%) 0px 0px 6px 2px;
+  padding: 1rem 1rem;
+  border-radius: 2rem;
+  display: inline-block;
+  width: 100%;
+  overflow: hidden;
+  .ProductAbout__title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+}

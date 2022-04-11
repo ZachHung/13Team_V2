@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import logo from "../../logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -6,6 +6,11 @@ import {
   faCartShopping,
   faUser,
   faRightFromBracket,
+  faUserGear,
+  faClockRotateLeft,
+  faUserTie,
+  faCaretDown,
+  faCaretUp,
 } from "@fortawesome/free-solid-svg-icons";
 import "./style.scss";
 import { Link } from "react-router-dom";
@@ -14,15 +19,19 @@ import { logout } from "../../redux/userRedux";
 
 const Header = ({ color }) => {
   const [menuState, setMenuState] = useState(false);
+  const [dropdownState, setDropdownState] = useState(false);
+  const btnRef = useRef();
   const dispatch = useDispatch();
-  const handleMenuBtn = () => {
-    setMenuState(!menuState);
-  };
   const user = useSelector((state) => state.user.current);
   const cartQuantity = useSelector((state) => state.cart.quantity);
-  const handleLogout = () => {
-    dispatch(logout());
-  };
+  useEffect(() => {
+    const closeDropdown = (e) => {
+      if (btnRef.current && !btnRef.current.contains(e.target))
+        setDropdownState(false);
+    };
+    document.addEventListener("mousedown", closeDropdown);
+    return () => document.removeEventListener("mousedown", closeDropdown);
+  }, []);
   return (
     <>
       <header>
@@ -33,7 +42,7 @@ const Header = ({ color }) => {
           <button
             aria-expanded={menuState}
             className={`toggle-menu${menuState ? " opened" : ""}`}
-            onClick={handleMenuBtn}
+            onClick={() => setMenuState((prev) => !prev)}
             aria-label="Main Menu"
           >
             <svg width="47" height="47" className="" viewBox="0 0 100 100">
@@ -97,18 +106,56 @@ const Header = ({ color }) => {
               <FontAwesomeIcon icon={faCartShopping} />
               {user && <div className="cartBadge">{cartQuantity}</div>}
             </Link>
-            <Link to="/login" className="icon">
-              <FontAwesomeIcon icon={faUser} />
-            </Link>
-            {user && (
-              <Link
-                to=""
-                className="icon"
-                onClick={handleLogout}
-                title="Đăng xuất"
-              >
-                <FontAwesomeIcon icon={faRightFromBracket} />
+            {!user ? (
+              <Link to="/login" className="icon">
+                <FontAwesomeIcon icon={faUser} />
               </Link>
+            ) : (
+              <div
+                className="icon dropdown"
+                ref={btnRef}
+                onClick={() => setDropdownState((prev) => !prev)}
+              >
+                <FontAwesomeIcon
+                  icon={!dropdownState ? faCaretDown : faCaretUp}
+                />
+                <ul
+                  className={`${dropdownState ? "opened" : ""}`}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <li>
+                    <FontAwesomeIcon
+                      icon={user.isAdmin ? faUserTie : faUser}
+                      className="icon"
+                    />
+                    {user.name}
+                  </li>
+                  <li>
+                    <Link to="">
+                      <FontAwesomeIcon icon={faUserGear} className="icon" />
+                      Cài đặt người dùng
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/purchase">
+                      <FontAwesomeIcon
+                        icon={faClockRotateLeft}
+                        className="icon"
+                      />
+                      Lịch sử đơn hàng
+                    </Link>
+                  </li>
+                  <li onClick={() => dispatch(logout())}>
+                    <Link to="#">
+                      <FontAwesomeIcon
+                        icon={faRightFromBracket}
+                        className="icon"
+                      />
+                      Đăng xuất
+                    </Link>
+                  </li>
+                </ul>
+              </div>
             )}
           </div>
         </div>
