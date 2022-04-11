@@ -1,0 +1,92 @@
+
+  .ui-w-80 {
+    width: 80px !important;
+    height: auto;
+  }
+  .btn {
+    cursor: pointer;
+  }
+  .card {
+    background-clip: padding-box;
+    box-shadow: 50px 1px 4px rgba(24, 28, 33, 0.012);
+  }
+  .bg-profile {
+    width: 100%;
+    height: 24.4rem;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #00000015, #0000009a, #00000015),
+      url('https://scontent.fsgn3-1.fna.fbcdn.net/v/t39.30808-6/275549251_520206016300881_3299209531977366126_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=jFiDksVlsSsAX9hiyKY&tn=ofp2vr0xi14m5YJU&_nc_ht=scontent.fsgn3-1.fna&oh=00_AT8Tr8CR6RG7hzo8WoLQ_z9AJZp29WkOYKdSzqulOTFBfw&oe=62593F1D');
+    /* url('https://scontent.fhan4-3.fna.fbcdn.net/v/t39.30808-6/275540674_520197966301686_6860499803638401283_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=e3f864&_nc_ohc=5AewNmtNK6YAX9orQDF&tn=ofp2vr0xi14m5YJU&_nc_ht=scontent.fhan4-3.fna&oh=00_AT_R1qC-2gVYCOpIjeW6-96dtmY4ETLAzx89_BtL7lvLVg&oe=6257FDC4'); */
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  .tab-list-item {
+    display: inline-block;
+    list-style: none;
+    padding: 1.2rem;
+    cursor: pointer;
+    color: #0c517d;
+    font-weight: bold;
+  }
+  .tab-list-item:first-child {
+    margin-left: -20px;
+  }
+  @media (max-width: 360px) {
+    .tab-list-item:nth-child(2) {
+      display: block;
+      margin-left: -20px;
+    }
+    .tab-list-item:last-child {
+      display: block;
+      margin-left: -20px;
+    }
+  }
+  
+  .tab-list-item:hover{
+    background-color: #0c517d;
+    color:white;
+    font-weight: bold;
+    background-color: #0c517d !important; 
+    transition: ease 0.5s;
+  }
+  
+  .tab-list-active {
+    background-color: #0c517d;
+    color: white;
+  }
+
+  .my-btn-checkout{
+    background-color: #0c517d;
+    padding: 0.5% 1%;
+    color: white;
+    font-size: small;
+    border-radius: 2%;
+  }
+  .my-btn-checkout:hover{
+    transition: ease 0.4s;
+    background-color: blue;
+    color:white;
+  }
+  .labelTitle{
+    font-size: medium;
+    color: #0c517d;
+    font-weight: bold;
+    padding: 0.3% 0;
+  }
+  .hightlightInfo{
+    color: #8b0000;
+  }
+  input[type=date]{
+    color: black;
+  }
+  input.inputAdProfile, .selectGender{
+    padding: 1%;
+  }
+  input.inputAdProfile, .selectGender,textarea {
+    font-size: medium;
+  }

@@ -1,0 +1,18 @@
+.path__container {
+  box-shadow: 0 0.7rem 0.6rem rgb(0 0 0 / 20%);
+  font-size: 1.4rem;
+  padding: 0.8rem 0 0.8rem 20rem;
+  color: rgba(0, 0, 0, 0.5);
+  @media only screen and (max-width: 739px) {
+    padding: 0.8rem 0 0.8rem 2rem;
+  }
+  .path {
+    display: flex;
+    .path__item {
+      margin-right: 2rem;
+      .path__icon {
+        margin-right: 1rem;
+      }
+    }
+  }
+}

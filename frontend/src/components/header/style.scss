@@ -17,19 +17,27 @@
   background-position: center;
   background-size: cover;
   background-image: url(./spacer.svg);
+  // @media only screen and (max-width: 739px) {
+  //   height: 7rem;
+  // }
 }
 header {
   background-color: black;
   top: 0;
   right: 0;
   left: 0;
+  // @media only screen and (max-width: 739px) {
+  //   position: fixed;
+  //   z-index: 100000;
+  //   height: 5rem;
+  // }
   .header-container {
     position: relative;
     display: flex;
     color: #fff;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    padding: 1rem 0.8rem 0.4rem;
     @media only screen and (max-width: 739px) {
       flex-direction: column;
       align-items: flex-end;
@@ -58,6 +66,7 @@ header {
     }
     .links > a,
     .utility .icon {
+      cursor: pointer;
       position: relative;
       color: #fff;
       text-transform: none;
@@ -173,6 +182,95 @@ header {
         transform-origin: top center;
         &.active {
           display: flex;
+        }
+      }
+      .dropdown {
+        font-size: 2rem;
+        user-select: none;
+        position: relative;
+        > svg:first-child {
+          @media only screen and (max-width: 739px) {
+            display: none;
+          }
+        }
+        ul {
+          transition: all 0.2s ease-in-out;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          width: 37rem;
+          margin: 0 0;
+          padding: 1rem;
+          border-radius: 1rem;
+          border: 1px solid whitesmoke;
+          background-color: black;
+          position: absolute;
+          box-shadow: rgba(255, 255, 255, 0.4) 0px 2px 4px,
+            rgba(255, 255, 255, 0.3) 0px 7px 13px -3px,
+            rgba(255, 255, 255, 0.2) 0px -3px 0px inset;
+          right: 1rem;
+          top: 4.5rem;
+          display: flex;
+          z-index: -1;
+          opacity: 0;
+          li:nth-child(2) {
+            border-top: 1px solid whitesmoke;
+            border-radius: 1rem;
+          }
+          li:not(:first-child) svg {
+            background-color: rgb(69, 69, 69);
+            color: whitesmoke;
+            padding: 1rem;
+            border-radius: 50%;
+            margin: 0 1.25rem;
+            width: 2.2rem;
+            height: 2.2rem;
+          }
+          @media only screen and (max-width: 739px) {
+            box-shadow: unset;
+            border: 1px solid whitesmoke;
+            width: inherit;
+            padding: 0;
+            position: initial;
+            align-items: flex-end;
+            opacity: 1;
+            z-index: 10;
+            li:first-child svg {
+              width: 2.5rem;
+            }
+            li:not(:first-child) {
+              flex-direction: row-reverse;
+              justify-content: flex-start;
+            }
+          }
+          &.opened {
+            opacity: 1;
+            z-index: 10;
+          }
+          li {
+            a {
+              display: flex;
+              align-items: center;
+              width: 100%;
+            }
+            transition: all 0.3s ease-in-out;
+            &:not(:first-child):hover {
+              background-color: rgb(44, 44, 44);
+            }
+            &:first-child {
+              justify-content: center;
+              cursor: auto;
+            }
+            display: flex;
+            border-radius: 1rem;
+            align-items: center;
+            justify-content: flex-start;
+            @media only screen and (max-width: 739px) {
+              justify-content: flex-end;
+            }
+            padding: 1rem 0.5rem;
+            width: 100%;
+          }
         }
       }
       .searchbox {
