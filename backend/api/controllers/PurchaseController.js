@@ -1,7 +1,9 @@
 const purchase = require('../models/Purchase');
 const util = require('../../util/mongoose');
 const cart = require('../models/Cart');
-var ObjectId = require ('mongodb').ObjectID;
+var ObjectId = require ('mongodb').Objectid;
+var URL = "http://localhost:3000/"
+
 // const ID = useId; //userID của người dùng đã đăng nhập
 const useId = '624a9edb4eb751d723d37e7f';
 class PurchaseController {
@@ -244,6 +246,18 @@ class PurchaseController {
       })
       .catch (next);
       console.log(purchase);  
+  }
+
+  edit(req, res, next) {
+    purchase.findById(req.params.id)
+      .then(purchase => res.json({ purchase: purchase }))
+      .catch(next)
+  }
+
+  updatePurchase(req, res, next) {
+    purchase.updateOne({ _id: req.params.id }, req.body)
+      .then(() => res.redirect(URL + 'admin/orders/update/' + req.params.id))
+      .catch(next)
   }
 }
 module.exports = new PurchaseController();
