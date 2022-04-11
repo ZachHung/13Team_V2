@@ -105,11 +105,11 @@ function DetailPurchaseAdmin () {
                                         <p className='redStatus'>Đơn hàng đang được giao</p>
                                     </div> 
                                     : purchase.status === "Đã giao hàng" ?
-                                        <p className='redStatus'>Giao hàng lúc {format (new Date(purchase.updatedAt), "yyyy-MM-dd kk:mm:ss")}
+                                        <p className='redStatus'>Đã giao hàng lúc {format (new Date(purchase.updatedAt), "yyyy-MM-dd kk:mm:ss")}
                                         </p>
-                                    : purchase.status === "Chưa xác nhận" ?
-                                    <p className='redStatus'>Đơn hàng cần được xác nhận</p> 
-                                    : <p className='redStatus'>Không xác định</p>
+                                    : purchase.status === "Đã hủy" ?
+                                    <p className='redStatus'>Đơn hàng đã bị hủy</p> 
+                                    : <p className='redStatus'>Đơn hàng hông xác định</p>
                                 }
                         </div>
                     </div>
