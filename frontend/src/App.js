@@ -25,6 +25,8 @@ import UsersAdmin from "./pages/usersAdmin/UsersAdmin";
 import UpdateUser from "./pages/updateUser/UpdateUser";
 import PurchasesAdmin from "./pages/purchasesAdmin/PurchasesAdmin";
 import UpdatePurchase from "./pages/updatePurchase/UpdatePurchase";
+import AdminProfile from "./pages/usersAdmin/AdminProfile";
+import DetailPurchaseAdmin from "./pages/purchasesAdmin/DetailPurchaseAdmin";
 import Blank from "./pages/Blank";
 
 //import scss va boxicon cho dashboard
@@ -68,13 +70,14 @@ function App() {
         <Route path="/admin/*" element={<Admin />}>
           <Route index element={<Dashboard />} />
           <Route path="orders" element={<PurchasesAdmin />} />
+          <Route path="orders/detail/:id" element={<DetailPurchaseAdmin />} />
           <Route path="orders/update/:id" element={<UpdatePurchase />} />
           <Route path="products" element={<ItemsAdmin />} />
           <Route path="products/update/:id" element={<UpdateItem />} />
           <Route path="products/updateDetail/:id" element={<UpdateItemDetail />} />
           <Route path="customers" element={<UsersAdmin />} />
           <Route path="customers/update/:id" element={<UpdateUser />} />
-          <Route path="settings" element={<Blank />} />
+          <Route path="settings" element={<AdminProfile />} />
           <Route path="stats" element={<Blank />} />
         </Route>
 

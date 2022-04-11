@@ -9,8 +9,16 @@ const addressrouter = require("./address");
 const laptoprouter = require("./laptop");
 const tabletrouter = require("./tablet");
 const accessorytrouter = require("./accessory");
+const productsAdminrouter = require("./itemsAdmin");
+const customersAdminrouter = require("./usersAdmin");
+const purchasesAdminrouter = require("./purchasesAdmin");
+const profileAdminrouter = require("./profileAdmin");
 
 function route(app) {
+  app.use("/api/admin/products", productsAdminrouter);
+  app.use("/api/admin/customers", customersAdminrouter);
+  app.use("/api/admin/purchases", purchasesAdminrouter);
+  app.use("/api/admin/settings", profileAdminrouter);
   app.use("/api/search", searchrouter);
   app.use("/api/laptop", laptoprouter);
   app.use("/api/accessory", accessorytrouter);
