@@ -17,7 +17,7 @@ const profileAdminrouter = require("./profileAdmin");
 function route(app) {
   app.use("/api/admin/products", productsAdminrouter);
   app.use("/api/admin/customers", customersAdminrouter);
-  app.use("/api/admin/purchases", purchasesAdminrouter);
+  app.use("/api/admin/orders", purchasesAdminrouter);
   app.use("/api/admin/settings", profileAdminrouter);
   app.use("/api/search", searchrouter);
   app.use("/api/laptop", laptoprouter);
