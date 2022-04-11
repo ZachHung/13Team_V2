@@ -4,12 +4,12 @@ const Schema = mongoose.Schema;
 const Purchase = new Schema(
   {
     userID: {
-      type: String,
+      type: Schema.Types.ObjectId,
     },
     list: [
       {
         optionID: {
-          type: String,
+          type: Schema.Types.ObjectId,
           ref: "Option",
         },
         quantity: { type: Number },
