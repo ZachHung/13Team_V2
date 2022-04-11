@@ -1,66 +1,46 @@
 .listUsersAdminTitle{
-   padding-top: 1rem !important;
+  padding-top: 0rem !important;
+  font-size: larger;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  text-align: center;
+  .btnAddNewUser{
+   margin-left: 10%;
    font-size: larger;
-   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-
-   .btnAddNewUser{
-    margin-left: 20%;
-    font-size: large;
+   width: 100%;
+  }
+  .btnAddNewUser:hover{
+     background-color: green;
+  }
+  .btnEditUser{
+    font-size: small;
+  }
+  .fw-bold{
+    color: blue
+  }
+  .table{
+     vertical-align: middle;
+  }  
+  tbody tr {
+    height: 60px;
+  }
+  thead tr {
+    height: 35px;
+  }
+  th, td {
+    vertical-align: middle;
+  }
+  .linkToUser{
+     text-decoration: none;
+     color: blue;
+  }
+  .linkToUser:hover{
+     text-decoration: underline;
+     color: blue;
+  }
+  .pagination-bar {
     width: 100%;
-   }
-   .btnAddNewUser:hover{
-      background-color: green;
-   }
-   .btnEditUser{
-     font-size: large;
-   }
-   .table{
-      vertical-align: middle;
-    }  
-   .linkToUser{
-      text-decoration: none;
-      color: blue;
-   }
-   .linkToUser:hover{
-      text-decoration: underline;
-      color: blue;
-   }
-   .pagination span {
-      width: 2.5rem;
-      height: 2.5rem;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    }
-    
-  .pagination {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   margin: 4rem 0;
- }
-
- .pagination span {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   width: 3.5rem;
-   height: 3.5rem;
-   border-radius: 50%;
-   color: var(--black);
-   font-size: 1.3rem;
-   border: 1px solid var(--grey2);
-   margin-right: 0.5rem;
-   cursor: pointer;
- }
-
- .pagination span.last {
-   width: 7rem;
-   border-radius: 3rem;
- }
-
- .pagination span:hover {
-   border: 1px solid var(--primary);
-   background-color: var(--primary);
-   color: var(--white);
- }
+    display: flex;
+    justify-content: center;
+  }
 
 }

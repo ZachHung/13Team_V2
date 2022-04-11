@@ -1,6 +1,7 @@
 const purchase = require('../models/Purchase');
 const util = require('../../util/mongoose');
 const cart = require('../models/Cart');
+var ObjectId = require ('mongodb').ObjectID;
 // const ID = useId; //userID của người dùng đã đăng nhập
 const useId = '624a9edb4eb751d723d37e7f';
 class PurchaseController {
@@ -179,6 +180,70 @@ class PurchaseController {
       )
       .then(() => res.redirect('back'))
       .catch(next);
+  }
+  async getPurchasesAdmin (req, res, next) {
+    const purchasesPerPage = await purchase.countDocuments ({});
+    let page = req.query.page ? parseInt (req.query.page) : 1;
+    purchase
+      .find ({})
+      .skip (purchasesPerPage * (page - 1))
+      .limit (purchasesPerPage)
+      .then (purchases => {
+        res.json ({
+          purchase: purchases,
+        });
+      })
+      .catch (next);
+  }
+
+  async deletePurchasesAdmin (req, res, next) {
+    const purchaseId = req.params.id;
+
+    const purchaseDelete = await purchase.findOne ({
+      _id: ObjectId (purchaseId),
+    });
+    if (purchaseDelete) {
+      try {
+        const deletePurchase = await purchaseDelete.deleteOne ({
+          _id: ObjectId (purchaseId),
+        });
+      } catch (e) {
+        console.error (`[Error] ${e}`);
+        throw Error ('Có lỗi xảy ra, vui lòng thử lại!!');
+      }
+    }
+  }
+
+  detailPurchasesAdmin (req, res, next) {
+    purchase.find ({_id: ObjectId(req.params.id)})
+      .populate ('list.optionID')
+      .populate ({
+        path: 'list.optionID',
+        populate: {
+          path: 'item',
+          select: 'name type brand',
+        },
+      })
+      .then (data => {
+        data = util.mutipleMongooseToObject (data);
+
+        for (let result of data) {
+          result.list = result.list.filter (list => {
+            return list.optionID !== null;
+          });
+          for (let item of result.list) {
+            item.optionID.color = item.optionID.color.filter (color => {
+              return color.name === item.color;
+            });
+          }
+        }
+       
+        res.json ({
+          purchase: data,
+        });
+      })
+      .catch (next);
+      console.log(purchase);  
   }
 }
 module.exports = new PurchaseController();

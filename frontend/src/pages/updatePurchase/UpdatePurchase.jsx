@@ -13,7 +13,7 @@ function UpdatePurchase() {
     const params = useParams();
     const [purchase, setPhone] = useState([]);
     useEffect(() => {
-        api.get("admin/purchases/edit/" + params.id).then((res) => {
+        api.get("admin/orders/edit/" + params.id).then((res) => {
             setPhone(res.data.purchase);
         });
     }, []);
@@ -21,7 +21,7 @@ function UpdatePurchase() {
     return (
         <div className="container mt-4 mb-4">
             <h1 className="text-center heading">Cập nhật trạng thái đơn hàng</h1>
-            <form className="mt-4" method="POST" action={URL + "admin/purchases/update/" + purchase._id}>
+            <form className="mt-4" method="POST" action={URL + "admin/orders/update/" + purchase._id}>
                 <div className="mb-4">
                     <label className="form-label lable_level_1">Mã đơn hàng</label>
                     <input disabled type="text" className="form-control my-input-tag" defaultValue={purchase._id} />
