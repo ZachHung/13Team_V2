@@ -72,13 +72,13 @@ function PurchasesAdmin() {
               <th scope="col" style={{ "width": "4%" }}>#</th>
               <th scope="col" style={{ "width": "10%" }}>ID</th>
               <th scope="col" style={{ "width": "15%" }}>Tên khách hàng</th>
-              <th scope="col" style={{ "width": "15%" }}>Ngày đặt hàng</th>
+              <th scope="col" style={{ "width": "10%" }}>Ngày đặt hàng</th>
               {/* <th scope="col">Tổng tiền</th> */}
               <th scope="col" style={{ "width": "10%" }}>Phương thức thanh toán</th>
               <th scope="col" style={{ "width": "10%" }}>Tình trạng thanh toán</th>
               <th scope="col" style={{ "width": "15%" }}>Tình trạng giao hàng</th>
-              <th scope="col" style={{ "width": "15%" }}>Đã giao hàng lúc</th>
-              <th scope="col" style={{ "width": "7%" }}>Tùy chọn</th>
+              <th scope="col" style={{ "width": "10%" }}>Đã giao hàng lúc</th>
+              <th scope="col" style={{ "width": "17%" }}>Tùy chọn</th>
             </tr>
           </thead>
           <tbody>
@@ -125,7 +125,7 @@ function PurchasesAdmin() {
                       </button>
                   </a>
                   <button
-                    className=" formMethod btnDeletePurchase btn btn-outline-danger"
+                    className=" formMethod btnDeletePurchase btn btn-outline-danger mt-2"
                     onClick={() => onDelete(purchase._id)}
                   >Xóa <FontAwesomeIcon icon={faTrashAlt} />
                   </button>
