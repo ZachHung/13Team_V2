@@ -13,7 +13,7 @@ function UpdatePurchase() {
     const params = useParams();
     const [purchase, setPhone] = useState([]);
     useEffect(() => {
-        api.get("admin/purchases/edit/" + params.id).then((res) => {
+        api.get("admin/orders/edit/" + params.id).then((res) => {
             setPhone(res.data.purchase);
         });
     }, []);
