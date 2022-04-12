@@ -19,7 +19,9 @@ import CartPage from "./pages/Cart";
 import ScrollButton from "./components/scrollBtn";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import ItemsAdmin from "./pages/itemsAdmin/ItemsAdmin";
+import CreateItem from "./pages/createItem/createItem"
 import UpdateItem from "./pages/updateItem/UpdateItem";
+import AddItemDetail from "./pages/addItemDetail/addItemDetail";
 import UpdateItemDetail from "./pages/updateItem/UpdateItemDetail";
 import UsersAdmin from "./pages/usersAdmin/UsersAdmin";
 import UpdateUser from "./pages/updateUser/UpdateUser";
@@ -79,6 +81,8 @@ function App() {
           <Route path="customers/update/:id" element={<UpdateUser />} />
           <Route path="settings" element={<AdminProfile />} />
           <Route path="stats" element={<Blank />} />
+          <Route path="products/create/" element={<CreateItem />} />
+          <Route path="products/addOptions/:id" element={<AddItemDetail />} />
         </Route>
 
         {/* end adminRoute */}
