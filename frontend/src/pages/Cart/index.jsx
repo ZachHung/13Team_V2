@@ -90,9 +90,6 @@ const CartPage = () => {
       .catch((err) => console.log(err));
     navigate("/purchase");
   };
-  const handleCancel = () => {
-    setModalState(false);
-  };
 
   useEffect(() => {
     getCart();
@@ -118,7 +115,7 @@ const CartPage = () => {
           name="giỏ hàng"
           modalState={modalState}
           handelClickConfirm={() => deleteItem(ReItem)}
-          handelClickCancel={handleCancel}
+          toogleState={setModalState}
         />
         <section className="content">
           <aside className="box cart-container">

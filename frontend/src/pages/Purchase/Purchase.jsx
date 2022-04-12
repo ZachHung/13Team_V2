@@ -53,9 +53,6 @@ export default function Purchase() {
   const handelClickConfirm = () => {
     setModalState(false);
   };
-  const handelClickCancel = () => {
-    setModalState(false);
-  };
   const handleClickAllProduct = () => {
     console.log("all");
     getPurchase();
@@ -93,7 +90,7 @@ export default function Purchase() {
         name={"lịch sử mua hàng"}
         modalState={modalState}
         handelClickConfirm={handelClickConfirm}
-        handelClickCancel={handelClickCancel}
+        toogleState={setModalState}
       />
       <section className="container_purchase">
         <div className="status_menu">
