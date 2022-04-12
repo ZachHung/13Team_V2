@@ -1,12 +1,7 @@
 import { useEffect, useRef } from "react";
 import "./index.scss";
 
-function ModalPopUp({
-  name,
-  modalState,
-  handelClickConfirm,
-  handelClickCancel,
-}) {
+function ModalPopUp({ name, modalState, toogleState, handelClickConfirm }) {
   const modalContainerRef = useRef();
   useEffect(() => {
     const closeDropdown = (e) => {
@@ -15,11 +10,11 @@ function ModalPopUp({
         !modalContainerRef.current.contains(e.target) &&
         modalState != undefined
       )
-        modalState = false;
+        toogleState(false);
     };
     document.addEventListener("mousedown", closeDropdown);
     return () => document.removeEventListener("mousedown", closeDropdown);
-  }, []);
+  });
 
   return (
     <div
@@ -39,7 +34,7 @@ function ModalPopUp({
             </button>
             <button
               className="modal__button--cancel cancel-btn"
-              onClick={() => handelClickCancel()}
+              onClick={() => toogleState(false)}
             >
               Huỷ
             </button>
