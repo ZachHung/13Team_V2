@@ -17,7 +17,7 @@ const Purchase = new Schema(
         color: String,
       },
     ],
-    status: { type: String, default: 'Đang giao' },
+    status: { type: String, default: 'Đang giao hàng' },
   },
   { timestamps: true },
   { collection: 'purchases' }
