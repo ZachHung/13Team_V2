@@ -14,6 +14,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { setQuantity } from "../../redux/cart";
+import ModalPopUp from "../../components/modal";
+
 const getTotal = (cart) => {
   var total = 0;
   for (let item of cart) {
@@ -32,8 +34,8 @@ function isValid(str) {
 
 const CartPage = () => {
   const user = useSelector((state) => state.user);
-  const removeModalRef = useRef();
   const [cart, setCart] = useState([]);
+  const [modalState, setModalState] = useState(undefined);
   const [deliveryFee, setDeliveryFee] = useState(30000);
   const [isChanged, setIsChanged] = useState(false);
   const [ReItem, setReItem] = useState({ optionID: "", color: "" });
@@ -69,7 +71,7 @@ const CartPage = () => {
       })
       .then(() => {
         setIsChanged(!isChanged);
-        removeModalRef.current.classList.add("out");
+        setModalState(false);
       });
   };
 
@@ -79,17 +81,17 @@ const CartPage = () => {
   };
   const handleRemoveItem = (optionID, color) => {
     setReItem({ optionID, color });
-    const removeModal = removeModalRef.current;
-    if (!removeModal.classList.contains("opened"))
-      removeModal.classList.add("opened");
-    else removeModal.classList.remove("out");
+    setModalState(true);
   };
   const handlePurchase = () => {
     userRequest()
       .post(`cart/purchase/${user.current._id}`)
       .then()
       .catch((err) => console.log(err));
-    return navigate("/purchase");
+    navigate("/purchase");
+  };
+  const handleCancel = () => {
+    setModalState(false);
   };
 
   useEffect(() => {
@@ -112,27 +114,12 @@ const CartPage = () => {
     <>
       <Header />
       <div className="cartPage">
-        <div className={`remove-modal`} ref={removeModalRef}>
-          <div className="modal-background">
-            <div className="modal-container">
-              <div className="modal__content">Xóa sản phẩm khỏi giỏ hàng?</div>
-              <div className="modal__footer">
-                <button
-                  className="modal__button--confirm confirm-btn"
-                  onClick={() => deleteItem(ReItem)}
-                >
-                  Xoá
-                </button>
-                <button
-                  className="modal__button--cancel cancel-btn"
-                  onClick={() => removeModalRef.current.classList.add("out")}
-                >
-                  Huỷ
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ModalPopUp
+          name="giỏ hàng"
+          modalState={modalState}
+          handelClickConfirm={() => deleteItem(ReItem)}
+          handelClickCancel={handleCancel}
+        />
         <section className="content">
           <aside className="box cart-container">
             <div className="box__heading">
@@ -164,6 +151,7 @@ const CartPage = () => {
                               process.env.REACT_APP_IMG +
                               item.optionID.color[0].image
                             }
+                            alt={item.optionID.item.name}
                           />
                         </Link>
                       </div>
