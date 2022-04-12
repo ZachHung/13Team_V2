@@ -88,6 +88,15 @@ function ItemsAdmin () {
                 </td>
                 <td>{item.brand.name}</td>
                 <td> 
+                <a
+                    className="formMethod"
+                    href={`/admin/products/addOptions/${item._id}`}
+                  >
+                    <button className=" formMethod btnEditItem btn btn-outline-primary">
+                      Thêm option <FontAwesomeIcon icon={faFileEdit} />
+                    </button>
+                  </a>
+                  &nbsp;
                   <a
                     className="formMethod"
                     href={`/admin/products/update/${item._id}`}
