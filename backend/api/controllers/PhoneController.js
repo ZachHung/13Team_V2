@@ -4,8 +4,14 @@ const cart = require('../models/Cart');
 
 class PhoneController {
   brand(req, res, next) {
+    var fullUrl = req.originalUrl;
+    // console.log('fullUrl ', fullUrl);
+    const urlArray = fullUrl.split('/');
+    // console.log('split: ', urlArray[2]);
+    const typeProduct = urlArray[2];
+    console.log('type product brand: ', typeProduct);
     items
-      .find({ type: 'phone' })
+      .find({ type: typeProduct })
       .distinct('brand')
 
       .then((items) => {
@@ -14,8 +20,15 @@ class PhoneController {
       .catch(next);
   }
   brandName(req, res, next) {
+    var fullUrl = req.originalUrl;
+    // console.log('fullUrl ', fullUrl);
+    const urlArray = fullUrl.split('/');
+    // console.log('split: ', urlArray[2]);
+    const typeProduct = urlArray[2];
+    console.log('type product brandName: ', typeProduct);
+
     items
-      .find({ type: 'phone' })
+      .find({ type: typeProduct })
       .distinct('brand.name')
 
       .then((items) => {
@@ -24,6 +37,15 @@ class PhoneController {
       .catch(next);
   }
   home(req, res, next) {
+    var fullUrl = req.originalUrl;
+    console.log('fullUrl ', fullUrl);
+    const urlArray = fullUrl.split('/');
+    console.log('split: ', urlArray[2]);
+    // const typeProduct = urlArray[2];
+    const splitTypeProduct = urlArray[2].split('?');
+    const typeProduct = splitTypeProduct[0];
+    console.log('typeProduct: ', typeProduct);
+
     var paramBrand = req.query.brand;
     var paramPrice = req.query.price;
     var arrayBrand;
@@ -46,7 +68,7 @@ class PhoneController {
         .aggregate([
           {
             $match: {
-              type: 'phone',
+              type: typeProduct,
             },
           },
           {
@@ -73,7 +95,7 @@ class PhoneController {
                     'brand.name': { $in: arrayBrand },
                   },
                   {
-                    type: 'phone',
+                    type: typeProduct,
                   },
                 ],
               },
@@ -113,7 +135,7 @@ class PhoneController {
           .aggregate([
             {
               $match: {
-                type: 'phone',
+                type: typeProduct,
               },
             },
             {
@@ -188,7 +210,7 @@ class PhoneController {
                     'brand.name': { $in: arrayBrand },
                   },
                   {
-                    type: 'phone',
+                    type: typeProduct,
                   },
                 ],
               },

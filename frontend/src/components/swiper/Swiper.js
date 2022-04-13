@@ -8,16 +8,16 @@ const api = axios.create({
   baseURL: 'http://localhost:5000/api',
 });
 
-export default ({ updateBrand, updatePrice }) => {
+export default ({ updateBrand, updatePrice, type }) => {
   const [brand, setBrand] = useState([]);
   useEffect(() => {
-    api.get('/phone/brand').then((res) => {
+    api.get(`/${type}/brand`).then((res) => {
       setBrand(res.data);
     });
-  }, []);
+  }, [type]);
 
   return (
-    <div className="filter-product">
+    <div className="filter-product-swiper">
       <Swiper className="brand-swiper" spaceBetween={10} slidesPerView={4}>
         {brand.map((brand) => (
           <SwiperSlide
