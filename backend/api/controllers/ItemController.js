@@ -250,7 +250,6 @@ class ItemController {
   }
   async getItemsAdmin (req, res, next) {
     const itemsPerPage = await items.countDocuments ({});
-    //let itemsPerPage = 22;
     let page = req.query.page ? parseInt (req.query.page) : 1;
     items
       .aggregate ([
@@ -279,46 +278,19 @@ class ItemController {
   }
 
   async deleteItemAdmin (req, res, next) {
-    const itemId = req.params.id;
-
-    const itemDelete = await items.findOne ({_id: itemId});
-    if (itemDelete) {
-      try {
-        const deleteProduct = await itemDelete.deleteOne ({_id: itemId});
-      } catch (e) {
-        console.error (`[Error] ${e}`);
-        throw Error ('Có lỗi xảy ra, vui lòng thử lại!!');
+    try {
+      const itemDelID = req.params.id;
+      const itemsDel = await items.findById (itemDelID);
+      const optionsDel = await options.find ({slug: itemsDel.slug});
+      const delItems = await items.findByIdAndDelete (itemDelID);
+      for (let i = 0; i < optionsDel.length; i++) {
+        const delOptions = await options.deleteOne ({
+          _id: ObjectId (optionsDel[i]._id),
+        });
       }
-      //const deleteOption = await options.find({'item': itemId});
-      //     var opts = [];
-      //     opts.push (itemId);
-      //     items.aggregate ([
-      //       {$match: {_id: itemId}},
-      //       {
-      //         $lookup: {
-      //           from: 'options',
-      //           localField: 'item',
-      //           foreignField: '_id',
-      //           as: 'options',
-      //         },
-      //       },
-      //     ])
-      //     .then((data)=>{
-      //       console.log(data);
-      //       //options.deleteMany ({item: opts[0].toString ()});
-      //     })
-
-      //     //console.log(opts);
-      //     //const optionDelete = options.find({item: opts[0].toString() }).remove();
-      //     //console.log(optionDelete);
-      //     //optionDelete.({item: opts[0].toString() });
-      //     //console.log(optionDelete);
-      //   } catch (e) {
-      //     console.error (`[Error] ${e}`);
-      //     throw Error ('Có lỗi xảy ra, vui lòng thử lại!!');
-      //   }
-      // }
-      // const optionDelete = await options.find({'item': id.toString()});
+    } catch (e) {
+      console.error (`[Error] ${e}`);
+      throw Error ('Có lỗi xảy ra, vui lòng thử lại!!');
     }
   }
 
