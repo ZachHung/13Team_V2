@@ -27,6 +27,14 @@ import './PhonePage.scss';
 const api = axios.create({
   baseURL: 'http://localhost:5000/api',
 });
+var initialCheckedBrand;
+// retrive name brand array
+api.get('/phone/brand/name').then((res) => {
+  console.log('branname out component', res.data);
+  initialCheckedBrand = res.data;
+  console.log('initialCheckedBrand out component', initialCheckedBrand);
+});
+console.log('initialCheckedBrand out component', initialCheckedBrand);
 
 function PhonePage() {
   const user = useSelector((state) => state.user.current);
@@ -70,16 +78,17 @@ function PhonePage() {
   };
   // filter
   const [brand, setBrand] = useState([]);
-  const [brandName, setBrandName] = useState([]);
-  // retrive name brand array
-  useEffect(() => {
-    api.get('/phone/brand/name').then((res) => {
-      setBrandName(res.data);
-    });
-  }, []);
+  // const [brandName, setBrandName] = useState([]);
 
+  // console.log('brandName', brandName);
+  console.log('initialCheckedBrand', initialCheckedBrand);
   const [checkedBrand, setCheckedBrand] = useState([]);
-  const [checkedPrice, setCheckedPrice] = useState([]);
+  const [checkedPrice, setCheckedPrice] = useState([
+    // 'duoi-2-trieu',
+    // 'tu-2-5-trieu',
+    // 'tu-5-14-trieu',
+    // 'tren-14-trieu',
+  ]);
   useEffect(() => {
     api.get('/phone/brand').then((res) => {
       setBrand(res.data);
@@ -100,10 +109,13 @@ function PhonePage() {
     let paramStringBrand = checkedBrand.join(',');
     urlString = `?brand=${paramStringBrand}`;
   }
-
+  if (checkedBrand.length == 0 && checkedPrice.length == 0) {
+    urlString = '';
+  }
   // call api
 
   useEffect(() => {
+    console.log('urlString', urlString);
     api.get(`/phone${urlString}`).then((res) => {
       setPhoneList(res.data.items);
     });
@@ -130,7 +142,7 @@ function PhonePage() {
     });
   };
   const handleCheckAllBrand = () => {
-    setCheckedBrand(brandName);
+    setCheckedBrand(initialCheckedBrand);
   };
   const handleCheckAllPrice = () => {
     setCheckedPrice([

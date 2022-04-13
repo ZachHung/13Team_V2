@@ -3,238 +3,6 @@ const items = require('../models/Item');
 const cart = require('../models/Cart');
 
 class PhoneController {
-  info(req, res, next) {
-    items
-      .aggregate([
-        {
-          $match: {
-            type: 'phone',
-          },
-        },
-        {
-          $lookup: {
-            from: 'options',
-            localField: 'slug',
-            foreignField: 'slug',
-            as: 'slug',
-          },
-        },
-      ])
-
-      .then((items) => {
-        res.json(items);
-      })
-
-      .catch(next);
-    // res.send('hello');
-  }
-  totalproduct(req, res, next) {
-    items
-      .aggregate([
-        {
-          $match: {
-            type: 'phone',
-          },
-        },
-        {
-          $lookup: {
-            from: 'options',
-            localField: 'slug',
-            foreignField: 'slug',
-            as: 'slug',
-          },
-        },
-      ])
-
-      .then((items) => {
-        res.json(items.length.toString());
-      })
-
-      .catch(next);
-  }
-  index(req, res, next) {
-    let perPage = 9;
-    let page = req.query.page || 1;
-    let paramBrand = req.query.brand;
-    let paramPrice = req.query.price;
-    var sort = req.query.sort;
-    var temp;
-    if (sort != undefined) {
-      if (sort == 'asc') {
-        temp = 1;
-      } else {
-        temp = -1;
-      }
-    }
-    let to2 = 0;
-    let from2 = -1;
-    let to5 = 0;
-    let from5 = -1;
-    let to14 = 0;
-    let from14 = 100000000000;
-
-    if (paramBrand == undefined) {
-      paramBrand = '';
-    }
-    if (paramPrice == undefined) {
-      paramPrice = '';
-    }
-
-    if (paramBrand != '' || paramPrice != '') {
-      if (paramPrice == '') {
-        paramPrice = 0;
-      } else {
-        if (paramPrice.search('duoi-2-trieu') >= 0) {
-          to2 = 2000000;
-        }
-        if (paramPrice.search('tu-2-5-trieu') >= 0) {
-          from2 = 2000000;
-          to5 = 5000000;
-        }
-        if (paramPrice.search('tu-5-14-trieu') >= 0) {
-          from5 = 5000000;
-          to14 = 14000000;
-        }
-        if (paramPrice.search('tren-14-trieu') >= 0) {
-          from14 = 14000000;
-        }
-      }
-      //  paramPrice = parseFloat(paramPrice)
-      let strParam = paramBrand.split(',');
-      // strParam = strParam.StringSplitOptions.RemoveEmptyEntries;
-      let brand1 = strParam[0];
-      let brand2 = strParam[1];
-      let brand3 = strParam[2];
-      let brand4 = strParam[3];
-      let brand5 = strParam[4];
-      let brand6 = strParam[5];
-      if (paramBrand == '' && paramPrice != '') {
-        brand1 = 'apple';
-        brand2 = 'samsung';
-        brand3 = 'asus';
-        brand4 = 'oppo';
-        brand5 = 'xiaomi';
-        brand6 = 'realme';
-      } // for paramPrice still work when paramBrand is empty
-
-      items
-        .aggregate([
-          {
-            $match: {
-              $and: [
-                {
-                  $or: [
-                    {
-                      brand: brand1,
-                    },
-                    {
-                      brand: brand2,
-                    },
-                    {
-                      brand: brand3,
-                    },
-                    {
-                      brand: brand4,
-                    },
-                    {
-                      brand: brand5,
-                    },
-                    {
-                      brand: brand6,
-                    },
-                  ],
-                },
-                {
-                  type: 'phone',
-                },
-              ],
-            },
-          },
-
-          {
-            $lookup: {
-              from: 'options',
-              localField: 'slug',
-              foreignField: 'slug',
-              as: 'slug',
-            },
-          },
-
-          {
-            $match: {
-              $or: [
-                {
-                  slug: {
-                    $elemMatch: {
-                      color: { $elemMatch: { price: { $gte: paramPrice } } },
-                    },
-                  },
-                },
-
-                {
-                  slug: {
-                    $elemMatch: {
-                      color: {
-                        $elemMatch: { price: { $gte: from5, $lt: to14 } },
-                      },
-                    },
-                  },
-                },
-
-                {
-                  slug: {
-                    $elemMatch: {
-                      color: { $elemMatch: { price: { $gte: from14 } } },
-                    },
-                  },
-                },
-              ],
-            },
-          },
-        ])
-        .sort({
-          'slug.color.price': temp,
-        })
-        .skip(perPage * page - perPage)
-        .limit(perPage)
-        .then((items) => {
-          res.json({
-            items: items,
-          });
-        })
-
-        .catch(next);
-    } else {
-      items
-        .aggregate([
-          {
-            $match: {
-              type: 'phone',
-            },
-          },
-          {
-            $lookup: {
-              from: 'options',
-              localField: 'slug',
-              foreignField: 'slug',
-              as: 'slug',
-            },
-          },
-        ])
-        .sort({
-          'slug.color.price': temp,
-        })
-        .skip(perPage * page - perPage)
-        .limit(perPage)
-        .then((items) => {
-          res.json({
-            items: items,
-          });
-        })
-
-        .catch(next);
-    }
-  }
   brand(req, res, next) {
     items
       .find({ type: 'phone' })
@@ -259,20 +27,10 @@ class PhoneController {
     var paramBrand = req.query.brand;
     var paramPrice = req.query.price;
     var arrayBrand;
-    if (paramBrand != undefined) {
-      arrayBrand = paramBrand.split(',');
-    } else {
-      arrayBrand = ['apple', 'asus', 'oppo', 'realme', 'samsung', 'xiaomi'];
+    if (paramBrand == undefined) {
+      paramBrand = '';
     }
-    var sort = req.query.sort;
-    var temp;
-    if (sort != undefined) {
-      if (sort == 'asc') {
-        temp = 1;
-      } else {
-        temp = -1;
-      }
-    }
+    arrayBrand = paramBrand.split(',');
     let to2 = 0;
     let from2 = -1;
     let to5 = 0;
@@ -283,34 +41,12 @@ class PhoneController {
     if (paramPrice == undefined) {
       paramPrice = '';
     }
-
-    if (paramPrice != '') {
-      if (paramPrice.search('duoi-2-trieu') >= 0) {
-        to2 = 2000000;
-      }
-      if (paramPrice.search('tu-2-5-trieu') >= 0) {
-        from2 = 2000000;
-        to5 = 5000000;
-      }
-      if (paramPrice.search('tu-5-14-trieu') >= 0) {
-        from5 = 5000000;
-        to14 = 14000000;
-      }
-      if (paramPrice.search('tren-14-trieu') >= 0) {
-        from14 = 14000000;
-      }
+    if (paramPrice == '' && paramBrand == '') {
       items
         .aggregate([
           {
             $match: {
-              $and: [
-                {
-                  'brand.name': { $in: arrayBrand },
-                },
-                {
-                  type: 'phone',
-                },
-              ],
+              type: 'phone',
             },
           },
           {
@@ -321,76 +57,189 @@ class PhoneController {
               as: 'slug',
             },
           },
-          {
-            $match: {
-              $or: [
-                {
-                  slug: {
-                    $elemMatch: {
-                      color: { $elemMatch: { price: { $gte: paramPrice } } },
-                    },
+        ])
+        .then((items) => {
+          res.json({ items: items });
+        })
+        .catch(next);
+    } else {
+      if (paramBrand != '' && paramPrice == '') {
+        items
+          .aggregate([
+            {
+              $match: {
+                $and: [
+                  {
+                    'brand.name': { $in: arrayBrand },
                   },
-                },
-
-                {
-                  slug: {
-                    $elemMatch: {
-                      color: {
-                        $elemMatch: { price: { $gte: from5, $lt: to14 } },
+                  {
+                    type: 'phone',
+                  },
+                ],
+              },
+            },
+            {
+              $lookup: {
+                from: 'options',
+                localField: 'slug',
+                foreignField: 'slug',
+                as: 'slug',
+              },
+            },
+          ])
+          .then((items) => {
+            res.json({
+              items: items,
+            });
+          })
+          .catch(next);
+      }
+      if (paramBrand == '' && paramPrice != '') {
+        if (paramPrice.search('duoi-2-trieu') >= 0) {
+          to2 = 2000000;
+        }
+        if (paramPrice.search('tu-2-5-trieu') >= 0) {
+          from2 = 2000000;
+          to5 = 5000000;
+        }
+        if (paramPrice.search('tu-5-14-trieu') >= 0) {
+          from5 = 5000000;
+          to14 = 14000000;
+        }
+        if (paramPrice.search('tren-14-trieu') >= 0) {
+          from14 = 14000000;
+        }
+        items
+          .aggregate([
+            {
+              $match: {
+                type: 'phone',
+              },
+            },
+            {
+              $lookup: {
+                from: 'options',
+                localField: 'slug',
+                foreignField: 'slug',
+                as: 'slug',
+              },
+            },
+            {
+              $match: {
+                $or: [
+                  {
+                    slug: {
+                      $elemMatch: {
+                        color: { $elemMatch: { price: { $gte: paramPrice } } },
                       },
                     },
                   },
-                },
 
-                {
-                  slug: {
-                    $elemMatch: {
-                      color: { $elemMatch: { price: { $gte: from14 } } },
+                  {
+                    slug: {
+                      $elemMatch: {
+                        color: {
+                          $elemMatch: { price: { $gte: from5, $lt: to14 } },
+                        },
+                      },
                     },
                   },
-                },
-              ],
-            },
-          },
-        ])
-        .then((items) => {
-          res.json({
-            items: items,
-          });
-        })
 
-        .catch(next);
-    } else {
-      items
-        .aggregate([
-          {
-            $match: {
-              $and: [
-                {
-                  'brand.name': { $in: arrayBrand },
-                },
-                {
-                  type: 'phone',
-                },
-              ],
+                  {
+                    slug: {
+                      $elemMatch: {
+                        color: { $elemMatch: { price: { $gte: from14 } } },
+                      },
+                    },
+                  },
+                ],
+              },
             },
-          },
-          {
-            $lookup: {
-              from: 'options',
-              localField: 'slug',
-              foreignField: 'slug',
-              as: 'slug',
-            },
-          },
-        ])
-        .then((items) => {
-          res.json({
-            items: items,
-          });
-        })
+          ])
+          .then((items) => {
+            res.json({
+              items: items,
+            });
+          })
+          .catch(next);
+      }
 
-        .catch(next);
+      if (paramBrand != '' && paramPrice != '') {
+        if (paramPrice.search('duoi-2-trieu') >= 0) {
+          to2 = 2000000;
+        }
+        if (paramPrice.search('tu-2-5-trieu') >= 0) {
+          from2 = 2000000;
+          to5 = 5000000;
+        }
+        if (paramPrice.search('tu-5-14-trieu') >= 0) {
+          from5 = 5000000;
+          to14 = 14000000;
+        }
+        if (paramPrice.search('tren-14-trieu') >= 0) {
+          from14 = 14000000;
+        }
+        items
+          .aggregate([
+            {
+              $match: {
+                $and: [
+                  {
+                    'brand.name': { $in: arrayBrand },
+                  },
+                  {
+                    type: 'phone',
+                  },
+                ],
+              },
+            },
+            {
+              $lookup: {
+                from: 'options',
+                localField: 'slug',
+                foreignField: 'slug',
+                as: 'slug',
+              },
+            },
+            {
+              $match: {
+                $or: [
+                  {
+                    slug: {
+                      $elemMatch: {
+                        color: { $elemMatch: { price: { $gte: paramPrice } } },
+                      },
+                    },
+                  },
+
+                  {
+                    slug: {
+                      $elemMatch: {
+                        color: {
+                          $elemMatch: { price: { $gte: from5, $lt: to14 } },
+                        },
+                      },
+                    },
+                  },
+
+                  {
+                    slug: {
+                      $elemMatch: {
+                        color: { $elemMatch: { price: { $gte: from14 } } },
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          ])
+          .then((items) => {
+            res.json({
+              items: items,
+            });
+          })
+          .catch(next);
+      }
     }
   }
 }
