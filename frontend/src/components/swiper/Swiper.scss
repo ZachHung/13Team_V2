@@ -1,11 +1,16 @@
-.filter-product{
+.filter-product-swiper{
   .brand-swiper, .price-swiper {
     margin-bottom: 2rem;
     margin-top: 1rem;
     cursor: pointer;
 
   }
-  
+  .slide{
+    img{
+      width: 85%;
+      border-radius: 10px;
+    }
+  }
   .filter-span{
     display: inline-flex;
     -webkit-box-align: center;
@@ -28,26 +33,11 @@
   @media screen and (max-width: 480px) {
     margin-left: 3rem;
     margin-top: 2rem;
-    // .swiper-container{
-    //   width: 100%;
-    // }
-    // .swiper-wrapper {
-    //   width: 50%;
-    // }
-    // .swiper-slide {
-    //   text-align: center;
-    //   width: auto;
-    // }
-    // .slide-image {
-    //   height: 400px;
-    //   width: auto;
-    // }
-    // .my-gallery figure {
-    //   margin: 0px;
-    // }
     .slide{
       img{
         width: 85%;
+      border-radius: 7px;
+
       }
     }
   }

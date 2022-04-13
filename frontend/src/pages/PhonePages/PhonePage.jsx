@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { userRequest } from '../../utils/CallApi';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { setQuantity } from '../../redux/cart';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -27,19 +27,20 @@ import './PhonePage.scss';
 const api = axios.create({
   baseURL: 'http://localhost:5000/api',
 });
-var initialCheckedBrand;
-// retrive name brand array
-api.get('/phone/brand/name').then((res) => {
-  console.log('branname out component', res.data);
-  initialCheckedBrand = res.data;
-  console.log('initialCheckedBrand out component', initialCheckedBrand);
-});
-console.log('initialCheckedBrand out component', initialCheckedBrand);
 
 function PhonePage() {
+  const { type } = useParams();
+  console.log('type', type);
   const user = useSelector((state) => state.user.current);
   const dispatch = useDispatch();
   const [phoneList, setPhoneList] = useState([]);
+  var initialCheckedBrand;
+  // retrive name brand array
+  api.get(`/${type}/brand/name`).then((res) => {
+    console.log('branname out component', res.data);
+    initialCheckedBrand = res.data;
+  });
+
   // add cart
   const handleAddCart = (optionParam, colorParam) => {
     // if user is guest
@@ -78,22 +79,14 @@ function PhonePage() {
   };
   // filter
   const [brand, setBrand] = useState([]);
-  // const [brandName, setBrandName] = useState([]);
-
-  // console.log('brandName', brandName);
   console.log('initialCheckedBrand', initialCheckedBrand);
   const [checkedBrand, setCheckedBrand] = useState([]);
-  const [checkedPrice, setCheckedPrice] = useState([
-    // 'duoi-2-trieu',
-    // 'tu-2-5-trieu',
-    // 'tu-5-14-trieu',
-    // 'tren-14-trieu',
-  ]);
+  const [checkedPrice, setCheckedPrice] = useState([]);
   useEffect(() => {
-    api.get('/phone/brand').then((res) => {
+    api.get(`/${type}/brand`).then((res) => {
       setBrand(res.data);
     });
-  }, []);
+  }, [type]);
 
   var urlString = '';
   if (checkedBrand.length != 0 && checkedPrice.length != 0) {
@@ -116,10 +109,10 @@ function PhonePage() {
 
   useEffect(() => {
     console.log('urlString', urlString);
-    api.get(`/phone${urlString}`).then((res) => {
+    api.get(`/${type}${urlString}`).then((res) => {
       setPhoneList(res.data.items);
     });
-  }, [urlString]);
+  }, [urlString, type]);
 
   const handleCheckBrand = (name) => {
     setCheckedBrand((prev) => {
@@ -163,23 +156,6 @@ function PhonePage() {
   );
   // change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  // sort
-  // const [sortedProducts, setSortedProducts] = useState([]);
-  // // var temp = orderBy(currentProduct, 'name', 'desc');
-  // // setSortedProducts(temp);
-  // const [type, setType] = useState((prev) => 'asc');
-
-  // const handleSortAsc = (newType) => {
-  //   setType(newType);
-  //   console.log('clicked asc', type);
-  // };
-  // const handleSortDesc = (newType) => {
-  //   setType(newType);
-  //   console.log('clicked desc', type);
-  // };
-  // useEffect(() => {
-  //   setSortedProducts(orderBy(currentProduct, 'name', type));
-  // }, [type]);
 
   return (
     <>
@@ -190,6 +166,7 @@ function PhonePage() {
           <Swiper
             updateBrand={handleCheckBrand}
             updatePrice={handleCheckPrice}
+            type={type}
           ></Swiper>
           <div className="filter-checkbox">
             <span style={{ fontWeight: 500, paddingRight: '1rem' }}>

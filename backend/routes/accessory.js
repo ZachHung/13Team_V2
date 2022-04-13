@@ -1,12 +1,11 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const itemController = require("../api/controllers/ItemController");
-const accessoryController = require("../api/controllers/AccessoryController");
+const itemController = require('../api/controllers/ItemController');
+const PhoneController = require('../api/controllers/PhoneController');
 
-router.get("/:slug", itemController.detailItemAccessory);
-router.post("/addcart", accessoryController.addCart);
-router.post("/cart", accessoryController.checkout);
-router.get("/totalproduct", accessoryController.totalproduct);
-router.get("/info", accessoryController.info);
-router.get("/", accessoryController.index);
+router.get('/:slug', itemController.detailItemAccessory);
+router.get('/brand', PhoneController.brand);
+router.get('/brand/name', PhoneController.brandName);
+router.get('/', PhoneController.home);
+
 module.exports = router;
