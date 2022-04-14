@@ -9,12 +9,13 @@
   z-index: 1;
   cursor: pointer;
   color: whitesmoke;
+  transition: all 0.3s ease;
   &:hover {
     opacity: 1;
   }
-
   .icon {
     border-radius: 50%;
+    transition: transform 0.5s ease;
     background-color: #808080;
     height: 2.4rem;
     width: 2.4rem;

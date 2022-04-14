@@ -25,7 +25,9 @@ const ScrollButton = () => {
     <div title="Go to top" className="scrollToTopBtn" onClick={scrollToTop}>
       <FontAwesomeIcon
         className="icon"
-        style={{ display: visible ? "inline" : "none" }}
+        style={{
+          transform: !visible ? "translate(150px, 0px)" : "translate(0px, 0px)",
+        }}
         icon={faChevronUp}
       />
     </div>
