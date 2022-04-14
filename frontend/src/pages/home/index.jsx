@@ -13,10 +13,6 @@ import Header from '../../components/header';
 import Footer from '../../components/footer';
 
 const HomePage = () => {
-  // Mount sliders
-  useEffect(() => {}, []);
-  useEffect(() => {}, []);
-
   useEffect(() => {
     // Mount slide1
     new Glide('#glide_1', {

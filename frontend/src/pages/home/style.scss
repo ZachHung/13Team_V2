@@ -17,6 +17,7 @@
 
 /* Hero */
 .homePage {
+  background-color: white;
   .hero,
   .hero .glide__slides {
     height: calc(100vh - 12.75rem);
@@ -44,6 +45,7 @@
     background-color: white;
   }
   .hero .glide__slide h1 {
+    text-align: initial;
     margin: 1rem 0;
     font-size: 3rem;
     font-weight: bold;
@@ -226,10 +228,11 @@
     position: relative;
   }
   .spotlight__item .name {
+    text-align: center;
     font-weight: bold;
     font-size: 1.5rem;
     position: absolute;
-    bottom: 7.5rem;
+    bottom: 3rem;
     right: 50%;
     transform: translate(50%, 0);
   }
@@ -330,7 +333,6 @@
     .spotlight__item .name {
       width: 80%;
       bottom: 1.5rem;
-      text-align: center;
     }
 
     .grid-col-1 {
