@@ -4,6 +4,226 @@ const items = require('../models/Item');
 
 class SearchController {
   //search global
+  index(req, res, next) {
+    var paramBrand = req.query.brand;
+    var paramPrice = req.query.price;
+    var keyword = req.query.key;
+    var arrayBrand;
+    if (paramBrand == undefined) {
+      paramBrand = '';
+    }
+    arrayBrand = paramBrand.split(',');
+    let to2 = 0;
+    let from2 = -1;
+    let to5 = 0;
+    let from5 = -1;
+    let to14 = 0;
+    let from14 = 100000000000;
+
+    if (paramPrice == undefined) {
+      paramPrice = '';
+    }
+    if (paramPrice == '' && paramBrand == '') {
+      items
+        .aggregate([
+          {
+            $match: {
+              name: { $regex: keyword, $options: 'i' },
+            },
+          },
+          {
+            $lookup: {
+              from: 'options',
+              localField: 'slug',
+              foreignField: 'slug',
+              as: 'slug',
+            },
+          },
+        ])
+        .then((items) => {
+          res.json({ items: items });
+        })
+        .catch(next);
+    } else {
+      if (paramBrand != '' && paramPrice == '') {
+        items
+          .aggregate([
+            {
+              $match: {
+                $and: [
+                  {
+                    name: { $regex: keyword, $options: 'i' },
+                  },
+                  {
+                    'brand.name': { $in: arrayBrand },
+                  },
+                ],
+              },
+            },
+            {
+              $lookup: {
+                from: 'options',
+                localField: 'slug',
+                foreignField: 'slug',
+                as: 'slug',
+              },
+            },
+          ])
+          .then((items) => {
+            res.json({
+              items: items,
+            });
+          })
+          .catch(next);
+      }
+      if (paramBrand == '' && paramPrice != '') {
+        if (paramPrice.search('duoi-2-trieu') >= 0) {
+          to2 = 2000000;
+        }
+        if (paramPrice.search('tu-2-5-trieu') >= 0) {
+          from2 = 2000000;
+          to5 = 5000000;
+        }
+        if (paramPrice.search('tu-5-14-trieu') >= 0) {
+          from5 = 5000000;
+          to14 = 14000000;
+        }
+        if (paramPrice.search('tren-14-trieu') >= 0) {
+          from14 = 14000000;
+        }
+        items
+          .aggregate([
+            {
+              $match: {
+                name: { $regex: keyword, $options: 'i' },
+              },
+            },
+            {
+              $lookup: {
+                from: 'options',
+                localField: 'slug',
+                foreignField: 'slug',
+                as: 'slug',
+              },
+            },
+            {
+              $match: {
+                $or: [
+                  {
+                    slug: {
+                      $elemMatch: {
+                        color: { $elemMatch: { price: { $gte: paramPrice } } },
+                      },
+                    },
+                  },
+
+                  {
+                    slug: {
+                      $elemMatch: {
+                        color: {
+                          $elemMatch: { price: { $gte: from5, $lt: to14 } },
+                        },
+                      },
+                    },
+                  },
+
+                  {
+                    slug: {
+                      $elemMatch: {
+                        color: { $elemMatch: { price: { $gte: from14 } } },
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          ])
+          .then((items) => {
+            res.json({
+              items: items,
+            });
+          })
+          .catch(next);
+      }
+
+      if (paramBrand != '' && paramPrice != '') {
+        if (paramPrice.search('duoi-2-trieu') >= 0) {
+          to2 = 2000000;
+        }
+        if (paramPrice.search('tu-2-5-trieu') >= 0) {
+          from2 = 2000000;
+          to5 = 5000000;
+        }
+        if (paramPrice.search('tu-5-14-trieu') >= 0) {
+          from5 = 5000000;
+          to14 = 14000000;
+        }
+        if (paramPrice.search('tren-14-trieu') >= 0) {
+          from14 = 14000000;
+        }
+        items
+          .aggregate([
+            {
+              $match: {
+                $and: [
+                  {
+                    'brand.name': { $in: arrayBrand },
+                  },
+                  {
+                    name: { $regex: keyword, $options: 'i' },
+                  },
+                ],
+              },
+            },
+            {
+              $lookup: {
+                from: 'options',
+                localField: 'slug',
+                foreignField: 'slug',
+                as: 'slug',
+              },
+            },
+            {
+              $match: {
+                $or: [
+                  {
+                    slug: {
+                      $elemMatch: {
+                        color: { $elemMatch: { price: { $gte: paramPrice } } },
+                      },
+                    },
+                  },
+
+                  {
+                    slug: {
+                      $elemMatch: {
+                        color: {
+                          $elemMatch: { price: { $gte: from5, $lt: to14 } },
+                        },
+                      },
+                    },
+                  },
+
+                  {
+                    slug: {
+                      $elemMatch: {
+                        color: { $elemMatch: { price: { $gte: from14 } } },
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          ])
+          .then((items) => {
+            res.json({
+              items: items,
+            });
+          })
+          .catch(next);
+      }
+    }
+  }
   global(req, res, next) {
     var keyword = req.query.key;
     var sort = req.query.sort;
@@ -130,7 +350,7 @@ class SearchController {
       .catch(next);
   }
   // search for purchase
-  index(req, res, next) {
+  purchaseSearch(req, res, next) {
     var queryParam = req.query.purchase;
 
     purchase
