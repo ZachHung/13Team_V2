@@ -1,4 +1,8 @@
-.products-container {
+.search-container {
+  h1{
+    font-weight: 400;
+    margin-bottom: 3rem;
+  }
   .filter-checkbox{
     .brand-swiper, .price-swiper {
       margin-bottom: 2rem;
@@ -25,8 +29,9 @@
       }
     }
     margin-left: 40rem;
-    margin-bottom: 2rem;
     margin-top: 2rem;
+    margin-bottom: 2rem;
+
     @media screen and (max-width: 480px) {
       margin-left: 3rem;
       margin-top: 2rem;
@@ -49,7 +54,7 @@
   .filter {
     align-self: flex-start;
     position: absolute;
-    top: 74%;
+    top: 34%;
     left: 7%;
   }
   .asc-price {

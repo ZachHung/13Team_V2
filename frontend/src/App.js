@@ -34,6 +34,7 @@ import Blank from './pages/Blank';
 //import scss va boxicon cho dashboard
 import './assets/libs/boxicons-2.1.1/css/boxicons.min.css';
 import './scss/App.scss';
+import SearchPage from './pages/SearchPage/SearchPage';
 
 function App() {
   const isAdmin = useSelector((state) => state.user.isAdmin);
@@ -43,6 +44,7 @@ function App() {
         {/* start publicRoute */}
         <Route path="*" element={<NotFound />} />
         <Route path="/" element={<HomePage />} />
+        <Route exact path="/search" element={<SearchPage />} />
         <Route exact path="/:type" element={<PhonePage />} />
         <Route path="/:type/:id" element={<ProductPage></ProductPage>}></Route>
         {/* end publicRoute */}
