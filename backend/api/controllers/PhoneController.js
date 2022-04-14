@@ -37,6 +37,7 @@ class PhoneController {
       .catch(next);
   }
   home(req, res, next) {
+    //define type of product
     var fullUrl = req.originalUrl;
     console.log('fullUrl ', fullUrl);
     const urlArray = fullUrl.split('/');
@@ -45,7 +46,7 @@ class PhoneController {
     const splitTypeProduct = urlArray[2].split('?');
     const typeProduct = splitTypeProduct[0];
     console.log('typeProduct: ', typeProduct);
-
+    //get query params
     var paramBrand = req.query.brand;
     var paramPrice = req.query.price;
     var arrayBrand;

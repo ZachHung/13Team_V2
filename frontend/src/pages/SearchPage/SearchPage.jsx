@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { userRequest } from '../../utils/CallApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { setQuantity } from '../../redux/cart';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -24,7 +23,6 @@ import Pagination from '../../components/pagination';
 import { currentChange } from '../../utils/const';
 import SortProduct from '../../components/sortProduct';
 import './SearchPage.scss';
-import query from 'express/lib/middleware/query';
 
 const api = axios.create({
   baseURL: 'http://localhost:5000/api',
@@ -96,27 +94,32 @@ function SearchPage() {
   if (checkedBrand.length != 0 && checkedPrice.length != 0) {
     let paramStringBrand = checkedBrand.join(',');
     let paramStringPrice = checkedPrice.join(',');
-    urlString = `?brand=${paramStringBrand}&price=${paramStringPrice}`;
+    urlString = `?key=${key}&brand=${paramStringBrand}&price=${paramStringPrice}`;
   }
   if (checkedBrand.length == 0 && checkedPrice.length != 0) {
     let paramStringPrice = checkedPrice.join(',');
-    urlString = `?price=${paramStringPrice}`;
+    urlString = `?key=${key}&price=${paramStringPrice}`;
   }
   if (checkedBrand.length != 0 && checkedPrice.length == 0) {
     let paramStringBrand = checkedBrand.join(',');
-    urlString = `?brand=${paramStringBrand}`;
+    urlString = `?key=${key}&brand=${paramStringBrand}`;
   }
   if (checkedBrand.length == 0 && checkedPrice.length == 0) {
-    urlString = '';
+    urlString = `?key=${key}&`;
   }
   // call api
 
   useEffect(() => {
     console.log('urlString', urlString);
-    api.get(`/search/global?key=${key}`).then((res) => {
+    window.history.pushState(
+      {},
+      'Tìm kiếm',
+      `http://localhost:3000/search${urlString}`
+    );
+    api.get(`/search/global${urlString}`).then((res) => {
       setProductList(res.data.items);
     });
-  }, [key]);
+  }, [urlString, key]);
 
   const handleCheckBrand = (name) => {
     setCheckedBrand((prev) => {
