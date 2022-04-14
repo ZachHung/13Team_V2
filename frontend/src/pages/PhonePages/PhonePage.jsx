@@ -21,6 +21,7 @@ import SwiperPromotion from '../../components/swiperPromotion/SwiperPromotion';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
 import Pagination from '../../components/pagination';
+import { currentChange } from '../../utils/const';
 import SortProduct from '../../components/sortProduct';
 import './PhonePage.scss';
 
@@ -306,7 +307,9 @@ function PhonePage() {
                 <div key={phone._id} className="product-layout">
                   <div className="product">
                     <div className="img-container">
-                      <Link to={`/`}>
+                      <Link
+                        to={`/${type}/${phone.slug[0].slug}-${phone.slug[0].detail}`}
+                      >
                         <img
                           src={`http://localhost:5000/${phone.image[0]}`}
                           alt={phone.name}
@@ -321,7 +324,9 @@ function PhonePage() {
                       </div>
 
                       <div className="price">
-                        <span>{phone.slug[0].color[0].price}</span>
+                        <span>
+                          {currentChange(phone.slug[0].color[0].price)}
+                        </span>
                       </div>
                       <div className="config">
                         <div className="config-param">
