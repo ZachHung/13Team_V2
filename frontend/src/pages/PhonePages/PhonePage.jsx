@@ -110,6 +110,11 @@ function PhonePage() {
 
   useEffect(() => {
     console.log('urlString', urlString);
+    window.history.pushState(
+      {},
+      'Tìm kiếm',
+      `http://localhost:3000/${type}${urlString}`
+    );
     api.get(`/${type}${urlString}`).then((res) => {
       setPhoneList(res.data.items);
     });
