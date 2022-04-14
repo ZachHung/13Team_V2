@@ -1,6 +1,6 @@
-const purchase = require("../models/Purchase");
-const util = require("../../util/mongoose");
-const items = require("../models/Item");
+const purchase = require('../models/Purchase');
+const util = require('../../util/mongoose');
+const items = require('../models/Item');
 
 class SearchController {
   //search global
@@ -9,39 +9,71 @@ class SearchController {
     var sort = req.query.sort;
     var temp;
     if (sort != undefined) {
-      if (sort == "asc") {
+      if (sort == 'asc') {
         temp = 1;
       } else {
         temp = -1;
       }
     }
-
-    items
-      .aggregate([
-        {
-          $match: {
-            name: { $regex: keyword, $options: "i" },
+    if (keyword == undefined) {
+      items
+        .aggregate([
+          {
+            $lookup: {
+              from: 'options',
+              localField: 'slug',
+              foreignField: 'slug',
+              as: 'slug',
+            },
           },
-        },
-        {
-          $lookup: {
-            from: "options",
-            localField: "slug",
-            foreignField: "slug",
-            as: "slug",
-          },
-        },
-      ])
-      .sort({
-        "slug.color.price": temp,
-      })
-      .then((items) => {
-        res.json({
-          items: items,
+        ])
+        .then((items) => {
+          res.json({ items: items });
         });
-        // res.json(items)
-      })
+    } else {
+      items
+        .aggregate([
+          {
+            $match: {
+              name: { $regex: keyword, $options: 'i' },
+            },
+          },
+          {
+            $lookup: {
+              from: 'options',
+              localField: 'slug',
+              foreignField: 'slug',
+              as: 'slug',
+            },
+          },
+        ])
+        .sort({
+          'slug.color.price': temp,
+        })
+        .then((items) => {
+          res.json({
+            items: items,
+          });
+          // res.json(items)
+        })
 
+        .catch(next);
+    }
+  }
+  brand(req, res, next) {
+    items
+      .distinct('brand')
+      .then((items) => {
+        res.json(items);
+      })
+      .catch(next);
+  }
+  brandName(req, res, next) {
+    items
+      .distinct('brand.name')
+      .then((items) => {
+        res.json(items);
+      })
       .catch(next);
   }
   match(req, res, next) {
@@ -51,15 +83,15 @@ class SearchController {
       .aggregate([
         {
           $match: {
-            name: { $regex: keyword, $options: "i" },
+            name: { $regex: keyword, $options: 'i' },
           },
         },
         {
           $lookup: {
-            from: "options",
-            localField: "slug",
-            foreignField: "slug",
-            as: "slug",
+            from: 'options',
+            localField: 'slug',
+            foreignField: 'slug',
+            as: 'slug',
           },
         },
       ])
@@ -78,15 +110,15 @@ class SearchController {
       .aggregate([
         {
           $match: {
-            name: { $regex: keyword, $options: "i" },
+            name: { $regex: keyword, $options: 'i' },
           },
         },
         {
           $lookup: {
-            from: "options",
-            localField: "slug",
-            foreignField: "slug",
-            as: "slug",
+            from: 'options',
+            localField: 'slug',
+            foreignField: 'slug',
+            as: 'slug',
           },
         },
       ])
@@ -104,13 +136,13 @@ class SearchController {
     purchase
       .find({ userID: req.session.user._id })
 
-      .populate("userID", "name")
-      .populate("list.optionID")
+      .populate('userID', 'name')
+      .populate('list.optionID')
       .populate({
-        path: "list.optionID",
+        path: 'list.optionID',
         populate: {
-          path: "item",
-          select: "name type brand",
+          path: 'item',
+          select: 'name type brand',
           match: { name: { $regex: queryParam } },
         },
       })

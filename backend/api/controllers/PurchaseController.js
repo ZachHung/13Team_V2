@@ -62,7 +62,7 @@ class PurchaseController {
                   _id: result._id,
                 },
                 {
-                  $set: { status: 'Đã giao' },
+                  $set: { status: 'Đã giao hàng' },
                 }
               )
               .then(() => {});
@@ -84,7 +84,7 @@ class PurchaseController {
           select: 'name type brand',
         },
       })
-      .find({ status: 'Đã giao' })
+      .find({ status: 'Đã giao hàng' })
       .then((data) => {
         data = util.mutipleMongooseToObject(data);
 
@@ -114,7 +114,7 @@ class PurchaseController {
           select: 'name type brand',
         },
       })
-      .find({ status: 'Đang giao' })
+      .find({ status: 'Đang giao hàng' })
       .then((data) => {
         data = util.mutipleMongooseToObject(data);
 

@@ -10,8 +10,13 @@ const api = axios.create({
 
 export default ({ updateBrand, updatePrice, type }) => {
   const [brand, setBrand] = useState([]);
+  var urlAPI = `/${type}/brand`;
+  if (type == 'all') {
+    urlAPI = `/search/brand`;
+  }
+
   useEffect(() => {
-    api.get(`/${type}/brand`).then((res) => {
+    api.get(urlAPI).then((res) => {
       setBrand(res.data);
     });
   }, [type]);

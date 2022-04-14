@@ -1,16 +1,16 @@
-import React, { useEffect } from "react";
-import "./style.scss";
-import Glide from "@glidejs/glide";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect } from 'react';
+import './style.scss';
+import Glide from '@glidejs/glide';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronRight,
   faChevronLeft,
-} from "@fortawesome/free-solid-svg-icons";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import Header from "../../components/header";
-import Footer from "../../components/footer";
+} from '@fortawesome/free-solid-svg-icons';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import Header from '../../components/header';
+import Footer from '../../components/footer';
 
 const HomePage = () => {
   // Mount sliders
@@ -19,32 +19,32 @@ const HomePage = () => {
 
   useEffect(() => {
     // Mount slide1
-    new Glide("#glide_1", {
-      focusAt: "center",
-      type: "carousel",
+    new Glide('#glide_1', {
+      focusAt: 'center',
+      type: 'carousel',
       startAt: 0,
       autoplay: 5000,
       hoverpause: true,
       perView: 1,
       animationDuration: 500,
-      animationTimingFunc: "linear",
+      animationTimingFunc: 'linear',
     }).mount();
 
     // Mount slide2
-    new Glide("#glide_2", {
-      focusAt: "center",
-      type: "carousel",
+    new Glide('#glide_2', {
+      focusAt: 'center',
+      type: 'carousel',
       startAt: 0,
       perView: 1,
       animationDuration: 500,
-      animationTimingFunc: "linear",
+      animationTimingFunc: 'linear',
     }).mount();
 
     // Initialize AOS when page load
     AOS.init({
       offset: 50, //trigger offset in px
       duration: 350, // values from 0 to 3000, with step 50ms
-      easing: "ease-in-back", // default easing for AOS animations
+      easing: 'ease-in-back', // default easing for AOS animations
       once: true,
     });
     AOS.refresh();
@@ -52,7 +52,7 @@ const HomePage = () => {
 
   return (
     <div className="homePage">
-      <Header color="#f5f5f5" />{" "}
+      <Header color="#f5f5f5" />{' '}
       <div className="landing-page">
         <section className="hero">
           <div className="glide" id="glide_1">
