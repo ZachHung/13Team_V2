@@ -1,17 +1,22 @@
 .listItemsAdminTitle{
-  padding-top: 0rem !important;
-  font-size: larger;
+  margin-top: -3rem !important;
+  font-size: medium;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   text-align: center;
 
   .btnAddNewItem{
      margin-left: 10%;
-     font-size: larger;
+     font-size: medium;
      width: 100%;
   }
   .fw-bold{
-    color: blue
+    color: white
   }
+  .qlsp{
+    background-color: #4d5b7e;
+    padding: 1%
+  }
+
   .table{
    vertical-align: middle;
    border-width: 1px;
@@ -19,15 +24,21 @@
   .btnAddNewItem:hover{
    background-color: green;
    }
+   
+   .btnDeleteAllItems{
+    margin-left: 2%;
+    font-size: medium;
+   }
+   .btnDeleteAllItems:hover{
+    background-color: red;
+    }
    .btnEditItem, .btnDeleteItem{
-     font-size: small;
+     font-size: medium;
      display: inline-block;
    }
+
    .btnEditItem:hover, .btnDeleteItem:hover{
-    font-size: small;
     display: inline-block;
-    //color: white;
-    //background-color: blue;
   }
    .formMethod{
      display: inline;
@@ -58,6 +69,3 @@
   }
   
 }
-
-
-

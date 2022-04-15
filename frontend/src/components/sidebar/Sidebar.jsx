@@ -49,7 +49,7 @@ const Sidebar = () => {
                         <i className='bx bx-log-out'></i>
                     </div>
                     <div className="sidebar__menu__item__txt">
-                        Logout
+                        Đăng xuất
                     </div>
                 </div>
             </div>
