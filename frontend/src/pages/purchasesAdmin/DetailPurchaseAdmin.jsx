@@ -7,7 +7,7 @@ import {useEffect, useState} from 'react';
 import {format} from 'date-fns';
 import {useParams} from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { faElementor } from '@fortawesome/free-brands-svg-icons';
+
 
 const api = axios.create ({
   baseURL: 'http://localhost:5000/api/',
@@ -57,7 +57,7 @@ function DetailPurchaseAdmin () {
   return (
     <div
       className="d-flex flex-column marginTop">
-    <button className='btn btnback' href='/admin/orders/'>&#8592; Quay lại</button>
+   <a className='btn btnback' href='/admin/orders/'>&#8592; Quay lại</a>
     {/* <FontAwesomeIcon >{faTrashAlt}<a className='btn btn-outline-primary btndelete' href='/admin/orders/'>Xóa đơn hàng</a> </FontAwesomeIcon> */}
     {purchaseDetail?.map ((purchase) => (
         <div className="purCart text-white" style={{"border": '2px solid #0c517d'}}>
@@ -66,55 +66,62 @@ function DetailPurchaseAdmin () {
                     <h2>Mã đơn hàng: {purchase._id}</h2>
                     <h2>7Team</h2>
                 </div>
-                <div className="d-flex bg-white text-dark p-3 justify-content-between">
-                        <div className="my-grow-shrink purchaseInfo">
-                            <h2>Thông tin vận chuyển:</h2>
-                            <p className='px-2 mt-3'><b>Họ tên: </b>{purchase.userID.name}
-                            </p>
-                            <p className='px-2'><b>Số điện thoại: </b>
-                                {purchase.userID.phone}
-                            </p>
-                            <p className='px-2'><b>Email: </b>
+                <div className="purchaseInfo d-flex bg-white text-dark p-3 justify-content-between">
+                    <div>
+                        <h2>Thông tin vận chuyển:</h2>
+                         <p className='px-2 mt-3'><b>Họ tên: </b>{purchase.userID.name}
+                        </p>
+                        <p className='px-2'><b>Số điện thoại: </b>
+                            {purchase.userID.phone}
+                        </p>
+                        <p className='px-2'><b>Email: </b>
                                 {purchase.userID.email}
-                            </p>
-                            <p className='px-2'><b>Địa chỉ: </b>
-                                {purchase.userID.detailaddress}
-                            </p>
-                        </div>
-                        <div className="my-grow-shrink purchaseInfo">
-                            <h2 style={{"marginRight": "50px"}} className="mb-3">Tình trạng đơn hàng:</h2>
-                                { 
-                                    purchase.status === "Đang giao hàng" ?
-                                        <div className='redStatus'>
-                                            <p>Đã xác nhận bởi quản trị viên</p>
-                                            <p>Đơn hàng đang được giao</p>
-                                        </div> 
-                                    : purchase.status === "Đã giao hàng" ?                                    
-                                        <div className='redStatus'>Đã giao hàng lúc {format (new Date(purchase.updatedAt), "yyyy-MM-dd kk:mm:ss")}</div>                                   
-                                    : purchase.status === "Đã hủy" ?
-                                        <div className='redStatus'>Đơn hàng đã bị hủy</div>
-                                    :
-                                        <div className='redStatus'>Đơn hàng không xác định</div>
-                                }
-                        </div>
+                        </p>
+                        <p className='px-2'><b>Địa chỉ: </b>
+                                {purchase.userID.detailaddress}, {purchase.userID.ward}, {purchase.userID.district}, {purchase.userID.province}
+                        </p>
                     </div>
+                    <div>
+                        <h2 className="mb-3">Tình trạng đơn hàng:</h2>
+                        <p>
+                            { 
+                                purchase.status === "Đang giao hàng" ?
+                                    <div className='redStatus'>
+                                        <p>Đã xác nhận bởi quản trị viên</p>
+                                        <p>Đơn hàng đang được giao</p>
+                                    </div> 
+                                : purchase.status === "Đã giao hàng" ?                                    
+                                    <span className='redStatus'>Đã giao hàng lúc {format (new Date(purchase.updatedAt), "yyyy-MM-dd kk:mm:ss")}</span>                                   
+                                : purchase.status === "Đã hủy" ?
+                                    <span className='redStatus'>Đơn hàng đã bị hủy</span>
+                                :
+                                    <span className='redStatus'>Đơn hàng không xác định</span>
+                            }
+                        </p>
+                    </div>
+                </div>
             </div>
             <div className="cart-bottom">
                     <div className="purchaseTable">
-                        <table className="w-100">
-                            <tbody>
-                                <tr className="main-heading h4">
-                                    <th>#</th>
-                                    <th>Ảnh</th>
-                                    <th className="long-txt">Tên</th>
-                                    <th>Màu</th>
-                                    <th>Số lượng</th>          
-                                    <th>Đơn giá</th>
-                                    <th>Giảm giá</th>
-                                    <th>Thành tiền</th>
+                        <table className='table tableDetail'>
+                            <thead>
+                            <tr className="main-heading h4">
+                                    <th style={{width: "auto", height: 'auto'}}>#</th>
+                                    <th style={{width: "auto", height: 'auto'}}>Ảnh</th>
+                                    <th style={{width: "auto", height: 'auto'}}>Tên</th>
+                                    <th style={{width: "auto", height: 'auto'}}>Màu</th>
+                                    <th style={{width: "auto", height: 'auto'}}>Số lượng</th>          
+                                    <th style={{width: "auto", height: 'auto'}}>Đơn giá</th>
+                                    <th style={{width: "auto", height: 'auto'}}>Giảm giá</th>
+                                    <th style={{width: "auto", height: 'auto'}}>Thành tiền</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                                 { purchaseDetail?.map(purchaseDe => (                               
-                                    purchaseDe.list?.map(listOpts => ( 
+                                    purchaseDe.list?.map(listOpts => (
+                                    
+                                    
+                                        
                                     <tr className='cake-top' key={listOpts._id}>
                                         <td className='h5'>{index++}</td>
                                         <td className="cakes">
@@ -126,8 +133,8 @@ function DetailPurchaseAdmin () {
                                             </a>
                                         </td> 
                                                                 
-                                        <td className="cake-text align-middle h-100">
-                                            <a href={`/admin/products/detail/${0}`} className="my-link h5">
+                                        <td className="cake-text align-middle">
+                                            <a href={`/admin/products/detail/${0}`} className="my-link align-middle h5">
                                                 {listOpts.optionID.item.name}
                                             </a>
                                         </td>
@@ -157,8 +164,9 @@ function DetailPurchaseAdmin () {
                                             
                                         ))}
                                     </tr> 
+                               
                                     ))  
-                                ))}                                
+                                ))}                             
                             </tbody>
                             <tfoot>
                                 <tr>
@@ -173,10 +181,10 @@ function DetailPurchaseAdmin () {
                                         {`${currentChange(totals + updateFee(fee))}`}
                                     </th>
                                 </tr>
-                            </tfoot>
-                        </table>
+                            </tfoot>                                                  
+                        </table>                       
                     </div>
-                </div>
+            </div>
         </div>
       ))}     
     </div>

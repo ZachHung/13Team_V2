@@ -3,12 +3,15 @@
   font-size: medium;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   text-align: center;
+  width: 100%;
+  overflow-x: auto;
 
   .btnAddNewUser{
    margin-left: 10%;
    font-size: medium;
    width: 100%;
   }
+
   .btnAddNewUser:hover{
      background-color: green;
   }
@@ -26,6 +29,26 @@
     background-color: #4d5b7e;
     padding: 1%;
   }
+  @media (max-width: 400px) {
+    .tableOfUser{
+      font-size: small;
+      vertical-align: middle;
+      text-align: center;
+      border: 1px solid blue;
+      border-collapse: collapse;
+      width: auto;
+    }
+
+    .tableOfUser thead tr th, 
+    .tableOfUser tbody tr td, 
+    .tableOfUser tbody tr th, 
+    h1.UserTitle,
+    .btnAddNewUser, 
+    button.btnDeleteAllUsers, 
+    button.btnEditUser{
+      font-size: small;
+    }
+   }
   .fw-bold{
     color: white;
   }

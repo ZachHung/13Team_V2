@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faCirclePlus, faFileEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, faFileEdit, faReceipt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import './PurchasesAdmin.scss';
 import PaginationAdmin from '../../components/paginationAdmin/Pagination';
 import { useEffect, useState } from 'react';
@@ -98,10 +98,10 @@ function PurchasesAdmin() {
   
   if (purchaseList.length === 0) return (<p>Không có đơn hàng nào</p>);
   return (
-    <div className="listPurchasesAdminTitle d-flex flex-column">
+    <div className="listPurchasesAdminTitle d-flex flex-column ">
       <div className="p-3">
         <div className="d-flex align-items-center mb-4 qlsp">
-          <h1 className="mr-3 fw-bold"><FontAwesomeIcon icon={faCartShopping}></FontAwesomeIcon> Quản lý đơn hàng</h1>
+          <h1 className="mr-3 fw-bold PurTitle"><FontAwesomeIcon icon={faReceipt}></FontAwesomeIcon> Quản lý đơn hàng</h1>
           <a href="/admin/orders/create/">
             <button className="btnAddNewPurchase btn btn-success">
             <FontAwesomeIcon icon={faCirclePlus}></FontAwesomeIcon> Thêm đơn hàng mới
@@ -110,9 +110,11 @@ function PurchasesAdmin() {
           &nbsp;
           <button className="btnDeleteAllPurs btn btn-danger" onClick={()=> deleteManyPurchases(selectedPurchases)}>
             <FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon> Xóa tất cả đơn hàng
-          </button>      
+          </button>
+          &nbsp;
+          <h2 className="fw-bold totalCountPur"><FontAwesomeIcon icon={faReceipt}></FontAwesomeIcon> Tổng:  đơn hàng</h2>     
         </div>
-        <table className="table table-striped table-hover border-primary table-bordered">
+        <table className="table tableOfPur table-striped table-hover border-primary table-bordered">
           <thead>
             <tr>
                 <th scope="col" style={{"width":"4%"}}>
@@ -133,7 +135,6 @@ function PurchasesAdmin() {
           </thead>
           <tbody>
             {dataEachPage?.map((purchase) => (
-
               <tr key={purchase._id}>
                 <td><input type="checkbox" className="form-check-input" name={purchase.id} checked={selectedPurchases.some((i) => i?._id === purchase._id)} onChange={(e)=>handleCheckbox(e, purchase)}></input></td>
                 <th scope="row">{index++}</th>

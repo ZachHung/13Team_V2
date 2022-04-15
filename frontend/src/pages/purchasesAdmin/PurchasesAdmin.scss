@@ -3,23 +3,51 @@
   font-size: medium;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   text-align: center;
+  overflow-x: auto;
+  width: 100%;
 
   .btnAddNewPurchase{
      margin-left: 10%;
      font-size: medium;
-     width: 100%;
+     width: 100%;  
   }
-   .table{
+   .tableOfPur{
      vertical-align: middle;
      text-align: center;
      border: 1px solid blue;
-   }   
+     border-collapse: collapse;
+   }
+   @media (max-width: 776px) {
+    .tableOfPur{
+      vertical-align: middle;
+      text-align: center;
+      border: 1px solid blue;
+      border-collapse: collapse;
+    }
+    .tableOfPur thead tr th, 
+    .tableOfPur tbody tr td, 
+    .tableOfPur tbody tr th, 
+    .PurTitle, 
+    .btnAddNewPurchase, 
+    button.btnDeleteAllPurs, 
+    .formMethod, 
+    button.btnDeletePurchase, 
+    .totalCountPur{
+      font-size: small;
+    }
+    .qlsp{
+      width: 100%;
+      overflow-x: auto;
+      width: 100%
+    }
+   }
    .fw-bold{
     color: white
   }
   .qlsp{
     background-color: #4d5b7e;
-    padding: 1%
+    padding: 1%;
+    width: 100%;
   }
   .btnAddNewPurchase:hover{
    background-color: green;
@@ -31,6 +59,7 @@
    .btnDeleteAllPurs:hover{
     background-color: red;
     }
+
    .linkToItem{
      color: blue;
    }
