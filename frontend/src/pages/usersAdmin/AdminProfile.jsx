@@ -91,7 +91,7 @@ function AdminProfile () {
                 </div>
               </div>
 
-              <div className="tab-content col-md-9" id="account-tabContent">
+              <div className="tab-content col-md-8" id="account-tabContent">
                 <div
                   className={`tab-pane fade show ${toggleState === 1 ? 'active' : ''}`}
                   id="account-general"
@@ -102,7 +102,7 @@ function AdminProfile () {
                     <img
                       src="https://res.cloudinary.com/cake-shop/image/upload/v1647313324/fhrml4yumdl42kk88jll.jpg?fbclid=IwAR1RAMOwX07c3l5KiHc22jGz89cISo9DG0gDFfXcXLIWzQVvDy5LntEN2YQ"
                       alt="avatar"
-                      className="d-block ui-w-80"
+                      className="d-block ui-w-80 imgAdmin"
                     />
 
                     <h4 className="mt-4 textLarger hightlightInfo">

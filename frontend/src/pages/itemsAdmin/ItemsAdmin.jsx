@@ -2,9 +2,15 @@ import React from 'react';
 import axios from 'axios';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
+  faAdd,
+  faAddressBook,
   faCirclePlus,
+  faCube,
+  faFileAlt,
   faFileEdit,
-  faMobileAlt,
+  faFileImport,
+  faFileUpload,
+  faTools,
   faTrashAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import './ItemsAdmin.scss';
@@ -78,7 +84,12 @@ function ItemsAdmin () {
       else {}
     } 
   };
-
+  const dateFormat = ()=>{
+    const dateFormat = new Date();
+    //console.log(dateFormat)
+    return dateFormat;
+  };
+  
   // Pagination
   const [currentPage, setCurrentPage] = useState (1);
   const [itemsPerPage, setItemsPerPage] = useState (7);
@@ -91,8 +102,8 @@ function ItemsAdmin () {
     <div className="listItemsAdminTitle d-flex flex-column">
       <div className="p-3">
         <div className="d-flex align-items-center mb-4 qlsp">
-          <h1 className="mr-3 fw-bold">
-            <FontAwesomeIcon icon={faMobileAlt} /> Quản lý sản phẩm
+          <h1 className="mr-3 fw-bold ProdTitle">
+            <FontAwesomeIcon icon={faCube} /> Quản lý sản phẩm
           </h1>
           <a href="/admin/products/create/">
             <button className="btnAddNewItem btn btn-success">
@@ -105,7 +116,7 @@ function ItemsAdmin () {
           </button>
         </div>
 
-        <table className="table table-hover table-striped border-primary table-bordered">
+        <table className="table tableofItem table-hover table-striped border-primary table-bordered">
           <thead>
             <tr>
               <th scope="col" style={{width: '4%'}}>
@@ -152,11 +163,10 @@ function ItemsAdmin () {
                     className="formMethod"
                     href={`/admin/products/addOptions/${item._id}`}
                   >
-                    <button className=" formMethod btnEditItem btn btn-outline-primary">
-                      Thêm option <FontAwesomeIcon icon={faFileEdit} />
+                    <button className=" formMethod btnEditItem btn btn-outline-info">
+                      Thêm lựa chọn <FontAwesomeIcon icon={faAdd} />
                     </button>
                   </a>  
-                  &nbsp;
                   <a
                     className="formMethod"
                     href={`/admin/products/update/${item._id}`}
@@ -167,7 +177,7 @@ function ItemsAdmin () {
                   </a>
                   &nbsp;
                   <button
-                    className=" formMethod btnDeleteItem btn btn-outline-danger"
+                    className="formMethod btnDeleteItem btn btn-outline-danger"
                     onClick={() => onDelete (item._id, item.name)}
                   >
                     {' '}

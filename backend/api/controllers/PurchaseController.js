@@ -376,6 +376,7 @@ class PurchaseController {
   detailPurchasesAdmin(req, res, next) {
     purchase
       .find({ _id: ObjectId(req.params.id) })
+      .populate('userID')
       .populate('list.optionID')
       .populate({
         path: 'list.optionID',

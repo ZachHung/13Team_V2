@@ -101,35 +101,72 @@
     padding: 1%;
   }
   input.inputAdProfile, .selectGender{
-    font-size: medium;
+    font-size: small;
   }
   textarea.inputAdProfile, .textLarger{
-    font-size: medium;
+    font-size: small;
   }
   .catdatchung{
     margin-left: 2%;
     padding: 5%;
-    font-size: medium;
+    font-size: small;
   }
+  
   .icontabpanel{
-    font-size: medium;
+    font-size: small;
+  }
+@media (max-width: 430px) {
+  .catdatchung{
+    display: none;
+  }
+}
+@media (max-width: 280px) {
+  .catdatchung{
+    display: none;
+  }
+  .adminBackground,.imgAdmin{
+    margin-left:-20px;
+
+  }
+  .hightlightInfo{
+    margin-left: -40px;
+  }
+  .lavel_2{
+    margin-left: -10px;
+  }
+  .label_level_2{
+    font-size: small;
+  }
+  input[type=text], .my-input-tag option{
+    font-size: small;
   }
 
+}
+
+@media (max-width: 430px) {
+  .catdatchung{
+    display: none;
+  }
+  .adminBackground{
+    margin-left: 45px;
+  }
+  .hightlightInfo{
+    margin-left: 0px;
+  }
+  .lavel_2{
+    margin-left: -10px;
+  }
+  .label_level_2{
+    font-size: small;
+  }
+  input[type=text], .my-input-tag option{
+    font-size: small;
+  }
+
+}
   //for component scss
   .text-light {
     color: #babbbc !important;
-  }
-  
-  .btn-facebook {
-    border-color: rgba(0, 0, 0, 0);
-    background: #3b5998;
-    color: #fff;
-  }
-  
-  .btn-instagram {
-    border-color: rgba(0, 0, 0, 0);
-    background: #000;
-    color: #fff;
   }
   
   .row-bordered {
