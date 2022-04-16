@@ -407,16 +407,42 @@ class PurchaseController {
   }
 
   edit(req, res, next) {
+
     purchase
-      .findById(req.params.id)
-      .then((purchase) => res.json({ purchase: purchase }))
+      .find({ _id: ObjectId(req.params.id) })
+      .populate('list.optionID')
+      .populate({
+        path: 'list.optionID',
+        populate: {
+          path: 'item',
+          select: 'name type brand',
+        },
+      })
+      .then((data) => {
+        data = util.mutipleMongooseToObject(data);
+
+        for (let result of data) {
+          result.list = result.list.filter((list) => {
+            return list.optionID !== null;
+          });
+          for (let item of result.list) {
+            item.optionID.color = item.optionID.color.filter((color) => {
+              return color.name === item.color;
+            });
+          }
+        }
+
+        res.json({
+          purchase: data,
+        });
+      })
       .catch(next);
   }
 
   updatePurchase(req, res, next) {
     purchase
       .updateOne({ _id: req.params.id }, req.body)
-      .then(() => res.redirect(URL + 'admin/orders/update/' + req.params.id))
+      .then(() => res.redirect(URL + 'admin/orders'))
       .catch(next);
   }
 }
