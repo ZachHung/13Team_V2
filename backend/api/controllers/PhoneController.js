@@ -1,8 +1,47 @@
 const items = require('../models/Item');
-
+const ObjectID = require('mongodb').ObjectID;
 const cart = require('../models/Cart');
 
 class PhoneController {
+  compare(req, res, next) {
+    const productsCompare = req.query.product;
+    var arrayProductsCompare;
+    if (productsCompare == undefined) {
+      productsCompare = '';
+    }
+    arrayProductsCompare = productsCompare.split(',');
+    console.log(
+      'arrayProductsCompare',
+      arrayProductsCompare,
+      typeof arrayProductsCompare
+    );
+    if (productsCompare != '') {
+      items
+        .aggregate([
+          {
+            $match: {
+              $or: [
+                { _id: ObjectID(arrayProductsCompare[0]) },
+                { _id: ObjectID(arrayProductsCompare[1]) },
+                { _id: ObjectID(arrayProductsCompare[2]) },
+              ],
+            },
+          },
+          {
+            $lookup: {
+              from: 'options',
+              localField: 'slug',
+              foreignField: 'slug',
+              as: 'slug',
+            },
+          },
+        ])
+        .then((items) => {
+          res.json(items);
+        })
+        .catch(next);
+    }
+  }
   brand(req, res, next) {
     var fullUrl = req.originalUrl;
     // console.log('fullUrl ', fullUrl);

@@ -182,7 +182,10 @@ function PhonePage() {
   return (
     <>
       <Header />
+
       <div className="products-container">
+        <ModalCompare></ModalCompare>
+
         <section className="section products">
           <SwiperPromotion className="swiper-promotion"></SwiperPromotion>
           <Swiper
@@ -341,7 +344,6 @@ function PhonePage() {
                 </ul>
               </div>
             </div>
-            <ModalCompare></ModalCompare>
 
             <div className="list-products">
               {currentProduct.map((phone) => (
