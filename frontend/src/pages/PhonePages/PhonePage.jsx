@@ -23,6 +23,7 @@ import Footer from '../../components/footer';
 import Pagination from '../../components/pagination';
 import { currentChange } from '../../utils/const';
 import SortProduct from '../../components/sortProduct';
+import ModalCompare from '../../components/modalCompare/modal';
 import './PhonePage.scss';
 
 const api = axios.create({
@@ -43,13 +44,14 @@ function PhonePage() {
   });
 
   // add cart
-  const handleAddCart = (optionParam, colorParam) => {
+  const handleAddCart = (optionParam, colorParam, e) => {
     // if user is guest
     if (user == null || user == undefined) {
       navigateCart('../login');
     }
     // if user is costumer
     else {
+      e.preventDefault();
       userRequest()
         .post(`cart/add/${user._id}`, {
           optionID: optionParam,
@@ -151,6 +153,20 @@ function PhonePage() {
       'tu-5-14-trieu',
     ]);
   };
+  // compare
+  const [checkedCompare, setCheckedCompare] = useState([]);
+
+  const handleCheckCompare = (idProduct) => {
+    setCheckedCompare((prev) => {
+      const isExist = checkedCompare.includes(idProduct);
+      if (isExist) {
+        return checkedCompare.filter((item) => item !== idProduct);
+      } else {
+        return [...prev, idProduct];
+      }
+    });
+    console.log('idProdutc: ', idProduct);
+  };
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductPerPage] = useState(6);
@@ -216,7 +232,10 @@ function PhonePage() {
                   <h3>Thương hiệu</h3>
                 </div>
                 <ul className="block-content filter-brand">
-                  <li onClick={() => handleCheckAllBrand()}>
+                  <li
+                    onClick={() => handleCheckAllBrand()}
+                    className="form-group"
+                  >
                     <input
                       type="checkbox"
                       checked={
@@ -232,6 +251,7 @@ function PhonePage() {
                     <li
                       key={item.name}
                       onClick={() => handleCheckBrand(item.name)}
+                      className="form-group"
                     >
                       <input
                         type="checkbox"
@@ -251,7 +271,10 @@ function PhonePage() {
                   <h3>Mức giá</h3>
                 </div>
                 <ul className="block-content">
-                  <li onClick={() => handleCheckAllPrice()}>
+                  <li
+                    onClick={() => handleCheckAllPrice()}
+                    className="form-group"
+                  >
                     <input
                       type="checkbox"
                       checked={
@@ -263,7 +286,10 @@ function PhonePage() {
                       <span>Tất cả</span>
                     </label>
                   </li>
-                  <li onClick={() => handleCheckPrice('duoi-2-trieu')}>
+                  <li
+                    onClick={() => handleCheckPrice('duoi-2-trieu')}
+                    className="form-group"
+                  >
                     <input
                       type="checkbox"
                       checked={checkedPrice.includes('duoi-2-trieu')}
@@ -273,7 +299,10 @@ function PhonePage() {
                       <span>Dưới 2 triệu</span>
                     </label>
                   </li>
-                  <li onClick={() => handleCheckPrice('tu-2-5-trieu')}>
+                  <li
+                    onClick={() => handleCheckPrice('tu-2-5-trieu')}
+                    className="form-group"
+                  >
                     <input
                       type="checkbox"
                       checked={checkedPrice.includes('tu-2-5-trieu')}
@@ -283,7 +312,10 @@ function PhonePage() {
                       <span>Từ 2 đến 5 triệu</span>
                     </label>
                   </li>
-                  <li onClick={() => handleCheckPrice('tu-5-14-trieu')}>
+                  <li
+                    onClick={() => handleCheckPrice('tu-5-14-trieu')}
+                    className="form-group"
+                  >
                     <input
                       checked={checkedPrice.includes('tu-5-14-trieu')}
                       type="checkbox"
@@ -293,7 +325,10 @@ function PhonePage() {
                       <span>Từ 5 đến 14 triệu</span>
                     </label>
                   </li>
-                  <li onClick={() => handleCheckPrice('tren-14-trieu')}>
+                  <li
+                    onClick={() => handleCheckPrice('tren-14-trieu')}
+                    className="form-group"
+                  >
                     <input
                       type="checkbox"
                       checked={checkedPrice.includes('tren-14-trieu')}
@@ -306,12 +341,26 @@ function PhonePage() {
                 </ul>
               </div>
             </div>
+            <ModalCompare></ModalCompare>
 
             <div className="list-products">
               {currentProduct.map((phone) => (
                 <div key={phone._id} className="product-layout">
                   <div className="product">
                     <div className="img-container">
+                      <div
+                        className="form-group compare"
+                        onClick={() => handleCheckCompare(phone._id)}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={checkedCompare.includes(phone._id)}
+                          onChange={() => console.log('fix checked warning')}
+                        />
+                        <label>
+                          <span>So sánh</span>
+                        </label>
+                      </div>
                       <Link
                         to={`/${type}/${phone.slug[0].slug}-${phone.slug[0].detail}`}
                       >
@@ -393,10 +442,11 @@ function PhonePage() {
                           <button
                             className="btn btn-addCart btn-sm"
                             type="submit"
-                            onClick={() =>
+                            onClick={(e) =>
                               handleAddCart(
                                 phone.slug[0]._id,
-                                phone.slug[0].color[0].name
+                                phone.slug[0].color[0].name,
+                                e
                               )
                             }
                           >
