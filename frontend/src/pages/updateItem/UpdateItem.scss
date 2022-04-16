@@ -40,6 +40,21 @@
     border-radius: 10px;
     margin-left: 20px;
 }
+.upload-bnt{
+    padding: 3px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 30px;
+    border-radius: 10px;
+    background-color: cadetblue;
+    margin-left: 20px;
+    color: black;
+
+}
+.upload-bnt:hover{
+    background-color: aquamarine;
+    color: black;
+}
 
 .bnt-more{
     padding: 3px 10px;
@@ -78,4 +93,12 @@ br{
 }
 .decri{
     color: red;
+}
+
+.newImage{
+    border-color: orange;
+}
+
+.image-new{
+    margin-top: 5px;
 }
