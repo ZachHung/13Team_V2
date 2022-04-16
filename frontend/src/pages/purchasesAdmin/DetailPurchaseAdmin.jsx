@@ -7,7 +7,7 @@ import {useEffect, useState} from 'react';
 import {format} from 'date-fns';
 import {useParams} from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { faElementor } from '@fortawesome/free-brands-svg-icons';
+
 
 const api = axios.create ({
   baseURL: 'http://localhost:5000/api/',
@@ -20,25 +20,10 @@ function DetailPurchaseAdmin () {
   const [purchaseDetail, setPurchaseDetail] = useState ([]);
   useEffect (() => {
     api.get ('admin/orders/detail/' + params.id).then (res => {
-      console.log (res.data);
       setPurchaseDetail (res.data.purchase);
     });
   }, []);
 
-    const [userList, setUserList] = useState ([]);
-    useEffect (() => {
-      api.get ('admin/customers').then (res => {
-        console.log (res.data);
-        setUserList (res.data.user);
-      });
-    }, []);
-
-    const userIndicate = (userList, purchaseUID) => {
-      for (let i = 0; i < userList.length; i++) {
-        if (userList[i]._id === purchaseUID.userID)
-            return userList[i];
-      }
-    };
   //   const onDelete = id => {
   //     var confirmDelete = window.confirm (
   //       `Bạn có chắc chắn muốn xóa đơn hàng ${id} này không?`
@@ -72,64 +57,71 @@ function DetailPurchaseAdmin () {
   return (
     <div
       className="d-flex flex-column marginTop">
-    <a className='btn btn-outline-primary btnback' href='/admin/orders/'>&#8592; Quay lại</a>
+   <a className='btn btnback' href='/admin/orders/'>&#8592; Quay lại</a>
     {/* <FontAwesomeIcon >{faTrashAlt}<a className='btn btn-outline-primary btndelete' href='/admin/orders/'>Xóa đơn hàng</a> </FontAwesomeIcon> */}
     {purchaseDetail?.map ((purchase) => (
         <div className="purCart text-white" style={{"border": '2px solid #0c517d'}}>
             <div className="p-3">
                 <div className="d-flex justify-content-between">
-                    <h3>Mã đơn hàng: {purchase._id}</h3>
-                    <h3>7Team</h3>
+                    <h2>Mã đơn hàng: {purchase._id}</h2>
+                    <h2>7Team</h2>
                 </div>
-                <div className="d-flex bg-white text-dark p-3 justify-content-between">
-                        <div className="my-grow-shrink purchaseInfo">
-                            <h3>Thông tin vận chuyển:</h3>
-                            <p><b>Họ tên: </b>{userIndicate(userList, purchase).name}
-                            </p>
-                            <p><b>Số điện thoại: </b>
-                                {userIndicate(userList, purchase).phone}
-                            </p>
-                            <p><b>Email: </b>
-                                {userIndicate(userList, purchase).email}
-                            </p>
-                            <p><b>Địa chỉ: </b>
-                                {userIndicate(userList, purchase).detailaddress}
-                            </p>
-                        </div>
-                        <div className="my-grow-shrink">
-                            <h3>Tình trạng đơn hàng:</h3>
-                                { 
-                                    purchase.status === "Đang giao hàng" ?
-                                    <div>
-                                        <span className='redStatus'>Đã xác nhận bởi quản trị viên</span>
-                                        <p className='redStatus'>Đơn hàng đang được giao</p>
-                                    </div> 
-                                    : purchase.status === "Đã giao hàng" ?
-                                        <p className='redStatus'>Đã giao hàng lúc {format (new Date(purchase.updatedAt), "yyyy-MM-dd kk:mm:ss")}
-                                        </p>
-                                    : purchase.status === "Đã hủy" ?
-                                    <p className='redStatus'>Đơn hàng đã bị hủy</p> 
-                                    : <p className='redStatus'>Đơn hàng hông xác định</p>
-                                }
-                        </div>
+                <div className="purchaseInfo d-flex bg-white text-dark p-3 justify-content-between">
+                    <div>
+                        <h2>Thông tin vận chuyển:</h2>
+                         <p className='px-2 mt-3'><b>Họ tên: </b>{purchase.userID.name}
+                        </p>
+                        <p className='px-2'><b>Số điện thoại: </b>
+                            {purchase.userID.phone}
+                        </p>
+                        <p className='px-2'><b>Email: </b>
+                                {purchase.userID.email}
+                        </p>
+                        <p className='px-2'><b>Địa chỉ: </b>
+                                {purchase.userID.detailaddress}, {purchase.userID.ward}, {purchase.userID.district}, {purchase.userID.province}
+                        </p>
                     </div>
+                    <div>
+                        <h2 className="mb-3">Tình trạng đơn hàng:</h2>
+                        <p>
+                            { 
+                                purchase.status === "Đang giao hàng" ?
+                                    <div className='redStatus'>
+                                        <p>Đã xác nhận bởi quản trị viên</p>
+                                        <p>Đơn hàng đang được giao</p>
+                                    </div> 
+                                : purchase.status === "Đã giao hàng" ?                                    
+                                    <span className='redStatus'>Đã giao hàng lúc {format (new Date(purchase.updatedAt), "yyyy-MM-dd kk:mm:ss")}</span>                                   
+                                : purchase.status === "Đã hủy" ?
+                                    <span className='redStatus'>Đơn hàng đã bị hủy</span>
+                                :
+                                    <span className='redStatus'>Đơn hàng không xác định</span>
+                            }
+                        </p>
+                    </div>
+                </div>
             </div>
             <div className="cart-bottom">
                     <div className="purchaseTable">
-                        <table className="w-100">
-                            <tbody>
-                                <tr className="main-heading h4">
-                                    <th>#</th>
-                                    <th>Ảnh</th>
-                                    <th className="long-txt">Tên</th>
-                                    <th>Màu</th>
-                                    <th>Số lượng</th>          
-                                    <th>Đơn giá</th>
-                                    <th>Giảm giá</th>
-                                    <th>Thành tiền</th>
+                        <table className='table tableDetail'>
+                            <thead>
+                            <tr className="main-heading h4">
+                                    <th style={{width: "auto", height: 'auto'}}>#</th>
+                                    <th style={{width: "auto", height: 'auto'}}>Ảnh</th>
+                                    <th style={{width: "auto", height: 'auto'}}>Tên</th>
+                                    <th style={{width: "auto", height: 'auto'}}>Màu</th>
+                                    <th style={{width: "auto", height: 'auto'}}>Số lượng</th>          
+                                    <th style={{width: "auto", height: 'auto'}}>Đơn giá</th>
+                                    <th style={{width: "auto", height: 'auto'}}>Giảm giá</th>
+                                    <th style={{width: "auto", height: 'auto'}}>Thành tiền</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                                 { purchaseDetail?.map(purchaseDe => (                               
-                                    purchaseDe.list?.map(listOpts => ( 
+                                    purchaseDe.list?.map(listOpts => (
+                                    
+                                    
+                                        
                                     <tr className='cake-top' key={listOpts._id}>
                                         <td className='h5'>{index++}</td>
                                         <td className="cakes">
@@ -137,13 +129,12 @@ function DetailPurchaseAdmin () {
                                             <Link to={`/`}>
                                                 <img style={{'object-fit': 'cover', 'width': '100%', 'height': '100%'}}
                                                     src={`http://localhost:5000/${listOpts.optionID.color.image}`} alt={listOpts.optionID.slug}/>           
-                                            </Link>  
-                                                                                
+                                            </Link>                                                            
                                             </a>
                                         </td> 
                                                                 
-                                        <td className="cake-text align-middle h-100">
-                                            <a href={`/admin/products/detail/${0}`} className="my-link h5">
+                                        <td className="cake-text align-middle">
+                                            <a href={`/admin/products/detail/${0}`} className="my-link align-middle h5">
                                                 {listOpts.optionID.item.name}
                                             </a>
                                         </td>
@@ -165,7 +156,7 @@ function DetailPurchaseAdmin () {
                                                 {`${color_price.discount}%`}   
                                             </td>
                                             <td className="align-middle h5">
-                                                {currentChange(total += (color_price.price) * (100 - color_price.discount)/100)}   
+                                                {currentChange(total += (color_price.price) * (listOpts.quantity) * (100 - color_price.discount)/100)}   
                                                 {updateTotalOne(total)}
                                             </td>
                                                 
@@ -173,26 +164,27 @@ function DetailPurchaseAdmin () {
                                             
                                         ))}
                                     </tr> 
+                               
                                     ))  
-                                ))}                                
+                                ))}                             
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th colSpan={7} className="text-right h3">Phí vận chuyển:</th>
+                                    <th colSpan={7} className="text-right_pur h3">Phí vận chuyển:</th>
                                     <th colSpan={1} className="align-middle h3" id="fee">
                                         {`${currentChange(updateFee(fee))}`}
                                     </th>    
                                 </tr>
                                 <tr>
-                                    <th colSpan={7} className="text-right h3">Tổng tiền đơn hàng:</th>
+                                    <th colSpan={7} className="text-right_pur h3">Tổng tiền đơn hàng:</th>
                                     <th colSpan={1} className="align-middle h3" id="total">
                                         {`${currentChange(totals + updateFee(fee))}`}
                                     </th>
                                 </tr>
-                            </tfoot>
-                        </table>
+                            </tfoot>                                                  
+                        </table>                       
                     </div>
-                </div>
+            </div>
         </div>
       ))}     
     </div>

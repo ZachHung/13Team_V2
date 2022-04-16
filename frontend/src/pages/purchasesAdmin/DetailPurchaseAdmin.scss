@@ -1,157 +1,238 @@
-// * {
-//     margin: 0;
-//     padding: 0;
-//     border: 0;
-//   }
-  table {
-    border-collapse: collapse;
-    border-spacing: 0;
+.marginTop{
+  margin-top: -3rem !important;
+}
+.tableDetail {
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: medium;
+}
+.btnback{
+  width: fit-content;
+  padding: 0.5%;
+  margin-top: 2%;
+  border-radius: 5%;
+  font-size: medium;
+  border: 1px solid #094e7a;
+}
+
+.btnback:hover{
+  color: #fff;
+  background-color: #094e7a;
+}
+.redStatus{
+  color: red;
+  font-weight: bold;
+}
+img {
+  max-width: 100%;
+}
+
+@media (max-width: 600px) {
+
+  // .btnback{
+  //   width: fit-content;
+  //   margin-top: 5%;
+  //   border-radius: 5%;
+  //   font-size: small;
+  //   border: 1px solid #094e7a;
+  // }
+  
+ }  
+@media (max-width: 325px) {
+  .purchaseInfo div h2, .purchaseInfo div p{
+    display: flexbox;
+    font-size: 10px;
   }
   .btnback{
-    width: 8%;
-    padding: 0.5%;
-    border-radius: 5%;
-    font-size: medium;
+    margin-top: 2%;
+    width: fit-content;
+    font-size: 10px;
   }
-  .redStatus{
-    color: red;
-    font-weight: bold;
+}
+@media (max-width: 300px) {
+  .purchaseInfo div h2, .purchaseInfo div p{
+    display: flexbox;
+    font-size: xx-small;
   }
-  img {
-    max-width: 100%;
+  .btnback{
+    margin-top: 2%;
+    width: fit-content;
+    font-size: 10px;
   }
-  /*end reset*/
-  /*--login start here--*/
+}
+@media (max-width: 260px) {
+  .purchaseInfo div h2, .purchaseInfo div p, .purCart div div h2{
+    display: flexbox;
+    font-size: 8px;
+  }
+  .purCart div div h2:last-child{
+    margin-left: -10px;
+  }
+  .btnback{
+    margin-top: 2%;
+    width: fit-content;
+  }
   
-  a {
-    text-decoration: none;
+}
+
+@media (max-width: 230px) {
+  .purchaseInfo div h2, .purchaseInfo div p{
+    display: flexbox;
+    font-size: 5px;
   }
-  a:hover {
-    transition: 0.5s all;
-    -webkit-transition: 0.5s all;
-    -moz-transition: 0.5s all;
-    -o-transition: 0.5s all;
+  .btnback{
+    margin-top: 2%;
+    font-size: 5px;
+    width: fit-content;
+
   }
+}
+
+@media (max-width: 180px) {
+  .purchaseInfo div h2, .purchaseInfo div p{
+    display: flexbox;
+    font-size: 3px;
+  }
+  .btnback{
+    margin-top: 2%;
+    font-size: 5px;
+    width: fit-content;
+
+  }
+}
+/*end reset*/
+/*--login start here--*/
+
+a {
+  text-decoration: none;
+}
+a:hover {
+  transition: 0.5s all;
+  -webkit-transition: 0.5s all;
+  -moz-transition: 0.5s all;
+  -o-transition: 0.5s all;
+}
+.purCart {
+  width: 100%;
+  margin: 0.1em auto 2em;
+  background-color: #094e7a;
+}
+.cart-bottom {
+  background: #fff;
+  padding: 2em 2em;
+  color: black;
+}
+td.quantity {
+  text-align: center;
+  vertical-align: middle;
+}
+td.cakes {
+  padding: 1em 0em;
+}
+td {
+  vertical-align: middle;
+  text-align: center;
+  
+}
+tr.main-heading th {
+  background: #ccc;
+  padding: 1.5em 0em;
+  font-size: 0.9em;
+  text-align: center;
+}
+tr.cake-top {
+  border-bottom: 1px solid #ccc;
+  position: relative;
+}
+.purchaseTable {
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+}
+.text-right_pur{
+  padding: 1% 0;
+}
+#total{
+  color: red;
+  text-align: center;
+}
+#fee{
+  color: blue;
+  text-align: center;
+}
+/*--header end here--*/
+
+@media (max-width: 1440px) {
+}
+@media (max-width: 1366px) {
   .purCart {
-    width: 100%;
-    margin: 3em auto 2em;
-    background-color: #094e7a;
+    width: 60%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .purCart {
+    width: 70%;
+  }
+}
+@media (max-width: 786px) {
+  .purCart {
+    width: 90%;
+  }
+}
+@media (max-width: 667px) {
+  .purCart {
+    width: 95%;
+  }
+}
+
+@media (max-width: 600px) {
+  .purCart {
+    width: 98%;
+  }
+}
+@media (max-width: 480px) {
+  
+  td.cake-text {
+    display: none;
+  }
+
+  th.long-txt {
+    display: none;
+  }
+  
+  tr.main-heading th {
+    padding: 1em 1.35em;
+  }
+  
+  .purCart {
+    margin: 1.5em auto 1em;
   }
   .cart-bottom {
-    background: #fff;
-    padding: 2em 2em;
-    color: black;
+    padding: 1em 1em;
   }
-  td.quantity {
-    text-align: center;
-    vertical-align: middle;
-  }
-  td.cakes {
-    padding: 1em 0em;
-  }
-  td {
-    vertical-align: middle;
-    text-align: center;
-    
-  }
+  
+}
+
+@media (max-width: 384px) {
   tr.main-heading th {
-    background: #ccc;
-    padding: 1.5em 0em;
-    font-size: 0.9em;
-    text-align: center;
+    padding: 1em 1em;
   }
-  tr.cake-top {
-    border-bottom: 1px solid #ccc;
-    position: relative;
+}
+@media (max-width: 320px) {
+  .purCart {
+    width: 98%;
   }
-  .purchaseTable {
-    border-bottom: 1px solid #ccc;
-  }
-  .text-right{
-    padding: 1% 0;
-  }
-  #total{
-    color: red;
-    text-align: center;
-  }
-  #fee{
-    color: blue;
-    text-align: center;
-  }
-  /*--header end here--*/
   
-  @media (max-width: 1440px) {
+  tr.main-heading th {
+    padding: 1em 0.35em;
+    font-size: 0.8em;
   }
-  @media (max-width: 1366px) {
-    .purCart {
-      width: 60%;
-    }
+  
+  td.price h4 {
+    font-size: 0.8em;
   }
 
-  @media (max-width: 1024px) {
-    .purCart {
-      width: 70%;
-    }
+  h4 {
+    font-size: 0.8em;
   }
-  @media (max-width: 786px) {
-    .purCart {
-      width: 90%;
-    }
-  }
-  @media (max-width: 667px) {
-    .purCart {
-      width: 95%;
-    }
-  }
-  
-  @media (max-width: 600px) {
-    .purCart {
-      width: 98%;
-    }
-  }
-  @media (max-width: 480px) {
-    
-    td.cake-text {
-      display: none;
-    }
-    th.long-txt {
-      display: none;
-    }
-    tr.main-heading th {
-      padding: 1em 1.35em;
-    }
-    
-    .purCart {
-      margin: 1.5em auto 1em;
-    }
-    .cart-bottom {
-      padding: 1em 1em;
-    }
-    
-  }
-  
-  @media (max-width: 384px) {
-    tr.main-heading th {
-      padding: 1em 1em;
-    }
-  }
-  @media (max-width: 320px) {
-    .purCart {
-      width: 98%;
-    }
-    
-    tr.main-heading th {
-      padding: 1em 0.35em;
-      font-size: 0.8em;
-    }
-    
-    td.price h4 {
-      font-size: 0.8em;
-    }
-    h4 {
-      font-size: 0.8em;
-    }
-
-  }
-  /*--media quiries end here--*/
-  
+}

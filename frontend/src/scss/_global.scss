@@ -1,57 +1,91 @@
-@use './abstracts/' as *;
+@use "./abstracts/" as *;
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 html {
-    overflow-x: hidden;
+  overflow-x: hidden;
 }
 
 body {
-    font-family: $fontFamily;
-    color: $txtColor;
-    font-size: $fontSizeNormal;
-    line-height: 1.5;
-    background-color: $bodyBg;
-    overflow-x: hidden;
+  font-family: $fontFamily;
+  color: $txtColor;
+  font-size: $fontSizeNormal;
+  line-height: 1.5;
+  background-color: $bodyBg;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: normal;
 }
 
-a {
-    text-decoration: none;
-    color: unset;
+a,
+a:hover,
+a:visited {
+  text-decoration: none;
+  color: unset;
 }
 
 img {
-    width: 100%;
+  width: 100%;
 }
 
 ul,
 li {
-    list-style-type: none;
+  list-style-type: none;
 }
 
 .mb {
-    margin-bottom: $spacing;
+  margin-bottom: $spacing;
 
-    @include tablet {
-        margin-bottom: $mobileSpacing;
-    }
+  @include tablet {
+    margin-bottom: $mobileSpacing;
+  }
 }
 
 .title {
-    font-size: $fontSizeMedium;
-    font-weight: 700;
+  font-size: $fontSizeMedium;
+  font-weight: 700;
 }
 
 .txt-success {
-    color: $green;
+  color: $green;
 }
 
-.txt-danger { 
-    color: $red;
+.txt-danger {
+  color: $red;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 100vh;
+  background: #ccc;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #bbb;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+html {
+  scroll-behavior: smooth;
 }

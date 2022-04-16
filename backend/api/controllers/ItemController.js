@@ -248,9 +248,7 @@ class ItemController {
       })
       .catch(next);
   }
-  async getItemsAdmin (req, res, next) {
-    const itemsPerPage = await items.countDocuments ({});
-    let page = req.query.page ? parseInt (req.query.page) : 1;
+  getItemsAdmin (req, res, next) {
     items
       .aggregate ([
         {
@@ -267,8 +265,6 @@ class ItemController {
           },
         },
       ])
-      .skip (itemsPerPage * (page - 1))
-      .limit (itemsPerPage)
       .then (items => {
         res.json ({
           items: items,
@@ -292,6 +288,13 @@ class ItemController {
       console.error (`[Error] ${e}`);
       throw Error ('Có lỗi xảy ra, vui lòng thử lại!!');
     }
+  }
+
+  deleteManyItemsAdmin(req, res, next){
+    const ids = req.body;
+    items.deleteMany({_id: {$in: ids}})
+    .then ()
+    .catch(next);
   }
 
   edit(req, res, next) {
@@ -415,7 +418,7 @@ class ItemController {
   }
   async createPostItems(req,res,next)
   {
-    
+
     try{
       console.log("aaaaaa");
         
