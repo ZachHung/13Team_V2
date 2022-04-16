@@ -1,11 +1,21 @@
 import React from 'react';
 import axios from 'axios';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faFileEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
+import {
+  faAdd,
+  faAddressBook,
+  faCirclePlus,
+  faCube,
+  faFileAlt,
+  faFileEdit,
+  faFileImport,
+  faFileUpload,
+  faTools,
+  faTrashAlt,
+} from '@fortawesome/free-solid-svg-icons';
 import './ItemsAdmin.scss';
 import {useEffect, useState} from 'react';
 import PaginationAdmin from '../../components/paginationAdmin/Pagination';
-import { format } from 'date-fns';
 
 const api = axios.create ({
   baseURL: 'http://localhost:5000/api',
@@ -14,9 +24,9 @@ const api = axios.create ({
 function ItemsAdmin () {
   var index = 1;
   const [itemList, setItemList] = useState ([]);
+  const [selectedItem, setSelectedItem] = useState ([]);
   useEffect (() => {
     api.get ('/admin/products').then (res => {
-      console.log (res.data);
       setItemList (res.data.items);
     });
   }, []);
@@ -28,46 +38,106 @@ function ItemsAdmin () {
       axios
         .delete (`http://localhost:5000/api/admin/products/delete/${id}`)
         .then (res => {
-          console.log (res.data);
           setItemList (res.data.items);
         });
       window.location.reload (false);
     } else {
     }
   };
-
+  const handleCheckbox = (e, data) => {
+    const {name, checked} = e.target;
+    if (checked) {
+      if (name === 'allSelect') {
+        setSelectedItem (itemList);
+      } else {
+        setSelectedItem ([...selectedItem, data]);
+      }
+    } else {
+      if (name === 'allSelect') {
+        setSelectedItem ([]);
+      }
+      else {
+        let tempItem = selectedItem.filter((i) => i._id !== data._id);
+        setSelectedItem(tempItem);
+      }
+    }
+  };
+  const deleteManyItems = (selectedItem) => {
+    const ids = [];
+    selectedItem.forEach(element => {
+      ids.push(element._id);
+    });
+    if (ids.length === 0) {
+      window.confirm("Bạn chưa chọn sản phẩm nào!");
+    }
+    else {
+      var doDelete = window.confirm("Bạn có thực sự muốn xóa các sản phẩm đã chọn?");
+      if (doDelete){
+        axios
+          .delete("http://localhost:5000/api/admin/products/deleteMany", {data: ids})
+          .then(res => {  
+            setItemList(res.data.purchase);
+          })
+          .catch((error) => console.error({error: error.message}));
+        window.location.reload (false);
+      }
+      else {}
+    } 
+  };
+  const dateFormat = ()=>{
+    const dateFormat = new Date();
+    //console.log(dateFormat)
+    return dateFormat;
+  };
+  
   // Pagination
   const [currentPage, setCurrentPage] = useState (1);
-  const [itemsPerPage, setItemsPerPage] = useState (10);
+  const [itemsPerPage, setItemsPerPage] = useState (7);
   const firstPageIndex = (currentPage - 1) * itemsPerPage;
   const lastPageIndex = firstPageIndex + itemsPerPage;
   const dataEachPage = itemList.slice (firstPageIndex, lastPageIndex);
+  
+  if (itemList.length === 0) return (<p>Không có sản phẩm nào</p>);
   return (
     <div className="listItemsAdminTitle d-flex flex-column">
       <div className="p-3">
-        <div className="d-flex align-items-center mb-4">
-          <h1 className="mr-3 fw-bold">Quản lý sản phẩm</h1>
+        <div className="d-flex align-items-center mb-4 qlsp">
+          <h1 className="mr-3 fw-bold ProdTitle">
+            <FontAwesomeIcon icon={faCube} /> Quản lý sản phẩm
+          </h1>
           <a href="/admin/products/create/">
             <button className="btnAddNewItem btn btn-success">
-              Thêm sản phẩm mới
+              <FontAwesomeIcon icon={faCirclePlus} /> Thêm sản phẩm mới
             </button>
           </a>
+          &nbsp;
+          <button className="btnDeleteAllItems btn btn-danger" onClick={()=> deleteManyItems(selectedItem)}>
+            <FontAwesomeIcon icon={faTrashAlt} /> Xóa tất cả sản phẩm
+          </button>
         </div>
 
-        <table className="table table-hover table-striped border-primary table-bordered">
+        <table className="table tableofItem table-hover table-striped border-primary table-bordered">
           <thead>
             <tr>
-              <th scope="col" style={{"width":"5%"}}>#</th>
-              <th scope="col" style={{"width":"25%"}}>Tên sản phẩm</th>
-              <th scope="col" style={{"width":"25%"}}>Phân loại</th>
-              <th scope="col" style={{"width":"25%"}}>Hãng</th>
-              <th scope="col" style={{"width":"20%"}}>Tùy chọn</th>
+              <th scope="col" style={{width: '4%'}}>
+                <input type="checkbox" className='form-check-input' name="allSelect" checked={selectedItem?.length === itemList?.length} onChange={(e) => handleCheckbox(e, itemList)}>
+                </input>
+              </th>
+              <th scope="col" style={{width: '5%'}}>#</th>
+              <th scope="col" style={{width: '25%'}}>Tên sản phẩm</th>
+              <th scope="col" style={{width: '25%'}}>Phân loại</th>
+              <th scope="col" style={{width: '25%'}}>Hãng</th>
+              <th scope="col" style={{width: '20%'}}>Tùy chọn</th>
             </tr>
           </thead>
 
           <tbody>
-            {dataEachPage.map (item => (
-              <tr key={item._id}>
+            {dataEachPage && dataEachPage.map ((item) => (
+              <tr key={item._id} id={item._id}>
+                <td>
+                  <input type="checkbox" className="form-check-input" name={item.name} checked={selectedItem.some((i) => i?._id === item._id)} onChange={(e)=> handleCheckbox(e, item)}>
+                  </input>
+                </td>
                 <th scope="row">{index++}</th>
                 <td>
                   <a
@@ -87,16 +157,16 @@ function ItemsAdmin () {
                             : item.type === 'laptop' ? 'Laptop' : ''}
                 </td>
                 <td>{item.brand.name}</td>
-                <td> 
-                <a
+                {/* <td>{format(new Date(item.createdAt), "yyyy-MM-dd")}</td> */}
+                <td>
+                  <a
                     className="formMethod"
                     href={`/admin/products/addOptions/${item._id}`}
                   >
-                    <button className=" formMethod btnEditItem btn btn-outline-primary">
-                      Thêm option <FontAwesomeIcon icon={faFileEdit} />
+                    <button className=" formMethod btnEditItem btn btn-outline-info">
+                      Thêm lựa chọn <FontAwesomeIcon icon={faAdd} />
                     </button>
-                  </a>
-                  &nbsp;
+                  </a>  
                   <a
                     className="formMethod"
                     href={`/admin/products/update/${item._id}`}
@@ -106,28 +176,26 @@ function ItemsAdmin () {
                     </button>
                   </a>
                   &nbsp;
-                  {/* <a className='formMethod' href>                   */}
                   <button
-                    className=" formMethod btnDeleteItem btn btn-outline-danger"
+                    className="formMethod btnDeleteItem btn btn-outline-danger"
                     onClick={() => onDelete (item._id, item.name)}
                   >
                     {' '}
                     Xóa <FontAwesomeIcon icon={faTrashAlt} />
                   </button>
-                  {/* </a> */}
                 </td>
               </tr>
             ))}
           </tbody>
-        </table>  
+        </table>
       </div>
       <PaginationAdmin
-          className="pagination-bar"
-          currentPage={currentPage}
-          totalCount={itemList.length}
-          itemsPerPage={itemsPerPage}
-          onPageChange={page => setCurrentPage (page)}
-        />
+        className="pagination-bar"
+        currentPage={currentPage}
+        totalCount={itemList.length}
+        itemsPerPage={itemsPerPage}
+        onPageChange={page => setCurrentPage (page)}
+      />
     </div>
   );
 }

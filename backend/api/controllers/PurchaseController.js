@@ -216,7 +216,6 @@ class PurchaseController {
           }
         }
         res.json(data);
-        console.log('typeeeeeeeeeeeeeeeeee:', typeof data);
       })
       .catch(next);
   }
@@ -338,13 +337,9 @@ class PurchaseController {
       .catch(next);
   }
 
-  async getPurchasesAdmin(req, res, next) {
-    const purchasesPerPage = await purchase.countDocuments({});
-    let page = req.query.page ? parseInt(req.query.page) : 1;
+  getPurchasesAdmin(req, res, next) {
     purchase
-      .find({})
-      .skip(purchasesPerPage * (page - 1))
-      .limit(purchasesPerPage)
+      .find()
       .then((purchases) => {
         res.json({
           purchase: purchases,
@@ -371,9 +366,17 @@ class PurchaseController {
     }
   }
 
+  deleteManyPurchasesAdmin(req, res, next){
+    const ids = req.body;
+    purchase.deleteMany({_id: {$in: ids}})
+    .then ()
+    .catch(next);
+  }
+  
   detailPurchasesAdmin(req, res, next) {
     purchase
       .find({ _id: ObjectId(req.params.id) })
+      .populate('userID')
       .populate('list.optionID')
       .populate({
         path: 'list.optionID',
@@ -401,7 +404,6 @@ class PurchaseController {
         });
       })
       .catch(next);
-    console.log(purchase);
   }
 
   edit(req, res, next) {

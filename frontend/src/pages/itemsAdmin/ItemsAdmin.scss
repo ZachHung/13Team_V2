@@ -1,33 +1,66 @@
 .listItemsAdminTitle{
-  padding-top: 0rem !important;
-  font-size: larger;
+  margin-top: -3rem !important;
+  font-size: medium;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   text-align: center;
+  width: 100%;
+  overflow-x: auto;
 
   .btnAddNewItem{
      margin-left: 10%;
-     font-size: larger;
+     font-size: medium;
      width: 100%;
   }
   .fw-bold{
-    color: blue
+    color: white
   }
-  .table{
+  .qlsp{
+    background-color: #4d5b7e;
+    padding: 1%
+  }
+
+  .tableofItem{
    vertical-align: middle;
    border-width: 1px;
+   width: 100%;
   }  
+  @media (max-width: 450px) {
+    .tableofItem{
+      vertical-align: middle;
+      text-align: center;
+      border: 1px solid blue;
+      border-collapse: collapse;
+    }
+    .tableofItem thead tr th, 
+    .tableofItem tbody tr td, 
+    .tableofItem tbody tr th, 
+    .ProdTitle, 
+    .btnAddNewItem, 
+    button.btnDeleteAllItems, 
+    button.btnEditItem,
+    button.btnDeleteItem,
+    .totalCountPur{
+      font-size: small;
+    }
+   }
   .btnAddNewItem:hover{
    background-color: green;
    }
+   
+   .btnDeleteAllItems{
+    margin-left: 2%;
+    font-size: medium;
+   }
+   .btnDeleteAllItems:hover{
+    background-color: red;
+    }
    .btnEditItem, .btnDeleteItem{
-     font-size: small;
+     font-size: medium;
      display: inline-block;
    }
+
    .btnEditItem:hover, .btnDeleteItem:hover{
-    font-size: small;
     display: inline-block;
-    //color: white;
-    //background-color: blue;
   }
    .formMethod{
      display: inline;
@@ -58,6 +91,3 @@
   }
   
 }
-
-
-

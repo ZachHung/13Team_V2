@@ -1,14 +1,58 @@
-
+  .active{
+    display: block;
+  }
   .ui-w-80 {
-    width: 80px !important;
+    width: 100px !important;
     height: auto;
   }
   .btn {
     cursor: pointer;
   }
+  .text-right{
+    text-align: center;
+  }
+  .logoTeamText{
+    text-align: left;
+  }
   .card {
     background-clip: padding-box;
     box-shadow: 50px 1px 4px rgba(24, 28, 33, 0.012);
+  }
+  .adminBackground{
+    width: 100%;
+    @media (max-width: 730px) {
+      margin-left: 42%;
+    }
+    @media (max-width: 671px) {
+      margin-left: 40%;
+    }
+    @media (max-width: 624px) {
+      margin-left: 38%;
+    }
+    @media (max-width: 529px) {
+      margin-left: 36%;
+    }
+    @media (min-width: 450px) {
+      margin-left: 25%;
+    }
+    @media (max-width: 450px) {
+      margin-left: 35%;
+    }
+    @media (max-width: 420px) {
+      margin-left: 34%;
+    }
+    @media (max-width: 300px) {
+      margin-left: 28%;
+    }    
+    @media (max-width: 270px) {
+      margin-left: 18%;
+    }
+    @media (max-width: 200px) {
+      margin-left: 10%;
+    }
+  }
+  .textforadmin{
+    margin-left: 25%;
   }
   .bg-profile {
     width: 100%;
@@ -25,68 +69,156 @@
     background-size: contain;
   }
 
-  .tab-list-item {
-    display: inline-block;
-    list-style: none;
-    padding: 1.2rem;
-    cursor: pointer;
-    color: #0c517d;
-    font-weight: bold;
-  }
-  .tab-list-item:first-child {
-    margin-left: -20px;
-  }
-  @media (max-width: 360px) {
-    .tab-list-item:nth-child(2) {
-      display: block;
-      margin-left: -20px;
-    }
-    .tab-list-item:last-child {
-      display: block;
-      margin-left: -20px;
-    }
-  }
-  
-  .tab-list-item:hover{
-    background-color: #0c517d;
-    color:white;
-    font-weight: bold;
-    background-color: #0c517d !important; 
-    transition: ease 0.5s;
-  }
-  
-  .tab-list-active {
-    background-color: #0c517d;
-    color: white;
-  }
-
   .my-btn-checkout{
     background-color: #0c517d;
-    padding: 0.5% 1%;
+    padding: 5px 8px;
+    border-radius: 2px;
     color: white;
-    font-size: small;
-    border-radius: 2%;
+    font-size: medium;
   }
+  
   .my-btn-checkout:hover{
     transition: ease 0.4s;
-    background-color: blue;
+    background-color: red;
     color:white;
   }
+
   .labelTitle{
     font-size: medium;
     color: #0c517d;
     font-weight: bold;
     padding: 0.3% 0;
   }
+
   .hightlightInfo{
     color: #8b0000;
   }
+
   input[type=date]{
     color: black;
   }
   input.inputAdProfile, .selectGender{
     padding: 1%;
   }
-  input.inputAdProfile, .selectGender,textarea {
-    font-size: medium;
+  input.inputAdProfile, .selectGender{
+    font-size: small;
   }
+  textarea.inputAdProfile, .textLarger{
+    font-size: small;
+  }
+  .catdatchung{
+    margin-left: 2%;
+    padding: 5%;
+    font-size: small;
+  }
+  
+  .icontabpanel{
+    font-size: small;
+  }
+@media (max-width: 430px) {
+  .catdatchung{
+    display: none;
+  }
+}
+@media (max-width: 280px) {
+  .catdatchung{
+    display: none;
+  }
+  .adminBackground,.imgAdmin{
+    margin-left:-20px;
+
+  }
+  .hightlightInfo{
+    margin-left: -40px;
+  }
+  .lavel_2{
+    margin-left: -10px;
+  }
+  .label_level_2{
+    font-size: small;
+  }
+  input[type=text], .my-input-tag option{
+    font-size: small;
+  }
+
+}
+
+@media (max-width: 430px) {
+  .catdatchung{
+    display: none;
+  }
+  .adminBackground{
+    margin-left: 45px;
+  }
+  .hightlightInfo{
+    margin-left: 0px;
+  }
+  .lavel_2{
+    margin-left: -10px;
+  }
+  .label_level_2{
+    font-size: small;
+  }
+  input[type=text], .my-input-tag option{
+    font-size: small;
+  }
+
+}
+  //for component scss
+  .text-light {
+    color: #babbbc !important;
+  }
+  
+  .row-bordered {
+    overflow: hidden;
+  }
+
+  .account-settings-links .list-group-item {
+    font-weight: bold !important;
+    color: #0c527dbb !important;
+    background-color: #ffffff !important;
+    border-radius: 0px !important;
+  }
+  
+  .account-settings-links .list-group-item:hover {
+    font-weight: bold !important;
+    color: #ffffff !important;
+    background-color: #0c527dbb !important;
+    border-radius: 0px !important;
+  }
+  
+  .account-settings-links .list-group-item.active {
+    font-weight: bold !important;
+    color: #ffffff !important;
+    background-color: #0c517d !important;
+    border-radius: 0px !important;
+  }
+  
+  .light-style .account-settings-links .list-group-item {
+    padding: 0.85rem 1.5rem;
+    border-color: rgba(24, 28, 33, 0.03) !important;
+  }
+  
+  .material-style .account-settings-links .list-group-item {
+    padding: 0.85rem 1.5rem;
+    border-color: rgba(24, 28, 33, 0.03) !important;
+  }
+  
+  .material-style .account-settings-links .list-group-item.active {
+    color: #4e5155 !important;
+  }
+  
+  .dark-style .account-settings-links .list-group-item {
+    padding: 0.9rem 1.5rem;
+    border-color: rgba(255, 255, 255, 0.03) !important;
+  }
+  
+  .dark-style .account-settings-links .list-group-item.active {
+    color: #fff !important;
+  }
+
+  .light-style .account-settings-links .list-group-item {
+    padding: 1rem 1.5rem;
+    border-color: rgba(24, 28, 33, 0.03) !important;
+  }
+  

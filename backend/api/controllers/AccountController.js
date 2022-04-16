@@ -300,10 +300,6 @@ class AccountController {
   async getUsersAdmin (req, res, next) {
     const usersPerPage = await user.countDocuments ({});
     const page = Number (req.query.page) || 1;
-    //const count = user.find ({}).countDocuments ({});
-    // const isLogin = req.session.user ? true : false;
-    // const user = req.session.user ? req.session.user : {};
-    //let itemsPerPage = 22;
     user
       .find ({})
       .skip (usersPerPage * (page - 1))
@@ -328,22 +324,13 @@ class AccountController {
       }
     }
   }
-  async getProfileAdmin (req, res, next) {
-    // const userInfo = req.session.user;
-    // if (userId) {
-    //   try {
-    //     const UserFound = await user.find ({"_id": ObjectId(userId)});
-    //     console.log(UserFound)
-    //     // res.json({
-    //     //   user: UserFound,
-    //     // })
-    //   } catch (e) {
-    //     console.error (`[Error] ${e}`);
-    //     throw Error ('Có lỗi xảy ra, vui lòng thử lại!!');
-    //   }
-    // }
+  deleteManyUsersAdmin(req, res, next){
+    const ids = req.body;
+    user.deleteMany({_id: {$in: ids}})
+    .then ()
+    .catch(next);
   }
-
+  
   edit(req, res, next) {
     user.findById(req.params.id)
       .then(user => res.json({ user: user }))
@@ -361,6 +348,45 @@ class AccountController {
     user.updateOne({ _id: req.params.id }, req.body)
       .then(() => res.redirect(URL + 'admin/customers/update/' + req.params.id))
       .catch(next) 
+  }
+  editProfileAdmin (req, res, next) {
+    //const adminInfo = req.session.user._id;
+    //user.findById(adminInfo)
+    const adminInfo = '6256960e31a9f35faa8343cd';
+    user
+      .findById(adminInfo)
+      .then(userRes => {
+        res.json({
+          userAdmin: userRes,
+        })
+        console.log(userRes)
+      })
+      .catch(next);
+  }
+  updateProfileAdmin(req, res, next){
+    //user.findById(req.session.user._id)
+    const adminInfo = '6256960e31a9f35faa8343cd';
+    // if (!user) {
+    //   res.redirect('admin/settings');
+    //   return;
+    // }
+    const {
+      name,
+      email,
+      currentPassword,
+      newPassword,
+      newPasswordRepeat,
+      birthday,
+      gender,
+      province,
+      district,
+      ward,
+      addressdetail,
+      phone,  
+    } = req.body;
+    user.updateOne({ _id: req.session.user._id }, req.body)
+      .then(() => res.redirect(URL + 'admin/settings' + req.session.user._id))
+      .catch(next)
   }
 }
 module.exports = new AccountController();
