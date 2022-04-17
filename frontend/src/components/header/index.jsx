@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import logo from '../../logo.svg';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useRef, useState } from "react";
+import logo from "../../logo.svg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMagnifyingGlass,
   faCartShopping,
@@ -8,15 +8,15 @@ import {
   faRightFromBracket,
   faUserGear,
   faClockRotateLeft,
-  faUserTie,
+  faGear,
   faCaretDown,
   faCaretUp,
-} from '@fortawesome/free-solid-svg-icons';
-import './style.scss';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../redux/userRedux';
-import { publicRequest } from '../../utils/CallApi';
+} from "@fortawesome/free-solid-svg-icons";
+import "./style.scss";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/userRedux";
+import { publicRequest } from "../../utils/CallApi";
 
 const Header = ({ color }) => {
   const [menuState, setMenuState] = useState(false);
@@ -25,23 +25,23 @@ const Header = ({ color }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.current);
   const cartQuantity = useSelector((state) => state.cart.quantity);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const handleOnchangeSearch = (e) => {
     setQuery(e.target.value);
-    console.log('query not debounce', query);
+    console.log("query not debounce", query);
   };
   const navigateSearch = useNavigate();
   useEffect(() => {
     // navigateSearch(`../search/global?key=${query}`);
     const delayDebounce = setTimeout(() => {
-      console.log('query debounce: ', query);
+      console.log("query debounce: ", query);
       // navigateSearch(`../search/global?key=${query}`);
     }, 2000);
     return () => clearTimeout(delayDebounce);
   }, [query]);
 
   const handleClickSearch = () => {
-    console.log('key: ', query);
+    console.log("key: ", query);
     navigateSearch(`../search?key=${query}`);
   };
   useEffect(() => {
@@ -49,8 +49,8 @@ const Header = ({ color }) => {
       if (btnRef.current && !btnRef.current.contains(e.target))
         setDropdownState(false);
     };
-    document.addEventListener('mousedown', closeDropdown);
-    return () => document.removeEventListener('mousedown', closeDropdown);
+    document.addEventListener("mousedown", closeDropdown);
+    return () => document.removeEventListener("mousedown", closeDropdown);
   }, []);
   return (
     <>
@@ -61,7 +61,7 @@ const Header = ({ color }) => {
           </Link>
           <button
             aria-expanded={menuState}
-            className={`toggle-menu${menuState ? ' opened' : ''}`}
+            className={`toggle-menu${menuState ? " opened" : ""}`}
             onClick={() => setMenuState((prev) => !prev)}
             aria-label="Main Menu"
           >
@@ -77,7 +77,7 @@ const Header = ({ color }) => {
               />
             </svg>
           </button>
-          <div className={`links${menuState ? ' active' : ''}`}>
+          <div className={`links${menuState ? " active" : ""}`}>
             <Link to="/phone" id="phone">
               Điện Thoại
             </Link>
@@ -92,7 +92,7 @@ const Header = ({ color }) => {
             </Link>
           </div>
 
-          <div className={`utility${menuState ? ' active' : ''}`}>
+          <div className={`utility${menuState ? " active" : ""}`}>
             <div className="searchbox icon">
               {menuState ? (
                 <>
@@ -144,19 +144,19 @@ const Header = ({ color }) => {
                   icon={!dropdownState ? faCaretDown : faCaretUp}
                 />
                 <ul
-                  className={`${dropdownState ? 'opened' : ''}`}
+                  className={`${dropdownState ? "opened" : ""}`}
                   onClick={(e) => e.stopPropagation()}
                 >
                   <li>
                     <FontAwesomeIcon
-                      icon={user.isAdmin ? faUserTie : faUser}
+                      icon={user.isAdmin ? faUserGear : faUser}
                       className="icon"
                     />
                     {user.name}
                   </li>
                   <li>
                     <Link to="">
-                      <FontAwesomeIcon icon={faUserGear} className="icon" />
+                      <FontAwesomeIcon icon={faGear} className="icon" />
                       Cài đặt người dùng
                     </Link>
                   </li>

@@ -1,3 +1,4 @@
+@use "../../scss/abstracts/" as *;
 @keyframes growDown {
   0% {
     transform: scaleY(0);
@@ -226,6 +227,19 @@ header {
             width: 2.2rem;
             height: 2.2rem;
           }
+          @include rotateAnimation(180);
+          @include rotateAnimation(-360);
+          li:nth-child(2):hover svg {
+            animation: rotate180 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+          }
+          li:nth-child(3):hover svg {
+            animation: rotate-360 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+          }
+          li:nth-child(4):hover svg {
+            animation: rotate-360 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955)
+              reverse;
+          }
+
           @media only screen and (max-width: 739px) {
             box-shadow: unset;
             border: 1px solid whitesmoke;
@@ -341,6 +355,14 @@ header {
           }
         }
       }
+    }
+  }
+  @keyframes rotate {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      transform: rotate(360deg);
     }
   }
 }
