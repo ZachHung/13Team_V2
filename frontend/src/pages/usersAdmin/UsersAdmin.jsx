@@ -6,17 +6,16 @@ import './UsersAdmin.scss';
 import PaginationAdmin from '../../components/paginationAdmin/Pagination';
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
-
-const api = axios.create({
-  baseURL: 'http://localhost:5000/api/',
-});
+import { userRequest } from "../../utils/CallApi";
+import { hostServer } from "../../utils/const";
 
 function UsersAdmin() {
   var index = 1;
   const [userList, setUserList] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
+
   useEffect(() => {
-    api.get('admin/customers').then(res => {
+    userRequest().get('admin/customers').then(res => {
       setUserList(res.data.user);
     });
   }, []);
@@ -27,7 +26,7 @@ function UsersAdmin() {
     );
     if (confirmDelete) {
       axios
-        .delete(`http://localhost:5000/api/admin/customers/delete/${id}`)
+        .delete(hostServer + `/api/admin/customers/delete/${id}`)
         .then(res => {
           setUserList(res.data.user);
         });
@@ -67,7 +66,7 @@ function UsersAdmin() {
       var doDelete = window.confirm("Bạn có thực sự muốn xóa các người dùng đã chọn?");
       if (doDelete){
         axios
-          .delete("http://localhost:5000/api/admin/customers/deleteMany", {data: ids})
+          .delete(hostServer + "/api/admin/customers/deleteMany", {data: ids})
           .then(res => {  
             setUserList(res.data.user);
           })
@@ -89,7 +88,7 @@ function UsersAdmin() {
     <div className="listUsersAdminTitle d-flex flex-column">
       <div className="p-3">
         <div className="d-flex align-items-center mb-4 qlsp">
-          <h1 className="mr-3 fw-bold"><FontAwesomeIcon icon={faUserAlt}></FontAwesomeIcon> Quản lý người dùng</h1>
+          <h1 className="mr-3 fw-bold UserTitle"><FontAwesomeIcon icon={faUserAlt}></FontAwesomeIcon> Quản lý người dùng</h1>
           <a href="/admin/customers/create/">
             <button className="btnAddNewUser btn btn-success">
             <FontAwesomeIcon icon={faCirclePlus}></FontAwesomeIcon> Thêm người dùng mới
@@ -98,8 +97,10 @@ function UsersAdmin() {
           <button className="btnDeleteAllUsers btn btn-danger" onClick={()=>deleteManyUsers(selectedUsers)}>
             <FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon> Xóa tất cả người dùng
           </button>
+          &nbsp;
+          <h2 className="fw-bold totalCountPur">(<FontAwesomeIcon icon={faUserAlt}></FontAwesomeIcon> Tất cả: {userList.length} người dùng)</h2>
         </div>
-        <table className="table table-striped table-hover border-primary table-bordered">
+        <table className="table tableOfUser table-striped table-hover border-primary table-bordered">
           <thead>
             <tr>
               <th scope="col">
@@ -136,7 +137,7 @@ function UsersAdmin() {
                 <td style={{ "width": "5%" }}>{user.phone}</td>
                 <td style={{ "width": "5%" }}>{user.gender}</td>
                 <td style={{ "width": "8%" }}>{user.birthday}</td>
-                <td style={{ "width": "11%" }}>{`${user.address.addressdetail} ${user.address.ward} - ${user.address.district} - ${user.address.province}`}</td>
+                <td style={{ "width": "11%" }}>{user.address.addressdetail === "" ? "" : `${user.address.addressdetail},`} {user.address.ward === "" ? "" : `${user.address.ward},`} {user.address.district === "" ? "" : `${user.address.district},`} {user.address.province === "" ? "" : `${user.address.province}`}</td>
                 <td style={{ "width": "8%" }}>
                   {user.isAdmin === true ? 'Quản trị viên' : 'Khách hàng'}
                 </td>
@@ -146,7 +147,7 @@ function UsersAdmin() {
 
                 <td style={{ "width": "12%" }}>
                   <a className='formMethod' href={`/admin/customers/update/${user._id}`}>
-                    <button className=" formMethod btnEditUser btn btn-outline-primary">
+                    <button className="formMethod btnEditUser btn btn-outline-primary">
                       Sửa <FontAwesomeIcon icon={faFileEdit} />
                     </button>
                   </a>
