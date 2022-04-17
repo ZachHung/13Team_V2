@@ -152,69 +152,69 @@
       margin-left: 0;
     }
   }
-}
-@keyframes fadeIn {
-  0% {
-    background: rgba(0, 0, 0, 0);
+  @keyframes fadeIn {
+    0% {
+      background: rgba(0, 0, 0, 0);
+    }
+    100% {
+      background: rgba(0, 0, 0, 0.7);
+    }
   }
-  100% {
-    background: rgba(0, 0, 0, 0.7);
+  @keyframes fadeOut {
+    0% {
+      background: rgba(0, 0, 0, 0.7);
+    }
+    100% {
+      background: rgba(0, 0, 0, 0);
+    }
   }
-}
-@keyframes fadeOut {
-  0% {
-    background: rgba(0, 0, 0, 0.7);
+  @keyframes scaleUp {
+    0% {
+      transform: scale(0.8) translateY(1000px);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1) translateY(0px);
+      opacity: 1;
+    }
   }
-  100% {
-    background: rgba(0, 0, 0, 0);
+  @keyframes scaleDown {
+    0% {
+      transform: scale(1) translateY(0px);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(0.8) translateY(1000px);
+      opacity: 0;
+    }
   }
-}
-@keyframes scaleUp {
-  0% {
-    transform: scale(0.8) translateY(1000px);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1) translateY(0px);
-    opacity: 1;
-  }
-}
-@keyframes scaleDown {
-  0% {
-    transform: scale(1) translateY(0px);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(0.8) translateY(1000px);
-    opacity: 0;
-  }
-}
 
-@keyframes scaleBack {
-  0% {
-    transform: scale(1);
+  @keyframes scaleBack {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0.92);
+    }
   }
-  100% {
-    transform: scale(0.92);
+  @keyframes scaleForward {
+    0% {
+      transform: scale(0.92);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
-}
-@keyframes scaleForward {
-  0% {
-    transform: scale(0.92);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
 
-@keyframes quickScaleDown {
-  0% {
-    transform: scale(1);
-  }
-  99.9% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(0);
+  @keyframes quickScaleDown {
+    0% {
+      transform: scale(1);
+    }
+    99.9% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
   }
 }

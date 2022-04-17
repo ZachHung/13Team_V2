@@ -45,7 +45,7 @@ const CartPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [payment, setPayment] = useState();
   const payments = [
-    { name: "momo", img: "momo-icon.png", message: "MOMO" },
+    { name: "zalo", img: "zaloPay-icon.png", message: "Zalo Pay" },
     { name: "cod", fontAwsome: faTruck, message: "Thanh toán khi nhận hàng" },
   ];
   const navigate = useNavigate();
