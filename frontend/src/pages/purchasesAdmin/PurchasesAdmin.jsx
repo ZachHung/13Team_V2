@@ -6,41 +6,26 @@ import './PurchasesAdmin.scss';
 import PaginationAdmin from '../../components/paginationAdmin/Pagination';
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
-
-
-const URL = "http://localhost:5000/api/";
-const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
-});
+import { userRequest } from "../../utils/CallApi";
+import { hostServer } from "../../utils/const";
 
 function PurchasesAdmin() {
   var index = 1;
   const [purchaseList, setPurchaseList] = useState([]);
   const [selectedPurchases, setSelectedPurchases] = useState([]);
   useEffect(() => {
-    api.get('/admin/orders').then(res => {
+    userRequest().get('admin/orders').then(res => {
       setPurchaseList(res.data.purchase);
     });
   }, []);
-  const [userList, setUserList] = useState([]);
-  useEffect(() => {
-    api.get('/admin/customers').then(res => {
-      setUserList(res.data.user);
-    });
-  }, []);
 
-  const userIndicate = (userList, purchaseUserID) => {
-    for (let i = 0; i < userList.length; i++) {
-      if (userList[i]._id === purchaseUserID) return userList[i].name;
-    }
-  }
   const onDelete = id => {
     var confirmDelete = window.confirm(
       `Bạn có chắc chắn muốn xóa đơn hàng ${id} này không?`
     );
     if (confirmDelete) {
       axios
-        .delete(`http://localhost:5000/api/admin/orders/delete/${id}`)
+        .delete(hostServer + `/api/admin/orders/delete/${id}`)
         .then(res => {
           setPurchaseList(res.data.purchase);
         });
@@ -79,7 +64,7 @@ function PurchasesAdmin() {
       var doDelete = window.confirm("Bạn có thực sự muốn xóa các đơn hàng đã chọn?");
       if (doDelete){
         axios
-          .delete("http://localhost:5000/api/admin/orders/deleteMany", {data: ids})
+        .delete(hostServer + '/api/admin/orders/deleteMany', {data: ids})
           .then(res => {  
             setPurchaseList(res.data.purchase);
           })
@@ -112,7 +97,7 @@ function PurchasesAdmin() {
             <FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon> Xóa tất cả đơn hàng
           </button>
           &nbsp;
-          <h2 className="fw-bold totalCountPur"><FontAwesomeIcon icon={faReceipt}></FontAwesomeIcon> Tổng:  đơn hàng</h2>     
+          <h2 className="fw-bold totalCountPur">(<FontAwesomeIcon icon={faReceipt}></FontAwesomeIcon> Tất cả: {purchaseList.length} đơn hàng)</h2>     
         </div>
         <table className="table tableOfPur table-striped table-hover border-primary table-bordered">
           <thead>
@@ -146,7 +131,7 @@ function PurchasesAdmin() {
                     {purchase._id}
                   </a>
                 </td>
-                <td>{userIndicate(userList, purchase.userID)}</td>
+                <td>{purchase.userID.name}</td>
                 <td>
                   {format(
                     new Date(purchase.createdAt),

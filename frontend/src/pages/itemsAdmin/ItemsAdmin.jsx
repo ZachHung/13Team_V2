@@ -3,30 +3,23 @@ import axios from 'axios';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
   faAdd,
-  faAddressBook,
   faCirclePlus,
   faCube,
-  faFileAlt,
   faFileEdit,
-  faFileImport,
-  faFileUpload,
-  faTools,
   faTrashAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import './ItemsAdmin.scss';
 import {useEffect, useState} from 'react';
 import PaginationAdmin from '../../components/paginationAdmin/Pagination';
-
-const api = axios.create ({
-  baseURL: 'http://localhost:5000/api',
-});
+import { userRequest } from "../../utils/CallApi";
+import { hostServer } from "../../utils/const";
 
 function ItemsAdmin () {
   var index = 1;
   const [itemList, setItemList] = useState ([]);
   const [selectedItem, setSelectedItem] = useState ([]);
   useEffect (() => {
-    api.get ('/admin/products').then (res => {
+    userRequest().get ('admin/products').then (res => {
       setItemList (res.data.items);
     });
   }, []);
@@ -36,7 +29,7 @@ function ItemsAdmin () {
     );
     if (confirmDelete) {
       axios
-        .delete (`http://localhost:5000/api/admin/products/delete/${id}`)
+        .delete (hostServer + `/api/admin/products/delete/${id}`)
         .then (res => {
           setItemList (res.data.items);
         });
@@ -74,7 +67,7 @@ function ItemsAdmin () {
       var doDelete = window.confirm("Bạn có thực sự muốn xóa các sản phẩm đã chọn?");
       if (doDelete){
         axios
-          .delete("http://localhost:5000/api/admin/products/deleteMany", {data: ids})
+          .delete(hostServer + "/api/admin/products/deleteMany", {data: ids})
           .then(res => {  
             setItemList(res.data.purchase);
           })
@@ -86,7 +79,6 @@ function ItemsAdmin () {
   };
   const dateFormat = ()=>{
     const dateFormat = new Date();
-    //console.log(dateFormat)
     return dateFormat;
   };
   
@@ -114,6 +106,8 @@ function ItemsAdmin () {
           <button className="btnDeleteAllItems btn btn-danger" onClick={()=> deleteManyItems(selectedItem)}>
             <FontAwesomeIcon icon={faTrashAlt} /> Xóa tất cả sản phẩm
           </button>
+          &nbsp;
+          <h2 className="fw-bold totalCountPur">(<FontAwesomeIcon icon={faCube}></FontAwesomeIcon> Tất cả: {itemList.length} sản phẩm)</h2>
         </div>
 
         <table className="table tableofItem table-hover table-striped border-primary table-bordered">

@@ -18,45 +18,10 @@
     background-clip: padding-box;
     box-shadow: 50px 1px 4px rgba(24, 28, 33, 0.012);
   }
-  .adminBackground{
-    width: 100%;
-    @media (max-width: 730px) {
-      margin-left: 42%;
-    }
-    @media (max-width: 671px) {
-      margin-left: 40%;
-    }
-    @media (max-width: 624px) {
-      margin-left: 38%;
-    }
-    @media (max-width: 529px) {
-      margin-left: 36%;
-    }
-    @media (min-width: 450px) {
-      margin-left: 25%;
-    }
-    @media (max-width: 450px) {
-      margin-left: 35%;
-    }
-    @media (max-width: 420px) {
-      margin-left: 34%;
-    }
-    @media (max-width: 300px) {
-      margin-left: 28%;
-    }    
-    @media (max-width: 270px) {
-      margin-left: 18%;
-    }
-    @media (max-width: 200px) {
-      margin-left: 10%;
-    }
-  }
-  .textforadmin{
-    margin-left: 25%;
-  }
+  
   .bg-profile {
     width: 100%;
-    height: 24.4rem;
+    height: 24rem;
     color: white;
     display: flex;
     justify-content: center;
@@ -101,32 +66,30 @@
     padding: 1%;
   }
   input.inputAdProfile, .selectGender{
-    font-size: small;
+    font-size: medium;
   }
   textarea.inputAdProfile, .textLarger{
-    font-size: small;
+    font-size: medium;
   }
   .catdatchung{
     margin-left: 2%;
     padding: 5%;
-    font-size: small;
+    font-size: medium;
   }
   
   .icontabpanel{
-    font-size: small;
+    font-size: medium;
   }
 @media (max-width: 430px) {
   .catdatchung{
-    display: none;
+    display: inline-block;
+    font-size: small;
   }
 }
 @media (max-width: 280px) {
   .catdatchung{
-    display: none;
-  }
-  .adminBackground,.imgAdmin{
-    margin-left:-20px;
-
+    display: inline-block;
+    font-size: small;
   }
   .hightlightInfo{
     margin-left: -40px;
@@ -145,10 +108,8 @@
 
 @media (max-width: 430px) {
   .catdatchung{
-    display: none;
-  }
-  .adminBackground{
-    margin-left: 45px;
+    display: inline-block;
+    font-size: small;
   }
   .hightlightInfo{
     margin-left: 0px;

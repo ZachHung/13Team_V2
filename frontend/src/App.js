@@ -66,30 +66,27 @@ function App() {
 
         {/* start adminRoute */}
         {isAdmin ? (
-          <Route path="/admin" element={<Admin></Admin>}></Route>
+          <Route path="/admin/*" element={<Admin />}>
+            <Route index element={<Dashboard />} />
+            <Route path="orders" element={<PurchasesAdmin />} />
+            <Route path="orders/detail/:id" element={<DetailPurchaseAdmin />} />
+            <Route path="orders/update/:id" element={<UpdatePurchase />} />
+            <Route path="products" element={<ItemsAdmin />} />
+            <Route path="products/update/:id" element={<UpdateItem />} />
+            <Route
+              path="products/updateDetail/:id"
+              element={<UpdateItemDetail />}
+            />
+            <Route path="customers" element={<UsersAdmin />} />
+            <Route path="customers/update/:id" element={<UpdateUser />} />
+            <Route path="settings" element={<AdminProfile />} />
+            <Route path="stats" element={<Blank />} />
+            <Route path="products/create/" element={<CreateItem />} />
+            <Route path="products/addOptions/:id" element={<AddItemDetail />} />
+          </Route>
         ) : (
           <React.Fragment></React.Fragment>
         )}
-
-        <Route path="/admin/*" element={<Admin />}>
-          <Route index element={<Dashboard />} />
-          <Route path="orders" element={<PurchasesAdmin />} />
-          <Route path="orders/detail/:id" element={<DetailPurchaseAdmin />} />
-          <Route path="orders/update/:id" element={<UpdatePurchase />} />
-          <Route path="products" element={<ItemsAdmin />} />
-          <Route path="products/update/:id" element={<UpdateItem />} />
-          <Route
-            path="products/updateDetail/:id"
-            element={<UpdateItemDetail />}
-          />
-          <Route path="customers" element={<UsersAdmin />} />
-          <Route path="customers/update/:id" element={<UpdateUser />} />
-          <Route path="settings" element={<AdminProfile />} />
-          <Route path="stats" element={<Blank />} />
-          <Route path="products/create/" element={<CreateItem />} />
-          <Route path="products/addOptions/:id" element={<AddItemDetail />} />
-        </Route>
-
         {/* end adminRoute */}
       </Routes>
       <ScrollButton />
