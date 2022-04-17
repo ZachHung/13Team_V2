@@ -1,0 +1,220 @@
+/* remove confirmation modal*/
+.remove-modal {
+  display: flex;
+  top: 0;
+  left: 0;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  transform: scale(0);
+  &.opened {
+    transform: scale(1);
+    .modal-background {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      width: 100%;
+      background: rgba(0, 0, 0, 0);
+      animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+      .modal-container {
+        padding: 1rem;
+        border-radius: 2rem;
+        width: 30%;
+        background-color: white;
+        @media only screen and(max-width:739px) {
+          width: 90%;
+        }
+        position: relative;
+        opacity: 0;
+        animation: scaleUp 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+      }
+    }
+    + * {
+      animation: scaleBack 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+    &.out {
+      animation: quickScaleDown 0s 0.5s linear forwards;
+      .modal-background {
+        animation: fadeOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        .modal-container {
+          animation: scaleDown 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        }
+      }
+      + * {
+        animation: scaleForward 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+      }
+    }
+  }
+
+  .modal__content {
+    font-weight: bold;
+    text-align: center;
+    margin-top: 6rem;
+    font-size: 2.5rem;
+    @media only screen and(max-width:739px) {
+      margin: 2rem 0;
+    }
+  }
+  .modal__footer {
+    @media only screen and(max-width:739px) {
+      justify-content: space-around;
+      button {
+        width: 40%;
+        margin-top: 1rem;
+      }
+      margin: 0;
+    }
+    bottom: 2rem;
+    right: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 3.2rem 2rem 0 0;
+    button {
+      border: 2px solid black;
+      align-items: center;
+      background-color: black;
+      color: white;
+      border-radius: 0.8rem;
+      position: relative;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1.8rem;
+      padding: 1rem 2rem;
+      z-index: 1;
+      box-sizing: border-box;
+    }
+    .cancel-btn {
+      border-radius: 0.8rem;
+      position: relative;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1.8rem;
+      padding: 1rem 2rem;
+      z-index: 1;
+      border: 2px solid black;
+      background-color: white;
+      color: black;
+    }
+    .confirm-btn {
+      border-radius: 0.8rem;
+      position: relative;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1.8rem;
+      padding: 1rem 2rem;
+      z-index: 1;
+    }
+    .confirm-btn:after {
+      border: none;
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      left: 0;
+      content: "";
+      border-radius: 0.8rem;
+      cursor: pointer;
+      height: calc(100% + 2px);
+      width: calc(100% + 2px);
+      background-color: rgba(255, 255, 255, 0.2);
+      transition: transform 0.25s, visibility 0.25s ease-in;
+      transform: scaleX(0);
+      transform-origin: top;
+    }
+    .cancel-btn:after {
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      left: 0;
+      content: "";
+      border-radius: 0.6rem;
+      cursor: pointer;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.2);
+      transition: transform 0.25s, visibility 0.25s ease-in;
+      transform: scaleX(0);
+      transform-origin: top;
+    }
+    .confirm-btn:hover:after,
+    .cancel-btn:hover:after {
+      transform: scaleX(1);
+    }
+  }
+  .modal__button--cancel {
+    margin-left: 0.8rem;
+    @media only screen and(max-width:739px) {
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+  @keyframes fadeIn {
+    0% {
+      background: rgba(0, 0, 0, 0);
+    }
+    100% {
+      background: rgba(0, 0, 0, 0.7);
+    }
+  }
+  @keyframes fadeOut {
+    0% {
+      background: rgba(0, 0, 0, 0.7);
+    }
+    100% {
+      background: rgba(0, 0, 0, 0);
+    }
+  }
+  @keyframes scaleUp {
+    0% {
+      transform: scale(0.8) translateY(1000px);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1) translateY(0px);
+      opacity: 1;
+    }
+  }
+  @keyframes scaleDown {
+    0% {
+      transform: scale(1) translateY(0px);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(0.8) translateY(1000px);
+      opacity: 0;
+    }
+  }
+
+  @keyframes scaleBack {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0.92);
+    }
+  }
+  @keyframes scaleForward {
+    0% {
+      transform: scale(0.92);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes quickScaleDown {
+    0% {
+      transform: scale(1);
+    }
+    99.9% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }
+}

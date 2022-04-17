@@ -8,14 +8,15 @@ import {
   faRightFromBracket,
   faUserGear,
   faClockRotateLeft,
-  faUserTie,
+  faGear,
   faCaretDown,
   faCaretUp,
 } from "@fortawesome/free-solid-svg-icons";
 import "./style.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/userRedux";
+import { publicRequest } from "../../utils/CallApi";
 
 const Header = ({ color }) => {
   const [menuState, setMenuState] = useState(false);
@@ -24,6 +25,16 @@ const Header = ({ color }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.current);
   const cartQuantity = useSelector((state) => state.cart.quantity);
+  const [query, setQuery] = useState("");
+  const handleOnchangeSearch = (e) => {
+    setQuery(e.target.value);
+  };
+  const navigateSearch = useNavigate();
+
+  const handleClickSearch = () => {
+    console.log("key: ", query);
+    navigateSearch(`../search?key=${query}`);
+  };
   useEffect(() => {
     const closeDropdown = (e) => {
       if (btnRef.current && !btnRef.current.contains(e.target))
@@ -82,14 +93,16 @@ const Header = ({ color }) => {
                     type="text"
                     name="search"
                     placeholder="Tìm kiếm"
+                    value={query}
+                    onChange={(e) => handleOnchangeSearch(e)}
                   />
-                  <button className="submit">
+                  <button className="submit" onClick={handleClickSearch}>
                     <FontAwesomeIcon icon={faMagnifyingGlass} />
                   </button>
                 </>
               ) : (
                 <>
-                  <button className="submit">
+                  <button className="submit" onClick={handleClickSearch}>
                     <FontAwesomeIcon icon={faMagnifyingGlass} />
                   </button>
                   <input
@@ -98,6 +111,8 @@ const Header = ({ color }) => {
                     type="text"
                     name="search"
                     placeholder="Tìm kiếm"
+                    value={query}
+                    onChange={(e) => handleOnchangeSearch(e)}
                   />
                 </>
               )}
@@ -125,14 +140,14 @@ const Header = ({ color }) => {
                 >
                   <li>
                     <FontAwesomeIcon
-                      icon={user.isAdmin ? faUserTie : faUser}
+                      icon={user.isAdmin ? faUserGear : faUser}
                       className="icon"
                     />
                     {user.name}
                   </li>
                   <li>
                     <Link to="/user">
-                      <FontAwesomeIcon icon={faUserGear} className="icon" />
+                      <FontAwesomeIcon icon={faGear} className="icon" />
                       Cài đặt người dùng
                     </Link>
                   </li>

@@ -1,0 +1,86 @@
+.modalCompare-container{
+    
+    z-index: 10;
+    background-color: rgb(255, 255, 255);
+    height: 20rem;
+    width: 100%;
+    position: fixed;
+    bottom: 0%;
+    left: 0%;
+    right: 0%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    h1{
+        width: 30%;
+    }
+    .products-compare{
+        
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        .product-compare{
+            .icon-circleXmark{
+                position: absolute;
+                font-size: 3rem;
+                top: 5%;
+                
+            }
+            img{
+                margin-left: 1rem;
+                width: 15rem;
+            }
+        }
+    }
+    .wrap-btn{
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        .btn{
+            font-weight: 300;
+            text-align: center;
+            white-space: nowrap;
+            border-radius: 1rem;
+            padding: 0.9rem 2.2rem 0.9rem 2.1rem;
+            line-height: 16px; 
+            cursor: pointer;
+        }
+        .btn-compare{
+            color: #fff;
+            background: #cb1c22;
+            outline: 0;
+            &:hover{
+                background: #ae1427;
+                color: var(--white);
+            }
+            &:active{
+                outline: 0;
+                -webkit-box-shadow: 0 0 0 0.5rem #cb1c22;
+                box-shadow: 0 0 0 0.5rem #cb1c22;
+            }
+            
+        }
+        .btn-cancel{
+            color: #fff;
+            background: #99a2aa;
+            outline: 0;
+            &:active{
+                outline: 0;
+                -webkit-box-shadow: 0 0 0 0.5rem #99a2aa;
+                box-shadow: 0 0 0 0.5rem #99a2aa;
+            }
+            &:hover{
+                background: #6c757d;
+                color: var(--white);
+            }
+        }
+        p{
+            font-size: 1.5rem;
+        }
+    }
+}
+
+// display: none !important;
+.disableCompareModal{
+    display: none !important;
+}

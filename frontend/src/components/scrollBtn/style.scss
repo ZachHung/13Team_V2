@@ -4,17 +4,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  right: 5%;
-  bottom: 40px;
+  right: 2rem;
+  bottom: 4rem;
   z-index: 1;
   cursor: pointer;
   color: whitesmoke;
+  transition: all 0.3s ease;
   &:hover {
     opacity: 1;
   }
-
   .icon {
     border-radius: 50%;
+    transition: transform 0.5s ease;
     background-color: #808080;
     height: 2.4rem;
     width: 2.4rem;

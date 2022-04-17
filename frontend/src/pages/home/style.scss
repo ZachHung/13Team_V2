@@ -17,6 +17,7 @@
 
 /* Hero */
 .homePage {
+  background-color: white;
   .hero,
   .hero .glide__slides {
     height: calc(100vh - 12.75rem);
@@ -44,6 +45,7 @@
     background-color: white;
   }
   .hero .glide__slide h1 {
+    text-align: initial;
     margin: 1rem 0;
     font-size: 3rem;
     font-weight: bold;
@@ -189,31 +191,37 @@
     margin-right: auto;
   }
   .grid-col-2-1-1 {
+    padding: 4px 4px;
     display: grid;
     grid-column-gap: 2rem;
     grid-template-columns: 2fr 1fr 1fr;
   }
   .grid-col-1-2-1 {
+    padding: 4px 4px;
     display: grid;
     grid-column-gap: 2rem;
     grid-template-columns: 1fr 2fr 1fr;
   }
   .grid-col-1-1-2 {
+    padding: 4px 4px;
     display: grid;
     grid-column-gap: 2rem;
     grid-template-columns: 1fr 1fr 2fr;
   }
   .grid-col-1-1-1 {
+    padding: 4px 4px;
     display: grid;
     grid-column-gap: 2rem;
     grid-template-columns: 1fr 1fr 1fr;
   }
   .grid-col-1-1 {
+    padding: 4px 4px;
     display: grid;
     grid-column-gap: 2rem;
     grid-template-columns: 1fr 1fr;
   }
   .grid-col-1 {
+    padding: 4px 4px;
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 2rem;
@@ -226,10 +234,11 @@
     position: relative;
   }
   .spotlight__item .name {
+    text-align: center;
     font-weight: bold;
     font-size: 1.5rem;
     position: absolute;
-    bottom: 7.5rem;
+    bottom: 3rem;
     right: 50%;
     transform: translate(50%, 0);
   }
@@ -330,10 +339,10 @@
     .spotlight__item .name {
       width: 80%;
       bottom: 1.5rem;
-      text-align: center;
     }
 
     .grid-col-1 {
+      padding: 4px 4px;
       grid-template-columns: 1fr 1fr;
       row-gap: 2rem;
     }

@@ -11,9 +11,14 @@ import {
   faPlus,
   faMinus,
   faSadTear,
+  faTruck,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { setQuantity } from "../../redux/cart";
+import ModalPopUp from "../../components/modal";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 const getTotal = (cart) => {
   var total = 0;
   for (let item of cart) {
@@ -32,12 +37,17 @@ function isValid(str) {
 
 const CartPage = () => {
   const user = useSelector((state) => state.user);
-  const removeModalRef = useRef();
   const [cart, setCart] = useState([]);
-  const [deliveryFee, setDeliveryFee] = useState(30000);
+  const [modalState, setModalState] = useState();
+  const [deliveryFee, setDeliveryFee] = useState(25000);
   const [isChanged, setIsChanged] = useState(false);
   const [ReItem, setReItem] = useState({ optionID: "", color: "" });
   const [isLoading, setIsLoading] = useState(true);
+  const [payment, setPayment] = useState();
+  const payments = [
+    { name: "zalo", img: "zaloPay-icon.png", message: "Zalo Pay" },
+    { name: "cod", fontAwsome: faTruck, message: "Thanh toán khi nhận hàng" },
+  ];
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -69,7 +79,7 @@ const CartPage = () => {
       })
       .then(() => {
         setIsChanged(!isChanged);
-        removeModalRef.current.classList.add("out");
+        setModalState(false);
       });
   };
 
@@ -79,21 +89,25 @@ const CartPage = () => {
   };
   const handleRemoveItem = (optionID, color) => {
     setReItem({ optionID, color });
-    const removeModal = removeModalRef.current;
-    if (!removeModal.classList.contains("opened"))
-      removeModal.classList.add("opened");
-    else removeModal.classList.remove("out");
+    setModalState(true);
   };
   const handlePurchase = () => {
     userRequest()
       .post(`cart/purchase/${user.current._id}`)
       .then()
       .catch((err) => console.log(err));
-    return navigate("/purchase");
+    navigate("/purchase");
   };
 
   useEffect(() => {
     getCart();
+    AOS.init({
+      offset: 50, //trigger offset in px
+      duration: 350, // values from 0 to 3000, with step 50ms
+      easing: "ease-in-back", // default easing for AOS animations
+      once: true,
+    });
+    AOS.refresh();
   }, []);
   useEffect(() => getCart(), [isChanged]);
   if (isLoading)
@@ -112,32 +126,17 @@ const CartPage = () => {
     <>
       <Header />
       <div className="cartPage">
-        <div className={`remove-modal`} ref={removeModalRef}>
-          <div className="modal-background">
-            <div className="modal-container">
-              <div className="modal__content">Xóa sản phẩm khỏi giỏ hàng?</div>
-              <div className="modal__footer">
-                <button
-                  className="modal__button--confirm confirm-btn"
-                  onClick={() => deleteItem(ReItem)}
-                >
-                  Xoá
-                </button>
-                <button
-                  className="modal__button--cancel cancel-btn"
-                  onClick={() => removeModalRef.current.classList.add("out")}
-                >
-                  Huỷ
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ModalPopUp
+          name="giỏ hàng"
+          modalState={modalState}
+          handelClickConfirm={() => deleteItem(ReItem)}
+          toogleState={setModalState}
+        />
         <section className="content">
-          <aside className="box cart-container">
+          <aside className="box cart-container" data-aos="fade-up">
             <div className="box__heading">
               <span>1</span>
-              <h2>giỏ hàng</h2>
+              <h2>Giỏ hàng</h2>
             </div>
             {!cart.length ? (
               <div className="empty-cart">
@@ -164,6 +163,7 @@ const CartPage = () => {
                               process.env.REACT_APP_IMG +
                               item.optionID.color[0].image
                             }
+                            alt={item.optionID.item.name}
                           />
                         </Link>
                       </div>
@@ -261,95 +261,134 @@ const CartPage = () => {
             )}
           </aside>
           {cart.length ? (
-            <div className="box delivery-info">
-              <div className="box__heading">
-                <span>2</span>
-                <h2>Thông tin vận chuyển</h2>
+            <div className="right">
+              <div className="box delivery-info" data-aos="fade-up">
+                <div className="box__heading">
+                  <span>2</span>
+                  <h2>Thông tin vận chuyển</h2>
+                </div>
+                <div className="user-information">
+                  <h2 className="greeting">
+                    Xin chào, {user.current.name.split(" ").slice(-1).join(" ")}
+                  </h2>
+                  <h3 className="sub-heading">
+                    Hãy chắc chắn rằng thông tin vận chuyển của bạn là chính xác
+                  </h3>
+                  <form className="row">
+                    <div className="form-group col-6">
+                      <input
+                        type="text"
+                        id="fullName"
+                        value={user.current.name}
+                        placeholder=""
+                        readOnly
+                      />
+                      <label htmlFor="fullName">Họ và tên</label>
+                    </div>
+                    <div className="form-group col-6">
+                      <input
+                        type="tel"
+                        id="phoneNumber"
+                        value={user.current.phone}
+                        placeholder=""
+                        readOnly
+                      />
+                      <label htmlFor="phoneNumber">Số điện thoại</label>
+                    </div>
+                    <div className="form-group col-12">
+                      <input
+                        type="text"
+                        id="provice/city"
+                        value={user.current.address.province}
+                        placeholder=""
+                        readOnly
+                      />
+                      <label htmlFor="provice/city">Tỉnh/thành phố</label>
+                    </div>
+                    <div className="form-group col-6">
+                      <input
+                        type="text"
+                        id="district"
+                        value={user.current.address.district}
+                        placeholder=""
+                        readOnly
+                      />
+                      <label htmlFor="district">Quận/huyện</label>
+                    </div>
+                    <div className="form-group col-6">
+                      <input
+                        type="text"
+                        id="sub-district"
+                        value={user.current.address.ward}
+                        placeholder=""
+                        readOnly
+                      />
+                      <label htmlFor="sub-district">Phường/xã</label>
+                    </div>
+                    <div className="form-group col-12">
+                      <input
+                        type="text"
+                        id="house-number"
+                        value={user.current.address.addressdetail}
+                        placeholder=""
+                        aria-describedby="home-number-help"
+                        readOnly
+                      />
+                      <label htmlFor="house-number">
+                        Số nhà, toà nhà, tên đường
+                      </label>
+                    </div>
+
+                    <div className="formBtn">
+                      <button
+                        className="confirm-btn"
+                        onClick={() => navigate("/")}
+                      >
+                        Cập nhật thông tin
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
-              <div className="user-information">
-                <h2 className="greeting">
-                  Xin chào, {user.current.name.split(" ").slice(-1).join(" ")}
-                </h2>
-                <h3 className="sub-heading">
-                  Hãy chắc chắn rằng thông tin vận chuyển của bạn là chính xác
-                </h3>
-                <form>
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      id="fullName"
-                      value={user.current.name}
-                      placeholder=""
-                      readOnly
-                    />
-                    <label htmlFor="fullName">Họ và tên</label>
-                  </div>
-                  <div className="form-group">
-                    <input
-                      type="tel"
-                      id="phoneNumber"
-                      value={user.current.phone}
-                      placeholder=""
-                      readOnly
-                    />
-                    <label htmlFor="phoneNumber">Số điện thoại</label>
-                  </div>
-                  <div className=" form-group">
-                    <input
-                      type="text"
-                      id="provice/city"
-                      value={user.current.address.province}
-                      placeholder=""
-                      readOnly
-                    />
-                    <label htmlFor="provice/city">Tỉnh/thành phố</label>
-                  </div>
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      id="district"
-                      value={user.current.address.district}
-                      placeholder=""
-                      readOnly
-                    />
-                    <label htmlFor="district">Quận/huyện</label>
-                  </div>
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      id="sub-district"
-                      value={user.current.address.ward}
-                      placeholder=""
-                      readOnly
-                    />
-                    <label htmlFor="sub-district">Phường/xã</label>
-                  </div>
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      id="house-number"
-                      value={user.current.address.addressdetail}
-                      placeholder=""
-                      aria-describedby="home-number-help"
-                      readOnly
-                    />
-                    <label htmlFor="house-number">
-                      Số nhà, toà nhà, tên đường
+              <div className="box payment-method" data-aos="fade-up">
+                <div className="box__heading">
+                  <span>3</span>
+                  <h2>Phương thức thanh toán</h2>
+                </div>
+                <form className="methods">
+                  {payments.map((item, index) => (
+                    <label
+                      key={index}
+                      className={`${
+                        payment !== item.name ? "disabled" : "checked"
+                      }`}
+                    >
+                      <span className="methods__custom-radio">
+                        <input
+                          type="radio"
+                          autoComplete="off"
+                          value={item.name}
+                          checked={payment === item.name}
+                          onChange={(e) => setPayment(e.target.value)}
+                        />
+                      </span>
+                      <span className={"methods__icon"}>
+                        {item.img ? (
+                          <img src={`/images/${item.img}`} />
+                        ) : (
+                          <FontAwesomeIcon icon={item.fontAwsome} />
+                        )}
+                      </span>
+                      <span className="methods__name">{item.message}</span>
                     </label>
-                  </div>
+                  ))}
                   <div className="formBtn">
                     <button
-                      type="submit"
                       className="confirm-btn"
-                      onClick={handlePurchase}
+                      disabled={payment == undefined}
+                      onClick={() => handlePurchase()}
                     >
                       Thanh toán
-                    </button>
-                    <button
-                      className="cancel-btn"
-                      onClick={() => navigate("/")}
-                    >
-                      Cập nhật thông tin
                     </button>
                   </div>
                 </form>

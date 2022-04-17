@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { userRequest } from '../../utils/CallApi';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { setQuantity } from '../../redux/cart';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,7 +21,10 @@ import SwiperPromotion from '../../components/swiperPromotion/SwiperPromotion';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
 import Pagination from '../../components/pagination';
+import { currentChange } from '../../utils/const';
 import SortProduct from '../../components/sortProduct';
+import ModalCompare from '../../components/modalCompare/modal';
+import ModalLimitCompare from '../../components/modalLitmitCompare/modalLimit';
 import './PhonePage.scss';
 
 const api = axios.create({
@@ -29,17 +32,27 @@ const api = axios.create({
 });
 
 function PhonePage() {
+  const { type } = useParams();
+  console.log('type', type);
   const user = useSelector((state) => state.user.current);
   const dispatch = useDispatch();
   const [phoneList, setPhoneList] = useState([]);
+  var initialCheckedBrand;
+  // retrive name brand array
+  api.get(`/${type}/brand/name`).then((res) => {
+    console.log('branname out component', res.data);
+    initialCheckedBrand = res.data;
+  });
+
   // add cart
-  const handleAddCart = (optionParam, colorParam) => {
+  const handleAddCart = (optionParam, colorParam, e) => {
     // if user is guest
     if (user == null || user == undefined) {
       navigateCart('../login');
     }
     // if user is costumer
     else {
+      e.preventDefault();
       userRequest()
         .post(`cart/add/${user._id}`, {
           optionID: optionParam,
@@ -70,21 +83,14 @@ function PhonePage() {
   };
   // filter
   const [brand, setBrand] = useState([]);
-  const [brandName, setBrandName] = useState([]);
-  // retrive name brand array
-  useEffect(() => {
-    api.get('/phone/brand/name').then((res) => {
-      setBrandName(res.data);
-    });
-  }, []);
-
+  console.log('initialCheckedBrand', initialCheckedBrand);
   const [checkedBrand, setCheckedBrand] = useState([]);
   const [checkedPrice, setCheckedPrice] = useState([]);
   useEffect(() => {
-    api.get('/phone/brand').then((res) => {
+    api.get(`/${type}/brand`).then((res) => {
       setBrand(res.data);
     });
-  }, []);
+  }, [type]);
 
   var urlString = '';
   if (checkedBrand.length != 0 && checkedPrice.length != 0) {
@@ -100,14 +106,22 @@ function PhonePage() {
     let paramStringBrand = checkedBrand.join(',');
     urlString = `?brand=${paramStringBrand}`;
   }
-
+  if (checkedBrand.length == 0 && checkedPrice.length == 0) {
+    urlString = '';
+  }
   // call api
 
   useEffect(() => {
-    api.get(`/phone${urlString}`).then((res) => {
+    console.log('urlString', urlString);
+    window.history.pushState(
+      {},
+      'Tìm kiếm',
+      `http://localhost:3000/${type}${urlString}`
+    );
+    api.get(`/${type}${urlString}`).then((res) => {
       setPhoneList(res.data.items);
     });
-  }, [urlString]);
+  }, [urlString, type]);
 
   const handleCheckBrand = (name) => {
     setCheckedBrand((prev) => {
@@ -130,7 +144,7 @@ function PhonePage() {
     });
   };
   const handleCheckAllBrand = () => {
-    setCheckedBrand(brandName);
+    setCheckedBrand(initialCheckedBrand);
   };
   const handleCheckAllPrice = () => {
     setCheckedPrice([
@@ -140,6 +154,46 @@ function PhonePage() {
       'tu-5-14-trieu',
     ]);
   };
+  // compare
+  const [checkedCompare, setCheckedCompare] = useState([]);
+  const [urlImages, setUrlImages] = useState([]);
+  const [disableCompareModal, setDisableCompareModal] = useState(true);
+  const handleCheckCompare = (idProduct, urlImg) => {
+    setDisableCompareModal(false);
+
+    console.log('clicked handleCheckCompare', idProduct, urlImg);
+    // if (checkedCompare.length > 2) {
+    //   alert('so sánh tối đa 2 sản phẩm');
+    //   alert('có vẻ bạn đã chọn đủ 2 sản phẩm, so sánh ngay');
+    // } else {
+
+    setCheckedCompare((prev) => {
+      const isExist = checkedCompare.includes(idProduct);
+      if (isExist) {
+        return checkedCompare.filter((item) => item !== idProduct);
+      } else {
+        return [...prev, idProduct];
+      }
+    });
+    setUrlImages((prev) => {
+      const isExist = urlImages.includes(urlImg);
+      if (isExist) {
+        return urlImages.filter((item) => item != urlImg);
+      } else {
+        return [...prev, urlImg];
+      }
+    });
+  };
+  console.log('checkedCompare: ', checkedCompare);
+  console.log('urlImage: ', urlImages);
+  const handleClickCancelCompare = () => {
+    setUrlImages([]);
+    setCheckedCompare([]);
+    setDisableCompareModal(() => true);
+  };
+  // if (checkedCompare.length == 0 || urlImages.length == 0) {
+  //   setDisableCompareModal(true);
+  // }
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductPerPage] = useState(6);
@@ -151,33 +205,27 @@ function PhonePage() {
   );
   // change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  // sort
-  // const [sortedProducts, setSortedProducts] = useState([]);
-  // // var temp = orderBy(currentProduct, 'name', 'desc');
-  // // setSortedProducts(temp);
-  // const [type, setType] = useState((prev) => 'asc');
-
-  // const handleSortAsc = (newType) => {
-  //   setType(newType);
-  //   console.log('clicked asc', type);
-  // };
-  // const handleSortDesc = (newType) => {
-  //   setType(newType);
-  //   console.log('clicked desc', type);
-  // };
-  // useEffect(() => {
-  //   setSortedProducts(orderBy(currentProduct, 'name', type));
-  // }, [type]);
 
   return (
     <>
       <Header />
+
       <div className="products-container">
         <section className="section products">
+          <ModalCompare
+            handleClickCompare={handleCheckCompare}
+            infoProducts={checkedCompare}
+            type={type}
+            urlImages={urlImages}
+            handleClickCancelCompare={handleClickCancelCompare}
+            disableCompareModal={disableCompareModal}
+          ></ModalCompare>
+
           <SwiperPromotion className="swiper-promotion"></SwiperPromotion>
           <Swiper
             updateBrand={handleCheckBrand}
             updatePrice={handleCheckPrice}
+            type={type}
           ></Swiper>
           <div className="filter-checkbox">
             <span style={{ fontWeight: 500, paddingRight: '1rem' }}>
@@ -221,7 +269,10 @@ function PhonePage() {
                   <h3>Thương hiệu</h3>
                 </div>
                 <ul className="block-content filter-brand">
-                  <li onClick={() => handleCheckAllBrand()}>
+                  <li
+                    onClick={() => handleCheckAllBrand()}
+                    className="form-group"
+                  >
                     <input
                       type="checkbox"
                       checked={
@@ -237,6 +288,7 @@ function PhonePage() {
                     <li
                       key={item.name}
                       onClick={() => handleCheckBrand(item.name)}
+                      className="form-group"
                     >
                       <input
                         type="checkbox"
@@ -256,7 +308,10 @@ function PhonePage() {
                   <h3>Mức giá</h3>
                 </div>
                 <ul className="block-content">
-                  <li onClick={() => handleCheckAllPrice()}>
+                  <li
+                    onClick={() => handleCheckAllPrice()}
+                    className="form-group"
+                  >
                     <input
                       type="checkbox"
                       checked={
@@ -268,7 +323,10 @@ function PhonePage() {
                       <span>Tất cả</span>
                     </label>
                   </li>
-                  <li onClick={() => handleCheckPrice('duoi-2-trieu')}>
+                  <li
+                    onClick={() => handleCheckPrice('duoi-2-trieu')}
+                    className="form-group"
+                  >
                     <input
                       type="checkbox"
                       checked={checkedPrice.includes('duoi-2-trieu')}
@@ -278,7 +336,10 @@ function PhonePage() {
                       <span>Dưới 2 triệu</span>
                     </label>
                   </li>
-                  <li onClick={() => handleCheckPrice('tu-2-5-trieu')}>
+                  <li
+                    onClick={() => handleCheckPrice('tu-2-5-trieu')}
+                    className="form-group"
+                  >
                     <input
                       type="checkbox"
                       checked={checkedPrice.includes('tu-2-5-trieu')}
@@ -288,7 +349,10 @@ function PhonePage() {
                       <span>Từ 2 đến 5 triệu</span>
                     </label>
                   </li>
-                  <li onClick={() => handleCheckPrice('tu-5-14-trieu')}>
+                  <li
+                    onClick={() => handleCheckPrice('tu-5-14-trieu')}
+                    className="form-group"
+                  >
                     <input
                       checked={checkedPrice.includes('tu-5-14-trieu')}
                       type="checkbox"
@@ -298,7 +362,10 @@ function PhonePage() {
                       <span>Từ 5 đến 14 triệu</span>
                     </label>
                   </li>
-                  <li onClick={() => handleCheckPrice('tren-14-trieu')}>
+                  <li
+                    onClick={() => handleCheckPrice('tren-14-trieu')}
+                    className="form-group"
+                  >
                     <input
                       type="checkbox"
                       checked={checkedPrice.includes('tren-14-trieu')}
@@ -317,7 +384,31 @@ function PhonePage() {
                 <div key={phone._id} className="product-layout">
                   <div className="product">
                     <div className="img-container">
-                      <Link to={`/`}>
+                      <div
+                        className={`${
+                          checkedCompare.length >= 2
+                            ? 'form-group compare disabled'
+                            : 'form-group compare'
+                        }`}
+                        onClick={() =>
+                          handleCheckCompare(
+                            phone._id,
+                            `http://localhost:5000/${phone.image[0]}`
+                          )
+                        }
+                      >
+                        <input
+                          type="checkbox"
+                          checked={checkedCompare.includes(phone._id)}
+                          onChange={() => console.log('fix checked warning')}
+                        />
+                        <label>
+                          <span>So sánh</span>
+                        </label>
+                      </div>
+                      <Link
+                        to={`/${type}/${phone.slug[0].slug}-${phone.slug[0].detail}`}
+                      >
                         <img
                           src={`http://localhost:5000/${phone.image[0]}`}
                           alt={phone.name}
@@ -332,7 +423,9 @@ function PhonePage() {
                       </div>
 
                       <div className="price">
-                        <span>{phone.slug[0].color[0].price}</span>
+                        <span>
+                          {currentChange(phone.slug[0].color[0].price)}
+                        </span>
                       </div>
                       <div className="config">
                         <div className="config-param">
@@ -394,10 +487,11 @@ function PhonePage() {
                           <button
                             className="btn btn-addCart btn-sm"
                             type="submit"
-                            onClick={() =>
+                            onClick={(e) =>
                               handleAddCart(
                                 phone.slug[0]._id,
-                                phone.slug[0].color[0].name
+                                phone.slug[0].color[0].name,
+                                e
                               )
                             }
                           >

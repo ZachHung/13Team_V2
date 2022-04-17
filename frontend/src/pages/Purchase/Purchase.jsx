@@ -12,7 +12,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import './Purchase.scss';
 import { hostServer, currentChange, formatDate } from '../../utils/const';
-import ModalPopUp from '../modal';
+import ModalPopUp from '../../components/modal';
 
 export default function Purchase() {
   const [productsList, setProductsList] = useState([]);
@@ -21,7 +21,7 @@ export default function Purchase() {
     delivering: false,
     delivered: false,
   });
-  const [modalState, setModalState] = useState(false);
+  const [modalState, setModalState] = useState(undefined);
   const user = useSelector((state) => state.user);
 
   // get all purchase
@@ -51,9 +51,6 @@ export default function Purchase() {
     getPurchase();
   }, []);
   const handelClickConfirm = () => {
-    setModalState(false);
-  };
-  const handelClickCancel = () => {
     setModalState(false);
   };
   const handleClickAllProduct = () => {
@@ -89,6 +86,12 @@ export default function Purchase() {
   return (
     <>
       <Header />
+      <ModalPopUp
+        name={'lịch sử mua hàng'}
+        modalState={modalState}
+        handelClickConfirm={handelClickConfirm}
+        toogleState={setModalState}
+      />
       <section className="container_purchase">
         <div className="status_menu">
           <div
@@ -214,12 +217,6 @@ export default function Purchase() {
             ))}
           </div>
         ))}
-        <ModalPopUp
-          name={'lịch sử mua hàng'}
-          modalState={modalState}
-          handelClickConfirm={handelClickConfirm}
-          handelClickCancel={handelClickCancel}
-        />
       </section>
       <Footer />
     </>
