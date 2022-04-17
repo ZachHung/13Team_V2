@@ -27,7 +27,7 @@ const sidebarNav = [
         link: '/admin/stats',
         section: 'sale',
         icon: <i className='bx bx-line-chart'></i>,
-        text: 'Stats'
+        text: 'Thống kê'
     },
     {
         link: '/admin/settings',

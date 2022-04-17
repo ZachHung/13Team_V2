@@ -1,19 +1,29 @@
-@use './variables' as *;
+@use "./variables" as *;
 
 @mixin flex($alignItem: center, $justifyContent: center) {
-    display: flex;
-    align-items: $alignItem;
-    justify-content: $justifyContent;
+  display: flex;
+  align-items: $alignItem;
+  justify-content: $justifyContent;
+}
+@mixin rotateAnimation($deg) {
+  @keyframes rotate#{$deg} {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      transform: rotate(#{$deg}deg);
+    }
+  }
 }
 
 @mixin mobile {
-    @media only screen and (max-width: $mobile-width) {
-        @content;
-    }
+  @media only screen and (max-width: $mobile-width) {
+    @content;
+  }
 }
 
 @mixin tablet {
-    @media only screen and (max-width: $tablet-width) {
-        @content;
-    }
+  @media only screen and (max-width: $tablet-width) {
+    @content;
+  }
 }

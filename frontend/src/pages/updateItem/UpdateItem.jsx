@@ -1,30 +1,63 @@
 import React from 'react';
 import './UpdateItem.scss';
-import axios from 'axios';
+import { userRequest } from "../../utils/CallApi";
+import { hostServer } from "../../utils/const";
 import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
-
-const URL = 'http://localhost:5000/api/';
-const api = axios.create({
-    baseURL: 'http://localhost:5000/api/',
-});
+import { storage } from '../../firebase';
 
 function UpdateItem() {
     const params = useParams();
     const [item, setPhone] = useState([]);
+    const [image, setImage] = useState(null);
+    const [urlImage, setUrl] = useState("");
+    
     useEffect(() => {
-        api.get("admin/products/edit/" + params.id).then((res) => {
-            setPhone(res.data.items);
-            // console.log(res.data.items);
-            // console.log(params.id);
-        });
+        userRequest()
+            .get(`admin/products/edit/${params.id}`)
+            .then((res) => {
+                setPhone(res.data.items);
+            })
+            .catch((err) => console.log(err));
     }, []);
+
+    const handleChange = e => {
+        if (e.target.files[0]) {
+            setImage(e.target.files[0]);
+        }
+    }
+
+    const handleUpload = e => {
+        document.getElementById("isLoading").style.display = "block"
+        const uploadTask = storage.ref(`images/${image.name}`).put(image);
+        uploadTask.on(
+            "state_changed",
+            snapshot => { },
+            error => {
+                console.log(error);
+            },
+            () => {
+                storage
+                    .ref("images")
+                    .child(image.name)
+                    .getDownloadURL()
+                    .then(url => {
+                        console.log(url)
+                        setUrl(url)
+                        document.getElementById("image-new").name = "image";
+                        document.getElementById("my-image").style.display = "block";
+                        document.getElementById("isLoading").style.display = "none"
+                    });
+            }
+        );
+    }
 
     return (
         <div className="container mt-4 mb-4">
             <h1 className="text-center heading">Chỉnh sửa thông tin sản phẩm</h1>
+
             {item.map(item => (
-                <form className="mt-4" method="POST" action={URL + "admin/products/update/" + item._id + "?_method=PUT"} encType="multipart/form-data">
+                <form className="mt-4" method="POST" action={hostServer + "/api/admin/products/update/" + item._id + "?_method=PUT"}>
                     <a href={`/admin/products/updateDetail/${item._id}`} className="btn btn-primary bnt-more">Sửa chi tiết</a>
                     <br></br>
                     <div className="mb-4">
@@ -39,26 +72,32 @@ function UpdateItem() {
                     </div>
 
                     <div className="mb-4">
-
                         <label className="form-label label_level_1 mb-0">Hình ảnh sản phẩm</label>
-
-
                         <p className='decri'>Xóa đường dẫn để xóa hình ảnh sản phẩm đó</p>
                         {item.image?.map(images => (
                             <div>
                                 <input type="text" onBlur={CheckImage} className="form-control mt-4 my-input-tag image" placeholder='Hình này sẽ bị xóa' defaultValue={images} id="image" name="image" />
                             </div>
                         ))}
-                        <div className="mb-4 mt-4">
-                            <label htmlFor="formFile" className="label_level_2">Thêm hình ảnh sản phẩm</label>
-                            <input className="form-control my-input-tag" type="file" id='upload' name='upload' />
+                        <div id='my-image' className='add-image'>
+                            <input type="text" className="form-control mt-4 my-input-tag newImage" defaultValue={urlImage} placeholder='Nhập vào đường dẫn' id="image-new" />
                         </div>
-                        {/* <div id='my-image' className='add-image'>
-                            <input type="text" className="form-control mt-4 my-input-tag" placeholder='Nhập vào đường dẫn' id="image-new" />
-                        </div> */}
+                        <div id='isLoading' className='mt-4 add-info' >
+                            <h3 className='text-center'>Đang tải...</h3>
+                        </div>
+
+                        <div className="mb-4 mt-4">
+                            <div className="row">
+                                <div className="col-10">
+                                    <label htmlFor="formFile" className="label_level_2">Thêm hình ảnh sản phẩm</label>
+                                    <input className="form-control my-input-tag" type="file" onChange={handleChange} />
+                                </div>
+                                <div className="col">
+                                    <a className="btn btn-primary upload-bnt" onClick={handleUpload}>Tải lên</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-
 
                     <div className="mb-4">
                         <label htmlFor="description" className="form-label label_level_1">Mô tả sản phẩm</label>
@@ -77,7 +116,6 @@ function UpdateItem() {
                             <input type="text" className="form-control my-input-tag" defaultValue={item.brand.brandImage} id="brand.brandImage" name="brand.brandImage" />
                         </div>
                     </div>
-
 
                     <div className="mb-4">
                         <h1 className="form-label label_level_1">Thông tin về công nghệ</h1>
@@ -103,25 +141,7 @@ function UpdateItem() {
     );
 }
 
-// function AddImageShow() {
-
-//     var x = document.getElementById("my-image");
-//     var imagenew = document.getElementById("image-new");
-//     var addimagebnt = document.getElementById("add-image");
-//     if (x.style.display !== "block") {
-//         imagenew.name = "image";
-//         x.style.display = "block";
-//         addimagebnt.innerText = "-"
-//         imagenew.focus();
-
-//     } else {
-//         x.style.display = "none";
-//         imagenew.name = "";
-//         addimagebnt.innerText = "+"
-//     }
-// }
-
-
+//check for delete image of item
 function CheckImage() {
     var image = document.getElementsByClassName('image');
     for (var i = 0; i < image.length; i++) {
@@ -131,7 +151,6 @@ function CheckImage() {
             image[i].name = "image";
         }
     }
-
 }
 
 export default UpdateItem;

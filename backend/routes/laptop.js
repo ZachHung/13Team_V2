@@ -1,12 +1,10 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const itemController = require("../api/controllers/ItemController");
-const laptopController = require("../api/controllers/LaptopController");
+const itemController = require('../api/controllers/ItemController');
+const PhoneController = require('../api/controllers/PhoneController');
 
-router.post("/addcart", laptopController.addCart);
-router.post("/cart", laptopController.checkout);
-router.get("/totalproduct", laptopController.totalproduct);
-router.get("/info", laptopController.info);
-router.get("/:slug", itemController.detailItemLaptop);
-router.get("/", laptopController.index);
+router.get('/brand', PhoneController.brand);
+router.get('/brand/name', PhoneController.brandName);
+router.get('/:slug', itemController.detailItemLaptop);
+router.get('/', PhoneController.home);
 module.exports = router;
