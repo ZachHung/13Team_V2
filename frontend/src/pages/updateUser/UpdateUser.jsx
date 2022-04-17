@@ -3,57 +3,51 @@ import './UpdateUser.scss';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
-
-const URL = 'http://localhost:5000/api/';
-const api = axios.create({
-    baseURL: 'http://localhost:5000/api/',
-});
+import { userRequest } from "../../utils/CallApi";
+import { hostServer } from "../../utils/const";
 
 function UpdateUser() {
     const params = useParams();
     const [user, setUser] = useState([]);
+    const [district, setdistrict] = useState([]);
+    const [province, setaddress] = useState([]);
+    const [ward, setward] = useState([]);
+
     useEffect(() => {
-        api.get("admin/customers/edit/" + params.id).then((res) => {
+        userRequest().get("admin/customers/edit/" + params.id).then((res) => {
             setUser(res.data.user);
         });
     }, []);
 
-    const [province, setaddress] = useState([]);
     useEffect(() => {
-        api.get("address/getalladress/").then((res) => {
+        userRequest().get("address/getalladress/").then((res) => {
             setaddress(res.data.address);
         });
     }, []);
 
-    const [district, setdistrict] = useState([]);
     const Getdistrictbyprovince = () => {
         var province = document.getElementById("province").value;
         document.getElementById("district").value = "";
         document.getElementById("ward").value = "";
-
-
         console.log(province);
-        axios.get(URL + 'address/district/' + province).then((res) => {
+        axios.get(hostServer + '/api/address/district/' + province).then((res) => {
             setdistrict(res.data.address);
         });
     }
 
-    const [ward, setward] = useState([]);
     const Getwardbydistrict = () => {
         var province = document.getElementById("province").value;
         var district = document.getElementById("district").value;
         document.getElementById("ward").value = "";
-        axios.get(URL + 'address/ward/' + province + '/' + district).then((res) => {
+        axios.get(hostServer + '/api/address/ward/' + province + '/' + district).then((res) => {
             setward(res.data.address);
         });
     }
 
-
-
     return (
         <div className="container mt-4 mb-4">
             <h1 className="text-center heading">Cập nhật thông tin người dùng</h1>
-            <form className="mt-4" method="POST" action={URL + "admin/customers/update/" + user._id + "?_method=PUT"}>
+            <form className="mt-4" method="POST" action={hostServer + "/api/admin/customers/update/" + user._id + "?_method=PUT"}>
                 <div className="mb-4 check">
                     <input className="form-check-input my-check-tag" type="checkbox" name='isAdmin' defaultChecked={user.isAdmin} id="flexCheckDefault"/>
                         <label className="form-check-label label_level_1" >
@@ -137,7 +131,5 @@ function UpdateUser() {
         </div>
     );
 }
-
-
 
 export default UpdateUser;

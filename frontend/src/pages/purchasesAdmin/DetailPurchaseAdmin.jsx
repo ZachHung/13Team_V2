@@ -6,20 +6,15 @@ import './DetailPurchaseAdmin.scss';
 import {useEffect, useState} from 'react';
 import {format} from 'date-fns';
 import {useParams} from 'react-router-dom';
-import { Link } from 'react-router-dom';
-
-
-const api = axios.create ({
-  baseURL: 'http://localhost:5000/api/',
-});
-const URL = 'http://localhost:5000/api/';
+import { userRequest } from "../../utils/CallApi";
+import { currentChange } from "../../utils/const";
 
 function DetailPurchaseAdmin () {
   var index = 1;
   const params = useParams ();
   const [purchaseDetail, setPurchaseDetail] = useState ([]);
   useEffect (() => {
-    api.get ('admin/orders/detail/' + params.id).then (res => {
+    userRequest().get ('admin/orders/detail/' + params.id).then (res => {
       setPurchaseDetail (res.data.purchase);
     });
   }, []);
@@ -30,9 +25,8 @@ function DetailPurchaseAdmin () {
   //     );
   //     if (confirmDelete) {
   //       axios
-  //         .delete (`http://localhost:5000/api/admin/orders/delete/${id}`)
+  //         .delete (hostServer + `/api/admin/orders/delete/${id}`)
   //         .then (res => {
-  //           console.log (res.data);
   //           setPurchase (res.data.purchase);
   //         });
   //       window.location.reload (false);
@@ -46,14 +40,7 @@ function DetailPurchaseAdmin () {
     const updateFee = (fee) => {
         return fee;
     }
-    const currentChange = (price) => {
-        price = new Intl.NumberFormat("vi-VN", {
-        style: "currency",
-        currency: "VND",
-        }).format(price);
-        return price;
-    };
-    
+
   return (
     <div
       className="d-flex flex-column marginTop">
@@ -78,7 +65,7 @@ function DetailPurchaseAdmin () {
                                 {purchase.userID.email}
                         </p>
                         <p className='px-2'><b>Địa chỉ: </b>
-                                {purchase.userID.detailaddress}, {purchase.userID.ward}, {purchase.userID.district}, {purchase.userID.province}
+                                {purchase.userID.address.addressdetail === "" ? "" : `${purchase.userID.address.addressdetail},`} {purchase.userID.address.ward === "" ? "" : `${purchase.userID.address.ward},`} {purchase.userID.address.district === "" ? "" : `${purchase.userID.address.district},`} {purchase.userID.address.province === "" ? "" : `${purchase.userID.address.province}`}
                         </p>
                     </div>
                     <div>
@@ -105,7 +92,7 @@ function DetailPurchaseAdmin () {
                     <div className="purchaseTable">
                         <table className='table tableDetail'>
                             <thead>
-                            <tr className="main-heading h4">
+                                <tr className="main-heading h4">
                                     <th style={{width: "auto", height: 'auto'}}>#</th>
                                     <th style={{width: "auto", height: 'auto'}}>Ảnh</th>
                                     <th style={{width: "auto", height: 'auto'}}>Tên</th>
@@ -118,23 +105,20 @@ function DetailPurchaseAdmin () {
                             </thead>
                             <tbody>
                                 { purchaseDetail?.map(purchaseDe => (                               
-                                    purchaseDe.list?.map(listOpts => (
-                                    
-                                    
-                                        
+                                    purchaseDe.list?.map(listOpts => (                                   
                                     <tr className='cake-top' key={listOpts._id}>
                                         <td className='h5'>{index++}</td>
                                         <td className="cakes">
                                             <a href={`/admin/products/detail/`} className="product-img" style={{'width': '100px', 'height': '100px;'}}> 
-                                            <Link to={`/`}>
-                                                <img style={{'object-fit': 'cover', 'width': '100%', 'height': '100%'}}
-                                                    src={`http://localhost:5000/${listOpts.optionID.color.image}`} alt={listOpts.optionID.slug}/>           
-                                            </Link>                                                            
+                                                {/* <Link to={`../`}> */}
+                                                    <img className='imgDetailPurchase' style={{'object-fit': 'cover', 'width': '100%', 'height': '100%'}}
+                                                        src={`http://localhost:5000/public/${listOpts.optionID.color.image}`} alt={listOpts.optionID.slug}/>           
+                                                {/* </Link>                                                             */}
                                             </a>
                                         </td> 
                                                                 
                                         <td className="cake-text align-middle">
-                                            <a href={`/admin/products/detail/${0}`} className="my-link align-middle h5">
+                                            <a href={`/admin/products/detail/${0}`} className="align-middle h5">
                                                 {listOpts.optionID.item.name}
                                             </a>
                                         </td>
@@ -145,10 +129,8 @@ function DetailPurchaseAdmin () {
                                         <td className="align-middle h5">
                                             {listOpts.quantity}
                                         </td>
-                                        {listOpts.optionID.color?.map((color_price, total) => (
-                                            
-                                            <>
-                                            
+                                        {listOpts.optionID.color?.map((color_price, total) => (                                           
+                                            <>      
                                             <td className="align-middle h5">
                                                 {currentChange(color_price.price)} 
                                             </td>
@@ -158,29 +140,27 @@ function DetailPurchaseAdmin () {
                                             <td className="align-middle h5">
                                                 {currentChange(total += (color_price.price) * (listOpts.quantity) * (100 - color_price.discount)/100)}   
                                                 {updateTotalOne(total)}
-                                            </td>
-                                                
-                                            </>
-                                            
+                                            </td>                             
+                                            </>  
                                         ))}
-                                    </tr> 
-                               
+                                    </tr>                                
                                     ))  
-                                ))}                             
-                            </tbody>
-                            <tfoot>
+                                ))}
                                 <tr>
                                     <th colSpan={7} className="text-right_pur h3">Phí vận chuyển:</th>
-                                    <th colSpan={1} className="align-middle h3" id="fee">
+                                    <td colSpan={1} className="align-middle h3" id="fee">
                                         {`${currentChange(updateFee(fee))}`}
-                                    </th>    
+                                    </td>    
                                 </tr>
                                 <tr>
                                     <th colSpan={7} className="text-right_pur h3">Tổng tiền đơn hàng:</th>
-                                    <th colSpan={1} className="align-middle h3" id="total">
+                                    <td colSpan={1} className="align-middle h3" id="total">
                                         {`${currentChange(totals + updateFee(fee))}`}
-                                    </th>
-                                </tr>
+                                    </td>
+                                </tr>                             
+                            </tbody>
+                            <tfoot>
+                                
                             </tfoot>                                                  
                         </table>                       
                     </div>

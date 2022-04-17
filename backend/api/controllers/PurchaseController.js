@@ -2,7 +2,6 @@ const moment = require('moment');
 const purchase = require('../models/Purchase');
 const util = require('../../util/mongoose');
 const cart = require('../models/Cart');
-const { type } = require('express/lib/response');
 var ObjectId = require('mongodb').ObjectId;
 var URL = 'http://localhost:3000/';
 
@@ -339,18 +338,38 @@ class PurchaseController {
 
   getPurchasesAdmin(req, res, next) {
     purchase
-      .find()
-      .then((purchases) => {
-        res.json({
-          purchase: purchases,
+    .find()
+    .populate('userID')
+    .populate('list.optionID')
+    .populate({
+      path: 'list.optionID',
+      populate: {
+        path: 'item',
+        select: 'name type brand',
+      },
+    })
+    .then((data) => {
+      data = util.mutipleMongooseToObject(data);
+
+      for (let result of data) {
+        result.list = result.list.filter((list) => {
+          return list.optionID !== null;
         });
-      })
-      .catch(next);
+        for (let item of result.list) {
+          item.optionID.color = item.optionID.color.filter((color) => {
+            return color.name === item.color;
+          });
+        } 
+      }
+      res.json({
+        purchase: data,
+      });
+    })
+    .catch(next);
   }
 
   async deletePurchasesAdmin(req, res, next) {
     const purchaseId = req.params.id;
-
     const purchaseDelete = await purchase.findOne({
       _id: ObjectId(purchaseId),
     });
@@ -368,9 +387,9 @@ class PurchaseController {
 
   deleteManyPurchasesAdmin(req, res, next){
     const ids = req.body;
-    purchase.deleteMany({_id: {$in: ids}})
-    .then ()
-    .catch(next);
+     purchase.deleteMany({_id: {$in: ids}})
+     .then (() => res.redirect(URL + 'admin/orders'))
+     .catch(next);
   }
   
   detailPurchasesAdmin(req, res, next) {
@@ -407,16 +426,42 @@ class PurchaseController {
   }
 
   edit(req, res, next) {
+
     purchase
-      .findById(req.params.id)
-      .then((purchase) => res.json({ purchase: purchase }))
+      .find({ _id: ObjectId(req.params.id) })
+      .populate('list.optionID')
+      .populate({
+        path: 'list.optionID',
+        populate: {
+          path: 'item',
+          select: 'name type brand',
+        },
+      })
+      .then((data) => {
+        data = util.mutipleMongooseToObject(data);
+
+        for (let result of data) {
+          result.list = result.list.filter((list) => {
+            return list.optionID !== null;
+          });
+          for (let item of result.list) {
+            item.optionID.color = item.optionID.color.filter((color) => {
+              return color.name === item.color;
+            });
+          }
+        }
+
+        res.json({
+          purchase: data,
+        });
+      })
       .catch(next);
   }
 
   updatePurchase(req, res, next) {
     purchase
       .updateOne({ _id: req.params.id }, req.body)
-      .then(() => res.redirect(URL + 'admin/orders/update/' + req.params.id))
+      .then(() => res.redirect(URL + 'admin/orders'))
       .catch(next);
   }
 }
