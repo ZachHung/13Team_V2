@@ -48,7 +48,12 @@
   }
   
   // compare product 
+  .disabled{
+    pointer-events: none;
+    opacity: 0.7;
+  }
   .compare{
+    
     margin-left: 0;
     padding-left: 0;
     margin-bottom: 2rem;
