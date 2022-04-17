@@ -23,7 +23,7 @@ const ProductOption = ({
     price = currentChange(price);
     return price;
   };
-  const [color, setColor] = useState(0);
+  const [color, setColor] = useState(colorOptions.length);
   const [colorValue, setColorValue] = useState(colorOptions[0].name);
   const [newPrice, setNewPrice] = useState(Price(colorOptions[0]));
   const [oldPrice, setOldPrice] = useState(
@@ -37,13 +37,19 @@ const ProductOption = ({
     setOldPrice(oldPrice);
     setColorValue(colorValue);
   };
-  const handleCapcity = () => {
-    setColorValue(colorOptions[0].name);
-    setColor(0);
-    changeSlide(0);
+  const handleCapcity = (index) => {
+    setColorValue(colorOptions[index].name);
+    setColor(index);
+    changeSlide(index);
   };
   useEffect(() => {
-    handleCapcity();
+    setColor(colorOptions.length);
+    for (let i = 0; i < colorOptions.length; i++) {
+      if (colorOptions[i].number !== 0) {
+        handleCapcity(i);
+        break;
+      }
+    }
   }, [idOption]);
 
   const handleAddCart = () => {

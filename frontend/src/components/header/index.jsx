@@ -131,7 +131,7 @@ const Header = ({ color }) => {
                     {user.name}
                   </li>
                   <li>
-                    <Link to="">
+                    <Link to="/user">
                       <FontAwesomeIcon icon={faUserGear} className="icon" />
                       Cài đặt người dùng
                     </Link>

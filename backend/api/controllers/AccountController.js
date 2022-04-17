@@ -4,13 +4,14 @@ const cart = require("../models/Cart");
 const address = require("../models/Address");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
-var ObjectId = require ('mongodb').ObjectId;
+const { reset } = require("nodemon");
+var ObjectId = require("mongodb").ObjectId;
 var recoveryCode = 9450;
 var confirmCode = 1234;
 var emailRecovery = "tnhut806@gmail.com";
 var sender = "tnhut1234@outlook.com";
 var password = "Trannhut1";
-var URL = "http://localhost:3000/"
+var URL = "http://localhost:3000/";
 
 let transporter = nodemailer.createTransport({
   host: "smtp-mail.outlook.com",
@@ -217,53 +218,62 @@ class AccountController {
     req.session.destroy();
   }
   userInfo(req, res, next) {
-    address
-      .find()
-      .select("name")
-      .then((data) => {
-        let district = [];
-        let ward = [];
-        let userProvince = req.session.user.address.province;
-        let userDistrict = req.session.user.address.district;
-        data = data.map((item) => item.toObject());
-        if (userProvince != "") {
-          address.find({ name: userProvince }).then((districtData) => {
-            districtData = districtData.map((item) => item.toObject());
-            district = districtData[0].districts;
+    user
+      .findOne({ _id: ObjectId(req.params.userID) })
+      .then((userData) => {
+        const { password, ...others } = userData._doc;
+        address
+          .find()
+          .select("name")
+          .then((data) => {
+            let district = [];
+            let ward = [];
+            let userProvince = userData.address.province;
+            let userDistrict = userData.address.district;
+            data = data.map((item) => item.toObject());
+            if (userProvince != "") {
+              address.find({ name: userProvince }).then((districtData) => {
+                districtData = districtData.map((item) => item.toObject());
+                district = districtData[0].districts;
 
-            let districtSelected = district.filter(
-              (districtData) => districtData.name == userDistrict
-            );
+                let districtSelected = district.filter(
+                  (districtData) => districtData.name == userDistrict
+                );
 
-            ward = districtSelected[0].wards;
-            res.json({
-              user: req.session.user,
-              province: data,
-              district: district,
-              ward: ward,
-            });
-          });
-        } else {
-          res.json({
-            user: req.session.user,
-            province: data,
-            district: district,
-            ward: ward,
-          });
-        }
+                ward = districtSelected[0].wards;
+                res.json({
+                  user: others,
+                  province: data,
+                  district: district,
+                  ward: ward,
+                });
+              });
+            } else {
+              res.json({
+                user: others,
+                province: data,
+                district: district,
+                ward: ward,
+              });
+            }
+          })
+          .catch((err) => {});
       })
-      .catch((err) => {});
+      .catch((err) => {
+        res.send(err);
+      });
+
     /*
-		res.render("userinfo", {
-			user: req.session.user,
-		});
-		*/
+		// res.render("userinfo", {
+		// 	user: req.session.user,
+		// });
+		// */
   }
   update(req, res, next) {
     user
       .updateOne(
         {
-          _id: req.session.user._id,
+          _id: req.user.id,
         },
         {
           name: req.body.username,
@@ -280,55 +290,48 @@ class AccountController {
         }
       )
       .then((data) => {
-        (req.session.user.name = req.body.username),
-          (req.session.user.phone = req.body.phone),
-          (req.session.user.gender = req.body.gender),
-          (req.session.user.birthday = req.body.birthday);
-        req.session.user.email = req.body.email;
-        req.session.user.address = {
-          province: req.body.province,
-          district: req.body.district,
-          ward: req.body.ward,
-          addressdetail: req.body.addressDetail,
-        };
-        req.session.save();
-        res.json({
-          status: "true",
-        });
+        if (data.modifiedCount != 0) {
+          user.findOne({ _id: req.user.id }).then((user) => {
+            const { password, ...others } = user._doc;
+            res.send(others);
+          });
+        }
       });
   }
-  async getUsersAdmin (req, res, next) {
-    const usersPerPage = await user.countDocuments ({});
-    const page = Number (req.query.page) || 1;
+  async getUsersAdmin(req, res, next) {
+    const usersPerPage = await user.countDocuments({});
+    const page = Number(req.query.page) || 1;
     //const count = user.find ({}).countDocuments ({});
     // const isLogin = req.session.user ? true : false;
     // const user = req.session.user ? req.session.user : {};
     //let itemsPerPage = 22;
     user
-      .find ({})
-      .skip (usersPerPage * (page - 1))
-      .limit (usersPerPage)
-      .then (user => {
-        res.json ({
+      .find({})
+      .skip(usersPerPage * (page - 1))
+      .limit(usersPerPage)
+      .then((user) => {
+        res.json({
           user: user,
         });
       })
-      .catch (next);
+      .catch(next);
   }
 
-  async deleteUsersAdmin (req, res, next) {
+  async deleteUsersAdmin(req, res, next) {
     const userId = req.params.id;
-    const userDelete = await user.findOne ({"_id": ObjectId(userId)});
+    const userDelete = await user.findOne({ _id: ObjectId(userId) });
     if (userDelete) {
       try {
-        const deleteUser = await userDelete.deleteOne ({"_id": ObjectId(userId)});
+        const deleteUser = await userDelete.deleteOne({
+          _id: ObjectId(userId),
+        });
       } catch (e) {
-        console.error (`[Error] ${e}`);
-        throw Error ('Có lỗi xảy ra, vui lòng thử lại!!');
+        console.error(`[Error] ${e}`);
+        throw Error("Có lỗi xảy ra, vui lòng thử lại!!");
       }
     }
   }
-  async getProfileAdmin (req, res, next) {
+  async getProfileAdmin(req, res, next) {
     // const userInfo = req.session.user;
     // if (userId) {
     //   try {
@@ -345,22 +348,24 @@ class AccountController {
   }
 
   edit(req, res, next) {
-    user.findById(req.params.id)
-      .then(user => res.json({ user: user }))
-      .catch(next)
+    user
+      .findById(req.params.id)
+      .then((user) => res.json({ user: user }))
+      .catch(next);
   }
 
   updateUser(req, res, next) {
-    if(req.body.isAdmin == "on"){
+    if (req.body.isAdmin == "on") {
       req.body.isAdmin = true;
-    }else{
+    } else {
       req.body.isAdmin = false;
     }
-    console.log(req.body)
+    console.log(req.body);
 
-    user.updateOne({ _id: req.params.id }, req.body)
-      .then(() => res.redirect(URL + 'admin/customers/update/' + req.params.id))
-      .catch(next) 
+    user
+      .updateOne({ _id: req.params.id }, req.body)
+      .then(() => res.redirect(URL + "admin/customers/update/" + req.params.id))
+      .catch(next);
   }
 }
 module.exports = new AccountController();
