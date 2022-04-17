@@ -28,17 +28,8 @@ const Header = ({ color }) => {
   const [query, setQuery] = useState('');
   const handleOnchangeSearch = (e) => {
     setQuery(e.target.value);
-    console.log('query not debounce', query);
   };
   const navigateSearch = useNavigate();
-  useEffect(() => {
-    // navigateSearch(`../search/global?key=${query}`);
-    const delayDebounce = setTimeout(() => {
-      console.log('query debounce: ', query);
-      // navigateSearch(`../search/global?key=${query}`);
-    }, 2000);
-    return () => clearTimeout(delayDebounce);
-  }, [query]);
 
   const handleClickSearch = () => {
     console.log('key: ', query);

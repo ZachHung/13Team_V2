@@ -30,7 +30,7 @@ import UpdatePurchase from './pages/updatePurchase/UpdatePurchase';
 import AdminProfile from './pages/usersAdmin/AdminProfile';
 import DetailPurchaseAdmin from './pages/purchasesAdmin/DetailPurchaseAdmin';
 import Blank from './pages/Blank';
-
+import ComparePage from './pages/compareProducts/compare';
 //import scss va boxicon cho dashboard
 import './assets/libs/boxicons-2.1.1/css/boxicons.min.css';
 import './scss/App.scss';
@@ -45,6 +45,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/" element={<HomePage />} />
         <Route exact path="/search" element={<SearchPage />} />
+        <Route exact path="/compare" element={<ComparePage />} />
         <Route exact path="/:type" element={<PhonePage />} />
         <Route path="/:type/:id" element={<ProductPage></ProductPage>}></Route>
         {/* end publicRoute */}

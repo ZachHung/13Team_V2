@@ -167,6 +167,7 @@ function PhonePage() {
     });
     console.log('idProdutc: ', idProduct);
   };
+  const handleClickCompare = () => {};
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductPerPage] = useState(6);
@@ -184,7 +185,11 @@ function PhonePage() {
       <Header />
 
       <div className="products-container">
-        <ModalCompare></ModalCompare>
+        <ModalCompare
+          handleClickCompare={handleClickCompare}
+          infoProducts={checkedCompare}
+          type={type}
+        ></ModalCompare>
 
         <section className="section products">
           <SwiperPromotion className="swiper-promotion"></SwiperPromotion>

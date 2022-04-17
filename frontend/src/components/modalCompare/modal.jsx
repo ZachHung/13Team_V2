@@ -2,7 +2,8 @@ import './modal.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 
-function ModalCompare() {
+function ModalCompare({ handleClickCompare, infoProducts, type }) {
+  console.log('infoProducts: ', infoProducts, type);
   return (
     <div className="modalCompare-container">
       <h1>Sản phẩm cần so sánh(tối đa 3 sản phẩm khác nhau)</h1>
