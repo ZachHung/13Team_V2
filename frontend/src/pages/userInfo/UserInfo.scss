@@ -1,0 +1,138 @@
+.info__container {
+  width: 100%;
+  .info {
+    width: 50%;
+    margin: 2rem auto;
+    @media only screen and (max-width: 739px) {
+      width: 95%;
+    }
+    .info__title {
+      text-align: center;
+    }
+    input[type="submit"] {
+      background-color: #ccc;
+      width: 24rem;
+      height: 3rem;
+      border: none;
+      border-radius: 1rem;
+      margin: 2rem auto;
+      display: block;
+      font-weight: bold;
+    }
+    input[type="submit"]:hover {
+      background-color: #333;
+      color: #fff;
+      cursor: pointer;
+    }
+    .form-group {
+      margin-top: 2rem;
+      .form-row {
+        width: 100%;
+        position: relative;
+        > label {
+          position: absolute;
+          top: -8px;
+          left: 16px;
+          font-size: 1.4rem;
+          background-color: white;
+          padding: 0 2px;
+        }
+        input[type="text"] {
+          height: 4rem;
+          width: 100%;
+          padding: 1rem 1rem 1rem 1rem;
+          font-size: 1.6rem;
+          line-height: 2.8rem;
+          border-radius: 1rem;
+        }
+
+        input[type="date"] {
+          border: 2px solid #000;
+          border-radius: 1rem;
+          height: 4rem;
+          padding: 0px 15px;
+          font-size: 15px;
+        }
+        input[type="submit"] {
+          background-color: #ccc;
+          width: 24rem;
+          height: 3rem;
+          border: none;
+          border-radius: 1rem;
+          margin: 2rem auto;
+          display: block;
+          font-weight: bold;
+        }
+        input[type="submit"]:hover {
+          background-color: #333;
+          color: #fff;
+          cursor: pointer;
+          font-size: 16px;
+        }
+        input[type="radio"] {
+          /* remove standard background appearance */
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          /* create custom radiobutton appearance */
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          padding: 3px;
+          /* background-color only for content */
+          background-clip: content-box;
+          border: 2px solid #333;
+          background-color: #ccc;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+        input[type="radio"]:checked {
+          background-color: rgba(0, 0, 0, 0.6);
+          cursor: default;
+        }
+        #userinfo-gender {
+          border: 2px solid #000;
+          padding: 2rem;
+          display: flex;
+          flex: 1;
+          border-radius: 1rem;
+          justify-content: space-around;
+          .gender__option {
+            display: flex;
+            justify-content: center;
+            label {
+              font-size: 16px;
+              margin-left: 2px;
+            }
+          }
+        }
+        #userinfo-address {
+          .address-overall {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 2rem;
+            flex-wrap: wrap;
+            select {
+              height: 3rem;
+              border-radius: 10px;
+              border: 2px solid #000;
+              font-size: 16px;
+              @media only screen and (max-width: 739px) {
+                width: 60%;
+                margin-top: 1rem;
+              }
+            }
+          }
+          input {
+            margin-top: 1rem;
+          }
+        }
+      }
+      .error-message {
+        color: red;
+        font-size: 1.4rem;
+        margin-top: 2px;
+      }
+    }
+  }
+}

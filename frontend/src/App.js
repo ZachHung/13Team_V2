@@ -30,8 +30,9 @@ import DetailPurchaseAdmin from "./pages/purchasesAdmin/DetailPurchaseAdmin";
 import Blank from "./pages/Blank";
 
 //import scss va boxicon cho dashboard
-import './assets/libs/boxicons-2.1.1/css/boxicons.min.css'
-import './scss/App.scss'
+import "./assets/libs/boxicons-2.1.1/css/boxicons.min.css";
+import "./scss/App.scss";
+import UserInfo from "./pages/userInfo/UserInfo";
 
 function App() {
   const isAdmin = useSelector((state) => state.user.isAdmin);
@@ -49,6 +50,7 @@ function App() {
         <Route path="/*" element={<PrivateRoute></PrivateRoute>}>
           <Route path="cart" element={<CartPage></CartPage>} />
           <Route path="purchase" element={<Purchase />} />
+          <Route path="user" element={<UserInfo></UserInfo>}></Route>
         </Route>
         {/* end private Route */}
 
@@ -74,7 +76,10 @@ function App() {
           <Route path="orders/update/:id" element={<UpdatePurchase />} />
           <Route path="products" element={<ItemsAdmin />} />
           <Route path="products/update/:id" element={<UpdateItem />} />
-          <Route path="products/updateDetail/:id" element={<UpdateItemDetail />} />
+          <Route
+            path="products/updateDetail/:id"
+            element={<UpdateItemDetail />}
+          />
           <Route path="customers" element={<UsersAdmin />} />
           <Route path="customers/update/:id" element={<UpdateUser />} />
           <Route path="settings" element={<AdminProfile />} />

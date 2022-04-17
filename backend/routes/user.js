@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const account = require("../api/controllers/AccountController");
-
-router.get("/info", account.userInfo);
-router.post("/update", account.update);
+const { verifyTokenAuth } = require("../middlewares/verificationHandler");
+router.get("/info/:userID", verifyTokenAuth, account.userInfo);
+router.post("/update/:userID", verifyTokenAuth, account.update);
 module.exports = router;
