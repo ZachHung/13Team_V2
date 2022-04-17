@@ -1,10 +1,13 @@
 .modalCompare-container{
+    
     z-index: 10;
     background-color: rgb(255, 255, 255);
     height: 20rem;
     width: 100%;
     position: fixed;
     bottom: 0%;
+    left: 0%;
+    right: 0%;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -25,7 +28,7 @@
             }
             img{
                 margin-left: 1rem;
-                width: 60%;
+                width: 15rem;
             }
         }
     }
@@ -75,4 +78,9 @@
             font-size: 1.5rem;
         }
     }
+}
+
+// display: none !important;
+.disableCompareModal{
+    display: none !important;
 }

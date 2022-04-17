@@ -24,6 +24,7 @@ import Pagination from '../../components/pagination';
 import { currentChange } from '../../utils/const';
 import SortProduct from '../../components/sortProduct';
 import ModalCompare from '../../components/modalCompare/modal';
+import ModalLimitCompare from '../../components/modalLitmitCompare/modalLimit';
 import './PhonePage.scss';
 
 const api = axios.create({
@@ -155,8 +156,17 @@ function PhonePage() {
   };
   // compare
   const [checkedCompare, setCheckedCompare] = useState([]);
+  const [urlImages, setUrlImages] = useState([]);
+  const [disableCompareModal, setDisableCompareModal] = useState(true);
+  const handleCheckCompare = (idProduct, urlImg) => {
+    setDisableCompareModal(false);
 
-  const handleCheckCompare = (idProduct) => {
+    console.log('clicked handleCheckCompare', idProduct, urlImg);
+    // if (checkedCompare.length > 2) {
+    //   alert('so sánh tối đa 2 sản phẩm');
+    //   alert('có vẻ bạn đã chọn đủ 2 sản phẩm, so sánh ngay');
+    // } else {
+
     setCheckedCompare((prev) => {
       const isExist = checkedCompare.includes(idProduct);
       if (isExist) {
@@ -165,9 +175,25 @@ function PhonePage() {
         return [...prev, idProduct];
       }
     });
-    console.log('idProdutc: ', idProduct);
+    setUrlImages((prev) => {
+      const isExist = urlImages.includes(urlImg);
+      if (isExist) {
+        return urlImages.filter((item) => item != urlImg);
+      } else {
+        return [...prev, urlImg];
+      }
+    });
   };
-  const handleClickCompare = () => {};
+  console.log('checkedCompare: ', checkedCompare);
+  console.log('urlImage: ', urlImages);
+  const handleClickCancelCompare = () => {
+    setUrlImages([]);
+    setCheckedCompare([]);
+    setDisableCompareModal(() => true);
+  };
+  // if (checkedCompare.length == 0 || urlImages.length == 0) {
+  //   setDisableCompareModal(true);
+  // }
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductPerPage] = useState(6);
@@ -185,13 +211,16 @@ function PhonePage() {
       <Header />
 
       <div className="products-container">
-        <ModalCompare
-          handleClickCompare={handleClickCompare}
-          infoProducts={checkedCompare}
-          type={type}
-        ></ModalCompare>
-
         <section className="section products">
+          <ModalCompare
+            handleClickCompare={handleCheckCompare}
+            infoProducts={checkedCompare}
+            type={type}
+            urlImages={urlImages}
+            handleClickCancelCompare={handleClickCancelCompare}
+            disableCompareModal={disableCompareModal}
+          ></ModalCompare>
+
           <SwiperPromotion className="swiper-promotion"></SwiperPromotion>
           <Swiper
             updateBrand={handleCheckBrand}
@@ -356,8 +385,17 @@ function PhonePage() {
                   <div className="product">
                     <div className="img-container">
                       <div
-                        className="form-group compare"
-                        onClick={() => handleCheckCompare(phone._id)}
+                        className={`${
+                          checkedCompare.length >= 2
+                            ? 'form-group compare disabled'
+                            : 'form-group compare'
+                        }`}
+                        onClick={() =>
+                          handleCheckCompare(
+                            phone._id,
+                            `http://localhost:5000/${phone.image[0]}`
+                          )
+                        }
                       >
                         <input
                           type="checkbox"
