@@ -350,26 +350,15 @@ class AccountController {
       .catch(next) 
   }
   editProfileAdmin (req, res, next) {
-    //const adminInfo = req.session.user._id;
-    //user.findById(adminInfo)
-    const adminInfo = '6256960e31a9f35faa8343cd';
     user
-      .findById(adminInfo)
-      .then(userRes => {
-        res.json({
-          userAdmin: userRes,
-        })
-        console.log(userRes)
+    .findById(req.params.id)
+    .then (users => {
+        res.json({ user: users })
       })
-      .catch(next);
+    .catch(next);
   }
   updateProfileAdmin(req, res, next){
-    //user.findById(req.session.user._id)
-    const adminInfo = '6256960e31a9f35faa8343cd';
-    // if (!user) {
-    //   res.redirect('admin/settings');
-    //   return;
-    // }
+
     const {
       name,
       email,
@@ -382,11 +371,77 @@ class AccountController {
       district,
       ward,
       addressdetail,
-      phone,  
+      phoneNumber,  
     } = req.body;
-    user.updateOne({ _id: req.session.user._id }, req.body)
-      .then(() => res.redirect(URL + 'admin/settings' + req.session.user._id))
-      .catch(next)
+    const idUser = req.params.id;
+    user
+    .findById(idUser)
+    .then(userRes =>{
+      if (!userRes) {
+        res.status(202).json({
+          message: "Không tồn tại tài khoản, có thể đã gặp trục trặc, vui lòng kiểm tra lại phiên đăng nhập!",
+        });
+        res.redirect(URL + 'admin/settings/' + idUser);
+        return;
+      };
+      user
+        .findOne({"email": email})
+        .then(emailRes => {
+          if (emailRes && email !== emailRes.email) {
+            res.status(202).json({
+              message: "Email đã tồn tại, vui lòng chọn một email khác!",
+            });
+            res.redirect(URL + 'admin/settings/' + idUser);
+            return;
+          }
+          if (currentPassword && newPassword && newPasswordRepeat) {
+            if (currentPassword !== CryptoJS.AES.decrypt(userRes.password, process.env.PASS_SECRET).toString(CryptoJS.enc.Utf8)) 
+            {
+              res.status(202).json({
+                message: "Mật khẩu hiện tại không chính xác",
+              });
+              res.redirect(URL + 'admin/settings/' + idUser);
+              return;
+            }
+            else if (newPassword !== newPasswordRepeat){
+              res.status(202).json({
+                message: "Mật khẩu mới nhập không khớp!",
+              });
+              res.redirect(URL + 'admin/settings/' + idUser);
+              return;
+            } 
+            else 
+            {
+              userRes.password = CryptoJS.AES.encrypt(
+                newPassword,
+                process.env.PASS_SECRET
+              );
+            }
+          }
+          if (userRes.name !== name ) userRes.name = name;
+          if (userRes.email !== email ) userRes.email = email;
+          if (userRes.phone !== phoneNumber ) userRes.phone = phoneNumber;
+          if (userRes.birthday !== birthday ) userRes.birthday = birthday;
+          if (userRes.gender !== gender) userRes.gender = gender  
+          if (userRes.address.province !== province) userRes.address.province = province
+          if (userRes.address.district !== district) userRes.address.district = district
+          if (userRes.address.ward !== ward) userRes.address.ward = ward
+          if (userRes.address.addressdetail !== addressdetail) userRes.address.addressdetail = addressdetail
+        
+          user
+          .updateOne({ _id: idUser }, userRes)
+            .then(() => {             
+              res.status(202).json({
+                message: "Thay đổi thông tin tài khoản thành công!",
+              });
+              res.redirect(URL + `/admin/settings/${idUser}`);
+            })
+            .catch(next);
+      })  
+      .catch(next);
+      
+    })
+    .catch(next); 
   }
 }
 module.exports = new AccountController();

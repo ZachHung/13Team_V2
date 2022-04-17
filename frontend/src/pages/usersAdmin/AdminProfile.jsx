@@ -2,58 +2,61 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import './AdminProfile.scss';
-
-const URL = 'http://localhost:5000/api/';
-const api = axios.create ({
-  baseURL: 'http://localhost:5000/api/',
-});
+import { useSelector } from 'react-redux';
+import { userRequest } from "../../utils/CallApi";
+import { hostServer } from "../../utils/const";
 
 function AdminProfile () {
   const [admin, setAdmin] = useState ([]);
   const [toggleState, setToggleState] = useState (1);
-  useEffect (() => {
-    api.get ('/admin/settings').then (res => {
-      setAdmin (res.data.userAdmin);
+  const user = useSelector((state) => state.user);  
+  const [errorText, setErrorText] = useState("");
+  const [formData, setFormData] = useState({});
+  const [district, setdistrict] = useState([]);
+  const [province, setaddress] = useState([]);
+  const [ward, setward] = useState([]);
+  
+  useEffect(() => {
+    userRequest().get (`admin/settings/${user.current._id}`).then ((res) => {
+      console.log(res.data);
+      setAdmin (res.data.user);
     });
   }, []);
 
   const toggleTab = index => {
     setToggleState (index);
   };
-  const [province, setaddress] = useState ([]);
+
   useEffect (() => {
-    api.get ('address/getalladress/').then (res => {
+    userRequest().get ('address/getalladress/').then (res => {
       setaddress (res.data.address);
     });
   }, []);
 
-  const [district, setdistrict] = useState ([]);
   const Getdistrictbyprovince = () => {
-    var province = document.getElementById ('province').value;
-    document.getElementById ('district').value = '';
-    document.getElementById ('ward').value = '';
-    axios.get (URL + 'address/district/' + province).then (res => {
-      setdistrict (res.data.address);
+    var province = document.getElementById("province").value;
+    document.getElementById("district").value = "";
+    document.getElementById("ward").value = "";
+    console.log(province);
+    axios.get(hostServer + '/api/address/district/' + province).then((res) => {
+        setdistrict(res.data.address);
     });
-  };
+}
 
-  const [ward, setward] = useState ([]);
-  const Getwardbydistrict = () => {
-    var province = document.getElementById ('province').value;
-    var district = document.getElementById ('district').value;
-    document.getElementById ('ward').value = '';
-    axios.get (URL + 'address/ward/' + province + '/' + district).then (res => {
-      setward (res.data.address);
+const Getwardbydistrict = () => {
+    var province = document.getElementById("province").value;
+    var district = document.getElementById("district").value;
+    document.getElementById("ward").value = "";
+    axios.get(hostServer + '/api/address/ward/' + province + '/' + district).then((res) => {
+        setward(res.data.address);
     });
-  };
+}
 
   return (
-    <div className="d-flex flex-column font-weight-bold">
+
+    <div className="d-flex flex-column font-weight-bold" >
       <div className="container light-style flex-grow-1 container-p-y mb-5">
-        <form
-          method="POST"
-          action={URL + 'admin/settings/update/' + admin._id + '?_method=PUT'}
-        >
+      <form method="POST" action={hostServer + "/api/admin/settings/update/" + admin._id + "?_method=PUT"}>
           <div className="card overflow-hidden border-0">
             <div className="bg-profile">
               <h1 className="py-3">
@@ -98,27 +101,25 @@ function AdminProfile () {
                   role="tabpanel"
                 >
                   <div className="card-body align-items-center adminBackground">
-
-                    <img
+                    {/* <img
                       src="https://res.cloudinary.com/cake-shop/image/upload/v1647313324/fhrml4yumdl42kk88jll.jpg?fbclid=IwAR1RAMOwX07c3l5KiHc22jGz89cISo9DG0gDFfXcXLIWzQVvDy5LntEN2YQ"
                       alt="avatar"
                       className="d-block ui-w-80 imgAdmin"
-                    />
-
-                    <h4 className="mt-4 textLarger hightlightInfo">
+                    /> */}
+                    <h4 className="mt-4 p-0 textLarger hightlightInfo">
                       QUẢN TRỊ VIÊN
                     </h4>
                   </div>
                   <hr className="m-0" />
                   <div className="card-body">
                     <div className="form-group mb-3">
-                      <label htmlFor="names" className="form-label labelTitle">
+                      <label htmlFor='names' className="form-label labelTitle">
                         Họ tên
                       </label>
                       <input
+                        id='names'
                         name="name"
                         type="text"
-                        id="names"
                         className="form-control inputAdProfile"
                         defaultValue={admin.name}
                       />
@@ -161,6 +162,7 @@ function AdminProfile () {
                         type="password"
                         className="form-control inputAdProfile"
                         defaultValue={''}
+                        onSubmit={errorText !== "" ? errorText : ""}
                       />
                     </div>
 
@@ -177,6 +179,7 @@ function AdminProfile () {
                         type="password"
                         className="form-control inputAdProfile"
                         defaultValue={''}
+                        onSubmit={errorText !== "" ? errorText : ""}
                       />
                     </div>
                     <div className="form-group mb-3">
@@ -192,6 +195,7 @@ function AdminProfile () {
                         type="password"
                         className="form-control inputAdProfile"
                         defaultValue={''}
+                        onSubmit={errorText !== "" ? errorText : ""}
                       />
                     </div>
                   </div>
@@ -203,7 +207,7 @@ function AdminProfile () {
                 >
                   <div className="card-body pb-2 mt-4">
                     <div className="form-group mb-3">
-                      <h3 className=" hightlightInfo">
+                      <h3 className="textLarger hightlightInfo">
                         THÔNG TIN CÁ NHÂN
                       </h3>
                       <hr className="border-light mb-3" />
@@ -211,7 +215,7 @@ function AdminProfile () {
                       <textarea
                         className="form-control inputAdProfile"
                         rows="5"
-                        defaultValue={'Tiểu sử của tôi:...'}
+                        defaultValue={'Tiểu sử của tôi'}
                       />
                     </div>
                     <div className="form-group mb-3">
@@ -223,6 +227,7 @@ function AdminProfile () {
                       </label>
                       <input
                         type="date"
+                        name='birthday'
                         id="AdBirthday"
                         className="form-control inputAdProfile"
                         defaultValue={admin.birthday}
@@ -237,9 +242,10 @@ function AdminProfile () {
                       </label>
                       <select
                         id="genders"
+                        name='gender'
                         className="form-control selectGender"
                       >
-                        <option hidden selected>{admin.gender}</option>
+                        <option hidden defaultValue={admin.gender}>{admin.gender}</option>
                         <option id="Nam" value="Nam">Nam</option>
                         <option id="Nu" value="Nữ">Nữ</option>
                       </select>
@@ -255,11 +261,11 @@ function AdminProfile () {
                       <div className='lavel_2'>
                         <div className="mb-4">
                             <label className="form-label label_level_2">Thành phố/tỉnh</label>
-                            <select className="form-select my-input-tag" id='province' name='address.province' onChange={Getdistrictbyprovince} aria-label=".form-select-sm example">
+                            <select className="form-select my-input-tag" id='province' name='province' onChange={Getdistrictbyprovince} aria-label=".form-select-sm example">
                                 <option hidden selected>{admin.address?.province}</option>
                                 {
                                     province?.map((province) => (
-                                        <option value={province.name}>{province.name}</option>
+                                        <option key={province.name} value={province.name}>{province.name}</option>
                                     ))
                                 }
                             </select>
@@ -267,11 +273,11 @@ function AdminProfile () {
 
                         <div className="mb-4">
                             <label className="form-label label_level_2">Quận/huyện</label>
-                            <select className="form-select my-input-tag" id='district' name='address.district' onChange={Getwardbydistrict} aria-label=".form-select-sm example">
+                            <select className="form-select my-input-tag" id='district' name='district' onChange={Getwardbydistrict} aria-label=".form-select-sm example">
                                 <option id="slt-dis" hidden selected>{admin.address?.district}</option>
                                 {
                                     district.districts?.map((district) => (
-                                        <option value={district.name}>{district.name}</option>
+                                        <option key={district.name} value={district.name}>{district.name}</option>
                                     ))
                                 }
                             </select>
@@ -279,11 +285,11 @@ function AdminProfile () {
 
                         <div className="mb-4">
                             <label className="form-label label_level_2">Phường/xã</label>
-                            <select className="form-select my-input-tag" id='ward' name='address.ward' aria-label=".form-select-sm example">
+                            <select className="form-select my-input-tag" id='ward' name='ward' aria-label=".form-select-sm example">
                                 <option hidden selected>{admin.address?.ward}</option>
                                 {
                                     ward.wards?.map((ward) => (
-                                        <option value={ward.name}>{ward.name}</option>
+                                        <option key={ward.name} value={ward.name}>{ward.name}</option>
                                     ))
                                 }
                             </select>
@@ -291,7 +297,7 @@ function AdminProfile () {
 
                         <div className="mb-4">
                             <label className="form-label label_level_2">Địa chỉ cụ thể</label>
-                            <input type="text" className="form-control my-input-tag" id='addressdetail' name='address.addressdetail' defaultValue={admin.address?.addressdetail} />
+                            <input type="text" className="form-control my-input-tag" id='addressdetail' name='addressdetail' defaultValue={admin.address?.addressdetail} />
                         </div>
                     </div>
                     </div>
