@@ -94,7 +94,7 @@ function DetailPurchaseAdmin () {
                             <thead>
                                 <tr className="main-heading h4">
                                     <th style={{width: "auto", height: 'auto'}}>#</th>
-                                    <th style={{width: "auto", height: 'auto'}}>Ảnh</th>
+                                    {/* <th style={{width: "auto", height: 'auto'}}>Ảnh</th> */}
                                     <th style={{width: "auto", height: 'auto'}}>Tên</th>
                                     <th style={{width: "auto", height: 'auto'}}>Màu</th>
                                     <th style={{width: "auto", height: 'auto'}}>Số lượng</th>          
@@ -108,14 +108,14 @@ function DetailPurchaseAdmin () {
                                     purchaseDe.list?.map(listOpts => (                                   
                                     <tr className='cake-top' key={listOpts._id}>
                                         <td className='h5'>{index++}</td>
-                                        <td className="cakes">
+                                        {/* <td className="cakes">
                                             <a href={`/admin/products/detail/`} className="product-img" style={{'width': '100px', 'height': '100px;'}}> 
-                                                {/* <Link to={`../`}> */}
-                                                    <img className='imgDetailPurchase' style={{'object-fit': 'cover', 'width': '100%', 'height': '100%'}}
-                                                        src={`http://localhost:5000/public/${listOpts.optionID.color.image}`} alt={listOpts.optionID.slug}/>           
-                                                {/* </Link>                                                             */}
+                                                 <Link to={`../`}> 
+                                                     <img className='imgDetailPurchase' style={{'object-fit': 'cover', 'width': '100%', 'height': '100%'}}
+                                                        src={`http://localhost:5000/public/${listOpts.optionID.color.image}`} alt={listOpts.optionID.slug}/>            
+                                                 </Link>                                                             
                                             </a>
-                                        </td> 
+                                        </td>  */}
                                                                 
                                         <td className="cake-text align-middle">
                                             <a href={`/admin/products/detail/${0}`} className="align-middle h5">

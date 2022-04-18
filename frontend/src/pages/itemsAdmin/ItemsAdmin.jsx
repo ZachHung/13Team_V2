@@ -9,10 +9,11 @@ import {
   faTrashAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import './ItemsAdmin.scss';
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useRef} from 'react';
 import PaginationAdmin from '../../components/paginationAdmin/Pagination';
 import { userRequest } from "../../utils/CallApi";
 import { hostServer } from "../../utils/const";
+import Dialog, { DialogOK } from '../../components/deleteConfirm/Dialog';
 
 function ItemsAdmin () {
   var index = 1;
@@ -23,20 +24,78 @@ function ItemsAdmin () {
       setItemList (res.data.items);
     });
   }, []);
-  const onDelete = (id, name) => {
-    var confirmDelete = window.confirm (
-      `Bạn có chắc chắn muốn xóa sản phẩm ${name} này không?`
-    );
-    if (confirmDelete) {
-      axios
-        .delete (hostServer + `/api/admin/products/delete/${id}`)
-        .then (res => {
-          setItemList (res.data.items);
-        });
-      window.location.reload (false);
-    } else {
+  
+  const [dialog, setDialog] = useState({
+    message: "",
+    isLoading: false,
+    //Update
+    nameItem: ""
+  });
+  const [dialogs, setDialogs] = useState({
+    message: "",
+    isLoading: false,
+    //Update
+    nameUser: ""
+  });
+  const [dialogOK, setDialogOK] = useState({
+    message: "",
+    isLoading: false,
+  });
+  const idItemRef = useRef();
+  const handleDialog = (message, isLoading, nameItem) => {
+    setDialog({
+      message,
+      isLoading,
+      //Update
+      nameItem
+    });
+  };
+  
+  const handleDialogs = (message, isLoading, nameUser) => {
+    setDialogs({
+      message,
+      isLoading,
+      //Update
+      nameUser
+    });
+  };
+  const handleDialogOK = (message, isLoading) => {
+    setDialogOK({
+      message,
+      isLoading,
+    });
+  };
+  const handleDelete = (id, item) => {
+    //Update
+    //const index = itemList.findIndex((p) => p._id === id);
+    handleDialog(`Bạn có chắc chắn muốn xóa ${item.type === 'phone'? 'Điện thoại' : item.type === 'tablet' ? 'Máy tính bảng' : item.type === 'accessory'? 'Phụ kiện' : item.type === 'laptop' ? 'Laptop' : ''} ${item.name} của hãng ${item.brand.name} không?`, true, `Xóa: ${item.type === 'phone'? 'Điện thoại' : item.type === 'tablet' ? 'Máy tính bảng' : item.type === 'accessory'? 'Phụ kiện' : item.type === 'laptop' ? 'Laptop' : ''} ${item.name}`);
+    idItemRef.current = id;
+  };
+  
+  const handleDeleteMany = () => {
+    handleDialogs("Bạn có chắc chắn muốn xóa hết sản phẩm đã chọn?", true);
+  };
+
+  const handleButtonOK=(choose)=>{
+    if (choose){
+      handleDialogOK("", false);
     }
   };
+  const areUSureDelete = (choose) => {
+    if (choose) {
+      setItemList(itemList.filter((p) => p._id !== idItemRef.current));
+      axios
+        .delete(hostServer + `/api/admin/orders/delete/${idItemRef.current}`)
+        .then(res => {
+          setItemList(res.data.items);
+        });
+      handleDialog("", false);
+      window.location.reload (false);
+    } else {
+      handleDialog("", false);
+    }
+  };
+
   const handleCheckbox = (e, data) => {
     const {name, checked} = e.target;
     if (checked) {
@@ -55,27 +114,29 @@ function ItemsAdmin () {
       }
     }
   };
-  const deleteManyItems = (selectedItem) => {
-    const ids = [];
-    selectedItem.forEach(element => {
-      ids.push(element._id);
-    });
-    if (ids.length === 0) {
-      window.confirm("Bạn chưa chọn sản phẩm nào!");
-    }
-    else {
-      var doDelete = window.confirm("Bạn có thực sự muốn xóa các sản phẩm đã chọn?");
-      if (doDelete){
+  const handleDeleteManyItems = (choose) => {
+    if (choose){
+      if (selectedItem.length !== 0){
+        const ids = [];
+        selectedItem.forEach(element => {
+          ids.push(element._id);
+        });
         axios
           .delete(hostServer + "/api/admin/products/deleteMany", {data: ids})
           .then(res => {  
-            setItemList(res.data.purchase);
+            setItemList(res.data.items);
           })
-          .catch((error) => console.error({error: error.message}));
+        handleDialogs("", false);
         window.location.reload (false);
       }
-      else {}
-    } 
+      else {
+        handleDialogs("", false);
+        handleDialogOK("Bạn chưa chọn sản phẩm nào để xóa", true);
+      }
+    }
+    else{
+      handleDialogs("", false);
+    }
   };
   const dateFormat = ()=>{
     const dateFormat = new Date();
@@ -103,7 +164,7 @@ function ItemsAdmin () {
             </button>
           </a>
           &nbsp;
-          <button className="btnDeleteAllItems btn btn-danger" onClick={()=> deleteManyItems(selectedItem)}>
+          <button className="btnDeleteAllItems btn btn-danger" onClick={()=> handleDeleteMany()}>
             <FontAwesomeIcon icon={faTrashAlt} /> Xóa tất cả sản phẩm
           </button>
           &nbsp;
@@ -172,7 +233,7 @@ function ItemsAdmin () {
                   &nbsp;
                   <button
                     className="formMethod btnDeleteItem btn btn-outline-danger"
-                    onClick={() => onDelete (item._id, item.name)}
+                    onClick={() => handleDelete (item._id, item)}
                   >
                     {' '}
                     Xóa <FontAwesomeIcon icon={faTrashAlt} />
@@ -180,6 +241,28 @@ function ItemsAdmin () {
                 </td>
               </tr>
             ))}
+            {dialog.isLoading && (
+              <Dialog
+                //Update
+                nameDelete={dialog.nameItem}
+                onDialog={areUSureDelete}
+                message={dialog.message}
+                />
+            )}
+            {dialogs.isLoading && (
+              <Dialog
+                //Update
+                nameUser={dialogs.nameUser}
+                onDialog={handleDeleteManyItems}
+                message={dialogs.message}
+                />
+            )}
+            {dialogOK.isLoading && (
+              <DialogOK
+                onDialog={handleButtonOK}
+                message={dialogOK.message}
+                />
+            )}
           </tbody>
         </table>
       </div>

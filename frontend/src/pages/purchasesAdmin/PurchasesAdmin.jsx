@@ -4,10 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus, faFileEdit, faReceipt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import './PurchasesAdmin.scss';
 import PaginationAdmin from '../../components/paginationAdmin/Pagination';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { format } from 'date-fns';
 import { userRequest } from "../../utils/CallApi";
 import { hostServer } from "../../utils/const";
+import Dialog, { DialogOK } from '../../components/deleteConfirm/Dialog';
 
 function PurchasesAdmin() {
   var index = 1;
@@ -18,20 +19,78 @@ function PurchasesAdmin() {
       setPurchaseList(res.data.purchase);
     });
   }, []);
+  const [dialog, setDialog] = useState({
+    message: "",
+    isLoading: false,
+    //Update
+    namePurchase: ""
+  });
+  
+  const [dialogs, setDialogs] = useState({
+    message: "",
+    isLoading: false,
+    //Update
+    nameUser: ""
+  });
+  const [dialogOK, setDialogOK] = useState({
+    message: "",
+    isLoading: false,
+  });
+  
+  const handleDialogs = (message, isLoading, nameUser) => {
+    setDialogs({
+      message,
+      isLoading,
+      //Update
+      nameUser
+    });
+  };
+  const handleDialogOK = (message, isLoading) => {
+    setDialogOK({
+      message,
+      isLoading,
+    });
+  };
+  const idPurchaseRef = useRef();
+  const handleDialog = (message, isLoading, namePurchase) => {
+    setDialog({
+      message,
+      isLoading,
+      //Update
+      namePurchase
+    });
+  };
+  const handleDelete = (id, purchase) => {
+    //Update
+    const index = purchaseList.findIndex((p) => p._id === id);
+    handleDialog(`Bạn có chắc chắn muốn xóa đơn hàng của khách hàng ${purchase.userID.name} không?`, true, "Xóa: Đơn hàng " + purchaseList[index]._id);
+    idPurchaseRef.current = id;
+  };
+  
+  const handleDeleteMany = () => {
+    handleDialogs("Bạn có chắc chắn muốn xóa hết đơn hàng đã chọn?", true);
+  };
 
-  const onDelete = id => {
-    var confirmDelete = window.confirm(
-      `Bạn có chắc chắn muốn xóa đơn hàng ${id} này không?`
-    );
-    if (confirmDelete) {
+  const handleButtonOK = (choose)=>{
+    if (choose){
+      handleDialogOK("", false);
+    }
+  }
+  const areUSureDelete = (choose) => {
+    if (choose) {
+      setPurchaseList(purchaseList.filter((p) => p._id !== idPurchaseRef.current));
       axios
-        .delete(hostServer + `/api/admin/orders/delete/${id}`)
+        .delete(hostServer + `/api/admin/orders/delete/${idPurchaseRef.current}`)
         .then(res => {
           setPurchaseList(res.data.purchase);
         });
-      window.location.reload(false);
-    } else { }
+      handleDialog("", false);
+      window.location.reload (false);
+    } else {
+      handleDialog("", false);
+    }
   };
+  
   const handleCheckbox = (e, data) => {
     const {name, checked} = e.target;
     if (checked){
@@ -52,27 +111,30 @@ function PurchasesAdmin() {
       }
     }
   };
-  const deleteManyPurchases = (selectedPurchases) => {
-    const ids = [];
-    selectedPurchases.forEach(element => {
-      ids.push(element._id);
-    });
-    if (ids.length === 0) {
-      window.confirm("Bạn chưa chọn đơn hàng nào!");
-    }
-    else {
-      var doDelete = window.confirm("Bạn có thực sự muốn xóa các đơn hàng đã chọn?");
-      if (doDelete){
+
+  const handleDeleteManyPurchases = (choose) => {
+    if (choose){
+      if (selectedPurchases.length !== 0){
+        const ids = [];
+        selectedPurchases.forEach(element => {
+          ids.push(element._id);
+        });
         axios
         .delete(hostServer + '/api/admin/orders/deleteMany', {data: ids})
           .then(res => {  
             setPurchaseList(res.data.purchase);
           })
-          .catch((error) => console.error({error: error.message}));
+          handleDialogs("", false);
         window.location.reload (false);
       }
-      else {}
-    } 
+      else {
+        handleDialogs("", false);
+        handleDialogOK("Bạn chưa chọn đơn hàng nào để xóa", true);
+      }
+    }
+    else{
+      handleDialogs("", false);
+    }
   };
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -93,7 +155,7 @@ function PurchasesAdmin() {
             </button>
           </a>
           &nbsp;
-          <button className="btnDeleteAllPurs btn btn-danger" onClick={()=> deleteManyPurchases(selectedPurchases)}>
+          <button className="btnDeleteAllPurs btn btn-danger" onClick={()=>handleDeleteMany()}>
             <FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon> Xóa tất cả đơn hàng
           </button>
           &nbsp;
@@ -156,12 +218,34 @@ function PurchasesAdmin() {
                   &nbsp;
                   <button
                     className="formMethod btnDeletePurchase btn btn-outline-danger"
-                    onClick={() => onDelete (purchase._id)}
+                    onClick={() => handleDelete (purchase._id, purchase)}
                     >Xóa đơn hàng <FontAwesomeIcon icon={faTrashAlt} />
                   </button>
                 </td>
               </tr>
             ))}
+            {dialog.isLoading && (
+              <Dialog
+                //Update
+                nameDelete={dialog.namePurchase}
+                onDialog={areUSureDelete}
+                message={dialog.message}
+                />
+            )}
+            {dialogs.isLoading && (
+              <Dialog
+                //Update
+                nameUser={dialogs.nameUser}
+                onDialog={handleDeleteManyPurchases}
+                message={dialogs.message}
+                />
+            )}
+            {dialogOK.isLoading && (
+              <DialogOK
+                onDialog={handleButtonOK}
+                message={dialogOK.message}
+                />
+            )}
           </tbody>
         </table>
       </div>
