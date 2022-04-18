@@ -118,7 +118,7 @@ function UpdateItem() {
                     </div>
 
                     <div className="mb-4">
-                        <h1 className="form-label label_level_1">Thông tin về công nghệ</h1>
+                        <label className="form-label label_level_1">Thông tin về công nghệ</label>
                         {item.techInfo?.map((techInfos, index_1) => (
                             <div className='lavel_2'>
                                 <label className="form-label label_level_2">{techInfos.infoType}</label>
