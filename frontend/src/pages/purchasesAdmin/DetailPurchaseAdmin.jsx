@@ -19,20 +19,6 @@ function DetailPurchaseAdmin () {
     });
   }, []);
 
-  //   const onDelete = id => {
-  //     var confirmDelete = window.confirm (
-  //       `Bạn có chắc chắn muốn xóa đơn hàng ${id} này không?`
-  //     );
-  //     if (confirmDelete) {
-  //       axios
-  //         .delete (hostServer + `/api/admin/orders/delete/${id}`)
-  //         .then (res => {
-  //           setPurchase (res.data.purchase);
-  //         });
-  //       window.location.reload (false);
-  //     } else {
-  //     }
-  //   };
     var totals = 0, fee = 10000;
     const updateTotalOne = (total) => {
         totals+= total;
@@ -147,13 +133,13 @@ function DetailPurchaseAdmin () {
                                     ))  
                                 ))}
                                 <tr>
-                                    <th colSpan={7} className="text-right_pur h3">Phí vận chuyển:</th>
+                                    <th colSpan={6} className="text-right_pur h3">Phí vận chuyển:</th>
                                     <td colSpan={1} className="align-middle h3" id="fee">
                                         {`${currentChange(updateFee(fee))}`}
                                     </td>    
                                 </tr>
                                 <tr>
-                                    <th colSpan={7} className="text-right_pur h3">Tổng tiền đơn hàng:</th>
+                                    <th colSpan={6} className="text-right_pur h3">Tổng tiền đơn hàng:</th>
                                     <td colSpan={1} className="align-middle h3" id="total">
                                         {`${currentChange(totals + updateFee(fee))}`}
                                     </td>
