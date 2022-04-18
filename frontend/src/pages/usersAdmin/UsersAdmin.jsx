@@ -4,10 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus, faFileEdit, faTrashAlt, faUserAlt } from '@fortawesome/free-solid-svg-icons';
 import './UsersAdmin.scss';
 import PaginationAdmin from '../../components/paginationAdmin/Pagination';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { format } from 'date-fns';
 import { userRequest } from "../../utils/CallApi";
 import { hostServer } from "../../utils/const";
+import Dialog, { DialogOK } from '../../components/deleteConfirm/Dialog';
 
 function UsersAdmin() {
   var index = 1;
@@ -19,21 +20,77 @@ function UsersAdmin() {
       setUserList(res.data.user);
     });
   }, []);
+  const [dialog, setDialog] = useState({
+    message: "",
+    isLoading: false,
+    //Update
+    nameUser: ""
+  });
+  const [dialogs, setDialogs] = useState({
+    message: "",
+    isLoading: false,
+    //Update
+    nameUser: ""
+  });
+  const [dialogOK, setDialogOK] = useState({
+    message: "",
+    isLoading: false,
+  });
+  const idUserRef = useRef();
+  const handleDialog = (message, isLoading, nameUser) => {
+    setDialog({
+      message,
+      isLoading,
+      //Update
+      nameUser
+    });
+  };
+  const handleDialogs = (message, isLoading, nameUser) => {
+    setDialogs({
+      message,
+      isLoading,
+      //Update
+      nameUser
+    });
+  };
+  const handleDialogOK = (message, isLoading) => {
+    setDialogOK({
+      message,
+      isLoading,
+    });
+  };
+  const handleDelete = (id, user) => {
+    //Update
+    const index = userList.findIndex((p) => p._id === id);
+    handleDialog(`Bạn có chắc chắn muốn xóa ${user.isAdmin? "quản trị viên": "khách hàng"} ${user.name} này không?`, true, `Xóa: ${user.isAdmin? "Quản trị viên ": "Khách hàng "}` + userList[index].name);
+    idUserRef.current = id;
+  };
 
-  const onDelete = (id, user) => {
-    var confirmDelete = window.confirm(
-      `Bạn có chắc chắn muốn xóa ${user.isAdmin? "quản trị viên": "khách hàng"} ${user.name} này không?`
-    );
-    if (confirmDelete) {
+  const handleDeleteMany = () => {
+    handleDialogs("Bạn có chắc chắn muốn xóa hết người dùng đã chọn?", true);
+  };
+
+  const handleButtonOK=(choose)=>{
+    if (choose){
+      handleDialogOK("", false);
+    }
+  }
+
+  const areUSureDelete = (choose) => {
+    if (choose) {
+      setUserList(userList.filter((p) => p._id !== idUserRef.current));
       axios
-        .delete(hostServer + `/api/admin/customers/delete/${id}`)
+        .delete(hostServer + `/api/admin/customers/delete/${idUserRef.current}`)
         .then(res => {
           setUserList(res.data.user);
         });
-      window.location.reload(false);
+      handleDialog("", false);
+      window.location.reload (false);
     } else {
+      handleDialog("", false);
     }
   };
+  
   const handleCheckbox = (e, data)=>{
     const {name, checked} = e.target;
     if (checked) {
@@ -54,28 +111,31 @@ function UsersAdmin() {
       }
     }
   }
-  const deleteManyUsers = (selectedUsers) => {
-    const ids = [];
-    selectedUsers.forEach(element => {
-      ids.push(element._id);
-    });
-    if (ids.length === 0) {
-      window.confirm("Bạn chưa chọn người dùng nào!");
-    }
-    else {
-      var doDelete = window.confirm("Bạn có thực sự muốn xóa các người dùng đã chọn?");
-      if (doDelete){
+  const handleDeleteManyUsers = (choose) => {
+    if (choose){
+      if (selectedUsers.length !== 0){
+        const ids = [];
+        selectedUsers.forEach(element => {
+          ids.push(element._id);
+        });
         axios
           .delete(hostServer + "/api/admin/customers/deleteMany", {data: ids})
           .then(res => {  
             setUserList(res.data.user);
           })
-          .catch((error) => console.error({error: error.message}));
+        handleDialogs("", false);
         window.location.reload (false);
       }
-      else {}
-    } 
+      else {
+        handleDialogs("", false);
+        handleDialogOK("Bạn chưa chọn người dùng nào để xóa", true);
+      }
+    }
+    else{
+      handleDialogs("", false);
+    }
   };
+  
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage, setUsersPerPage] = useState(7);
@@ -94,7 +154,7 @@ function UsersAdmin() {
             <FontAwesomeIcon icon={faCirclePlus}></FontAwesomeIcon> Thêm người dùng mới
             </button>
           </a>
-          <button className="btnDeleteAllUsers btn btn-danger" onClick={()=>deleteManyUsers(selectedUsers)}>
+          <button className="btnDeleteAllUsers btn btn-danger" onClick={()=>handleDeleteMany()}>
             <FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon> Xóa tất cả người dùng
           </button>
           &nbsp;
@@ -154,7 +214,8 @@ function UsersAdmin() {
                   &nbsp;
                   <button
                     className=" formMethod btnEditUser btn btn-outline-danger"
-                    onClick={() => onDelete(user._id, user)}
+                    // onClick={() => onDelete(user._id, user)}
+                    onClick={() => handleDelete(user._id, user)}
                   >
                     {' '}
                     Xóa <FontAwesomeIcon icon={faTrashAlt} />
@@ -162,6 +223,28 @@ function UsersAdmin() {
                 </td>
               </tr>
             ))}
+            {dialog.isLoading && (
+              <Dialog
+                //Update
+                nameUser={dialog.nameUser}
+                onDialog={areUSureDelete}
+                message={dialog.message}
+                />
+            )}
+            {dialogs.isLoading && (
+              <Dialog
+                //Update
+                nameUser={dialogs.nameUser}
+                onDialog={handleDeleteManyUsers}
+                message={dialogs.message}
+                />
+            )}
+            {dialogOK.isLoading && (
+              <DialogOK
+                onDialog={handleButtonOK}
+                message={dialogOK.message}
+                />
+            )}
           </tbody>
         </table>
       </div>

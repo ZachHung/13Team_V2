@@ -1,0 +1,77 @@
+.containerDialog{
+    position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 1;
+          background-color: rgba(0,0,0,0.5);
+}
+.DialogDelete{
+    display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 50%;
+            left: 52%;
+            transform: translate(-50%,-50%);
+            background: red;
+            padding: 25px;
+            border-radius: 15px;
+}
+.btnYesDialog{
+    background: white;
+    color: red;
+    padding: 10px;
+    margin-right: 4px;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+}
+.DialogButtonSelects{
+    display: flex;
+    align-items: center;
+}
+.DialogButtonYes{
+    background: white;
+                color: red;
+                padding: 10px;
+                margin-right: 4px;
+                border: none;
+                cursor: pointer
+}
+.DialogButtonNo{
+    background: green;
+                color: white;
+                padding: 10px;
+                margin-left: 4px;
+                border: none;
+                cursor: pointer;
+}
+.DialogOKSelects{
+    display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 50%;
+            left: 52%;
+            transform: translate(-50%,-50%);
+            background: red;
+            padding: 25px;
+            border-radius;: 15px
+}
+.DialogOKButtonSelects{
+    display: flex; 
+    align-items: center;
+}
+.DialogOKButtonOK{
+    background: lightblue;
+                color: black;
+                padding: 10px;
+                margin-left: 4px;
+                margin-top: 10px;
+                border: none;
+                cursor: pointer;
+}
