@@ -14,6 +14,7 @@ const customersAdminrouter = require("./usersAdmin");
 const purchasesAdminrouter = require("./purchasesAdmin");
 const profileAdminrouter = require("./profileAdmin");
 const option =require("./options");
+const reportAdminrouter = require("./reportAdmin");
 function route(app) {
   app.use("/api/admin/products", productsAdminrouter);
   app.use("/api/admin/customers", customersAdminrouter);
@@ -30,6 +31,7 @@ function route(app) {
   app.use("/api/phone", phonerouter);
   app.use("/api/user", userrouter);
   app.use("/api/options",option);
+  app.use("/api/admin/reports", reportAdminrouter);
   app.get("/api", (req, res) => {
     res.send("7Team API");
   });
