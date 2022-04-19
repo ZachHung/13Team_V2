@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './overall-list.scss'
 import { data } from '../../constants'
+import { userRequest } from "../../utils/CallApi";
+import { currentChange } from '../../utils/const';
 
 const icons = [
     <i className='bx bx-receipt'></i>,
@@ -10,10 +12,17 @@ const icons = [
 ]
 
 const OverallList = () => {
+    const [overallList, setOverallList] = useState([]);
+    useEffect(() => {
+        userRequest().get ('admin/reports/overall').then (res => {
+            res.data[3].value = currentChange(res.data[3].value)
+            setOverallList (res.data);
+          });
+    }, []);
     return (
         <ul className='overall-list'>
             {
-                data.overall.map((item, index) => (
+               overallList.map((item, index) => (
                     <li className="overall-list__item" key={`overall-${index}`}>
                         <div className="overall-list__item__icon">
                             {icons[index]}
