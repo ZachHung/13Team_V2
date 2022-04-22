@@ -56,11 +56,15 @@ export default function Login() {
     }
   };
   const googleLogin = () => {
-    window.open("http://localhost:5000/api/auth/google", "_self");
+    console.log(process.env.REACT_APP_SERVER_PATH);
+    window.open(
+      process.env.REACT_APP_SERVER_PATH + "/api/auth/google",
+      "_self"
+    );
   };
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/auth/login/success", {
+      .get(process.env.REACT_APP_SERVER_PATH + "/api/auth/login/success", {
         withCredentials: true,
       })
       .then((res) => {
