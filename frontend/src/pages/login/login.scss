@@ -44,6 +44,47 @@
         @media only screen and (max-width: 739px) {
           width: 90%;
         }
+        .login__line {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #000;
+          height: 1px;
+          width: 90%;
+          margin: 2rem auto;
+          span {
+            position: absolute;
+            background-color: white;
+            padding: 0 0.5rem;
+          }
+        }
+        .login__icon {
+          width: 80%;
+          margin: 0 auto;
+          background-color: #000;
+          color: #fff;
+          margin-bottom: 2rem;
+          padding: 0.8rem 0;
+          border-radius: 1rem;
+          transition: all 0.3s ease;
+          &:hover {
+            cursor: pointer;
+            opacity: 0.6;
+          }
+          .login__icon--row {
+            width: 80%;
+            margin: 0 auto;
+            gap: 2rem;
+            display: flex;
+            align-items: center;
+
+            svg {
+              font-size: 30px;
+              width: 30px;
+            }
+          }
+        }
         form {
           width: 80%;
           margin: 0 auto;

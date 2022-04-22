@@ -35,6 +35,10 @@ const Header = ({ color }) => {
     console.log("key: ", query);
     navigateSearch(`../search?key=${query}`);
   };
+  const handleLogOut = () => {
+    dispatch(logout());
+    window.open("http://localhost:5000/api/auth/logout", "_self");
+  };
   useEffect(() => {
     const closeDropdown = (e) => {
       if (btnRef.current && !btnRef.current.contains(e.target))
@@ -160,7 +164,7 @@ const Header = ({ color }) => {
                       Lịch sử đơn hàng
                     </Link>
                   </li>
-                  <li onClick={() => dispatch(logout())}>
+                  <li onClick={handleLogOut}>
                     <Link to="#">
                       <FontAwesomeIcon
                         icon={faRightFromBracket}
