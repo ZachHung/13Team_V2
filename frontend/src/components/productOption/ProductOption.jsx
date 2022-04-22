@@ -14,7 +14,7 @@ const ProductOption = ({
   idOption,
   changeSlide,
 }) => {
-  const pathImage = process.env.REACT_APP_IMG;
+  const pathImage = process.env.REACT_APP_SERVER_PATH;
   const user = useSelector((state) => state.user.current);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -83,12 +83,12 @@ const ProductOption = ({
       : navigate("/login");
   };
   return (
-    <div className="productOption__container">
+    <div className='productOption__container'>
       <p>
-        <span className="product__newPrice">{newPrice}</span>
-        <span className="product__oldPrice">{oldPrice}</span>
+        <span className='product__newPrice'>{newPrice}</span>
+        <span className='product__oldPrice'>{oldPrice}</span>
       </p>
-      <div className="capacityOption">
+      <div className='capacityOption'>
         {capacityOptions.map((item, index) => (
           <OptionItem
             name={item.detail}
@@ -96,13 +96,12 @@ const ProductOption = ({
             link={`/${type}/${item.slug}-${item.detail}`}
             key={index}
             style={{ margin: "10px 0 0 0 " }}
-            active={item._id === idOption ? true : false}
-          ></OptionItem>
+            active={item._id === idOption ? true : false}></OptionItem>
         ))}
       </div>
-      <div className="colorOption__container">
-        <p className="colorOption__title">Chọn Màu</p>
-        <div className="colorOption">
+      <div className='colorOption__container'>
+        <p className='colorOption__title'>Chọn Màu</p>
+        <div className='colorOption'>
           {colorOptions.map((item, index) => (
             <OptionItem
               name={item.name}
@@ -116,19 +115,17 @@ const ProductOption = ({
               number={item.number}
               active={index === color ? true : false}
               disable={item.number === 0 ? true : false}
-              clickColor={handleColor}
-            ></OptionItem>
+              clickColor={handleColor}></OptionItem>
           ))}
         </div>
-        <div className="productOption__btn row">
-          <div className="col-6">
-            <ProductBtn text="Mua Ngay" clickEvent={handleBuy}></ProductBtn>
+        <div className='productOption__btn row'>
+          <div className='col-6'>
+            <ProductBtn text='Mua Ngay' clickEvent={handleBuy}></ProductBtn>
           </div>
-          <div className="col-6">
+          <div className='col-6'>
             <ProductBtn
-              text="Thêm Vào Giỏ"
-              clickEvent={handleAddCart}
-            ></ProductBtn>
+              text='Thêm Vào Giỏ'
+              clickEvent={handleAddCart}></ProductBtn>
           </div>
         </div>
       </div>

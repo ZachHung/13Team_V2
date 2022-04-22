@@ -229,13 +229,17 @@ header {
           }
           @include rotateAnimation(180);
           @include rotateAnimation(-360);
-          li:nth-child(2):hover svg {
+          #dropdown-user:hover svg {
             animation: rotate180 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955);
           }
-          li:nth-child(3):hover svg {
+          #dropdown-purchase:hover svg {
             animation: rotate-360 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955);
           }
-          li:nth-child(4):hover svg {
+          #dropdown-logout:hover svg {
+            animation: rotate-360 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955)
+              reverse;
+          }
+          #dropdown-admin:hover svg {
             animation: rotate-360 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955)
               reverse;
           }

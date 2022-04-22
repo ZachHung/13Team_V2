@@ -114,8 +114,8 @@ const CartPage = () => {
     return (
       <>
         <Header></Header>
-        <div className="cartPage">
-          <section className="content">
+        <div className='cartPage'>
+          <section className='content'>
             <p>Đang tải...</p>
           </section>
         </div>
@@ -125,49 +125,48 @@ const CartPage = () => {
   return (
     <>
       <Header />
-      <div className="cartPage">
+      <div className='cartPage'>
         <ModalPopUp
-          name="giỏ hàng"
+          name='giỏ hàng'
           modalState={modalState}
           handelClickConfirm={() => deleteItem(ReItem)}
           toogleState={setModalState}
         />
-        <section className="content">
-          <aside className="box cart-container" data-aos="fade-up">
-            <div className="box__heading">
+        <section className='content'>
+          <aside className='box cart-container' data-aos='fade-up'>
+            <div className='box__heading'>
               <span>1</span>
               <h2>Giỏ hàng</h2>
             </div>
             {!cart.length ? (
-              <div className="empty-cart">
-                <FontAwesomeIcon icon={faSadTear} className="faSadTear" />
-                <h2 className="error__title">Giỏ hàng của bạn đang trống</h2>
-                <h3 className="error__subtitle">
+              <div className='empty-cart'>
+                <FontAwesomeIcon icon={faSadTear} className='faSadTear' />
+                <h2 className='error__title'>Giỏ hàng của bạn đang trống</h2>
+                <h3 className='error__subtitle'>
                   Hãy tiếp tục mua sắm để có thể thanh toán
                 </h3>
-                <Link to="/phone" className="cancel-btn">
+                <Link to='/phone' className='cancel-btn'>
                   Mua sắm ngay
                 </Link>
               </div>
             ) : (
               <>
-                <ul className="cart">
+                <ul className='cart'>
                   {cart.map((item, index) => (
-                    <li className="cart__item" key={index}>
-                      <div className="item__image">
+                    <li className='cart__item' key={index}>
+                      <div className='item__image'>
                         <Link
-                          to={`/${item.optionID.item.type}/${item.optionID.slug}-${item.optionID.detail}`}
-                        >
+                          to={`/${item.optionID.item.type}/${item.optionID.slug}-${item.optionID.detail}`}>
                           <img
                             src={
-                              process.env.REACT_APP_IMG +
+                              process.env.REACT_APP_SERVER_PATH +
                               item.optionID.color[0].image
                             }
                             alt={item.optionID.item.name}
                           />
                         </Link>
                       </div>
-                      <div className="item__detail">
+                      <div className='item__detail'>
                         <FontAwesomeIcon
                           icon={faXmark}
                           className={"fa-times"}
@@ -175,21 +174,21 @@ const CartPage = () => {
                             handleRemoveItem(item.optionID._id, item.color)
                           }
                         />
-                        <h2 className="detail__product-name">
+                        <h2 className='detail__product-name'>
                           {item.optionID.item.name}
                         </h2>
-                        <div className="detail__item-price">
+                        <div className='detail__item-price'>
                           {currentChange(item.optionID.color[0].price)}
                         </div>
-                        <ul className="detail__product-options">
-                          <li className="RAM">
+                        <ul className='detail__product-options'>
+                          <li className='RAM'>
                             Tùy chọn: {item.optionID.detail}
                           </li>
-                          <li className="color">Màu: {item.color}</li>
+                          <li className='color'>Màu: {item.color}</li>
                         </ul>
-                        <div className="detail__quantity">
+                        <div className='detail__quantity'>
                           <button
-                            className="decrease-item"
+                            className='decrease-item'
                             disabled={item.quantity === 1}
                             onClick={() =>
                               changeQuantity(
@@ -197,18 +196,17 @@ const CartPage = () => {
                                 item.color,
                                 item.quantity - 1
                               )
-                            }
-                          >
+                            }>
                             <FontAwesomeIcon icon={faMinus} />
                           </button>
                           <input
-                            className="quantity"
-                            type="number"
-                            size="4"
-                            maxLength="12"
-                            min="1"
-                            max="99"
-                            step="1"
+                            className='quantity'
+                            type='number'
+                            size='4'
+                            maxLength='12'
+                            min='1'
+                            max='99'
+                            step='1'
                             value={item.quantity}
                             onChange={(e) =>
                               handleQuantity(
@@ -219,15 +217,14 @@ const CartPage = () => {
                             }
                           />
                           <button
-                            className="increase-item"
+                            className='increase-item'
                             onClick={() =>
                               changeQuantity(
                                 item.optionID._id,
                                 item.color,
                                 item.quantity + 1
                               )
-                            }
-                          >
+                            }>
                             <FontAwesomeIcon icon={faPlus} />
                           </button>
                         </div>
@@ -235,24 +232,24 @@ const CartPage = () => {
                     </li>
                   ))}
                 </ul>
-                <div className="order ">
-                  <dl className="order__summary sub-total">
-                    <dt className="order__summary--label">Giỏ hàng</dt>
-                    <dd className="order__summary--decription">
+                <div className='order '>
+                  <dl className='order__summary sub-total'>
+                    <dt className='order__summary--label'>Giỏ hàng</dt>
+                    <dd className='order__summary--decription'>
                       {currentChange(getTotal(cart))}
                     </dd>
                   </dl>
-                  <dl className="order__summary shipping-fee">
-                    <dt className="order__summary--label">Phí vận chuyển</dt>
-                    <dd className="order__summary--decription">
+                  <dl className='order__summary shipping-fee'>
+                    <dt className='order__summary--label'>Phí vận chuyển</dt>
+                    <dd className='order__summary--decription'>
                       {currentChange(deliveryFee)}
                     </dd>
                   </dl>
                 </div>
-                <div className="total">
-                  <dl className="order__summary">
-                    <dt className="order__summary--label">Tổng cộng</dt>
-                    <dd className="order__summary--decription">
+                <div className='total'>
+                  <dl className='order__summary'>
+                    <dt className='order__summary--label'>Tổng cộng</dt>
+                    <dd className='order__summary--decription'>
                       {currentChange(getTotal(cart) + deliveryFee)}
                     </dd>
                   </dl>
@@ -261,112 +258,110 @@ const CartPage = () => {
             )}
           </aside>
           {cart.length ? (
-            <div className="right">
-              <div className="box delivery-info" data-aos="fade-up">
-                <div className="box__heading">
+            <div className='right'>
+              <div className='box delivery-info' data-aos='fade-up'>
+                <div className='box__heading'>
                   <span>2</span>
                   <h2>Thông tin vận chuyển</h2>
                 </div>
-                <div className="user-information">
-                  <h2 className="greeting">
+                <div className='user-information'>
+                  <h2 className='greeting'>
                     Xin chào, {user.current.name.split(" ").slice(-1).join(" ")}
                   </h2>
-                  <h3 className="sub-heading">
+                  <h3 className='sub-heading'>
                     Hãy chắc chắn rằng thông tin vận chuyển của bạn là chính xác
                   </h3>
-                  <form className="row">
-                    <div className="form-group col-6">
+                  <form className='row'>
+                    <div className='form-group col-6'>
                       <input
-                        type="text"
-                        id="fullName"
+                        type='text'
+                        id='fullName'
                         value={user.current.name}
-                        placeholder=""
+                        placeholder=''
                         readOnly
                       />
-                      <label htmlFor="fullName">Họ và tên</label>
+                      <label htmlFor='fullName'>Họ và tên</label>
                     </div>
-                    <div className="form-group col-6">
+                    <div className='form-group col-6'>
                       <input
-                        type="tel"
-                        id="phoneNumber"
+                        type='tel'
+                        id='phoneNumber'
                         value={user.current.phone}
-                        placeholder=""
+                        placeholder=''
                         readOnly
                       />
-                      <label htmlFor="phoneNumber">Số điện thoại</label>
+                      <label htmlFor='phoneNumber'>Số điện thoại</label>
                     </div>
-                    <div className="form-group col-12">
+                    <div className='form-group col-12'>
                       <input
-                        type="text"
-                        id="provice/city"
+                        type='text'
+                        id='provice/city'
                         value={user.current.address.province}
-                        placeholder=""
+                        placeholder=''
                         readOnly
                       />
-                      <label htmlFor="provice/city">Tỉnh/thành phố</label>
+                      <label htmlFor='provice/city'>Tỉnh/thành phố</label>
                     </div>
-                    <div className="form-group col-6">
+                    <div className='form-group col-6'>
                       <input
-                        type="text"
-                        id="district"
+                        type='text'
+                        id='district'
                         value={user.current.address.district}
-                        placeholder=""
+                        placeholder=''
                         readOnly
                       />
-                      <label htmlFor="district">Quận/huyện</label>
+                      <label htmlFor='district'>Quận/huyện</label>
                     </div>
-                    <div className="form-group col-6">
+                    <div className='form-group col-6'>
                       <input
-                        type="text"
-                        id="sub-district"
+                        type='text'
+                        id='sub-district'
                         value={user.current.address.ward}
-                        placeholder=""
+                        placeholder=''
                         readOnly
                       />
-                      <label htmlFor="sub-district">Phường/xã</label>
+                      <label htmlFor='sub-district'>Phường/xã</label>
                     </div>
-                    <div className="form-group col-12">
+                    <div className='form-group col-12'>
                       <input
-                        type="text"
-                        id="house-number"
+                        type='text'
+                        id='house-number'
                         value={user.current.address.addressdetail}
-                        placeholder=""
-                        aria-describedby="home-number-help"
+                        placeholder=''
+                        aria-describedby='home-number-help'
                         readOnly
                       />
-                      <label htmlFor="house-number">
+                      <label htmlFor='house-number'>
                         Số nhà, toà nhà, tên đường
                       </label>
                     </div>
 
-                    <div className="formBtn">
+                    <div className='formBtn'>
                       <button
-                        className="confirm-btn"
-                        onClick={() => navigate("/")}
-                      >
+                        className='confirm-btn'
+                        onClick={() => navigate("/")}>
                         Cập nhật thông tin
                       </button>
                     </div>
                   </form>
                 </div>
               </div>
-              <div className="box payment-method" data-aos="fade-up">
-                <div className="box__heading">
+              <div className='box payment-method' data-aos='fade-up'>
+                <div className='box__heading'>
                   <span>3</span>
                   <h2>Phương thức thanh toán</h2>
                 </div>
-                <form className="methods">
+                <form className='methods'>
                   {payments.map((item, index) => (
                     <label
                       key={index}
                       className={`${
                         payment !== item.name ? "disabled" : "checked"
-                      }`}
-                    >
-                      <span className="methods__custom-radio">
+                      }`}>
+                      <span className='methods__custom-radio'>
                         <input
-                          type="radio"
-                          autoComplete="off"
+                          type='radio'
+                          autoComplete='off'
                           value={item.name}
                           checked={payment === item.name}
                           onChange={(e) => setPayment(e.target.value)}
@@ -379,15 +374,14 @@ const CartPage = () => {
                           <FontAwesomeIcon icon={item.fontAwsome} />
                         )}
                       </span>
-                      <span className="methods__name">{item.message}</span>
+                      <span className='methods__name'>{item.message}</span>
                     </label>
                   ))}
-                  <div className="formBtn">
+                  <div className='formBtn'>
                     <button
-                      className="confirm-btn"
+                      className='confirm-btn'
                       disabled={payment == undefined}
-                      onClick={() => handlePurchase()}
-                    >
+                      onClick={() => handlePurchase()}>
                       Thanh toán
                     </button>
                   </div>
