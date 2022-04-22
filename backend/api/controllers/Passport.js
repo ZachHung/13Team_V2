@@ -1,13 +1,12 @@
 var GoogleStrategy = require("passport-google-oauth2").Strategy;
+require("dotenv").config();
 const CryptoJS = require("crypto-js");
-const mongoose = require("mongoose");
 const passport = require("passport");
 const User = require("../models/User");
 const cart = require("../models/Cart");
 const jwt = require("jsonwebtoken");
-const GOOGLE_CLIENT_ID =
-  "711502243204-1ikqm21egulsjen8f5a525277ov187fa.apps.googleusercontent.com";
-const GOOGLE_CLIENT_SECRET = "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";
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 passport.use(
   new GoogleStrategy(
     {

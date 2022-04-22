@@ -3,7 +3,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const path = require("path");
 const cookieSession = require("cookie-session");
-const session = require("express-session");
+
 const passport = require("passport");
 const passportSetup = require("./api/controllers/Passport");
 const app = express();
@@ -34,7 +34,7 @@ process.env.NODE_ENV === "development" && app.use(morgan("combined"));
 // API calls
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.CLIENT_PATH,
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
@@ -47,7 +47,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cookieSession({
     name: "session",
-    keys: ["Nhutpro"],
+    keys: [process.env.SESSION_KEY],
     maxAge: 24 * 60 * 60 * 100,
   })
 );
@@ -78,5 +78,5 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.listen(process.env.PORT, () => {
-  console.log(`App listening at http://localhost:${process.env.PORT}`);
+  console.log(`App listening at ${process.env.SERVER_PATH}`);
 });

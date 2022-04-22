@@ -1,8 +1,8 @@
 const express = require("express");
+require("dotenv").config();
 
 const router = express.Router();
 const passport = require("passport");
-
 router.get("/login/success", (req, res) => {
   console.log(req.user);
   if (req.user) {
@@ -15,7 +15,7 @@ router.get("/login/success", (req, res) => {
 
 router.get("/logout", (req, res) => {
   req.logout();
-  res.redirect("http://localhost:3000");
+  res.redirect(process.env.CLIENT_PATH);
 });
 router.get("/login/failed", (req, res) => {
   res.status(401).json({
@@ -32,7 +32,7 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    successRedirect: "http://localhost:3000/login",
+    successRedirect: `${process.env.CLIENT_PATH}/login`,
     failureRedirect: "/api/auth/login/failed",
   })
 );
