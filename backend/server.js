@@ -2,11 +2,16 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const path = require("path");
+const cookieSession = require("cookie-session");
+const session = require("express-session");
+const passport = require("passport");
+const passportSetup = require("./api/controllers/Passport");
 const app = express();
 const route = require("./routes");
 const compression = require("compression");
+
 const { errorHandler } = require("./middlewares/errorHandler");
-const methodOverride = require('method-override');
+const methodOverride = require("method-override");
 
 require("dotenv").config();
 
@@ -27,18 +32,34 @@ if (process.env.NODE_ENV === "production") {
 process.env.NODE_ENV === "development" && app.use(morgan("combined"));
 
 // API calls
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+  })
+);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true }));
 
+//connect auth google
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["Nhutpro"],
+    maxAge: 24 * 60 * 60 * 100,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 // DB connect
 const db = require("./config/db");
+
 db.connect();
 
 //Override method (PUT, DELETE)
-app.use(methodOverride('_method'))
-
+app.use(methodOverride("_method"));
 
 //route//
 route(app);

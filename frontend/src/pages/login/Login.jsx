@@ -7,10 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import "./login.scss";
 import { loginStart, loginSuccess } from "../../redux/userRedux";
 import { setQuantity } from "../../redux/cart";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle, faFacebook } from "@fortawesome/free-brands-svg-icons";
+import axios from "axios";
 export default function Login() {
   const [formData, setFormData] = useState({});
   const [isValidEmail, setIsValidEmail] = useState(false);
@@ -52,7 +55,31 @@ export default function Login() {
         });
     }
   };
-
+  const googleLogin = () => {
+    window.open("http://localhost:5000/api/auth/google", "_self");
+  };
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/auth/login/success", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch(loginSuccess(res.data));
+          setTimeout(() => {
+            userRequest()
+              .get(`cart/${res.data._id}`)
+              .then((resNew) => {
+                dispatch(setQuantity(resNew.data.list));
+              });
+            navigate("/");
+          }, 500);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <>
       <Header color="#CAE5E8" />
@@ -97,6 +124,21 @@ export default function Login() {
                   <p className="login_recovery">Bạn Quên Mật Khẩu?</p>
                 </Link>
               </form>
+              <div className="login__line">
+                <span>HOẶC</span>
+              </div>
+              <div className="login__icon ">
+                <div className="login__icon--row">
+                  <FontAwesomeIcon icon={faFacebook}></FontAwesomeIcon>
+                  <span style={{ padding: "0 0" }}>Đăng Nhập với Facebook</span>
+                </div>
+              </div>
+              <div className="login__icon" onClick={googleLogin}>
+                <div className="login__icon--row">
+                  <FontAwesomeIcon icon={faGoogle}></FontAwesomeIcon>
+                  <span>Đăng Nhập với Google</span>
+                </div>
+              </div>
               <div className="login_footer">
                 <Link
                   to="/register"
