@@ -2,7 +2,7 @@ import React from 'react';
 import './UpdateUser.scss';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { userRequest } from "../../utils/CallApi";
 import { hostServer } from "../../utils/const";
 
@@ -125,7 +125,7 @@ function UpdateUser() {
                     </div>
                 </div>
 
-                <a className="btn btn-primary my-bnt bnt-back" href='/admin/customers'>Quay lại</a>
+                <Link className="btn btn-primary my-bnt bnt-back" to='/admin/customers'>Quay lại</Link>
                 <button type="submit" className="btn btn-primary my-bnt">Lưu lại</button>
             </form>
         </div>

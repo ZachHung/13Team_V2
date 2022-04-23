@@ -9,6 +9,7 @@ import { format } from 'date-fns';
 import { userRequest } from "../../utils/CallApi";
 import { hostServer } from "../../utils/const";
 import Dialog, { DialogOK } from '../../components/deleteConfirm/Dialog';
+import { Link } from "react-router-dom";
 
 function PurchasesAdmin() {
   var index = 1;
@@ -210,11 +211,11 @@ function PurchasesAdmin() {
                   )}
                 </td>
                 <td>
-                  <a className='formMethod' href={`/admin/orders/update/${purchase._id}`}>
+                  <Link className='formMethod' to={`/admin/orders/update/${purchase._id}`}>
                       <button className=" formMethod btnDeletePurchase btn btn-outline-primary" >
                         Cập nhật trạng thái <FontAwesomeIcon icon={faFileEdit} />
                       </button>
-                  </a>
+                  </Link>
                   &nbsp;
                   <button
                     className="formMethod btnDeletePurchase btn btn-outline-danger"

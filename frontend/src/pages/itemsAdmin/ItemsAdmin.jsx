@@ -14,7 +14,7 @@ import PaginationAdmin from '../../components/paginationAdmin/Pagination';
 import { userRequest } from "../../utils/CallApi";
 import { hostServer } from "../../utils/const";
 import Dialog, { DialogOK } from '../../components/deleteConfirm/Dialog';
-
+import { Link } from "react-router-dom";
 function ItemsAdmin () {
   var index = 1;
   const [itemList, setItemList] = useState ([]);
@@ -222,14 +222,13 @@ function ItemsAdmin () {
                       Thêm lựa chọn <FontAwesomeIcon icon={faAdd} />
                     </button>
                   </a>  
-                  <a
+                  <Link to={`/admin/products/update/${item._id}`}
                     className="formMethod"
-                    href={`/admin/products/update/${item._id}`}
                   >
                     <button className=" formMethod btnEditItem btn btn-outline-primary">
                       Sửa <FontAwesomeIcon icon={faFileEdit} />
                     </button>
-                  </a>
+                  </Link>
                   &nbsp;
                   <button
                     className="formMethod btnDeleteItem btn btn-outline-danger"

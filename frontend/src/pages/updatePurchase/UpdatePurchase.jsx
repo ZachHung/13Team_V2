@@ -1,7 +1,7 @@
 import React from 'react';
 import './UpdatePurchase.scss';
 import { useEffect, useState } from 'react';
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { userRequest } from "../../utils/CallApi";
 import { hostServer } from "../../utils/const";
 
@@ -64,7 +64,7 @@ function UpdatePurchase() {
                             ))
                         }
 
-                        <a className="btn btn-primary my-bnt bnt-back" href='/admin/orders'>Quay lại</a>
+                        <Link className="btn btn-primary my-bnt bnt-back" to='/admin/orders'>Quay lại</Link>
                         <button type="submit" className="btn btn-primary my-bnt">Lưu lại</button>
                     </form>
                 </div>

@@ -9,6 +9,7 @@ import { format } from 'date-fns';
 import { userRequest } from "../../utils/CallApi";
 import { hostServer } from "../../utils/const";
 import Dialog, { DialogOK } from '../../components/deleteConfirm/Dialog';
+import { Link } from "react-router-dom";
 
 function UsersAdmin() {
   var index = 1;
@@ -206,11 +207,11 @@ function UsersAdmin() {
                 </td>
 
                 <td style={{ "width": "12%" }}>
-                  <a className='formMethod' href={`/admin/customers/update/${user._id}`}>
+                  <Link className='formMethod' to={`/admin/customers/update/${user._id}`}>
                     <button className="formMethod btnEditUser btn btn-outline-primary">
                       Sửa <FontAwesomeIcon icon={faFileEdit} />
                     </button>
-                  </a>
+                  </Link>
                   &nbsp;
                   <button
                     className=" formMethod btnEditUser btn btn-outline-danger"

@@ -5,6 +5,7 @@ import { hostServer } from "../../utils/const";
 import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import { storage } from '../../firebase';
+import { Link } from "react-router-dom";
 
 function UpdateItem() {
     const params = useParams();
@@ -58,7 +59,7 @@ function UpdateItem() {
 
             {item.map(item => (
                 <form className="mt-4" method="POST" action={hostServer + "/api/admin/products/update/" + item._id + "?_method=PUT"}>
-                    <a href={`/admin/products/updateDetail/${item._id}`} className="btn btn-primary bnt-more">Sửa chi tiết</a>
+                    <Link to={`/admin/products/updateDetail/${item._id}`} className="btn btn-primary bnt-more">Sửa chi tiết</Link>
                     <br></br>
                     <div className="mb-4">
                         <label htmlFor="name" className="form-label label_level_1">Tên sản phẩm</label>
@@ -132,7 +133,7 @@ function UpdateItem() {
                         ))}
 
                     </div>
-                    <a className="btn btn-primary my-bnt bnt-back" href='/admin/products'>Quay lại</a>
+                    <Link className="btn btn-primary my-bnt bnt-back" to='/admin/products'>Quay lại</Link>
                     <button type="submit" className="btn btn-primary my-bnt">Lưu lại</button>
                 </form>
             ))}

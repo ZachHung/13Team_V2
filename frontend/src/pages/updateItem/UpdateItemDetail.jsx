@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { storage } from '../../firebase';
 import { userRequest } from "../../utils/CallApi";
 import { hostServer } from "../../utils/const";
+import { Link } from "react-router-dom";
 
 function UpdateItemDetail() {
     const params = useParams();
@@ -149,7 +150,7 @@ function UpdateItemDetail() {
                             <hr></hr>
                         </div>
                     ))}
-                    <a className="btn btn-primary my-bnt bnt-back" href={`/admin/products/update/${ItemDetail._id}`}>Quay lại</a>
+                    <Link className="btn btn-primary my-bnt bnt-back" to={`/admin/products/update/${ItemDetail._id}`}>Quay lại</Link>
 
                 </div>
             ))}
