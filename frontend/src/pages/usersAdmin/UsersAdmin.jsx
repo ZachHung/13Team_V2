@@ -150,11 +150,11 @@ function UsersAdmin() {
       <div className="p-3">
         <div className="d-flex align-items-center mb-4 qlsp">
           <h1 className="mr-3 fw-bold UserTitle"><FontAwesomeIcon icon={faUserAlt}></FontAwesomeIcon> Quản lý người dùng</h1>
-          <a href="/admin/customers/create/">
+          <Link to={`/admin/customers/create/`}>
             <button className="btnAddNewUser btn btn-success">
             <FontAwesomeIcon icon={faCirclePlus}></FontAwesomeIcon> Thêm người dùng mới
             </button>
-          </a>
+          </Link>
           <button className="btnDeleteAllUsers btn btn-danger" onClick={()=>handleDeleteMany()}>
             <FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon> Xóa tất cả người dùng
           </button>
@@ -187,12 +187,12 @@ function UsersAdmin() {
                 </td>
                 <th scope="row" style={{ "width": "4%" }}>{index++}</th>
                 <td style={{ "width": "5%" }}>
-                  <a
-                    href={`/admin/customers/detail/id=${user._id}`}
+                  <Link
+                    to={`/admin/customers/detail/id=${user._id}`}
                     className="linkToUser"
                   >
                     {user.name}
-                  </a>
+                  </Link>
                 </td>
                 <td style={{ "width": "1%" }}>{user.email}</td>
                 <td style={{ "width": "5%" }}>{user.phone}</td>

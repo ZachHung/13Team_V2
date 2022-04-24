@@ -150,11 +150,11 @@ function PurchasesAdmin() {
       <div className="p-3">
         <div className="d-flex align-items-center mb-4 qlsp">
           <h1 className="mr-3 fw-bold PurTitle"><FontAwesomeIcon icon={faReceipt}></FontAwesomeIcon> Quản lý đơn hàng</h1>
-          <a href="/admin/orders/create/">
+          <Link to={`/admin/orders/create/`}>
             <button className="btnAddNewPurchase btn btn-success">
             <FontAwesomeIcon icon={faCirclePlus}></FontAwesomeIcon> Thêm đơn hàng mới
             </button>
-          </a>
+          </Link>
           &nbsp;
           <button className="btnDeleteAllPurs btn btn-danger" onClick={()=>handleDeleteMany()}>
             <FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon> Xóa tất cả đơn hàng
@@ -187,12 +187,12 @@ function PurchasesAdmin() {
                 <td><input type="checkbox" className="form-check-input" name={purchase.id} checked={selectedPurchases.some((i) => i?._id === purchase._id)} onChange={(e)=>handleCheckbox(e, purchase)}></input></td>
                 <th scope="row">{index++}</th>
                 <td>
-                  <a
-                    href={`/admin/orders/detail/${purchase._id}`}
+                  <Link
+                    to={`/admin/orders/detail/${purchase._id}`}
                     className="linkToItem"
                   >
                     {purchase._id}
-                  </a>
+                  </Link>
                 </td>
                 <td>{purchase.userID.name}</td>
                 <td>

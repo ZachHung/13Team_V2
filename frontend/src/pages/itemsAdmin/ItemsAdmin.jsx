@@ -158,11 +158,11 @@ function ItemsAdmin () {
           <h1 className="mr-3 fw-bold ProdTitle">
             <FontAwesomeIcon icon={faCube} /> Quản lý sản phẩm
           </h1>
-          <a href="/admin/products/create/">
+          <Link to={`/admin/products/create/`}>
             <button className="btnAddNewItem btn btn-success">
               <FontAwesomeIcon icon={faCirclePlus} /> Thêm sản phẩm mới
             </button>
-          </a>
+          </Link>
           &nbsp;
           <button className="btnDeleteAllItems btn btn-danger" onClick={()=> handleDeleteMany()}>
             <FontAwesomeIcon icon={faTrashAlt} /> Xóa tất cả sản phẩm
@@ -195,12 +195,11 @@ function ItemsAdmin () {
                 </td>
                 <th scope="row">{index++}</th>
                 <td>
-                  <a
-                    href={`/admin/products/detail/${item._id}`}
+                  <Link to={`/admin/products/detail/${item._id}`}
                     className="linkToItem"
                   >
                     {item.name}
-                  </a>
+                  </Link>
                 </td>
                 <td>
                   {item.type === 'phone'
@@ -214,14 +213,14 @@ function ItemsAdmin () {
                 <td>{item.brand.name}</td>
                 {/* <td>{format(new Date(item.createdAt), "yyyy-MM-dd")}</td> */}
                 <td>
-                  <a
+                  <Link 
+                    to={`/admin/products/addOptions/${item._id}`}
                     className="formMethod"
-                    href={`/admin/products/addOptions/${item._id}`}
                   >
                     <button className=" formMethod btnEditItem btn btn-outline-info">
                       Thêm lựa chọn <FontAwesomeIcon icon={faAdd} />
                     </button>
-                  </a>  
+                  </Link>  
                   <Link to={`/admin/products/update/${item._id}`}
                     className="formMethod"
                   >

@@ -211,12 +211,6 @@ const Getwardbydistrict = () => {
                         THÔNG TIN CÁ NHÂN
                       </h3>
                       <hr className="border-light mb-3" />
-                      <label className="form-label labelTitle">Tiểu sử</label>
-                      <textarea
-                        className="form-control inputAdProfile"
-                        rows="5"
-                        defaultValue={'Tiểu sử của tôi'}
-                      />
                     </div>
                     <div className="form-group mb-3">
                       <label
@@ -320,16 +314,6 @@ const Getwardbydistrict = () => {
                         type="text"
                         className="form-control inputAdProfile"
                         defaultValue={admin.phone}
-                      />
-                    </div>
-                    <div className="form-group mb-3">
-                      <label className="form-label labelTitle">
-                        Website liên kết
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control inputAdProfile"
-                        defaultValue={'https://mywebsite.com'}
                       />
                     </div>
                   </div>
