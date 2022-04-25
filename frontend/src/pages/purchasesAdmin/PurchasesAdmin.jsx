@@ -86,7 +86,6 @@ function PurchasesAdmin() {
           setPurchaseList(res.data.purchase);
         });
       handleDialog("", false);
-      window.location.reload (false);
     } else {
       handleDialog("", false);
     }
@@ -120,13 +119,13 @@ function PurchasesAdmin() {
         selectedPurchases.forEach(element => {
           ids.push(element._id);
         });
+        setPurchaseList(purchaseList.filter(x => selectedPurchases.indexOf(x) === -1));
         axios
         .delete(hostServer + '/api/admin/orders/deleteMany', {data: ids})
           .then(res => {  
             setPurchaseList(res.data.purchase);
           })
           handleDialogs("", false);
-        window.location.reload (false);
       }
       else {
         handleDialogs("", false);
@@ -157,7 +156,7 @@ function PurchasesAdmin() {
           </Link>
           &nbsp;
           <button className="btnDeleteAllPurs btn btn-danger" onClick={()=>handleDeleteMany()}>
-            <FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon> Xóa tất cả đơn hàng
+            <FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon> Xóa tất cả đơn hàng 
           </button>
           &nbsp;
           <h2 className="fw-bold totalCountPur">(<FontAwesomeIcon icon={faReceipt}></FontAwesomeIcon> Tất cả: {purchaseList.length} đơn hàng)</h2>     
@@ -217,11 +216,13 @@ function PurchasesAdmin() {
                       </button>
                   </Link>
                   &nbsp;
-                  <button
-                    className="formMethod btnDeletePurchase btn btn-outline-danger"
-                    onClick={() => handleDelete (purchase._id, purchase)}
-                    >Xóa đơn hàng <FontAwesomeIcon icon={faTrashAlt} />
-                  </button>
+                  <Link className='formMethod' to={'/admin/orders/'}>
+                    <button
+                      className="formMethod btnDeletePurchase btn btn-outline-danger"
+                      onClick={() => handleDelete (purchase._id, purchase)}
+                      >Xóa đơn hàng <FontAwesomeIcon icon={faTrashAlt} />
+                    </button>
+                  </Link>
                 </td>
               </tr>
             ))}

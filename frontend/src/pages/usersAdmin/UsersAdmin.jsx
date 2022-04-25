@@ -86,7 +86,6 @@ function UsersAdmin() {
           setUserList(res.data.user);
         });
       handleDialog("", false);
-      window.location.reload (false);
     } else {
       handleDialog("", false);
     }
@@ -119,13 +118,13 @@ function UsersAdmin() {
         selectedUsers.forEach(element => {
           ids.push(element._id);
         });
+        setUserList(userList.filter(x => selectedUsers.indexOf(x) === -1));
         axios
           .delete(hostServer + "/api/admin/customers/deleteMany", {data: ids})
           .then(res => {  
             setUserList(res.data.user);
           })
         handleDialogs("", false);
-        window.location.reload (false);
       }
       else {
         handleDialogs("", false);
@@ -213,14 +212,13 @@ function UsersAdmin() {
                     </button>
                   </Link>
                   &nbsp;
-                  <button
-                    className=" formMethod btnEditUser btn btn-outline-danger"
-                    // onClick={() => onDelete(user._id, user)}
-                    onClick={() => handleDelete(user._id, user)}
-                  >
-                    {' '}
-                    Xóa <FontAwesomeIcon icon={faTrashAlt} />
-                  </button>
+                    <button
+                      className=" formMethod btnEditUser btn btn-outline-danger"
+                      onClick={() => handleDelete(user._id, user)}
+                    >
+                      {' '}
+                      Xóa <FontAwesomeIcon icon={faTrashAlt} />
+                    </button>
                 </td>
               </tr>
             ))}

@@ -90,7 +90,6 @@ function ItemsAdmin () {
           setItemList(res.data.items);
         });
       handleDialog("", false);
-      window.location.reload (false);
     } else {
       handleDialog("", false);
     }
@@ -121,13 +120,13 @@ function ItemsAdmin () {
         selectedItem.forEach(element => {
           ids.push(element._id);
         });
+        setItemList(itemList.filter(i => selectedItem.indexOf(i) === -1));
         axios
           .delete(hostServer + "/api/admin/products/deleteMany", {data: ids})
           .then(res => {  
             setItemList(res.data.items);
           })
         handleDialogs("", false);
-        window.location.reload (false);
       }
       else {
         handleDialogs("", false);
@@ -165,7 +164,7 @@ function ItemsAdmin () {
           </Link>
           &nbsp;
           <button className="btnDeleteAllItems btn btn-danger" onClick={()=> handleDeleteMany()}>
-            <FontAwesomeIcon icon={faTrashAlt} /> Xóa tất cả sản phẩm
+              <FontAwesomeIcon icon={faTrashAlt} /> Xóa tất cả sản phẩm
           </button>
           &nbsp;
           <h2 className="fw-bold totalCountPur">(<FontAwesomeIcon icon={faCube}></FontAwesomeIcon> Tất cả: {itemList.length} sản phẩm)</h2>
@@ -229,13 +228,15 @@ function ItemsAdmin () {
                     </button>
                   </Link>
                   &nbsp;
-                  <button
-                    className="formMethod btnDeleteItem btn btn-outline-danger"
-                    onClick={() => handleDelete (item._id, item)}
-                  >
-                    {' '}
-                    Xóa <FontAwesomeIcon icon={faTrashAlt} />
-                  </button>
+                  <Link to={'/admin/products/'}>
+                    <button
+                      className="formMethod btnDeleteItem btn btn-outline-danger"
+                      onClick={() => handleDelete (item._id, item)}
+                    >
+                      {' '}
+                      Xóa <FontAwesomeIcon icon={faTrashAlt} />
+                    </button>
+                  </Link>
                 </td>
               </tr>
             ))}

@@ -5,6 +5,7 @@ import './AdminProfile.scss';
 import { useSelector } from 'react-redux';
 import { userRequest } from "../../utils/CallApi";
 import { hostServer } from "../../utils/const";
+import { Link } from 'react-router-dom';
 
 function AdminProfile () {
   const [admin, setAdmin] = useState ([]);
@@ -27,12 +28,16 @@ function AdminProfile () {
     setToggleState (index);
   };
 
+  // useEffect (() => {
+  //   userRequest().get (`admin/settings/${user.current._id}`).then (res => {
+  //     setErrorText (res.data.message);
+  //   });
+  // }, []);
   useEffect (() => {
     userRequest().get ('address/getalladress/').then (res => {
       setaddress (res.data.address);
     });
   }, []);
-
   const Getdistrictbyprovince = () => {
     var province = document.getElementById("province").value;
     document.getElementById("district").value = "";
@@ -113,6 +118,18 @@ const Getwardbydistrict = () => {
                   <hr className="m-0" />
                   <div className="card-body">
                     <div className="form-group mb-3">
+                      <label htmlFor="emails" className="form-label labelTitle">
+                        E-mail
+                      </label>
+                      <input disabled
+                        id="emails"
+                        name="email"
+                        type="email"
+                        className="form-control inputAdProfile"
+                        defaultValue={admin.email}
+                      />
+                    </div>
+                    <div className="form-group mb-3">
                       <label htmlFor='names' className="form-label labelTitle">
                         Họ tên
                       </label>
@@ -124,18 +141,7 @@ const Getwardbydistrict = () => {
                         defaultValue={admin.name}
                       />
                     </div>
-                    <div className="form-group mb-3">
-                      <label htmlFor="emails" className="form-label labelTitle">
-                        E-mail
-                      </label>
-                      <input
-                        id="emails"
-                        name="email"
-                        type="email"
-                        className="form-control inputAdProfile"
-                        defaultValue={admin.email}
-                      />
-                    </div>
+                    
                   </div>
 
                 </div>
@@ -162,7 +168,6 @@ const Getwardbydistrict = () => {
                         type="password"
                         className="form-control inputAdProfile"
                         defaultValue={''}
-                        onSubmit={errorText !== "" ? errorText : ""}
                       />
                     </div>
 
@@ -179,7 +184,6 @@ const Getwardbydistrict = () => {
                         type="password"
                         className="form-control inputAdProfile"
                         defaultValue={''}
-                        onSubmit={errorText !== "" ? errorText : ""}
                       />
                     </div>
                     <div className="form-group mb-3">
@@ -195,7 +199,6 @@ const Getwardbydistrict = () => {
                         type="password"
                         className="form-control inputAdProfile"
                         defaultValue={''}
-                        onSubmit={errorText !== "" ? errorText : ""}
                       />
                     </div>
                   </div>
@@ -321,9 +324,9 @@ const Getwardbydistrict = () => {
               </div>
             </div>
             <div className="text-right">
-              <button type="submit" className="btn my-btn-checkout">
-                Thay đổi
-              </button>
+              <button className="btn my-btn-checkout" type='submit'>
+                    Thay đổi
+              </button>     
             </div>
           </div>
         </form>

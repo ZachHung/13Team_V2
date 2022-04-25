@@ -393,14 +393,7 @@ class AccountController {
         user
           .findOne({ email: email })
           .then((emailRes) => {
-            if (emailRes && email !== emailRes.email) {
-              res.status(202).json({
-                message: "Email đã tồn tại, vui lòng chọn một email khác!",
-              });
-              res.redirect(URL + "admin/settings/" + idUser);
-              return;
-            }
-            if (currentPassword && newPassword && newPasswordRepeat) {
+            if (currentPassword || newPassword || newPasswordRepeat) {
               if (
                 currentPassword !==
                 CryptoJS.AES.decrypt(
@@ -415,7 +408,7 @@ class AccountController {
                 return;
               } else if (newPassword !== newPasswordRepeat) {
                 res.status(202).json({
-                  message: "Mật khẩu mới nhập không khớp!",
+                  message: "Mật khẩu mới không khớp!",
                 });
                 res.redirect(URL + "admin/settings/" + idUser);
                 return;
@@ -426,30 +419,33 @@ class AccountController {
                 );
               }
             }
-            if (userRes.name !== name) userRes.name = name;
-            if (userRes.email !== email) userRes.email = email;
-            if (userRes.phone !== phoneNumber) userRes.phone = phoneNumber;
-            if (userRes.birthday !== birthday) userRes.birthday = birthday;
-            if (userRes.gender !== gender) userRes.gender = gender;
-            if (userRes.address.province !== province)
-              userRes.address.province = province;
-            if (userRes.address.district !== district)
-              userRes.address.district = district;
-            if (userRes.address.ward !== ward) userRes.address.ward = ward;
-            if (userRes.address.addressdetail !== addressdetail)
-              userRes.address.addressdetail = addressdetail;
+            else if (!currentPassword && !newPassword && !newPassword){
+              if (userRes.name !== name) userRes.name = name;
+              if (userRes.email !== email) userRes.email = email;
+              if (userRes.phone !== phoneNumber) userRes.phone = phoneNumber;
+              if (userRes.birthday !== birthday) userRes.birthday = birthday;
+              if (userRes.gender !== gender) userRes.gender = gender;
+              if (userRes.address.province !== province)
+                userRes.address.province = province;
+              if (userRes.address.district !== district)
+                userRes.address.district = district;
+              if (userRes.address.ward !== ward) userRes.address.ward = ward;
+              if (userRes.address.addressdetail !== addressdetail)
+                userRes.address.addressdetail = addressdetail;
 
             user
               .updateOne({ _id: idUser }, userRes)
               .then(() => {
-                res.status(202).json({
-                  message: "Thay đổi thông tin tài khoản thành công!",
-                });
-                res.redirect(URL + `/admin/settings/${idUser}`);
+                // res.status(500).json({
+                //   message: "Thay đổi thông tin tài khoản thành công!",
+                // });
+                res.redirect(URL + `admin/settings`);
               })
               .catch(next);
+            }
           })
           .catch(next);
+              
       })
       .catch(next);
   }
