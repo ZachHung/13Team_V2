@@ -38,7 +38,7 @@ const Header = ({ color }) => {
   };
   const handleLogOut = () => {
     dispatch(logout());
-    window.open(process.env.SERVER_PATH + "/api/auth/logout", "_self");
+    window.open(process.env.REACT_APP_SERVER_PATH + "/api/auth/logout", "_self");
   };
   useEffect(() => {
     const closeDropdown = (e) => {
