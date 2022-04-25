@@ -359,7 +359,13 @@ class AccountController {
     user
       .findById(req.params.id)
       .then((users) => {
-        res.json({ user: users });
+        const curPass = 
+          CryptoJS.AES.decrypt(
+            users.password,
+            process.env.PASS_SECRET
+          ).toString(CryptoJS.enc.Utf8);
+        
+        res.json({ user: users, currentPwd: curPass });
       })
       .catch(next);
   }
@@ -387,7 +393,7 @@ class AccountController {
             message:
               "Không tồn tại tài khoản, có thể đã gặp trục trặc, vui lòng kiểm tra lại phiên đăng nhập!",
           });
-          res.redirect(URL + "admin/settings/" + idUser);
+          res.redirect(URL + "admin/settings/");
           return;
         }
         user
@@ -401,16 +407,11 @@ class AccountController {
                   process.env.PASS_SECRET
                 ).toString(CryptoJS.enc.Utf8)
               ) {
-                res.status(202).json({
-                  message: "Mật khẩu hiện tại không chính xác",
-                });
-                res.redirect(URL + "admin/settings/" + idUser);
+               
+                res.redirect(URL + "admin/settings/");
                 return;
               } else if (newPassword !== newPasswordRepeat) {
-                res.status(202).json({
-                  message: "Mật khẩu mới không khớp!",
-                });
-                res.redirect(URL + "admin/settings/" + idUser);
+                res.redirect(URL + "admin/settings/");
                 return;
               } else {
                 userRes.password = CryptoJS.AES.encrypt(
@@ -436,9 +437,6 @@ class AccountController {
             user
               .updateOne({ _id: idUser }, userRes)
               .then(() => {
-                // res.status(500).json({
-                //   message: "Thay đổi thông tin tài khoản thành công!",
-                // });
                 res.redirect(URL + `admin/settings`);
               })
               .catch(next);

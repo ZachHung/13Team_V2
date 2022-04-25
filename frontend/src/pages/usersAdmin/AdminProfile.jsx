@@ -1,18 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import './AdminProfile.scss';
 import { useSelector } from 'react-redux';
 import { userRequest } from "../../utils/CallApi";
 import { hostServer } from "../../utils/const";
 import { Link } from 'react-router-dom';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 function AdminProfile () {
   const [admin, setAdmin] = useState ([]);
+  const [getCurPwd, setGetCurPwd] = useState ([]);
   const [toggleState, setToggleState] = useState (1);
   const user = useSelector((state) => state.user);  
-  const [errorText, setErrorText] = useState("");
-  const [formData, setFormData] = useState({});
   const [district, setdistrict] = useState([]);
   const [province, setaddress] = useState([]);
   const [ward, setward] = useState([]);
@@ -21,6 +21,7 @@ function AdminProfile () {
     userRequest().get (`admin/settings/${user.current._id}`).then ((res) => {
       console.log(res.data);
       setAdmin (res.data.user);
+      setGetCurPwd(res.data.currentPwd);
     });
   }, []);
 
@@ -28,16 +29,12 @@ function AdminProfile () {
     setToggleState (index);
   };
 
-  // useEffect (() => {
-  //   userRequest().get (`admin/settings/${user.current._id}`).then (res => {
-  //     setErrorText (res.data.message);
-  //   });
-  // }, []);
   useEffect (() => {
     userRequest().get ('address/getalladress/').then (res => {
       setaddress (res.data.address);
     });
   }, []);
+
   const Getdistrictbyprovince = () => {
     var province = document.getElementById("province").value;
     document.getElementById("district").value = "";
@@ -56,6 +53,48 @@ const Getwardbydistrict = () => {
         setward(res.data.address);
     });
 }
+
+const [curPwd, setCurPwd] = useState("");
+const [showCurPassword, setShowCurPassword] = useState(false);
+const handleShowCurPassword = () => {setShowCurPassword((value) => !value);};
+
+const [newPwd, setNewPwd] = useState("");
+const [showNewPassword, setShowNewPassword] = useState(false);
+const handleShowNewPassword = () => {setShowNewPassword((value) => !value);};
+
+const [RePwd, setRePwd] = useState("");
+const [showRePassword, setShowRePassword] = useState(false);
+const handleShowRePassword = () => {setShowRePassword((value) => !value);};
+
+const handleCurPassChange = (e) =>{
+  setCurPwd(e.target.value);
+  console.log(e.target.value);
+  if (e.target.value !== "" && e.target.value !== getCurPwd) document.getElementById('CurPassAlert').innerText = "Mật khẩu hiện tại không đúng, vui lòng nhập lại";
+  else document.getElementById('CurPassAlert').innerText = "";
+}
+const handleNewPassChange = (e) =>{
+  setNewPwd(e.target.value);
+  console.log(e.target.value);
+  if (e.target.value.length < 6 && e.target.value.length > 0) {
+    document.getElementById('NewPassAlert').innerText = "Mật khẩu cần ít nhất 6 ký tự";
+  } else document.getElementById('NewPassAlert').innerText = "";
+}
+const handleRePassChange = (e) =>{
+  setRePwd(e.target.value);
+  console.log(e.target.value);
+  if (e.target.value.length > 0) {
+    if (e.target.value.length < 6) {
+      document.getElementById('RePassAlert').innerText = "Mật khẩu cần ít nhất 6 ký tự";
+      if (e.target.value !== "" && e.target.value !== newPwd) document.getElementById('RePassAlert').innerText += "\nMật khẩu nhập vào không trùng khớp";
+    }
+    else if (e.target.value.length >= 6) {
+      document.getElementById('RePassAlert').innerText = ""
+      if (e.target.value !== "" && e.target.value !== newPwd) document.getElementById('RePassAlert').innerText += "Mật khẩu nhập vào không trùng khớp";
+    }
+  }
+  else if (e.target.value.length === 0) document.getElementById('RePassAlert').innerText = "";
+}
+
 
   return (
 
@@ -151,24 +190,36 @@ const Getwardbydistrict = () => {
                   role="tabpanel"
                 >
                   <div className="card-body pb-2">
-                    <div className="form-group mb-3">
-                      <h4 className="p-0 mt-4 textLarger hightlightInfo">
+                  
+                    <h4 className="p-0 mt-4 textLarger hightlightInfo">
                         ĐỔI MẬT KHẨU
-                      </h4>
-                      <hr className="mb-4" />
+                    </h4>
+                    <hr className="mb-4" />
+                    <div className="form-group mb-3">
                       <label
                         htmlFor="currentPasswords"
                         className="form-label labelTitle"
                       >
                         Mật khẩu hiện tại
                       </label>
-                      <input
-                        name="currentPassword"
-                        id="currentPasswords"
-                        type="password"
-                        className="form-control inputAdProfile"
-                        defaultValue={''}
-                      />
+                      <div>
+                        <input
+                          name="currentPassword"                        
+                          id="currentPasswords" 
+                          className="form-control inputAdProfile inputAdPass col-9"
+                          defaultValue={''}    
+                          type={showCurPassword ? "string" : "password"}
+                          value={curPwd}
+                          onChange={(e) => handleCurPassChange(e)} 
+                                          
+                        />
+                        <FontAwesomeIcon
+                            icon={showCurPassword ? faEye : faEyeSlash}
+                            className="icon col-1 icon_eyeAdmin"
+                            onClick={handleShowCurPassword}
+                        />
+                      </div>
+                      <div id='CurPassAlert'></div>
                     </div>
 
                     <div className="form-group mb-3">
@@ -178,14 +229,25 @@ const Getwardbydistrict = () => {
                       >
                         Mật khẩu mới
                       </label>
-                      <input
-                        name="newPassword"
-                        id="newPasswords"
-                        type="password"
-                        className="form-control inputAdProfile"
-                        defaultValue={''}
-                      />
+                      <div>
+                        <input
+                          name="newPassword"
+                          id="newPasswords"
+                          className="form-control inputAdProfile inputAdPass"
+                          defaultValue={''}           
+                          type={showNewPassword ? "string" : "password"}
+                          value={newPwd}
+                          onChange={(e) => handleNewPassChange(e)}                                        
+                        />
+                        <FontAwesomeIcon
+                            icon={showNewPassword ? faEye : faEyeSlash}
+                            className="icon col-1 icon_eyeAdmin"
+                            onClick={handleShowNewPassword}
+                          />
+                      </div>
+                      <div id='NewPassAlert'></div>
                     </div>
+
                     <div className="form-group mb-3">
                       <label
                         htmlFor="newPasswordRepeats"
@@ -193,14 +255,25 @@ const Getwardbydistrict = () => {
                       >
                         Nhập lại mật khẩu
                       </label>
-                      <input
-                        name="newPasswordRepeat"
-                        id="newPasswordRepeats"
-                        type="password"
-                        className="form-control inputAdProfile"
-                        defaultValue={''}
-                      />
+                      <div>
+                        <input
+                          name="newPasswordRepeat"
+                          id="newPasswordRepeats"
+                          className="form-control inputAdProfile inputAdPass"
+                          defaultValue={''}
+                          type={showRePassword ? "string" : "password"}
+                          value={RePwd}
+                          onChange={(e) => handleRePassChange(e)}                                        
+                        />
+                        <FontAwesomeIcon
+                            icon={showRePassword ? faEye : faEyeSlash}
+                            className="icon col-1 icon_eyeAdmin"
+                            onClick={handleShowRePassword}
+                          />
+                      </div>
+                      <div id='RePassAlert'></div>
                     </div>
+
                   </div>
                 </div>
                 <div

@@ -26,7 +26,7 @@ const VerifyPasswordInput = () => {
     } else if (passwordValue.length <= 6) {
       setErrorPassword("Trường Này Ít Nhất 6 Kí Tự");
     } else if (verifyPassword !== "null" && passwordValue !== verifyPassword) {
-      setErrorPassword("Mật ");
+      setErrorPassword("Mật Khẩu Không Khớp");
     }
   };
   return (

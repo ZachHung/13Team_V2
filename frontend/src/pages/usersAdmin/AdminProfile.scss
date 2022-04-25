@@ -18,7 +18,19 @@
     background-clip: padding-box;
     box-shadow: 50px 1px 4px rgba(24, 28, 33, 0.012);
   }
-  
+  .inputAdPass{
+    width: 90%;
+    display: inline-block;
+  }
+  .icon_eyeAdmin{
+    display: inline-block;
+    cursor: pointer;
+  }
+  #CurPassAlert, #NewPassAlert, #RePassAlert{
+    color: red;
+    font-weight: bold;
+    font-size: small;
+  }
   .bg-profile {
     width: 100%;
     height: 24rem;
