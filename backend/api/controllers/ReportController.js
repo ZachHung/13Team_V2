@@ -25,6 +25,10 @@ class ReportController {
             {
                 value: countItem,
                 title: "Sản phẩm"
+            },
+            {
+                value: 0,
+                title: "Doanh thu"
             }
         ]
 
@@ -109,16 +113,38 @@ class ReportController {
                         revenue += item.option.color.price * (1 - item.option.color.discount / 100) * item.quantity;
                     }
                 }
-                overallList.push({
-                    value: revenue,
-                    title: "Doanh thu"
-                });
+                overallList[3].value += revenue;
                 res.json(overallList);
             })
     }
 
     getSummary(req, res, next) {
-        const summary = [];
+        const summary = [
+            {
+                title: 'Bán hàng',
+                subtitle: 'Tổng giá trị bán hàng hôm nay',
+                value: 0,
+                percent: 0
+            },
+            {
+                title: 'Sản phẩm',
+                subtitle: 'Tổng số sản phẩm đã bán hôm nay',
+                value: 0,
+                percent: 0
+            },
+            {
+                title: 'Doanh thu',
+                subtitle: 'Doanh thu hôm nay',
+                value: 0,
+                percent: 0
+            },
+            {
+                title: 'Lượt mua hàng',
+                subtitle: 'Lượt mua hàng hôm nay',
+                value: 0,
+                percent: 0
+            }
+        ];
         var revenueMonth = 0;
         var saleMonth = 0;
         var itemMonth = 0;
@@ -244,41 +270,28 @@ class ReportController {
                 }
 
                 //Tính các chỉ số phần trăm
-                salePercent = saleDay / saleMonth * 100;
+                salePercent = (saleDay / saleMonth * 100) ? (saleDay / saleMonth * 100) : 0;
                 salePercent = salePercent.toFixed();
-                revenuePercent = revenueDay / revenueMonth * 100;
+
+                revenuePercent = (revenueDay / revenueMonth * 100) ? (revenueDay / revenueMonth * 100) : 0;
                 revenuePercent = revenuePercent.toFixed();
-                itemPercent = itemDay / itemMonth * 100;
+
+                itemPercent = (itemDay / itemMonth * 100) ? (itemDay / itemMonth * 100) : 0;
                 itemPercent = itemPercent.toFixed();
-                customerPercent = customerDay / customerMonth * 100;
+
+                customerPercent = (customerDay / customerMonth * 100) ? (customerDay / customerMonth * 100) : 0;
                 customerPercent = customerPercent.toFixed();
 
-                summary.push(
-                    {
-                        title: 'Bán hàng',
-                        subtitle: 'Tổng giá trị bán hàng hôm nay',
-                        value: saleDay,
-                        percent: salePercent
-                    },
-                    {
-                        title: 'Sản phẩm',
-                        subtitle: 'Tổng số sản phẩm đã bán hôm nay',
-                        value: itemDay,
-                        percent: itemPercent
-                    },
-                    {
-                        title: 'Doanh thu',
-                        subtitle: 'Doanh thu hôm nay',
-                        value: revenueDay,
-                        percent: revenuePercent
-                    },
-                    {
-                        title: 'Lượt mua hàng',
-                        subtitle: 'Lượt mua hàng hôm nay',
-                        value: customerDay,
-                        percent: customerPercent
-                    }
-                )
+                console.log(revenuePercent);
+                summary[0].value += saleDay;
+                summary[0].percent = salePercent;
+                summary[1].value += itemDay;
+                summary[1].percent = itemPercent;
+                summary[2].value += revenueDay;
+                summary[2].percent = revenuePercent;
+                summary[3].value += customerDay;
+                summary[3].percent = customerPercent;
+                    
                 res.json(summary);
             })
     }
@@ -360,7 +373,7 @@ class ReportController {
                 ]
             )
             .then((purchase) => {
-                const chartData = [];
+                const chartData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
                 var revenueByMonth = 0;
                 const currentDay = new Date();
                 //Tính các chỉ số theo tháng hiện tại để tính phần trăm (đang thử nghiệm ở tháng 4/2022)
@@ -371,11 +384,10 @@ class ReportController {
                                 revenueByMonth += item.option.color.price * (1 - item.option.color.discount / 100) * item.quantity;
                             }
                         }
-                        chartData.push(revenueByMonth);
+                        chartData[i] += revenueByMonth;
                         revenueByMonth = 0;
                     }
                 }
-
                 res.json(chartData);
             })
     }
