@@ -189,9 +189,9 @@ function PhonePage() {
   const handleClickCancelCompare = () => {
     setUrlImages([]);
     setCheckedCompare([]);
-    setDisableCompareModal(() => true);
+    // setDisableCompareModal(() => true);
   };
-  // if (checkedCompare.length == 0 || urlImages.length == 0) {
+  // if (checkedCompare.length == 0) {
   //   setDisableCompareModal(true);
   // }
   // pagination
@@ -205,7 +205,7 @@ function PhonePage() {
   );
   // change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
+  console.log('check compare length: ', checkedCompare.length);
   return (
     <>
       <Header />
@@ -213,12 +213,14 @@ function PhonePage() {
       <div className="products-container">
         <section className="section products">
           <ModalCompare
+            // className={`${checkedCompare.length == 0 ? 'modal-disable' : ''}`}
+            // className={`modal-disable`}
             handleClickCompare={handleCheckCompare}
             infoProducts={checkedCompare}
             type={type}
             urlImages={urlImages}
             handleClickCancelCompare={handleClickCancelCompare}
-            disableCompareModal={disableCompareModal}
+            countCompare={checkedCompare.length}
           ></ModalCompare>
 
           <SwiperPromotion className="swiper-promotion"></SwiperPromotion>

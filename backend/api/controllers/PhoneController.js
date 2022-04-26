@@ -23,7 +23,6 @@ class PhoneController {
               $or: [
                 { _id: ObjectID(arrayProductsCompare[0]) },
                 { _id: ObjectID(arrayProductsCompare[1]) },
-                { _id: ObjectID(arrayProductsCompare[2]) },
               ],
             },
           },

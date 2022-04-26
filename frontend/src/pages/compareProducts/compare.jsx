@@ -25,9 +25,14 @@ export default function ComparePage() {
   const idProduct = new URLSearchParams(compare.search).get(typeProduct); // .serach là tham số bắt buộc để get query params
   console.log('IDproduct: ', idProduct);
   useEffect(() => {
-    api.get(`/${typeProduct}/compare?product=${idProduct}`).then((res) => {
+    api.get(`/phone/compare?product=${idProduct}`).then((res) => {
       setProductsList(res.data);
       console.log(res.data);
+      window.history.pushState(
+        {},
+        'So Sánh',
+        `http://localhost:3000/compare?${typeProduct}=${res.data[0].slug[0].slug}-${res.data[0].slug[0].detail},${res.data[1].slug[0].slug}-${res.data[1].slug[0].detail}`
+      );
     });
   }, []);
 
@@ -55,6 +60,7 @@ export default function ComparePage() {
       console.log('undefined r, check lai di');
     }
   };
+
   if (products == undefined || products.length == 0) {
     return (
       <>
