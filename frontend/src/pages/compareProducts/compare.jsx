@@ -2,15 +2,16 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import './compare.scss';
 import axios from 'axios';
+import { publicRequest } from '../../utils/CallApi';
 import { currentChange } from '../../utils/const';
 import { Link } from 'react-router-dom';
 
 import Header from '../../components/header';
 import Footer from '../../components/footer';
 
-const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
-});
+// const api = axios.create({
+//   baseURL: 'http://localhost:5000/api',
+// });
 
 export default function ComparePage() {
   const [products, setProductsList] = useState([]);
@@ -25,7 +26,7 @@ export default function ComparePage() {
   const idProduct = new URLSearchParams(compare.search).get(typeProduct); // .serach là tham số bắt buộc để get query params
   console.log('IDproduct: ', idProduct);
   useEffect(() => {
-    api.get(`/phone/compare?product=${idProduct}`).then((res) => {
+    publicRequest.get(`/phone/compare?product=${idProduct}`).then((res) => {
       setProductsList(res.data);
       console.log(res.data);
       window.history.pushState(

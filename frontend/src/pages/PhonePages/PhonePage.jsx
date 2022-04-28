@@ -2,7 +2,7 @@ import React from 'react';
 import { orderBy } from 'lodash';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { userRequest } from '../../utils/CallApi';
+import { userRequest, publicRequest } from '../../utils/CallApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { setQuantity } from '../../redux/cart';
@@ -27,9 +27,9 @@ import ModalCompare from '../../components/modalCompare/modal';
 import ModalLimitCompare from '../../components/modalLitmitCompare/modalLimit';
 import './PhonePage.scss';
 
-const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
-});
+// const api = axios.create({
+//   baseURL: 'http://localhost:5000/api',
+// });
 
 function PhonePage() {
   const { type } = useParams();
@@ -39,7 +39,7 @@ function PhonePage() {
   const [phoneList, setPhoneList] = useState([]);
   var initialCheckedBrand;
   // retrive name brand array
-  api.get(`/${type}/brand/name`).then((res) => {
+  publicRequest.get(`/${type}/brand/name`).then((res) => {
     console.log('branname out component', res.data);
     initialCheckedBrand = res.data;
   });
@@ -87,7 +87,7 @@ function PhonePage() {
   const [checkedBrand, setCheckedBrand] = useState([]);
   const [checkedPrice, setCheckedPrice] = useState([]);
   useEffect(() => {
-    api.get(`/${type}/brand`).then((res) => {
+    publicRequest.get(`/${type}/brand`).then((res) => {
       setBrand(res.data);
     });
   }, [type]);
@@ -118,7 +118,7 @@ function PhonePage() {
       'Tìm kiếm',
       `http://localhost:3000/${type}${urlString}`
     );
-    api.get(`/${type}${urlString}`).then((res) => {
+    publicRequest.get(`/${type}${urlString}`).then((res) => {
       setPhoneList(res.data.items);
     });
   }, [urlString, type]);
@@ -395,7 +395,7 @@ function PhonePage() {
                         onClick={() =>
                           handleCheckCompare(
                             phone._id,
-                            `http://localhost:5000/${phone.image[0]}`
+                            `${process.env.REACT_APP_SERVER_PATH}/${phone.image[0]}`
                           )
                         }
                       >
@@ -411,10 +411,7 @@ function PhonePage() {
                       <Link
                         to={`/${type}/${phone.slug[0].slug}-${phone.slug[0].detail}`}
                       >
-                        <img
-                          src={`http://localhost:5000/${phone.image[0]}`}
-                          alt={phone.name}
-                        />
+                        <img src={`${phone.image[0]}`} alt={phone.name} />
                       </Link>
                     </div>
                     <div className="info-product">
