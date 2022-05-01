@@ -1,6 +1,8 @@
 const cart = require("../models/Cart");
 const purchase = require("../models/Purchase");
 const options = require("../models/Option");
+const CryptoJS = require("crypto-js");
+
 class CheckoutController {
   // @desc Add item to cart
   // @route POST /cart/add/:userID
@@ -265,6 +267,127 @@ class CheckoutController {
         res.status(500).json(err);
       });
   }
-}
 
+  // @desc create vnPay payment url
+  // @ POST /cart/:userID/create_payment_url
+  vnPay_createPayment() {
+    var ipAddr =
+      req.headers["x-forwarded-for"] ||
+      req.connection.remoteAddress ||
+      req.socket.remoteAddress ||
+      req.connection.socket.remoteAddress;
+
+    var dateFormat = require("dateformat");
+
+    var tmnCode = process.env.vnp_TmnCode;
+    var secretKey = process.env.vnp_HashSecret;
+    var vnpUrl = process.env.vnp_Url;
+    var returnUrl = process.env.vnp_ReturnUrl;
+
+    var date = new Date();
+
+    var createDate = dateFormat(date, "yyyymmddHHmmss");
+    var orderId = dateFormat(date, "HHmmss");
+    var amount = req.body.amount;
+    var bankCode = req.body.bankCode;
+
+    var orderInfo = req.body.orderDescription;
+    var orderType = req.body.orderType;
+    var locale = req.body.language;
+    if (locale === null || locale === "") {
+      locale = "vn";
+    }
+    var currCode = "VND";
+    var vnp_Params = {};
+    vnp_Params["vnp_Version"] = "2.1.0";
+    vnp_Params["vnp_Command"] = "pay";
+    vnp_Params["vnp_TmnCode"] = tmnCode;
+    // vnp_Params['vnp_Merchant'] = ''
+    vnp_Params["vnp_Locale"] = locale;
+    vnp_Params["vnp_CurrCode"] = currCode;
+    vnp_Params["vnp_TxnRef"] = orderId;
+    vnp_Params["vnp_OrderInfo"] = orderInfo;
+    vnp_Params["vnp_OrderType"] = orderType;
+    vnp_Params["vnp_Amount"] = amount * 100;
+    vnp_Params["vnp_ReturnUrl"] = returnUrl;
+    vnp_Params["vnp_IpAddr"] = ipAddr;
+    vnp_Params["vnp_CreateDate"] = createDate;
+    if (bankCode !== null && bankCode !== "") {
+      vnp_Params["vnp_BankCode"] = bankCode;
+    }
+
+    vnp_Params = sortObject(vnp_Params);
+
+    var querystring = require("qs");
+    var signData = querystring.stringify(vnp_Params, { encode: false });
+    var signed = CryptoJS.HmacSHA512(signData, secretKey);
+    vnp_Params["vnp_SecureHash"] = signed;
+    vnpUrl += "?" + querystring.stringify(vnp_Params, { encode: false });
+
+    res.redirect(vnpUrl);
+  }
+
+  vnPay_returnUrl() {
+    var vnp_Params = req.query;
+
+    var secureHash = vnp_Params["vnp_SecureHash"];
+
+    delete vnp_Params["vnp_SecureHash"];
+    delete vnp_Params["vnp_SecureHashType"];
+
+    vnp_Params = sortObject(vnp_Params);
+    var secretKey = process.env.vnp_HashSecret;
+
+    var querystring = require("qs");
+    var signData = querystring.stringify(vnp_Params, { encode: false });
+    var signed = CryptoJS.HmacSHA512(signData, secretKey);
+
+    if (secureHash === signed) {
+      //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
+      res
+        .status(200)
+        .json({ message: "Success", code: vnp_Params["vnp_ResponseCode"] });
+    } else {
+      res.status(200).json({ message: "Fail checksum", code: "97" });
+    }
+  }
+
+  vnPay_ipn() {
+    var vnp_Params = req.query;
+    var secureHash = vnp_Params["vnp_SecureHash"];
+
+    delete vnp_Params["vnp_SecureHash"];
+    delete vnp_Params["vnp_SecureHashType"];
+
+    vnp_Params = sortObject(vnp_Params);
+    var secretKey = process.env.vnp_HashSecret;
+    var querystring = require("qs");
+    var signData = querystring.stringify(vnp_Params, { encode: false });
+    var signed = CryptoJS.HmacSHA512(signData, secretKey);
+
+    if (secureHash === signed) {
+      var orderId = vnp_Params["vnp_TxnRef"];
+      var rspCode = vnp_Params["vnp_ResponseCode"];
+      //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
+      res.status(200).json({ RspCode: "00", Message: "success" });
+    } else {
+      res.status(200).json({ RspCode: "97", Message: "Fail checksum" });
+    }
+  }
+}
+function sortObject(obj) {
+  var sorted = {};
+  var str = [];
+  var key;
+  for (key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      str.push(encodeURIComponent(key));
+    }
+  }
+  str.sort();
+  for (key = 0; key < str.length; key++) {
+    sorted[str[key]] = encodeURIComponent(obj[str[key]]).replace(/%20/g, "+");
+  }
+  return sorted;
+}
 module.exports = new CheckoutController();
