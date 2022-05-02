@@ -45,7 +45,12 @@ const CartPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [payment, setPayment] = useState();
   const payments = [
-    { name: "zalo", img: "zaloPay-icon.png", message: "Zalo Pay" },
+    {
+      name: "vnpay",
+      img: "vnPay-icon.png",
+      message:
+        "Thẻ ATM / Internet Banking\nThẻ tín dụng (Credit card) / Thẻ ghi nợ (Debit card)\nVNPay QR",
+    },
     { name: "cod", fontAwsome: faTruck, message: "Thanh toán khi nhận hàng" },
   ];
   const navigate = useNavigate();
@@ -92,11 +97,15 @@ const CartPage = () => {
     setModalState(true);
   };
   const handlePurchase = () => {
-    userRequest()
-      .post(`cart/purchase/${user.current._id}`)
-      .then()
-      .catch((err) => console.log(err));
-    navigate("/purchase");
+    if (payment === "cod") {
+      userRequest()
+        .post(`cart/purchase/${user.current._id}`)
+        .then()
+        .catch((err) => console.log(err));
+      navigate("/purchase");
+    } else {
+      userRequest().post("cart/");
+    }
   };
 
   useEffect(() => {

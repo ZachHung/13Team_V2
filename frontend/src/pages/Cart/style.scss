@@ -432,11 +432,12 @@
       }
       &__icon > * {
         border-radius: 0.5rem;
-        width: $hw;
         height: $hw;
+        aspect-ratio: 1/1;
       }
       &__name {
         font-size: 1.6rem;
+        white-space: pre-line;
       }
       &__custom-radio {
         border: 2px solid black;

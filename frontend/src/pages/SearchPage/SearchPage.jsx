@@ -21,12 +21,13 @@ import Header from '../../components/header';
 import Footer from '../../components/footer';
 import Pagination from '../../components/pagination';
 import { currentChange } from '../../utils/const';
+import { publicRequest } from '../../utils/CallApi';
 import SortProduct from '../../components/sortProduct';
 import './SearchPage.scss';
 
-const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
-});
+// const api = axios.create({
+//   baseURL: 'http://localhost:5000/api',
+// });
 
 function SearchPage() {
   const user = useSelector((state) => state.user.current);
@@ -38,7 +39,7 @@ function SearchPage() {
   console.log('key: ', key);
 
   // retrive name brand array
-  api.get(`/search/brand/name`).then((res) => {
+  publicRequest.get(`/search/brand/name`).then((res) => {
     console.log('branname out component', res.data);
     initialCheckedBrand = res.data;
   });
@@ -85,7 +86,7 @@ function SearchPage() {
   const [checkedBrand, setCheckedBrand] = useState([]);
   const [checkedPrice, setCheckedPrice] = useState([]);
   useEffect(() => {
-    api.get(`/search/brand`).then((res) => {
+    publicRequest.get(`/search/brand`).then((res) => {
       setBrand(res.data);
     });
   }, []);
@@ -116,7 +117,7 @@ function SearchPage() {
       'Tìm kiếm',
       `http://localhost:3000/search${urlString}`
     );
-    api.get(`/search/global${urlString}`).then((res) => {
+    publicRequest.get(`/search/global${urlString}`).then((res) => {
       setProductList(res.data.items);
     });
   }, [urlString, key]);

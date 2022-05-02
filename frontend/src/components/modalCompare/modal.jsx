@@ -9,8 +9,8 @@ function ModalCompare({
   infoProducts,
   type,
   urlImages,
-  disableCompareModal,
   handleClickCancelCompare,
+  countCompare,
 }) {
   console.log('infoProducts: ', infoProducts, type);
   const navigateCompare = useNavigate();
@@ -30,13 +30,15 @@ function ModalCompare({
       navigateCompare(`../compare?${type}=${convertToStr}`);
     }
   };
+  console.log('countcompare: ', countCompare);
   return (
     <div
       className={`${
-        disableCompareModal == true
+        countCompare === 0
           ? 'modalCompare-container disableCompareModal '
           : 'modalCompare-container '
       }`}
+      // className={`modalCompare-container disableCompareModal `}
     >
       <h1>Sản phẩm cần so sánh(chọn tối đa 2 sản phẩm)</h1>
       <div className="products-compare">
@@ -61,7 +63,10 @@ function ModalCompare({
         >
           <p>So sánh lựa chọn</p>
         </button>
-        <button className="btn btn-cancel" handleClickCancelCompare>
+        <button
+          className="btn btn-cancel"
+          onClick={() => handleClickCancelCompare()}
+        >
           <p>Hủy</p>
         </button>
       </div>
