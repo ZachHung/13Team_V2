@@ -467,17 +467,19 @@ class ItemController {
         }
         const brand1={
           name: req.body.brand,
-          brandimage: req.body.brandimage
+          brandImage: req.body.brandimage
         }
+        var url=req.body.image.split(',');
         const item={
           name: req.body.name,
           type: req.body.type,
           description: req.body.description,
-          image:req.body.image,
+          image:url,
           slug: req.body.slug,
           techInfo: techInfoConvert,
           brand: brand1
         }
+        console.log(item);
         const createitem=new items(item);
        
         console.log(createitem);
@@ -485,7 +487,12 @@ class ItemController {
         
         try
         { var result =await createitem.save()
-        .then((data)=>res.redirect(URL+"/admin/products"))
+        .then((data)=>{
+
+          res.redirect(URL+"admin/products"
+      )
+         
+    })
         .catch(next);
         }
         catch(e)
@@ -523,7 +530,7 @@ class ItemController {
   async createPostOptions(req,res, next)
   {
     try{
-      console.log(req.body);
+      //console.log(req.body);
       var color=new Array();
       for(var i=0;i<req.body.color.length;i++)
       {
