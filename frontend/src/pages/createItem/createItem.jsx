@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { publicRequest } from "../../utils/CallApi";
 import { storage } from '../../firebase';
-import swal from 'sweetalert';
 const api = axios.create ({
     baseURL: 'http://localhost:5000/api',
   });
@@ -110,13 +109,8 @@ function CreatePhoneAdminPage() {
     }
     
     const handleInput = (name, value) => {
-        if(value==""||value==null)
-        {
-            alert("Truong khong duoc de trong");
-        }
-        else{
+        setErrorText("");
         setFormData({ ...formData, [name]: `${value}` });
-        }
       };
       const handleSubmit = (e) => {
         //e.preventDefault();
@@ -127,19 +121,12 @@ function CreatePhoneAdminPage() {
           //dispatch(loginStart());
           api.post("/createItems").then((res) => {
               console.log(res.data);
-              if (res.status === 500) {
-                swal({
-                    title: "Lưu không thành công",
-                    text: res.data,
-                    icon: "error",
-                  });
+              if (res.status === 202) {
+                setErrorText(res.data.message);
+                console.log(res.data.message);
               } else {
+                console.log(res.data);
                 
-                swal({
-                    title: "Lưu thành công",
-                    text: res.data,
-                    icon: "success",
-                  });
                 
               }
             })
