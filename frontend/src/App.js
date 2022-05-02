@@ -74,7 +74,7 @@ function App() {
         {/* end authRoute */}
 
         {/* start adminRoute */}
-        {/* {isAdmin ? (
+        {isAdmin ? (
           <Route path='/admin/*' element={<Admin />}>
             <Route index element={<Dashboard />} />
             <Route path='orders' element={<PurchasesAdmin />} />
@@ -95,7 +95,7 @@ function App() {
           </Route>
         ) : (
           <React.Fragment></React.Fragment>
-        )} */}
+        )}
       </Routes>
       <ScrollButton />
     </>
