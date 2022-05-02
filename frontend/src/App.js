@@ -36,6 +36,7 @@ import "./assets/libs/boxicons-2.1.1/css/boxicons.min.css";
 import "./scss/App.scss";
 import UserInfo from "./pages/userInfo/UserInfo";
 import SearchPage from "./pages/SearchPage/SearchPage";
+import VnpayReturn from "./pages/VnpayReturn";
 
 function App() {
   const isAdmin = useSelector((state) => state.user.isAdmin);
@@ -55,6 +56,8 @@ function App() {
         <Route path='/laptop/:id' element={<ProductPage />} />
         <Route path='/tablet/:id' element={<ProductPage />} />
         <Route path='/accessory/:id' element={<ProductPage />} />
+        <Route path='/vnPay' element={<VnpayReturn />} />
+
         {/* end publicRoute */}
 
         {/* start private Route */}
@@ -66,10 +69,10 @@ function App() {
         {/* end private Route */}
 
         {/* start authRoute */}
-        <Route path='/*' element={<AuthUserRoute></AuthUserRoute>}>
-          <Route path='login' element={<LoginPage></LoginPage>} />
-          <Route path='register' element={<Register></Register>}></Route>
-          <Route path='recovery' element={<Recovery></Recovery>}></Route>
+        <Route path='/*' element={<AuthUserRoute />}>
+          <Route path='login' element={<LoginPage />} />
+          <Route path='register' element={<Register />} />
+          <Route path='recovery' element={<Recovery />} />
         </Route>
         {/* end authRoute */}
 

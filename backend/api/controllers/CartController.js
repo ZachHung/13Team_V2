@@ -2,6 +2,8 @@ const cart = require("../models/Cart");
 const purchase = require("../models/Purchase");
 const options = require("../models/Option");
 const CryptoJS = require("crypto-js");
+const moment = require("moment");
+require("dotenv").config();
 
 class CheckoutController {
   // @desc Add item to cart
@@ -84,6 +86,7 @@ class CheckoutController {
   getCart(req, res, next) {
     cart
       .findOne({ userID: req.params.userID })
+      .populate("userID", "email address phone name")
       .populate("list.optionID", "detail color.name color.image color.price")
       .populate({
         path: "list.optionID",
@@ -197,7 +200,7 @@ class CheckoutController {
   getAnyCart(req, res, next) {
     cart
       .findOne({ userID: req.params.userID })
-
+      .populate("userID", "email address phone name")
       .populate("list.optionID", "detail color.name color.image color.price")
       .populate({
         path: "list.optionID",
@@ -235,6 +238,7 @@ class CheckoutController {
   getAllCart(req, res, next) {
     cart
       .find()
+      .populate("userID", "email address phone name")
       .populate("list.optionID", "detail color.name color.image color.price")
       .populate({
         path: "list.optionID",
@@ -270,14 +274,12 @@ class CheckoutController {
 
   // @desc create vnPay payment url
   // @ POST /cart/:userID/create_payment_url
-  vnPay_createPayment() {
+  vnPay_createPayment(req, res, next) {
     var ipAddr =
       req.headers["x-forwarded-for"] ||
       req.connection.remoteAddress ||
       req.socket.remoteAddress ||
       req.connection.socket.remoteAddress;
-
-    var dateFormat = require("dateformat");
 
     var tmnCode = process.env.vnp_TmnCode;
     var secretKey = process.env.vnp_HashSecret;
@@ -286,17 +288,15 @@ class CheckoutController {
 
     var date = new Date();
 
-    var createDate = dateFormat(date, "yyyymmddHHmmss");
-    var orderId = dateFormat(date, "HHmmss");
+    var createDate = moment(date).format("YYYYMMDDHHmmss");
+    var orderId = moment(date).format("HHmmss");
     var amount = req.body.amount;
     var bankCode = req.body.bankCode;
 
     var orderInfo = req.body.orderDescription;
     var orderType = req.body.orderType;
     var locale = req.body.language;
-    if (locale === null || locale === "") {
-      locale = "vn";
-    }
+    if (!locale) locale = "vn";
     var currCode = "VND";
     var vnp_Params = {};
     vnp_Params["vnp_Version"] = "2.1.0";
@@ -312,22 +312,22 @@ class CheckoutController {
     vnp_Params["vnp_ReturnUrl"] = returnUrl;
     vnp_Params["vnp_IpAddr"] = ipAddr;
     vnp_Params["vnp_CreateDate"] = createDate;
-    if (bankCode !== null && bankCode !== "") {
-      vnp_Params["vnp_BankCode"] = bankCode;
-    }
+    if (bankCode) vnp_Params["vnp_BankCode"] = bankCode;
 
     vnp_Params = sortObject(vnp_Params);
 
     var querystring = require("qs");
     var signData = querystring.stringify(vnp_Params, { encode: false });
-    var signed = CryptoJS.HmacSHA512(signData, secretKey);
+    var signed = CryptoJS.HmacSHA512(signData, secretKey).toString(
+      CryptoJS.enc.Hex
+    );
     vnp_Params["vnp_SecureHash"] = signed;
     vnpUrl += "?" + querystring.stringify(vnp_Params, { encode: false });
 
-    res.redirect(vnpUrl);
+    res.json(vnpUrl);
   }
 
-  vnPay_returnUrl() {
+  vnPay_returnUrl(req, res, next) {
     var vnp_Params = req.query;
 
     var secureHash = vnp_Params["vnp_SecureHash"];
@@ -340,7 +340,9 @@ class CheckoutController {
 
     var querystring = require("qs");
     var signData = querystring.stringify(vnp_Params, { encode: false });
-    var signed = CryptoJS.HmacSHA512(signData, secretKey);
+    var signed = CryptoJS.HmacSHA512(signData, secretKey).toString(
+      CryptoJS.enc.Hex
+    );
 
     if (secureHash === signed) {
       //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
@@ -352,7 +354,7 @@ class CheckoutController {
     }
   }
 
-  vnPay_ipn() {
+  vnPay_ipn(req, res, next) {
     var vnp_Params = req.query;
     var secureHash = vnp_Params["vnp_SecureHash"];
 
@@ -363,7 +365,9 @@ class CheckoutController {
     var secretKey = process.env.vnp_HashSecret;
     var querystring = require("qs");
     var signData = querystring.stringify(vnp_Params, { encode: false });
-    var signed = CryptoJS.HmacSHA512(signData, secretKey);
+    var signed = CryptoJS.HmacSHA512(signData, secretKey).toString(
+      CryptoJS.enc.Hex
+    );
 
     if (secureHash === signed) {
       var orderId = vnp_Params["vnp_TxnRef"];

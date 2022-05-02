@@ -6,6 +6,7 @@ const Cart = new Schema(
   {
     userID: {
       type: Schema.Types.ObjectId,
+      ref: "user",
     },
     list: [
       {

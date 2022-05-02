@@ -35,7 +35,6 @@ process.env.NODE_ENV === "development" && app.use(morgan("combined"));
 app.use(
   cors({
     origin: process.env.CLIENT_PATH,
-    methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
 );

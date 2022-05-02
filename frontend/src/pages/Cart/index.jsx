@@ -5,7 +5,7 @@ import "./style.scss";
 import { userRequest } from "../../utils/CallApi";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { currentChange } from "../../utils/const";
+import { currentChange, removeVietnameseTones } from "../../utils/const";
 import {
   faXmark,
   faPlus,
@@ -38,8 +38,9 @@ function isValid(str) {
 const CartPage = () => {
   const user = useSelector((state) => state.user);
   const [cart, setCart] = useState([]);
+  const [userData, setUserData] = useState("");
   const [modalState, setModalState] = useState();
-  const [deliveryFee, setDeliveryFee] = useState(25000);
+  const deliveryFee = 25000;
   const [isChanged, setIsChanged] = useState(false);
   const [ReItem, setReItem] = useState({ optionID: "", color: "" });
   const [isLoading, setIsLoading] = useState(true);
@@ -104,12 +105,35 @@ const CartPage = () => {
         .catch((err) => console.log(err));
       navigate("/purchase");
     } else {
-      userRequest().post("cart/");
+      userRequest()
+        .post(`cart/${user.current._id}/create_payment_url`, {
+          orderDescription: removeVietnameseTones(
+            "Thanh toan 7Team cho khanh hang " +
+              user.current.name +
+              ". Số tiền " +
+              getTotal(cart)
+          ),
+          orderType: 110000,
+          amount: getTotal(cart),
+          language: "vn",
+        })
+        .then((res) => {
+          window.location.href = res.data;
+        })
+        .catch((err) => console.log(err));
     }
   };
 
   useEffect(() => {
-    getCart();
+    userRequest()
+      .get(`cart/${user.current._id}`)
+      .then((res) => {
+        setCart(res.data.list);
+        setUserData(res.data.userID);
+        dispatch(setQuantity(res.data.list));
+        setIsLoading(false);
+      })
+      .catch((err) => console.log(err));
     AOS.init({
       offset: 50, //trigger offset in px
       duration: 350, // values from 0 to 3000, with step 50ms
@@ -275,7 +299,7 @@ const CartPage = () => {
                 </div>
                 <div className='user-information'>
                   <h2 className='greeting'>
-                    Xin chào, {user.current.name.split(" ").slice(-1).join(" ")}
+                    Xin chào, {userData.name.split(" ").slice(-1).join(" ")}
                   </h2>
                   <h3 className='sub-heading'>
                     Hãy chắc chắn rằng thông tin vận chuyển của bạn là chính xác
@@ -285,7 +309,7 @@ const CartPage = () => {
                       <input
                         type='text'
                         id='fullName'
-                        value={user.current.name}
+                        value={userData.name}
                         placeholder=''
                         readOnly
                       />
@@ -295,7 +319,7 @@ const CartPage = () => {
                       <input
                         type='tel'
                         id='phoneNumber'
-                        value={user.current.phone}
+                        value={userData.phone}
                         placeholder=''
                         readOnly
                       />
@@ -305,7 +329,7 @@ const CartPage = () => {
                       <input
                         type='text'
                         id='provice/city'
-                        value={user.current.address.province}
+                        value={userData.address.province}
                         placeholder=''
                         readOnly
                       />
@@ -315,7 +339,7 @@ const CartPage = () => {
                       <input
                         type='text'
                         id='district'
-                        value={user.current.address.district}
+                        value={userData.address.district}
                         placeholder=''
                         readOnly
                       />
@@ -325,7 +349,7 @@ const CartPage = () => {
                       <input
                         type='text'
                         id='sub-district'
-                        value={user.current.address.ward}
+                        value={userData.address.ward}
                         placeholder=''
                         readOnly
                       />
@@ -335,7 +359,7 @@ const CartPage = () => {
                       <input
                         type='text'
                         id='house-number'
-                        value={user.current.address.addressdetail}
+                        value={userData.address.addressdetail}
                         placeholder=''
                         aria-describedby='home-number-help'
                         readOnly
@@ -346,11 +370,9 @@ const CartPage = () => {
                     </div>
 
                     <div className='formBtn'>
-                      <button
-                        className='confirm-btn'
-                        onClick={() => navigate("/")}>
+                      <Link className='confirm-btn' to={"/user"}>
                         Cập nhật thông tin
-                      </button>
+                      </Link>
                     </div>
                   </form>
                 </div>
@@ -360,7 +382,7 @@ const CartPage = () => {
                   <span>3</span>
                   <h2>Phương thức thanh toán</h2>
                 </div>
-                <form className='methods'>
+                <form className='methods row'>
                   {payments.map((item, index) => (
                     <label
                       key={index}
