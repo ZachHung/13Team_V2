@@ -131,12 +131,7 @@ export default function Login() {
               <div className="login__line">
                 <span>HOẶC</span>
               </div>
-              <div className="login__icon ">
-                <div className="login__icon--row">
-                  <FontAwesomeIcon icon={faFacebook}></FontAwesomeIcon>
-                  <span style={{ padding: "0 0" }}>Đăng Nhập với Facebook</span>
-                </div>
-              </div>
+
               <div className="login__icon" onClick={googleLogin}>
                 <div className="login__icon--row">
                   <FontAwesomeIcon icon={faGoogle}></FontAwesomeIcon>
