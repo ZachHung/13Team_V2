@@ -15,9 +15,11 @@ import { userRequest } from "../../utils/CallApi";
 import { hostServer } from "../../utils/const";
 import Dialog, { DialogOK } from '../../components/deleteConfirm/Dialog';
 import { Link } from "react-router-dom";
+import { ceil } from 'lodash';
 function ItemsAdmin () {
   var index = 1;
   const [itemList, setItemList] = useState ([]);
+  const itemListLength = itemList.length;
   const [selectedItem, setSelectedItem] = useState ([]);
   useEffect (() => {
     userRequest().get ('admin/products').then (res => {
@@ -130,24 +132,34 @@ function ItemsAdmin () {
       }
       else {
         handleDialogs("", false);
-        handleDialogOK("Bạn chưa chọn sản phẩm nào để xóa", true);
+        handleDialogOK("Bạn chưa chọn sản phẩm nào để xóa!", true);
       }
     }
     else{
       handleDialogs("", false);
     }
   };
-  const dateFormat = ()=>{
-    const dateFormat = new Date();
-    return dateFormat;
-  };
-  
+
   // Pagination
   const [currentPage, setCurrentPage] = useState (1);
   const [itemsPerPage, setItemsPerPage] = useState (7);
   const firstPageIndex = (currentPage - 1) * itemsPerPage;
   const lastPageIndex = firstPageIndex + itemsPerPage;
   const dataEachPage = itemList.slice (firstPageIndex, lastPageIndex);
+
+  const handleChangeItemsPerPage = () =>{
+    var queryItemsPerPage = parseInt(document.getElementById('getNumPerPage').value);
+    var renderItemsPerPage = queryItemsPerPage <= 0 ? 1 : queryItemsPerPage > itemListLength ? itemListLength : queryItemsPerPage;
+    setItemsPerPage(renderItemsPerPage);
+    document.getElementById('gotoPageNum').value = 1;
+    setCurrentPage(1);
+  }
+  const handleGoToPageNum = (e) =>{
+    var queryPageToGo = parseInt(document.getElementById('gotoPageNum').value);
+    var pageToGo = queryPageToGo <= 0 ? 1 : queryPageToGo > ceil(itemListLength/itemsPerPage) ? ceil(itemListLength/itemsPerPage) : queryPageToGo; 
+    document.getElementById('gotoPageNum').value = pageToGo;
+    setCurrentPage(pageToGo);
+  }
   
   if (itemList.length === 0) return (<p>Không có sản phẩm nào</p>);
   return (
@@ -164,7 +176,7 @@ function ItemsAdmin () {
           </Link>
           &nbsp;
           <button className="btnDeleteAllItems btn btn-danger" onClick={()=> handleDeleteMany()}>
-              <FontAwesomeIcon icon={faTrashAlt} /> Xóa tất cả sản phẩm
+              <FontAwesomeIcon icon={faTrashAlt} /> Xóa sản phẩm
           </button>
           &nbsp;
           <h2 className="fw-bold totalCountPur">(<FontAwesomeIcon icon={faCube}></FontAwesomeIcon> Tất cả: {itemList.length} sản phẩm)</h2>
@@ -268,10 +280,19 @@ function ItemsAdmin () {
       <PaginationAdmin
         className="pagination-bar"
         currentPage={currentPage}
-        totalCount={itemList.length}
+        totalCount={itemListLength}
         itemsPerPage={itemsPerPage}
         onPageChange={page => setCurrentPage (page)}
       />
+      <div className='divCustomBtn'> 
+        <label htmlFor='getNumPerPage'>Số lượng sản phẩm/trang: </label>
+        <input  type={'number'} id='getNumPerPage' min={1} max={itemListLength} defaultValue={itemsPerPage}></input>
+        <button className='myCustomBtn btn btn-outline-primary' onClick={()=> handleChangeItemsPerPage()}>OK</button>
+        <br></br>
+        <label htmlFor='gotoPageNum'>Đi nhanh đến trang: </label>
+        <input type={'number'} id='gotoPageNum' min={1} max={ceil(itemListLength/itemsPerPage)} defaultValue={1}></input>
+        <button className='myCustomBtn btn btn-outline-primary' onClick={(e)=>handleGoToPageNum(e)}>OK</button>
+      </div>
     </div>
   );
 }
