@@ -3,6 +3,8 @@ import './sidebar.scss'
 import { Link, useLocation } from 'react-router-dom'
 import { images } from '../../constants'
 import sidebarNav from '../../configs/sidebarNav'
+import HomePage from '../../pages/home'
+import { logout } from '../../redux/userRedux'
 
 const Sidebar = () => {
     const [activeIndex, setActiveIndex] = useState(0)
@@ -44,14 +46,14 @@ const Sidebar = () => {
                         </Link>
                     ))
                 }
-                <div className="sidebar__menu__item">
+                <Link to={HomePage} className="sidebar__menu__item" onClick={logout}>
                     <div className="sidebar__menu__item__icon">
                         <i className='bx bx-log-out'></i>
                     </div>
                     <div className="sidebar__menu__item__txt">
                         Đăng xuất
                     </div>
-                </div>
+                </Link>
             </div>
         </div>
     )

@@ -15,7 +15,7 @@ router.delete('/:id', purchase.removeItem);
 router.get('/emptylist', purchase.EmptyList);
 router.get('/', purchase.index);
 // @access ADMIN
-router.get('/getallpurchase', purchase.getAllPurchase);
-router.get('/getallpurchasebyyear', purchase.getAllPurchaseByYear);
-router.get('/getallpurchasebymonth', purchase.getAllPurchaseByMonth);
+router.get('/getallpurchase', verifyTokenAdmin, purchase.getAllPurchase);
+router.get('/getallpurchasebyyear', verifyTokenAdmin, purchase.getAllPurchaseByYear);
+router.get('/getallpurchasebymonth', verifyTokenAdmin, purchase.getAllPurchaseByMonth);
 module.exports = router;

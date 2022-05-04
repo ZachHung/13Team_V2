@@ -10,7 +10,7 @@ import { userRequest } from "../../utils/CallApi";
 import { hostServer } from "../../utils/const";
 import Dialog, { DialogOK } from '../../components/deleteConfirm/Dialog';
 import { Link } from "react-router-dom";
-
+import { ceil } from 'lodash';
 function PurchasesAdmin() {
   var index = 1;
   const [purchaseList, setPurchaseList] = useState([]);
@@ -129,7 +129,7 @@ function PurchasesAdmin() {
       }
       else {
         handleDialogs("", false);
-        handleDialogOK("Bạn chưa chọn đơn hàng nào để xóa", true);
+        handleDialogOK("Bạn chưa chọn đơn hàng nào để xóa!", true);
       }
     }
     else{
@@ -142,7 +142,21 @@ function PurchasesAdmin() {
   const firstPageIndex = (currentPage - 1) * purchasesPerPage;
   const lastPageIndex = firstPageIndex + purchasesPerPage;
   const dataEachPage = purchaseList.slice(firstPageIndex, lastPageIndex);
-  
+
+  const handleChangePurchasesPerPage = () =>{
+    var queryPurchasesPerPage = parseInt(document.getElementById('getNumPurPerPage').value);
+    var renderPurchasesPerPage = queryPurchasesPerPage <= 0 ? 1 : queryPurchasesPerPage > purchaseList.length ? purchaseList.length : queryPurchasesPerPage;
+    setPurchasesPerPage(renderPurchasesPerPage);
+    document.getElementById('gotoPagePurNum').value = 1;
+    setCurrentPage(1);
+  }
+  const handleGoToPageNum = (e) =>{
+    var queryPageToGo = parseInt(document.getElementById('gotoPagePurNum').value);
+    var pageToGo = queryPageToGo <= 0 ? 1 : queryPageToGo > ceil(purchaseList.length/purchasesPerPage) ? ceil(purchaseList.length/purchasesPerPage) : queryPageToGo; 
+    document.getElementById('gotoPagePurNum').value = pageToGo;
+    setCurrentPage(pageToGo);
+  }
+
   if (purchaseList.length === 0) return (<p>Không có đơn hàng nào</p>);
   return (
     <div className="listPurchasesAdminTitle d-flex flex-column ">
@@ -156,7 +170,7 @@ function PurchasesAdmin() {
           </Link>
           &nbsp;
           <button className="btnDeleteAllPurs btn btn-danger" onClick={()=>handleDeleteMany()}>
-            <FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon> Xóa tất cả đơn hàng 
+            <FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon> Xóa đơn hàng  
           </button>
           &nbsp;
           <h2 className="fw-bold totalCountPur">(<FontAwesomeIcon icon={faReceipt}></FontAwesomeIcon> Tất cả: {purchaseList.length} đơn hàng)</h2>     
@@ -258,6 +272,15 @@ function PurchasesAdmin() {
         itemsPerPage={purchasesPerPage}
         onPageChange={page => setCurrentPage(page)}
       />
+      <div className='divCustomBtn'> 
+        <label htmlFor='getNumPurPerPage'>Số lượng đơn hàng/trang: </label>
+        <input  type={'number'} id='getNumPurPerPage' min={1} max={purchaseList.length} defaultValue={purchasesPerPage}></input>
+        <button className='myCustomBtn btn btn-outline-primary' onClick={()=> handleChangePurchasesPerPage()}>OK</button>
+        <br></br>
+        <label htmlFor='gotoPagePurNum'>Đi nhanh đến trang: </label>
+        <input type={'number'} id='gotoPagePurNum' min={1} max={ceil(purchaseList.length/purchasesPerPage)} defaultValue={1}></input>
+        <button className='myCustomBtn btn btn-outline-primary' onClick={(e)=>handleGoToPageNum(e)}>OK</button>
+      </div>
     </div>
   );
 }

@@ -31,7 +31,8 @@
     "mongoose": "^6.2.7",
     "nodemailer": "^6.7.2",
     "passport": "^0.5.2",
-    "passport-google-oauth2": "^0.2.0"
+    "passport-google-oauth2": "^0.2.0",
+    "qs": "^6.10.3"
   },
   "devDependencies": {
     "concurrently": "^7.0.0",

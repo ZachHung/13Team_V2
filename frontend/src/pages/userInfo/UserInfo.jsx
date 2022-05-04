@@ -5,7 +5,8 @@ import { loginSuccess } from "../../redux/userRedux";
 import "./UserInfo.scss";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
-
+import { toast, ToastClassName, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const UserInfo = () => {
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState();
@@ -114,7 +115,20 @@ const UserInfo = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (provinceEle.current.value !== "" || districtEle.current.value !== "") {
+
+    if (
+      (provinceEle.current.value !== "" && districtEle.current.value === "") ||
+      (provinceEle.current.value !== "" && wardEle.current.value === "")
+    ) {
+      toast.warn("Vui Lòng Nhập Thông Tin Địa Chỉ", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } else if (checkError()) {
       userRequest()
         .post(`user/update/${user._id}`, {
@@ -129,10 +143,30 @@ const UserInfo = () => {
           addressDetail: detail,
         })
         .then((res) => {
+          console.log("Đã gửi");
           disPatch(
             loginSuccess({ ...res.data, accessToken: user.accessToken })
           );
+          toast.success("Cập Nhật Thành Công", {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         });
+    } else {
+      toast.error("Vui Lòng Điền Đầy Đủ Thông Tin", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
@@ -377,8 +411,10 @@ const UserInfo = () => {
               <input type="submit" value="Cập Nhật" onClick={handleSubmit} />
             </form>
           </div>
+          <ToastContainer></ToastContainer>
         </div>
       )}
+
       <Footer></Footer>
     </>
   );

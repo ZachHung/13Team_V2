@@ -77,5 +77,26 @@
     display: flex;
     justify-content: center;
   }
+  #gotoPageUserNum, #getNumUsersPerPage{
+    padding: 2px;
+    text-align: center;
+    margin: 5px;
+    vertical-align: middle;
+  }
+  .myCustomBtn{
+    padding: 6px;
+    font-size: small;
+    color: blue;
+    background-color: white;
+  }
+  .myCustomBtn:hover{
+    background-color: blue;
+    color: white
+  }
+  .divCustomBtn{
+    background-color: #4d5b7e;
+    color: white;
+    padding: 5px;
+  }
 
 }

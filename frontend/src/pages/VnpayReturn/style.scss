@@ -1,0 +1,18 @@
+.content.vnpay {
+  align-items: center;
+  .empty-cart {
+    gap: 2rem;
+  }
+  h1 {
+    font-size: 3rem;
+    font-weight: bold;
+  }
+  svg {
+    width: 4.8rem;
+    height: 4.8rem;
+    aspect-ratio: 1/1;
+  }
+  .confirm-btn {
+    width: unset;
+  }
+}

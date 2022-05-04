@@ -10,6 +10,7 @@ import { userRequest } from "../../utils/CallApi";
 import { hostServer } from "../../utils/const";
 import Dialog, { DialogOK } from '../../components/deleteConfirm/Dialog';
 import { Link } from "react-router-dom";
+import { ceil } from 'lodash';
 
 function UsersAdmin() {
   var index = 1;
@@ -128,7 +129,7 @@ function UsersAdmin() {
       }
       else {
         handleDialogs("", false);
-        handleDialogOK("Bạn chưa chọn người dùng nào để xóa", true);
+        handleDialogOK("Bạn chưa chọn người dùng nào để xóa!", true);
       }
     }
     else{
@@ -143,6 +144,20 @@ function UsersAdmin() {
   const lastPageIndex = firstPageIndex + usersPerPage;
   const dataEachPage = userList.slice(firstPageIndex, lastPageIndex);
 
+  const handleChangeUsersPerPage = () =>{
+    var queryUsersPerPage = parseInt(document.getElementById('getNumUsersPerPage').value);
+    var renderUsersPerPage = queryUsersPerPage <= 0 ? 1 : queryUsersPerPage > userList.length ? userList.length : queryUsersPerPage;
+    setUsersPerPage(renderUsersPerPage);
+    document.getElementById('gotoPageUserNum').value = 1;
+    setCurrentPage(1);
+  }
+  const handleGoToUsersPageNum = (e) =>{
+    var queryPageToGo = parseInt(document.getElementById('gotoPageUserNum').value);
+    var pageToGo = queryPageToGo <= 0 ? 1 : queryPageToGo > ceil(userList.length/usersPerPage) ? ceil(userList.length/usersPerPage) : queryPageToGo; 
+    document.getElementById('gotoPageUserNum').value = pageToGo;
+    setCurrentPage(pageToGo);
+  }
+
   if (userList.length === 0) return (<p>Không có người dùng nào</p>)
   return (
     <div className="listUsersAdminTitle d-flex flex-column">
@@ -155,7 +170,7 @@ function UsersAdmin() {
             </button>
           </Link>
           <button className="btnDeleteAllUsers btn btn-danger" onClick={()=>handleDeleteMany()}>
-            <FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon> Xóa tất cả người dùng
+            <FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon> Xóa người dùng
           </button>
           &nbsp;
           <h2 className="fw-bold totalCountPur">(<FontAwesomeIcon icon={faUserAlt}></FontAwesomeIcon> Tất cả: {userList.length} người dùng)</h2>
@@ -254,6 +269,15 @@ function UsersAdmin() {
         itemsPerPage={usersPerPage}
         onPageChange={page => setCurrentPage(page)}
       />
+       <div className='divCustomBtn'> 
+        <label htmlFor='getNumUsersPerPage'>Số lượng người dùng/trang: </label>
+        <input  type={'number'} id='getNumUsersPerPage' min={1} max={userList.length} defaultValue={usersPerPage}></input>
+        <button className='myCustomBtn btn btn-outline-primary' onClick={()=> handleChangeUsersPerPage()}>OK</button>
+        <br></br>
+        <label htmlFor='gotoPageUserNum'>Đi nhanh đến trang: </label>
+        <input type={'number'} id='gotoPageUserNum' min={1} max={ceil(userList.length/usersPerPage)} defaultValue={1}></input>
+        <button className='myCustomBtn btn btn-outline-primary' onClick={(e)=>handleGoToUsersPageNum(e)}>OK</button>
+      </div>
     </div>
   );
 }

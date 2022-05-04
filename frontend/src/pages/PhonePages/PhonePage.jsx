@@ -1,11 +1,8 @@
 import React from 'react';
-import { orderBy } from 'lodash';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { userRequest, publicRequest } from '../../utils/CallApi';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { setQuantity } from '../../redux/cart';
+import { useSelector } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -32,15 +29,13 @@ import './PhonePage.scss';
 // });
 
 function PhonePage() {
-  const { type } = useParams();
-  console.log('type', type);
+  const location = useLocation();
+  const type = location.pathname.split('/')[1];
   const user = useSelector((state) => state.user.current);
-  const dispatch = useDispatch();
   const [phoneList, setPhoneList] = useState([]);
   var initialCheckedBrand;
   // retrive name brand array
   publicRequest.get(`/${type}/brand/name`).then((res) => {
-    console.log('branname out component', res.data);
     initialCheckedBrand = res.data;
   });
 
@@ -83,7 +78,6 @@ function PhonePage() {
   };
   // filter
   const [brand, setBrand] = useState([]);
-  console.log('initialCheckedBrand', initialCheckedBrand);
   const [checkedBrand, setCheckedBrand] = useState([]);
   const [checkedPrice, setCheckedPrice] = useState([]);
   useEffect(() => {
@@ -112,7 +106,6 @@ function PhonePage() {
   // call api
 
   useEffect(() => {
-    console.log('urlString', urlString);
     window.history.pushState(
       {},
       'Tìm kiếm',
@@ -160,8 +153,6 @@ function PhonePage() {
   const [disableCompareModal, setDisableCompareModal] = useState(true);
   const handleCheckCompare = (idProduct, urlImg) => {
     setDisableCompareModal(false);
-
-    console.log('clicked handleCheckCompare', idProduct, urlImg);
     // if (checkedCompare.length > 2) {
     //   alert('so sánh tối đa 2 sản phẩm');
     //   alert('có vẻ bạn đã chọn đủ 2 sản phẩm, so sánh ngay');
@@ -184,8 +175,6 @@ function PhonePage() {
       }
     });
   };
-  console.log('checkedCompare: ', checkedCompare);
-  console.log('urlImage: ', urlImages);
   const handleClickCancelCompare = () => {
     setUrlImages([]);
     setCheckedCompare([]);
@@ -205,7 +194,6 @@ function PhonePage() {
   );
   // change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  console.log('check compare length: ', checkedCompare.length);
   return (
     <>
       <Header />

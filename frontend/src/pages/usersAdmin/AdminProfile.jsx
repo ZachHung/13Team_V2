@@ -67,20 +67,19 @@ const [showRePassword, setShowRePassword] = useState(false);
 const handleShowRePassword = () => {setShowRePassword((value) => !value);};
 
 const handleCurPassChange = (e) =>{
-  setCurPwd(e.target.value);
   console.log(e.target.value);
   if (e.target.value !== "" && e.target.value !== getCurPwd) document.getElementById('CurPassAlert').innerText = "Mật khẩu hiện tại không đúng, vui lòng nhập lại";
   else document.getElementById('CurPassAlert').innerText = "";
+  setCurPwd(e.target.value);
 }
 const handleNewPassChange = (e) =>{
-  setNewPwd(e.target.value);
   console.log(e.target.value);
   if (e.target.value.length < 6 && e.target.value.length > 0) {
     document.getElementById('NewPassAlert').innerText = "Mật khẩu cần ít nhất 6 ký tự";
   } else document.getElementById('NewPassAlert').innerText = "";
+  setNewPwd(e.target.value);
 }
 const handleRePassChange = (e) =>{
-  setRePwd(e.target.value);
   console.log(e.target.value);
   if (e.target.value.length > 0) {
     if (e.target.value.length < 6) {
@@ -93,6 +92,13 @@ const handleRePassChange = (e) =>{
     }
   }
   else if (e.target.value.length === 0) document.getElementById('RePassAlert').innerText = "";
+  setRePwd(e.target.value);
+}
+
+const checkValid = (e) =>{
+  e.preventDefault()
+  if (curPwd === "" && newPwd === "" && RePwd === "") document.getElementById('btnSubmitAdProfile').disabled = false;
+  else document.getElementById('btnSubmitAdProfile').disabled = true;
 }
 
 
@@ -397,7 +403,7 @@ const handleRePassChange = (e) =>{
               </div>
             </div>
             <div className="text-right">
-              <button className="btn my-btn-checkout" type='submit'>
+              <button className="btn my-btn-checkout" id="btnSubmitAdProfile" type='submit' onBlur={(e)=>checkValid(e)}>
                     Thay đổi
               </button>     
             </div>

@@ -5,3 +5,55 @@ h1{
 .themmargin{
     margin: 10px 0px;
 }
+.addbnt{
+    margin-left: 20px;
+    font-weight: bolder;
+    font-size: 18px;
+    padding: 0 10px;
+    background-color:bisque;
+    color: black;
+}
+.remove-image{
+    font-weight: bolder;
+    font-size: 18px;
+    padding: 0 10px;
+    background-color:bisque;
+    color: black;
+    float: right;
+}
+.my-input-tag{
+    height: 30px;
+    font-size: 16px
+}
+.label-select
+{
+    display: block;
+    clear: both;
+}
+.bnt-back{
+    background-color:burlywood
+}
+.bnt-back:hover{
+    background-color:chocolate;
+}
+.decri{
+    color: red;
+}
+
+.newImage{
+    border-color: orange;
+}
+.newImage-brand
+{
+    border-color: orange;
+}
+.image-new{
+    margin-top: 5px;
+}
+
+.textareafont{
+    font-size: 15px;
+}
+.btn-block{
+    font-size: 15px;
+}

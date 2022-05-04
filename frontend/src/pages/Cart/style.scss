@@ -305,6 +305,7 @@
       }
     }
     > * {
+      text-align: center;
       width: 100%;
     }
   }
@@ -409,7 +410,6 @@
         @include flex(center, flex-start);
         cursor: pointer;
         padding: 0.5rem 1.2rem;
-        width: 100%;
         border: 2px solid black;
         border-radius: 1rem;
         width: $content-width;
@@ -432,11 +432,12 @@
       }
       &__icon > * {
         border-radius: 0.5rem;
-        width: $hw;
         height: $hw;
+        aspect-ratio: 1/1;
       }
       &__name {
         font-size: 1.6rem;
+        white-space: pre-line;
       }
       &__custom-radio {
         border: 2px solid black;
@@ -470,6 +471,9 @@
         }
       }
       width: $content-width;
+      @include mobile {
+        width: $content-width_mobile;
+      }
     }
   }
 }
