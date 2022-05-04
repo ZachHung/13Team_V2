@@ -393,10 +393,7 @@ function PhonePage() {
                             : 'form-group compare'
                         }`}
                         onClick={() =>
-                          handleCheckCompare(
-                            phone._id,
-                            `${process.env.REACT_APP_SERVER_PATH}/${phone.image[0]}`
-                          )
+                          handleCheckCompare(phone._id, `${phone.image[0]}`)
                         }
                       >
                         <input

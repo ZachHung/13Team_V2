@@ -10,7 +10,7 @@ const {
 router.post('/repurchase', purchase.checkout);
 router.get('/delivered/:userID', verifyTokenAuth, purchase.delivered);
 router.get('/delivering/:userID', verifyTokenAuth, purchase.delivering);
-router.get('/all/:userID', verifyTokenAuth, purchase.all);
+router.get('/all/:userID', purchase.all); //verifyTokenAuth,
 router.delete('/:id', purchase.removeItem);
 router.get('/emptylist', purchase.EmptyList);
 router.get('/', purchase.index);

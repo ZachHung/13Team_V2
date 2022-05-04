@@ -83,10 +83,7 @@ export default function ComparePage() {
                       <Link
                         to={`/phone/${item.slug[0].slug}-${item.slug[0].detail}`}
                       >
-                        <img
-                          src={`http://localhost:5000/${item.image[0]}`}
-                          alt={item.name}
-                        />
+                        <img src={`${item.image[0]}`} alt={item.name} />
                       </Link>
                       <h3>{item.name}</h3>
                       <div className="price">

@@ -320,10 +320,7 @@ function SearchPage() {
                       <Link
                         to={`/${phone.type}/${phone.slug[0].slug}-${phone.slug[0].detail}`}
                       >
-                        <img
-                          src={`http://localhost:5000/${phone.image[0]}`}
-                          alt={phone.name}
-                        />
+                        <img src={`${phone.image[0]}`} alt={phone.name} />
                       </Link>
                     </div>
                     <div className="info-product">
