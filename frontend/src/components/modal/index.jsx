@@ -15,7 +15,7 @@ function ModalPopUp({ name, modalState, toogleState, handelClickConfirm }) {
     document.addEventListener('mousedown', closeDropdown);
     return () => document.removeEventListener('mousedown', closeDropdown);
   });
-
+  const content = `Xóa sản phẩm khỏi ${name}?`;
   return (
     <div
       className={`remove-modal${modalState == undefined ? '' : ' opened'}${
@@ -24,7 +24,7 @@ function ModalPopUp({ name, modalState, toogleState, handelClickConfirm }) {
     >
       <div className="modal-background">
         <div className="modal-container" ref={modalContainerRef}>
-          <div className="modal__content">Xóa sản phẩm khỏi {name}?</div>
+          <div className="modal__content">{content}</div>
           <div className="modal__footer">
             <button
               className="modal__button--confirm confirm-btn"

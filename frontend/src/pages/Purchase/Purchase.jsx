@@ -3,7 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { userRequest } from '../../utils/CallApi';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -19,6 +19,8 @@ export default function Purchase() {
   const [reload, setReload] = useState(false);
   const userCurrent = useSelector((state) => state.user.current);
   const userID = userCurrent._id;
+  const navigateCart = useNavigate();
+
   // console.log('user', user._id);
   const [clickedDeleteButton, setClickedDeleteButton] = useState({
     productID: '',
@@ -99,6 +101,18 @@ export default function Purchase() {
     setClickedDeleteButton({ productID: productId });
     // console.log('userID: ', userID, ' , productID: ', productId);
   };
+  const handleRepurchase = (optionID, color) => {
+    console.log('optionID: ', optionID, 'color: ', color);
+    userRequest()
+      .post(`cart/add/${userID}`, {
+        optionID: optionID,
+        color: color,
+      })
+      .then(() => {
+        navigateCart('../cart');
+      })
+      .catch((err) => console.log(err));
+  };
   const handleRenderProduct = (item, product) => {
     if (!item.deleted) {
       return (
@@ -163,7 +177,7 @@ export default function Purchase() {
               <button
                 class="btn  "
                 type="submit"
-                onClick={() => setModalState(true)}
+                onClick={() => handleRepurchase(item.optionID._id, item.color)}
               >
                 Mua lại
               </button>

@@ -132,7 +132,7 @@ class PurchaseController {
         res.json(data);
       });
   }
-  checkout(req, res, next) {
+  repurchase(req, res, next) {
     cart
       .find({ userID: useId })
 
@@ -184,6 +184,22 @@ class PurchaseController {
         { $pull: { list: { optionID: req.params.id } } }
       )
       .then(() => res.redirect('back'))
+      .catch(next);
+  }
+  FindOne(req, res, next) {
+    const userId = req.params.userID;
+    const productId = req.params.productID;
+    purchase
+      .find(
+        {
+          $and: [{ userID: userId }, { 'list._id': productId }],
+        },
+        {
+          _id: 0,
+          list: { $elemMatch: { _id: productId } },
+        }
+      )
+      .then((data) => res.json(data))
       .catch(next);
   }
   UpdateOne(req, res, next) {
