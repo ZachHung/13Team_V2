@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import "./index.scss";
+import { useEffect, useRef } from 'react';
+import './index.scss';
 
 function ModalPopUp({ name, modalState, toogleState, handelClickConfirm }) {
   const modalContainerRef = useRef();
@@ -12,14 +12,14 @@ function ModalPopUp({ name, modalState, toogleState, handelClickConfirm }) {
       )
         toogleState(false);
     };
-    document.addEventListener("mousedown", closeDropdown);
-    return () => document.removeEventListener("mousedown", closeDropdown);
+    document.addEventListener('mousedown', closeDropdown);
+    return () => document.removeEventListener('mousedown', closeDropdown);
   });
 
   return (
     <div
-      className={`remove-modal${modalState == undefined ? "" : " opened"}${
-        modalState === false ? " out" : ""
+      className={`remove-modal${modalState == undefined ? '' : ' opened'}${
+        modalState === false ? ' out' : ''
       }`}
     >
       <div className="modal-background">

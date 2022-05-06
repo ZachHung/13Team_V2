@@ -16,6 +16,13 @@ import ModalPopUp from '../../components/modal';
 
 export default function Purchase() {
   const [productsList, setProductsList] = useState([]);
+  const [reload, setReload] = useState(false);
+  const userCurrent = useSelector((state) => state.user.current);
+  const userID = userCurrent._id;
+  // console.log('user', user._id);
+  const [clickedDeleteButton, setClickedDeleteButton] = useState({
+    productID: '',
+  });
   const [activeStatus, setActiveStatus] = useState({
     all: true,
     delivering: false,
@@ -51,7 +58,12 @@ export default function Purchase() {
     getPurchase();
   }, []);
   const handelClickConfirm = () => {
-    setModalState(false);
+    userRequest()
+      .put(`purchase/update/${userID}/${clickedDeleteButton.productID}`)
+      .then(() => {
+        getPurchase();
+        setModalState(false);
+      });
   };
   const handleClickAllProduct = () => {
     console.log('all');
@@ -81,6 +93,11 @@ export default function Purchase() {
       delivering: false,
       delivered: true,
     });
+  };
+  const handleClickedDeleteButton = (productId) => {
+    setModalState(true);
+    setClickedDeleteButton({ productID: productId });
+    // console.log('userID: ', userID, ' , productID: ', productId);
   };
   const handleRenderProduct = (item, product) => {
     if (!item.deleted) {
@@ -126,6 +143,7 @@ export default function Purchase() {
                   </p>
                   <p class="num">
                     Màu: <strong id="colorProduct">{item.color}</strong>
+                    {/* Màu: <strong id="colorProduct">{item._id}</strong> */}
                   </p>
                 </div>
               </div>
@@ -149,7 +167,10 @@ export default function Purchase() {
               >
                 Mua lại
               </button>
-              <button class="btn " onClick={() => setModalState(true)}>
+              <button
+                class="btn "
+                onClick={() => handleClickedDeleteButton(item._id)}
+              >
                 Xóa
               </button>
             </div>
@@ -166,6 +187,7 @@ export default function Purchase() {
       return <></>;
     }
   };
+
   return (
     <>
       <Header />

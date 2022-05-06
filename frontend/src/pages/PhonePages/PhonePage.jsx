@@ -32,6 +32,7 @@ function PhonePage() {
   const location = useLocation();
   const type = location.pathname.split('/')[1];
   const user = useSelector((state) => state.user.current);
+  // console.log('user', user._id);
   const [phoneList, setPhoneList] = useState([]);
   var initialCheckedBrand;
   // retrive name brand array
