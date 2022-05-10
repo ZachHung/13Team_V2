@@ -17,7 +17,6 @@ import "./style.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/userRedux";
-import { publicRequest } from "../../utils/CallApi";
 
 const Header = ({ color }) => {
   const [menuState, setMenuState] = useState(false);
@@ -38,7 +37,10 @@ const Header = ({ color }) => {
   };
   const handleLogOut = () => {
     dispatch(logout());
-    window.open(process.env.REACT_APP_SERVER_PATH + "/api/auth/logout", "_self");
+    window.open(
+      process.env.REACT_APP_SERVER_PATH + "/api/auth/logout",
+      "_self"
+    );
   };
   useEffect(() => {
     const closeDropdown = (e) => {
@@ -59,7 +61,8 @@ const Header = ({ color }) => {
             aria-expanded={menuState}
             className={`toggle-menu${menuState ? " opened" : ""}`}
             onClick={() => setMenuState((prev) => !prev)}
-            aria-label='Main Menu'>
+            aria-label='Main Menu'
+          >
             <svg width='47' height='47' className='' viewBox='0 0 100 100'>
               <path
                 className='line line1'
@@ -85,7 +88,8 @@ const Header = ({ color }) => {
             <Link
               to='/accessory'
               id='accessory'
-              onClick={() => setMenuState(false)}>
+              onClick={() => setMenuState(false)}
+            >
               Phụ Kiện
             </Link>
           </div>
@@ -136,13 +140,15 @@ const Header = ({ color }) => {
               <div
                 className='icon dropdown'
                 ref={btnRef}
-                onClick={() => setDropdownState((prev) => !prev)}>
+                onClick={() => setDropdownState((prev) => !prev)}
+              >
                 <FontAwesomeIcon
                   icon={!dropdownState ? faCaretDown : faCaretUp}
                 />
                 <ul
                   className={`${dropdownState ? "opened" : ""}`}
-                  onClick={(e) => e.stopPropagation()}>
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <li>
                     <FontAwesomeIcon
                       icon={user.isAdmin ? faUserGear : faUser}
