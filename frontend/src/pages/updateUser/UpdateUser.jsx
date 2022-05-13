@@ -105,16 +105,6 @@ function UpdateUser() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(isAdmin);
-        console.log(name);
-        console.log(phone);
-        console.log(gender);
-        console.log(birthday);
-        console.log(email);
-        console.log(provinceEle);
-        console.log(districtEle);
-        console.log(wardEle);
-        console.log(detailEle);
         userRequest()
             .put(`admin/customers/update/${params.id}`, {
                 isAdmin: isAdmin,
