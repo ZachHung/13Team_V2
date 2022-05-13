@@ -12,7 +12,7 @@ function ModalCompare({
   handleClickCancelCompare,
   countCompare,
 }) {
-  console.log('infoProducts: ', infoProducts, type);
+  // console.log('infoProducts: ', infoProducts, type);
   const navigateCompare = useNavigate();
   var convertToStr;
   if (infoProducts.length >= 2) {
@@ -30,7 +30,7 @@ function ModalCompare({
       navigateCompare(`../compare?${type}=${convertToStr}`);
     }
   };
-  console.log('countcompare: ', countCompare);
+  // console.log('countcompare: ', countCompare);
   return (
     <div
       className={`${
