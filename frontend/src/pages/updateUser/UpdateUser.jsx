@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import './UpdateUser.scss';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -12,10 +12,40 @@ function UpdateUser() {
     const [district, setdistrict] = useState([]);
     const [province, setaddress] = useState([]);
     const [ward, setward] = useState([]);
+    const [isAdmin, setIsAdmin] = useState();
+    const [name, setName] = useState();
+    const [phone, setPhone] = useState();
+    const [email, setEmail] = useState();
+    const [gender, setGender] = useState();
+    const [birthday, setBirthday] = useState();
+    // const [provinceEle, setProvinceEle] = useState();
+    // const [districtEle, setDistrictEle] = useState();
+    // const [wardEle, setWardEle] = useState();
+    // const [addressdetail, setAddressdetail] = useState();
+    const provinceEle = useRef();
+    const districtEle = useRef();
+    const wardEle = useRef();
+    const detailEle = useRef();
+
 
     useEffect(() => {
         userRequest().get("admin/customers/edit/" + params.id).then((res) => {
             setUser(res.data.user);
+            setIsAdmin(res.data.user.isAdmin);
+            setName(res.data.user.name);
+            setEmail(res.data.user.email);
+            setPhone(res.data.user.phone);
+            setBirthday(res.data.user.birthday);
+            setGender(res.data.user.gender);
+            // setAddressdetail(res.data.address.addressdetail);
+            // setProvinceEle(res.data.address.province);
+            // setDistrictEle(res.data.address.district);
+            // setWardEle(res.data.address.ward);
+            provinceEle.current.value = user.address.province;
+            districtEle.current.value = user.address.district;
+            wardEle.current.value = user.address.ward;
+            detailEle.current.value = user.address.detailEle;
+
         });
     }, []);
 
@@ -27,9 +57,10 @@ function UpdateUser() {
 
     const Getdistrictbyprovince = () => {
         var province = document.getElementById("province").value;
+        provinceEle.current.value = document.getElementById("province").value;
+
         document.getElementById("district").value = "";
         document.getElementById("ward").value = "";
-        console.log(province);
         axios.get(hostServer + '/api/address/district/' + province).then((res) => {
             setdistrict(res.data.address);
         });
@@ -38,37 +69,97 @@ function UpdateUser() {
     const Getwardbydistrict = () => {
         var province = document.getElementById("province").value;
         var district = document.getElementById("district").value;
+        districtEle.current.value = document.getElementById("district").value;
+
         document.getElementById("ward").value = "";
-        axios.get(hostServer + '/api/address/ward/' + province + '/' + district).then((res) => {
+        axios.get(hostServer + '/api/address/ward/' + provinceEle.current.value + '/' + district).then((res) => {
             setward(res.data.address);
         });
     }
+    const handleisAdmin = (e) => {
+        setIsAdmin(e.target.checked);
+    };
+    const handlename = (e) => {
+        setName(e.target.value);
+    };
+    const handlephone = (e) => {
+        setPhone(e.target.value);
+    };
+    const handleemail = (e) => {
+        setEmail(e.target.value);
+    };
+    const handlegender = (e) => {
+        setGender(e.target.value);
+    };
+    const handlebirthday = (e) => {
+        setBirthday(e.target.value);
+    };
+
+    const handleward = (e) => {
+        wardEle.current.value = e.target.value
+
+    };
+    const handladdressdetail = (e) => {
+        detailEle.current.value = e.target.value
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(isAdmin);
+        console.log(name);
+        console.log(phone);
+        console.log(gender);
+        console.log(birthday);
+        console.log(email);
+        console.log(provinceEle);
+        console.log(districtEle);
+        console.log(wardEle);
+        console.log(detailEle);
+        userRequest()
+            .put(`admin/customers/update/${params.id}`, {
+                isAdmin: isAdmin,
+                username: name,
+                phone: phone,
+                gender: gender,
+                birthday: birthday,
+                email: email,
+                province: provinceEle.current.value,
+                district: districtEle.current.value,
+                ward: wardEle.current.value,
+                addressDetail: detailEle.current.value,
+            })
+            .then((res) => {
+
+            })
+            .catch((err) => console.log(err));
+    };
 
     return (
         <div className="container mt-4 mb-4">
             <h1 className="text-center heading">Cập nhật thông tin người dùng</h1>
-            <form className="mt-4" method="POST" action={hostServer + "/api/admin/customers/update/" + user._id + "?_method=PUT"}>
+            {/* <form className="mt-4" method="POST" action={hostServer + "/api/admin/customers/update/" + user._id + "?_method=PUT"}> */}
+            <form className="mt-4">
                 <div className="mb-4 check">
-                    <input className="form-check-input my-check-tag" type="checkbox" name='isAdmin' defaultChecked={user.isAdmin} id="flexCheckDefault"/>
-                        <label className="form-check-label label_level_1" >
-                            Admin
-                        </label>
+                    <input className="form-check-input my-check-tag" type="checkbox" onClick={handleisAdmin} name='isAdmin' defaultChecked={user.isAdmin} id="flexCheckDefault" />
+                    <label className="form-check-label label_level_1" >
+                        Admin
+                    </label>
                 </div>
                 <div className="mb-4">
                     <label className="form-label label_level_1">Tên người dùng</label>
-                    <input type="text" className="form-control my-input-tag" id='name' name='name' defaultValue={user.name} />
+                    <input type="text" className="form-control my-input-tag" id='name' onChange={handlename} name='name' defaultValue={user.name} />
                 </div>
                 <div className="mb-4">
                     <label className="form-label label_level_1">Số điện thoại</label>
-                    <input type="text" className="form-control my-input-tag" id='phone' name='phone' defaultValue={user.phone} />
+                    <input type="text" className="form-control my-input-tag" id='phone' onChange={handlephone} name='phone' defaultValue={user.phone} />
                 </div>
                 <div className="mb-4">
                     <label className="form-label label_level_1">Địa chỉ email</label>
-                    <input type="text" className="form-control my-input-tag" id='email' name='email' defaultValue={user.email} />
+                    <input type="text" className="form-control my-input-tag" id='email' onChange={handleemail} name='email' defaultValue={user.email} />
                 </div>
                 <div className="mb-4">
                     <label className="form-label label_level_1">Giới tính</label>
-                    <select className="form-select my-input-tag" name='gender' aria-label=".form-select-sm example">
+                    <select className="form-select my-input-tag" name='gender' onChange={handlegender} aria-label=".form-select-sm example">
                         <option hidden selected>{user.gender}</option>
                         <option value="Nam">Nam</option>
                         <option value="Nữ">Nữ</option>
@@ -77,7 +168,7 @@ function UpdateUser() {
 
                 <div className="mb-4">
                     <label className="form-label label_level_1">Ngày sinh</label>
-                    <input type="text" className="form-control my-input-tag" id='birthday' name='birthday' defaultValue={user.birthday} />
+                    <input type="text" className="form-control my-input-tag" id='birthday' onChange={handlebirthday} name='birthday' defaultValue={user.birthday} />
                 </div>
 
                 <label className="form-label label_level_1">Địa chỉ</label>
@@ -85,7 +176,7 @@ function UpdateUser() {
                 <div className='lavel_2'>
                     <div className="mb-4">
                         <label className="form-label label_level_2">Thành phố/tỉnh</label>
-                        <select className="form-select my-input-tag" id='province' name='address.province' onChange={Getdistrictbyprovince} aria-label=".form-select-sm example">
+                        <select className="form-select my-input-tag" id='province' ref={provinceEle} name='address.province' onChange={Getdistrictbyprovince} aria-label=".form-select-sm example">
                             <option hidden selected>{user.address?.province}</option>
                             {
                                 province?.map((province) => (
@@ -97,7 +188,7 @@ function UpdateUser() {
 
                     <div className="mb-4">
                         <label className="form-label label_level_2">Quận/huyện</label>
-                        <select className="form-select my-input-tag" id='district' name='address.district' onChange={Getwardbydistrict} aria-label=".form-select-sm example">
+                        <select className="form-select my-input-tag" id='district' ref={districtEle} name='address.district' onChange={Getwardbydistrict} aria-label=".form-select-sm example">
                             <option id="slt-dis" hidden selected>{user.address?.district}</option>
                             {
                                 district.districts?.map((district) => (
@@ -109,7 +200,7 @@ function UpdateUser() {
 
                     <div className="mb-4">
                         <label className="form-label label_level_2">Phường/xã</label>
-                        <select className="form-select my-input-tag" id='ward' name='address.ward' aria-label=".form-select-sm example">
+                        <select className="form-select my-input-tag" id='ward' ref={wardEle} onChange={handleward} name='address.ward' aria-label=".form-select-sm example">
                             <option hidden selected>{user.address?.ward}</option>
                             {
                                 ward.wards?.map((ward) => (
@@ -121,12 +212,12 @@ function UpdateUser() {
 
                     <div className="mb-4">
                         <label className="form-label label_level_2">Địa chỉ cụ thể</label>
-                        <input type="text" className="form-control my-input-tag" id='addressdetail' name='address.addressdetail' defaultValue={user.address?.addressdetail} />
+                        <input type="text" className="form-control my-input-tag" ref={detailEle} onChange={handladdressdetail} id='addressdetail' name='address.addressdetail' defaultValue={user.address?.addressdetail} />
                     </div>
                 </div>
 
                 <Link className="btn btn-primary my-bnt bnt-back" to='/admin/customers'>Quay lại</Link>
-                <button type="submit" className="btn btn-primary my-bnt">Lưu lại</button>
+                <button className="btn btn-primary my-bnt" onClick={handleSubmit}>Lưu lại</button>
             </form>
         </div>
     );
