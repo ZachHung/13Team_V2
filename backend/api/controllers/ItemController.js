@@ -412,9 +412,9 @@ class ItemController {
 
     try{
       console.log("aaaaaa");
-        
-        var techInfoConvert = {
-          techInfo: [
+      console.log(req.body);
+        var techInfoConvert =
+        [
             {
               infoType: "Màn hình",
               infoDetail: [
@@ -464,7 +464,7 @@ class ItemController {
               ]
             }
           ]
-        }
+        
         const brand1={
           name: req.body.brand,
           brandImage: req.body.brandimage
@@ -473,10 +473,10 @@ class ItemController {
         const item={
           name: req.body.name,
           type: req.body.type,
-          description: req.body.description,
+          description: req.body.decription,
           image:url,
           slug: req.body.slug,
-          techInfo: techInfoConvert,
+          techInfo:techInfoConvert,
           brand: brand1
         }
         console.log(item);
@@ -488,9 +488,8 @@ class ItemController {
         try
         { var result =await createitem.save()
         .then((data)=>{
-
-          res.redirect(URL+"admin/products"
-      )
+          res.json(data);
+          //res.redirect(URL+"admin/products")
          
     })
         .catch(next);
