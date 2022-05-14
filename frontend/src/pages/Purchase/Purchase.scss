@@ -1,9 +1,11 @@
 .container_purchase {
-    margin-left: 10em;
-    padding: 3rem;
+  
+  align-items: stretch;
+  justify-content: center;  
+    padding: 0 13rem 0 13rem;
     display: flex;
     flex-direction: column;
-    width: 85%;
+    // width: 100%;
   
     /* background-color: teal; */
     justify-items: center;
@@ -157,59 +159,17 @@
         color: white;
         background-color: black;
       }
-  // /* remove confirmation modal*/
-  // .remove-modal {
-  //   display: none;
-  //   top: 0;
-  //   bottom: 0;
-  //   right: 0;
-  //   left: 0;
-  //   position: fixed;
-  //   background: rgba(0, 0, 0, 0.6);
-  //   align-items: center;
-  //   justify-content: center;
-  //   z-index: 1;
-  // }
-  // .modal-container {
-  //   position: relative;
-  //   min-height: 20rem;
-  //   border-radius: 2rem;
-  //   background-color: white;
-  //   width: 40rem;
-  // }
-  // .modal__content {
-  //   font-weight: bold;
-  //   text-align: center;
-  //   margin-top: 6rem;
-  //   font-size: 2.5rem;
-  // }
-  // .modal__footer {
-  //   position: absolute;
-  //   bottom: 2rem;
-  //   right: 2rem;
-  //   display: flex;
-  //   align-items: center;
-  //   justify-content: center;
-  //   margin: 3.2rem 0 0 0;
-
-  //   button {
-  //     border-radius: 0.8rem;
-  //     position: relative;
-  //     font-weight: bold;
-  //     cursor: pointer;
-  //     font-size: 1.8rem;
-  //     padding: 1rem 2rem;
-  //     z-index: 1;
-  //   }
-  //   .cancel-btn {
-  //     border: 2px solid black;
-  //     background-color: white;
-  //     color: black;
-  //   }
-  // }
-  // .modal__button--cancel {
-  //   margin-left: 0.8rem;
-  // }
+  @media screen and (max-width: 480px) {
+    padding: 0 3rem 0 3rem;
+    
+      .status_menu a {
+        font-size: 1.5rem;
+        color: black;
+        font-weight: 600;
+        padding: 1rem;
+    }
+    
+  }
   }
   
   

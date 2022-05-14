@@ -9,11 +9,6 @@ const TopNav = () => {
 
     return (
         <div className='topnav'>
-            <div className='topnav__search'>
-                <input type="text" placeholder='Search here...'/>
-                <i className='bx bx-search'></i>
-            </div>
-            
             <div className="sidebar-toggle" onClick={openSidebar}>
                 <i className='bx bx-menu-alt-right'></i>
             </div>

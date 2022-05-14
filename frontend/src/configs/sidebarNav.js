@@ -24,12 +24,6 @@ const sidebarNav = [
         text: 'Người dùng'
     },
     {
-        link: '/admin/stats',
-        section: 'sale',
-        icon: <i className='bx bx-line-chart'></i>,
-        text: 'Thống kê'
-    },
-    {
         link: '/admin/settings',
         section: 'settings',
         icon: <i className='bx bx-cog'></i>,

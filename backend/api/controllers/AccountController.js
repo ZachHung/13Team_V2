@@ -257,17 +257,17 @@ class AccountController {
               });
             }
           })
-          .catch((err) => {});
+          .catch((err) => { });
       })
       .catch((err) => {
         res.send(err);
       });
 
     /*
-		// res.render("userinfo", {
-		// 	user: req.session.user,
-		// });
-		// */
+    // res.render("userinfo", {
+    // 	user: req.session.user,
+    // });
+    // */
   }
   update(req, res, next) {
     user
@@ -343,28 +343,57 @@ class AccountController {
   }
 
   updateUser(req, res, next) {
-    if (req.body.isAdmin == "on") {
-      req.body.isAdmin = true;
-    } else {
-      req.body.isAdmin = false;
-    }
-    console.log(req.body);
 
     user
-      .updateOne({ _id: req.params.id }, req.body)
-      .then(() => res.redirect(URL + "admin/customers/update/" + req.params.id))
-      .catch(next);
+      .updateOne(
+        {
+          _id: req.user.id,
+        },
+        {
+          name: req.body.username,
+          isAdmin: req.body.isAdmin,
+          phone: req.body.phone,
+          gender: req.body.gender,
+          birthday: req.body.birthday,
+          email: req.body.email,
+          address: {
+            province: req.body.province,
+            district: req.body.district,
+            ward: req.body.ward,
+            addressdetail: req.body.addressDetail,
+          },
+        }
+      )
+      .then((data) => {
+        if (data.modifiedCount != 0) {
+          user.findOne({ _id: req.user.id }).then((user) => {
+            const { password, ...others } = user._doc;
+            res.send(others);
+          });
+        }
+      });
+    // if (req.body.isAdmin == "on") {
+    //   req.body.isAdmin = true;
+    // } else {
+    //   req.body.isAdmin = false;
+    // }
+    // console.log(req.body);
+
+    // user
+    //   .updateOne({ _id: req.params.id }, req.body)
+    //   .then(() => res.redirect(URL + "admin/customers/update/" + req.params.id))
+    //   .catch(next);
   }
   editProfileAdmin(req, res, next) {
     user
       .findById(req.params.id)
       .then((users) => {
-        const curPass = 
+        const curPass =
           CryptoJS.AES.decrypt(
             users.password,
             process.env.PASS_SECRET
           ).toString(CryptoJS.enc.Utf8);
-        
+
         res.json({ user: users, currentPwd: curPass });
       })
       .catch(next);
@@ -407,7 +436,7 @@ class AccountController {
                   process.env.PASS_SECRET
                 ).toString(CryptoJS.enc.Utf8)
               ) {
-               
+
                 res.redirect(URL + "admin/settings/");
                 return;
               } else if (newPassword !== newPasswordRepeat) {
@@ -420,7 +449,7 @@ class AccountController {
                 );
               }
             }
-            else if (!currentPassword && !newPassword && !newPassword){
+            else if (!currentPassword && !newPassword && !newPassword) {
               if (userRes.name !== name) userRes.name = name;
               if (userRes.email !== email) userRes.email = email;
               if (userRes.phone !== phoneNumber) userRes.phone = phoneNumber;
@@ -434,16 +463,16 @@ class AccountController {
               if (userRes.address.addressdetail !== addressdetail)
                 userRes.address.addressdetail = addressdetail;
 
-            user
-              .updateOne({ _id: idUser }, userRes)
-              .then(() => {
-                res.redirect(URL + `admin/settings`);
-              })
-              .catch(next);
+              user
+                .updateOne({ _id: idUser }, userRes)
+                .then(() => {
+                  res.redirect(URL + `admin/settings`);
+                })
+                .catch(next);
             }
           })
           .catch(next);
-              
+
       })
       .catch(next);
   }

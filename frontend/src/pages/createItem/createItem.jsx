@@ -7,6 +7,7 @@ import { publicRequest } from "../../utils/CallApi";
 import { userRequest } from "../../utils/CallApi";
 
 import { storage } from '../../firebase';
+
 import { toast, ToastClassName, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -28,13 +29,15 @@ function CreatePhoneAdminPage() {
     const [video,setVideo]=useState('');
     const [ram,setRam]=useState('');
     const [cpu,setCpu]=useState('');
+
     const [errorText, setErrorText] = useState("");
     const [formData, setFormData] = useState({});
-   // const [image, setImage] = useState(null);
+    // const [image, setImage] = useState(null);
     const [urlImages, setUrls] = useState([]);
     //Upload anh thuong hieu
     function handleChangeBrandImage(e) {
         if (e.target.files[0])
+
         setBrandImage(e.target.files[0]);
         
       }
@@ -116,6 +119,8 @@ function CreatePhoneAdminPage() {
           return true;   
       }
       const handleUploadBrandImage = e => {
+
+
         document.getElementById("isLoading-brand").style.display = "block"
         const uploadTask = storage.ref(`images/${brandimage.name}`).put(brandimage);
         uploadTask.on(
@@ -137,6 +142,7 @@ function CreatePhoneAdminPage() {
                         //setFormData({...formData,["brandimage"]:`${UrlBrandimage}`});
                         console.log(formData)
                         console.log(formData);
+
                         document.getElementById("image-new-brand").name = "brandimage";
                         document.getElementById("my-image-brand").style.display = "block";
                         document.getElementById("isLoading-brand").style.display = "none";
@@ -146,17 +152,16 @@ function CreatePhoneAdminPage() {
     }
     //Upload anh
     const handleChange = e => {
-        for(let i=0;i<e.target.files.length;i++)
-        {
-            const newImage=e.target.files[i];
-            newImage["id"]=Math.random();
-            setImages((prevState)=>[...prevState,newImage]);
+        for (let i = 0; i < e.target.files.length; i++) {
+            const newImage = e.target.files[i];
+            newImage["id"] = Math.random();
+            setImages((prevState) => [...prevState, newImage]);
         }
     }
-    
+
     const handleUpload = e => {
-        const promises=[];
-        images.map((image)=>{
+        const promises = [];
+        images.map((image) => {
             const uploadTask = storage.ref(`images/${image.name}`).put(image);
             promises.push(uploadTask);
             uploadTask.on(
@@ -165,7 +170,7 @@ function CreatePhoneAdminPage() {
                 error => {
                     console.log(error);
                 },
-                async  () => {
+                async () => {
                     await storage
                         .ref("images")
                         .child(image.name)
@@ -174,6 +179,7 @@ function CreatePhoneAdminPage() {
                             console.log(urls);
                             handleInput("image",urls);
                             setUrls((prevState)=>[...prevState,urls]);
+
                             document.getElementById("image-new").name = "image";
                             document.getElementById("my-image").style.display = "block";
                             document.getElementById("isLoading").style.display = "none"
@@ -183,14 +189,14 @@ function CreatePhoneAdminPage() {
         })
         document.getElementById("isLoading").style.display = "block"
         Promise.all(promises)
-        .then(()=>alert("Tất cả ảnh được upload"))
-        .catch((err)=>console.log(err))
+            .then(() => alert("Tất cả ảnh được upload"))
+            .catch((err) => console.log(err))
         console.log("urls: ", urlImages);
         console.log("imges", images);
-        console.log("urls length",urlImages.length);
+        console.log("urls length", urlImages.length);
         console.log("urls thu o la  ", urlImages[0]);
     }
-    
+
     const handleInput = (name, value) => {
         setErrorText("");
         console.log(name,value);
@@ -251,9 +257,10 @@ function CreatePhoneAdminPage() {
                 draggable: true,
                 progress: undefined,
                 });
+
             });
-        
-      };
+
+    };
     return (
         <div className='container'>
             <h1 className="control-label">THÊM SẢN PHẨM MỚI </h1>
@@ -261,6 +268,7 @@ function CreatePhoneAdminPage() {
             <form id="createPhoneinfo"  >
                 <div className="form-group">
                     <label className="form-label">Tên sản phẩm</label>
+
                     <input type="text" id="name" name='name' value={name} className="form-control my-input-tag " onBlur={validateAll}  onChange={(e)=>{setName(e.target.value);handleInput("name",name);} }   />
                     <p className='text-danger thongbaoloi'>{errorText.name}</p>
                     <label  className="form-label" name='slug' >Slug</label>
@@ -269,6 +277,7 @@ function CreatePhoneAdminPage() {
                 <p className='text-danger thongbaoloi'>{errorText.slug}</p>
                 <label className="form-label label-select my-input-tag">Chọn loại sản phẩm </label>
                 <select className="type_device my-input-tag" name='type'  id="type" value={type} onChange={(e)=>{setType(e.target.value);handleInput("type",e.target.value);}}  >
+
                     <option value="Phone">Phone</option>
                     <option value="Tablet">Tablet</option>
                     <option value="Laptop">Laptop</option>
@@ -276,16 +285,21 @@ function CreatePhoneAdminPage() {
                 </select>
                 <h2 className='form-label themmargin' >Thương hiệu</h2>
                 <label className='form-label' >Tên thương hiệu</label>
+
                 <input type="text" name='brand' placeholder='Apple' id="brand"  className="form-control my-input-tag" onBlur={validateAll} value={brand} onChange={(e)=>{setBrand(e.target.value);handleInput("brand",brand)}}  ></input>
                 <p className='text-danger thongbaoloi'>{errorText.brand}</p>
                 
                 <div id='my-image-brand' className='add-image-brand'>
                             <input type="text" className="form-control mt-4 my-input-tag newImage-brand"  value={UrlBrandimage}  placeholder='Nhập vào đường dẫn' id="image-new-brand"  />
                            
+
                         </div>
-                        <div id='isLoading-brand' className='mt-4 add-info' >
-                            <h3 className='text-center'>Đang tải...</h3>
+                        <div className="col">
+                            <a className="btn btn-primary upload-bnt" onClick={handleUploadBrandImage}>Tải lên</a>
                         </div>
+                    </div>
+                </div>
+
 
                         <div className="mb-4 mt-4">
                             <div className="row">
@@ -312,16 +326,15 @@ function CreatePhoneAdminPage() {
                             <h3 className='text-center'>Đang tải...</h3>
                         </div>
 
-                        <div className="mb-4 mt-4">
-                            <div className="row">
-                                <div className="col-10">
-                                    <label htmlFor="formFile" className="label_level_2">Thêm hình ảnh sản phẩm</label>
-                                    <input className="form-control my-input-tag" type="file" onChange={handleChange} multiple="true" />
-                                </div>
-                                <div className="col">
-                                    <a className="btn btn-primary upload-bnt" onClick={handleUpload}>Tải lên</a>
-                                </div>
-                            </div>
+
+                <div className="mb-4 mt-4">
+                    <div className="row">
+                        <div className="col-10">
+                            <label htmlFor="formFile" className="label_level_2">Thêm hình ảnh sản phẩm</label>
+                            <input className="form-control my-input-tag" type="file" onChange={handleChange} multiple="true" />
+                        </div>
+                        <div className="col">
+                            <a className="btn btn-primary upload-bnt" onClick={handleUpload}>Tải lên</a>
                         </div>
                 
                 <h2>Thông tin về công nghệ</h2>
@@ -355,8 +368,9 @@ function CreatePhoneAdminPage() {
                 <button className="btn btn-primary btn-lg btn-block form-control" onClick={handleSubmit} >Thêm sản phẩm mới</button>
             </form>
             <ToastContainer></ToastContainer>
+
         </div>
-        
+
     );
 }
 
