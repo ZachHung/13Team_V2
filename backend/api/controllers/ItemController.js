@@ -421,95 +421,93 @@ class ItemController {
 
     try {
       console.log("aaaaaa");
-
-      var techInfoConvert = {
-        techInfo: [
-          {
-            infoType: "Màn hình",
-            infoDetail: [
-              {
-                infoName: "kích Thước Màn Hình",
-                infoNum: req.body.size
-              },
-              {
-                infoName: "Công nghệ màn hình",
-                infoNum: req.body.typescreen
-              },
-              {
-                infoName: "Độ phân giải màn hình",
-                infoNum: req.body.resolution
-              }
-            ]
-          },
-          {
-            infoType: "Camera sau",
-            infoDetail: [
-              {
-                infoName: "Camera sau",
-                infoNum: req.body.triple
-              },
-              {
-                infoName: "Quay video",
-                infoNum: req.body.video
-              }
-            ]
-          },
-          {
-            infoType: "CPU",
-            infoDetail: [
-              {
-                infoName: "Chip xử lí",
-                infoNum: req.body.cpu
-              }
-            ]
-          },
-          {
-            infoType: "RAM",
-            infoDetail: [
-              {
-                infoName: "Bộ nhớ trong",
-                infoNum: req.body.ram
-              }
-            ]
-          }
-        ]
-      }
-      const brand1 = {
-        name: req.body.brand,
-        brandImage: req.body.brandimage
-      }
-      var url = req.body.image.split(',');
-      const item = {
-        name: req.body.name,
-        type: req.body.type,
-        description: req.body.description,
-        image: url,
-        slug: req.body.slug,
-        techInfo: techInfoConvert,
-        brand: brand1
-      }
-      console.log(item);
-      const createitem = new items(item);
-
-      console.log(createitem);
-      // req.body.techInfo = techInfoConvert.techInfo;
-
-      try {
-        var result = await createitem.save()
-          .then((data) => {
-
-            res.redirect(URL + "admin/products"
-            )
-
-          })
-          .catch(next);
-      }
-      catch (e) {
-        console.log(e.message);
-      }
-
-
-      res.status('200');
+      console.log(req.body);
+        var techInfoConvert =
+        [
+            {
+              infoType: "Màn hình",
+              infoDetail: [
+                {
+                  infoName: "kích Thước Màn Hình",
+                  infoNum: req.body.size
+                },
+                {
+                  infoName: "Công nghệ màn hình",
+                  infoNum: req.body.typescreen
+                },
+                {
+                  infoName: "Độ phân giải màn hình",
+                  infoNum: req.body.resolution
+                }
+              ]
+            },
+            {
+              infoType: "Camera sau",
+              infoDetail: [
+                {
+                  infoName: "Camera sau",
+                  infoNum: req.body.triple
+                },
+                {
+                  infoName: "Quay video",
+                  infoNum: req.body.video
+                }
+              ]
+            },
+            {
+              infoType: "CPU",
+              infoDetail: [
+                {
+                  infoName: "Chip xử lí",
+                  infoNum: req.body.cpu
+                }
+              ]
+            },
+            {
+              infoType: "RAM",
+              infoDetail: [
+                {
+                  infoName: "Bộ nhớ trong",
+                  infoNum: req.body.ram
+                }
+              ]
+            }
+          ]
+        
+        const brand1={
+          name: req.body.brand,
+          brandImage: req.body.brandimage
+        }
+        var url=req.body.image.split(',');
+        const item={
+          name: req.body.name,
+          type: req.body.type,
+          description: req.body.decription,
+          image:url,
+          slug: req.body.slug,
+          techInfo:techInfoConvert,
+          brand: brand1
+        }
+        console.log(item);
+        const createitem=new items(item);
+       
+        console.log(createitem);
+        // req.body.techInfo = techInfoConvert.techInfo;
+        
+        try
+        { var result =await createitem.save()
+        .then((data)=>{
+          res.json(data);
+          //res.redirect(URL+"admin/products")
+         
+    })
+        .catch(next);
+        }
+        catch(e)
+        {
+          console.log(e.message);
+        }
+        res.status('200');
     }
     catch (e) {
       console.log("error");
