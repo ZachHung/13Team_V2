@@ -12,6 +12,7 @@ import {
   faCaretDown,
   faCaretUp,
   faWrench,
+  faImage,
 } from '@fortawesome/free-solid-svg-icons';
 import './style.scss';
 import { Link, useNavigate } from 'react-router-dom';
@@ -95,6 +96,9 @@ const Header = ({ color }) => {
           </div>
 
           <div className={`utility${menuState ? ' active' : ''}`}>
+            <Link to="/searchbyimg" className="icon">
+              <FontAwesomeIcon icon={faImage} />
+            </Link>
             <div className="searchbox icon">
               {menuState ? (
                 <>
