@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import "./style.scss";
@@ -141,7 +141,7 @@ const CartPage = () => {
       once: true,
     });
     AOS.refresh();
-  }, []);
+  }, [user]);
   useEffect(() => getCart(), [isChanged]);
   if (isLoading)
     return (
@@ -189,7 +189,8 @@ const CartPage = () => {
                     <li className='cart__item' key={index}>
                       <div className='item__image'>
                         <Link
-                          to={`/${item.optionID.item.type}/${item.optionID.slug}-${item.optionID.detail}`}>
+                          to={`/${item.optionID.item.type}/${item.optionID.slug}-${item.optionID.detail}`}
+                        >
                           <img
                             src={
                               process.env.REACT_APP_SERVER_PATH +
@@ -229,7 +230,8 @@ const CartPage = () => {
                                 item.color,
                                 item.quantity - 1
                               )
-                            }>
+                            }
+                          >
                             <FontAwesomeIcon icon={faMinus} />
                           </button>
                           <input
@@ -257,7 +259,8 @@ const CartPage = () => {
                                 item.color,
                                 item.quantity + 1
                               )
-                            }>
+                            }
+                          >
                             <FontAwesomeIcon icon={faPlus} />
                           </button>
                         </div>
@@ -388,7 +391,8 @@ const CartPage = () => {
                       key={index}
                       className={`${
                         payment !== item.name ? "disabled" : "checked"
-                      }`}>
+                      }`}
+                    >
                       <span className='methods__custom-radio'>
                         <input
                           type='radio'
@@ -400,7 +404,7 @@ const CartPage = () => {
                       </span>
                       <span className={"methods__icon"}>
                         {item.img ? (
-                          <img src={`/images/${item.img}`} />
+                          <img src={`/images/${item.img}`} alt='' />
                         ) : (
                           <FontAwesomeIcon icon={item.fontAwsome} />
                         )}
@@ -411,8 +415,9 @@ const CartPage = () => {
                   <div className='formBtn'>
                     <button
                       className='confirm-btn'
-                      disabled={payment == undefined}
-                      onClick={() => handlePurchase()}>
+                      disabled={payment === undefined}
+                      onClick={() => handlePurchase()}
+                    >
                       Thanh toán
                     </button>
                   </div>

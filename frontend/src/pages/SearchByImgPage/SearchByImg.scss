@@ -1,0 +1,82 @@
+.container-sbi{
+    .preview-img{
+        height: 30%;
+        width: 30%;
+    }
+    .product:hover {
+        border-radius: 2rem;
+        border: solid 0.1rem var(--grey2);
+        
+      }
+      // chia cột lọc thương hiệu, giá 1 cột, danh sách sản phẩm 3 cột
+      .products-layout {
+        display: grid;
+        grid-template-columns:  3fr;
+        gap: 0 1rem;
+        margin-right: 2rem;
+      }
+    
+      .list-products {
+        display: grid;
+        grid-template-columns: repeat(3, 250px); // lặp lại số sp trên 1 dòng
+    
+        gap: 3rem;
+        margin: 0 auto;
+        margin-right: 8%;
+      }
+     
+      .list-products form {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-bottom: 3rem;
+      }
+    
+      .list-products form .item {
+        margin-right: 1rem;
+      }
+    
+      .list-products form label {
+        color: var(--grey1);
+      }
+    
+      .list-products form select {
+        padding: 1rem;
+        width: 10rem;
+        border: 1px solid #f2f2f2;
+        outline: none;
+      }
+    
+      .list-products {
+        text-align: center;
+      }
+    
+      .product {
+        overflow: hidden;
+      }
+    
+      .product-name {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+        text-align: left;
+      }
+    
+      .product-name a {
+        text-decoration: none;
+        color: var(--black);
+      }
+    
+      .product .img-container {
+        position: relative;
+        cursor: pointer;
+      }
+    
+      .product .img-container img {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+      }
+}

@@ -114,6 +114,8 @@ function PhonePage() {
     );
     publicRequest.get(`/${type}${urlString}`).then((res) => {
       setPhoneList(res.data.items);
+      // console.log('data: ', res.data.items);
+      // console.log('urlString: ', `/${type}${urlString}`);
     });
   }, [urlString, type]);
 
@@ -195,6 +197,78 @@ function PhonePage() {
   );
   // change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  //  set accessory
+  const handleRenderAccessory = (phone) => {
+    // console.log('type: ', type);
+    if (type === 'accessory') {
+      return (
+        <div>
+          {' '}
+          <span data-title="CPU">
+            <p>
+              <FontAwesomeIcon
+                icon={faMicrochip}
+                style={{ paddingRight: '5px' }}
+              />
+              {phone.techInfo[1].infoDetail[0].infoNum}
+            </p>
+          </span>
+          <span data-title="Màn hình">
+            <p>
+              <FontAwesomeIcon
+                icon={faMobile}
+                style={{ paddingRight: '5px' }}
+              />
+              {phone.techInfo[0].infoDetail[0].infoNum}
+            </p>
+          </span>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <span data-title="CPU">
+            <p>
+              <FontAwesomeIcon
+                icon={faMicrochip}
+                style={{ paddingRight: '5px' }}
+              />
+              {phone.techInfo[2].infoDetail[0].infoNum}
+            </p>
+          </span>
+          <span data-title="Màn hình">
+            <p>
+              <FontAwesomeIcon
+                icon={faMobile}
+                style={{ paddingRight: '5px' }}
+              />
+              {phone.techInfo[0].infoDetail[0].infoNum}
+            </p>
+          </span>
+          <span data-title="RAM">
+            <p>
+              <FontAwesomeIcon
+                icon={faMemory}
+                style={{ paddingRight: '5px' }}
+              />
+              {phone.techInfo[3].infoDetail[0].infoNum}
+            </p>
+          </span>
+
+          <span data-title="ROM">
+            <p>
+              <FontAwesomeIcon
+                icon={faHardDrive}
+                style={{ paddingRight: '5px' }}
+              />
+              {phone.slug[0].detail}
+            </p>
+          </span>
+        </div>
+      );
+    }
+  };
+
   return (
     <>
       <Header />
@@ -250,9 +324,9 @@ function PhonePage() {
             ))}
           </div>
           {/* <SortProduct
-            handleSortAsc={handleSortAsc}
-            handleSortDesc={handleSortDesc}
-          /> */}
+              handleSortAsc={handleSortAsc}
+              handleSortDesc={handleSortDesc}
+            /> */}
           <div className="products-layout container">
             <div className="filter">
               <div>
@@ -414,43 +488,7 @@ function PhonePage() {
                       </div>
                       <div className="config">
                         <div className="config-param">
-                          <span data-title="CPU">
-                            <p>
-                              <FontAwesomeIcon
-                                icon={faMicrochip}
-                                style={{ paddingRight: '5px' }}
-                              />
-                              {phone.techInfo[2].infoDetail[0].infoNum}
-                            </p>
-                          </span>
-                          <span data-title="Màn hình">
-                            <p>
-                              <FontAwesomeIcon
-                                icon={faMobile}
-                                style={{ paddingRight: '5px' }}
-                              />
-                              {phone.techInfo[0].infoDetail[0].infoNum}
-                            </p>
-                          </span>
-                          <span data-title="RAM">
-                            <p>
-                              <FontAwesomeIcon
-                                icon={faMemory}
-                                style={{ paddingRight: '5px' }}
-                              />
-                              {phone.techInfo[3].infoDetail[0].infoNum}
-                            </p>
-                          </span>
-
-                          <span data-title="ROM">
-                            <p>
-                              <FontAwesomeIcon
-                                icon={faHardDrive}
-                                style={{ paddingRight: '5px' }}
-                              />
-                              {phone.slug[0].detail}
-                            </p>
-                          </span>
+                          {handleRenderAccessory(phone)}
                         </div>
                       </div>
                       <div className="product-btn">

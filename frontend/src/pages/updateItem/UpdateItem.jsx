@@ -1,9 +1,8 @@
 import React from 'react';
 import './UpdateItem.scss';
 import { userRequest } from "../../utils/CallApi";
-import { hostServer } from "../../utils/const";
 import { useEffect, useState } from 'react';
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { storage } from '../../firebase';
 import { Link } from "react-router-dom";
 
@@ -12,7 +11,6 @@ function UpdateItem() {
     const [item, setPhone] = useState([]);
     const [image, setImage] = useState(null);
     const [urlImage, setUrl] = useState("");
-    
     useEffect(() => {
         userRequest()
             .get(`admin/products/edit/${params.id}`)
@@ -46,6 +44,7 @@ function UpdateItem() {
                         console.log(url)
                         setUrl(url)
                         document.getElementById("image-new").name = "image";
+                        document.getElementById("image-new").classList.add("image");
                         document.getElementById("my-image").style.display = "block";
                         document.getElementById("isLoading").style.display = "none"
                     });
@@ -53,12 +52,66 @@ function UpdateItem() {
         );
     }
 
+
+    const CheckImage = (e) => {
+        if (e.target.value === "") {
+            e.target.classList.add("remove")
+            e.target.classList.remove("image")
+        }
+    }; 
+
+
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        var a = document.getElementsByClassName("image");
+        var b = document.getElementsByClassName("infoNum");
+        var imageStr = [];
+        for (var i = 0; i < a.length; i++) {
+            imageStr[i] = a[i].value;
+        }
+
+
+        var KTMH = b[0].value;
+        var CNMH = b[1].value;
+        var DPGMH = b[2].value;
+        var CAM = b[3].value;
+        var QUAY = b[4].value;
+        var CHIP = b[5].value;
+        var BONHO = b[6].value;
+
+        var name = document.getElementById("name").value;
+        var type = document.getElementById("type").value;
+        var description = document.getElementById("description").value;
+        var brandname = document.getElementById("brand.name").value;
+        var brandImage = document.getElementById("brand.brandImage").value;
+
+
+
+        userRequest()
+            .put(`admin/products/update/${params.id}`, {
+                infoNum: [KTMH, CNMH, DPGMH, CAM, QUAY, CHIP, BONHO],
+                name: name,
+                type: type,
+                image: imageStr,
+                description: description,
+                'brand.name': brandname,
+                'brand.brandImage': brandImage,
+
+            })
+            .then(() => {
+            })
+            .catch((err) => console.log(err));
+    };
+
     return (
         <div className="container mt-4 mb-4">
             <h1 className="text-center heading">Chỉnh sửa thông tin sản phẩm</h1>
 
             {item.map(item => (
-                <form className="mt-4" method="POST" action={hostServer + "/api/admin/products/update/" + item._id + "?_method=PUT"}>
+                // <form className="mt-4" method="POST" action={hostServer + "/api/admin/products/update/" + item._id + "?_method=PUT"}>
+                <form className="mt-4">
                     <Link to={`/admin/products/updateDetail/${item._id}`} className="btn btn-primary bnt-more">Sửa chi tiết</Link>
                     <br></br>
                     <div className="mb-4">
@@ -77,7 +130,7 @@ function UpdateItem() {
                         <p className='decri'>Xóa đường dẫn để xóa hình ảnh sản phẩm đó</p>
                         {item.image?.map(images => (
                             <div>
-                                <input type="text" onBlur={CheckImage} className="form-control mt-4 my-input-tag image" placeholder='Hình này sẽ bị xóa' defaultValue={images} id="image" name="image" />
+                                <input type="text" onBlur={CheckImage}  className="form-control mt-4 my-input-tag image" placeholder='Hình này sẽ bị xóa' defaultValue={images} id="image" name="image" />
                             </div>
                         ))}
                         <div id='my-image' className='add-image'>
@@ -126,7 +179,7 @@ function UpdateItem() {
                                 {techInfos.infoDetail?.map((infoDetails, index_2) => (
                                     <div className='mb-4'>
                                         <label className="form-label label_level_3">{infoDetails.infoName}</label>
-                                        <textarea className="form-control my-area-tag" id="infoNum" name="infoNum" defaultValue={infoDetails.infoNum} />
+                                        <textarea className="form-control my-area-tag infoNum" id="infoNum" name="infoNum" defaultValue={infoDetails.infoNum} />
                                     </div>
                                 ))}
                             </div>
@@ -134,7 +187,7 @@ function UpdateItem() {
 
                     </div>
                     <Link className="btn btn-primary my-bnt bnt-back" to='/admin/products'>Quay lại</Link>
-                    <button type="submit" className="btn btn-primary my-bnt">Lưu lại</button>
+                    <button onClick={handleSubmit} className="btn btn-primary my-bnt">Lưu lại</button>
                 </form>
             ))}
 
@@ -143,15 +196,17 @@ function UpdateItem() {
 }
 
 //check for delete image of item
-function CheckImage() {
-    var image = document.getElementsByClassName('image');
-    for (var i = 0; i < image.length; i++) {
-        if (image[i].value === "") {
-            image[i].name = "";
-        } else {
-            image[i].name = "image";
-        }
-    }
-}
+// function CheckImage() {
+//     var image = document.getElementsByClassName('image');
+//     console.log("oke")
+//     for (var i = 0; i < image.length; i++) {
+//         if (image[i].value === "") {
+//             image[i].name = "";
+//             document.getElementsByClassName('image').classList.remove("image")
+//         } else {
+//             image[i].name = "image";
+//         }
+//     }
+// }
 
 export default UpdateItem;

@@ -65,7 +65,7 @@ class PurchaseController {
                   $set: { status: 'Đã giao hàng' },
                 }
               )
-              .then(() => {});
+              .then(() => { });
           }
         }
         res.json(data);
@@ -502,9 +502,20 @@ class PurchaseController {
   }
 
   updatePurchase(req, res, next) {
+    console.log(req.params)
     purchase
       .updateOne({ _id: req.params.id }, req.body)
-      .then(() => res.redirect(URL + 'admin/orders'))
+      .then((data) => {
+        if (data.modifiedCount !== 0) {
+          res.json({
+            status: "true",
+          });
+        } else {
+          res.status(202).json({
+            message: "Lỗi Hệ Thống",
+          });
+        }
+      })
       .catch(next);
   }
 }

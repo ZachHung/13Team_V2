@@ -78,6 +78,48 @@
             font-size: 1.5rem;
         }
     }
+    @media screen and (max-width: 720px) {
+       
+        h1{
+            width: 20%;
+        }
+        .products-compare{
+            
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            .product-compare{
+                .icon-circleXmark{
+                    position: absolute;
+                    font-size: 2rem;
+                    top: 5%;
+                    
+                }
+                img{
+                    margin-left: 1rem;
+                    width: 10rem;
+                }
+            }
+        }
+        .wrap-btn{
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            .btn{
+                font-weight: 300;
+                text-align: center;
+                white-space: nowrap;
+                border-radius: 1rem;
+                padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+                line-height: 5px; 
+                cursor: pointer;
+            }
+            
+            p{
+                font-size: 0.5rem;
+            }
+        }
+    }
 }
 
 // display: none !important;

@@ -42,10 +42,11 @@ class PhoneController {
     }
   }
   brand(req, res, next) {
+    console.log('came here');
     var fullUrl = req.originalUrl;
-    // console.log('fullUrl ', fullUrl);
+    console.log('fullUrl ', fullUrl);
     const urlArray = fullUrl.split('/');
-    // console.log('split: ', urlArray[2]);
+    console.log('split: ', urlArray[2]);
     const typeProduct = urlArray[2];
     console.log('type product brand: ', typeProduct);
     items

@@ -46,12 +46,12 @@ const Sidebar = () => {
                         </Link>
                     ))
                 }
-                <Link to={HomePage} className="sidebar__menu__item" onClick={logout}>
+                <Link to="/" className="sidebar__menu__item" onClick={logout}>
                     <div className="sidebar__menu__item__icon">
                         <i className='bx bx-log-out'></i>
                     </div>
                     <div className="sidebar__menu__item__txt">
-                        Đăng xuất
+                        Quay lại
                     </div>
                 </Link>
             </div>

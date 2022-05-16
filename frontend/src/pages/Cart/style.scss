@@ -22,7 +22,7 @@
     margin-left: auto;
     margin-right: auto;
     gap: 2rem;
-    @include tablet {
+    @include mobile {
       flex-direction: column;
       width: 85%;
       gap: 1rem;

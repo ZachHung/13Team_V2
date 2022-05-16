@@ -1,44 +1,45 @@
-import HomePage from "./pages/home";
-import PhonePage from "./pages/PhonePages/PhonePage";
-import NotFound from "./pages/NotFound";
-import Purchase from "./pages/Purchase/Purchase";
+import HomePage from './pages/home';
+import PhonePage from './pages/PhonePages/PhonePage';
+import NotFound from './pages/NotFound';
+import Purchase from './pages/Purchase/Purchase';
 
-import "./App.scss";
-import LoginPage from "./pages/login/Login";
-import Register from "./pages/register/Register";
-import Recovery from "./pages/recovery/Recovery";
-import { Route, Routes } from "react-router-dom";
-import { useSelector } from "react-redux";
-import React from "react";
+import './App.scss';
+import LoginPage from './pages/login/Login';
+import Register from './pages/register/Register';
+import Recovery from './pages/recovery/Recovery';
+import { Route, Routes } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import React from 'react';
 
-import ProductPage from "./pages/Product/ProductPage";
-import PrivateRoute from "./routes/PrivateRoute";
-import AuthUserRoute from "./routes/AuthUserRoute";
-import Admin from "./pages/Admin";
-import CartPage from "./pages/Cart";
-import ScrollButton from "./components/scrollBtn";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import ItemsAdmin from "./pages/itemsAdmin/ItemsAdmin";
-import CreateItem from "./pages/createItem/createItem";
-import UpdateItem from "./pages/updateItem/UpdateItem";
-import AddItemDetail from "./pages/addItemDetail/addItemDetail";
-import UpdateItemDetail from "./pages/updateItem/UpdateItemDetail";
-import UsersAdmin from "./pages/usersAdmin/UsersAdmin";
-import UpdateUser from "./pages/updateUser/UpdateUser";
-import PurchasesAdmin from "./pages/purchasesAdmin/PurchasesAdmin";
-import UpdatePurchase from "./pages/updatePurchase/UpdatePurchase";
-import AdminProfile from "./pages/usersAdmin/AdminProfile";
-import DetailPurchaseAdmin from "./pages/purchasesAdmin/DetailPurchaseAdmin";
-import Blank from "./pages/Blank";
-import ComparePage from "./pages/compareProducts/compare";
+import ProductPage from './pages/Product/ProductPage';
+import PrivateRoute from './routes/PrivateRoute';
+import AuthUserRoute from './routes/AuthUserRoute';
+import Admin from './pages/Admin';
+import CartPage from './pages/Cart';
+import ScrollButton from './components/scrollBtn';
+import Dashboard from './pages/Dashboard/Dashboard';
+import ItemsAdmin from './pages/itemsAdmin/ItemsAdmin';
+import CreateItem from './pages/createItem/createItem';
+import UpdateItem from './pages/updateItem/UpdateItem';
+import AddItemDetail from './pages/addItemDetail/addItemDetail';
+import UpdateItemDetail from './pages/updateItem/UpdateItemDetail';
+import UsersAdmin from './pages/usersAdmin/UsersAdmin';
+import UpdateUser from './pages/updateUser/UpdateUser';
+import PurchasesAdmin from './pages/purchasesAdmin/PurchasesAdmin';
+import UpdatePurchase from './pages/updatePurchase/UpdatePurchase';
+import AdminProfile from './pages/usersAdmin/AdminProfile';
+import DetailPurchaseAdmin from './pages/purchasesAdmin/DetailPurchaseAdmin';
+import Blank from './pages/Blank';
+import ComparePage from './pages/compareProducts/compare';
+import SearchByImg from './pages/SearchByImgPage/SearchByImg';
 //import scss va boxicon cho dashboard
-import "./assets/libs/boxicons-2.1.1/css/boxicons.min.css";
-import "./scss/App.scss";
-import UserInfo from "./pages/userInfo/UserInfo";
-import SearchPage from "./pages/SearchPage/SearchPage";
-import VnpayReturn from "./pages/VnpayReturn";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import './assets/libs/boxicons-2.1.1/css/boxicons.min.css';
+import './scss/App.scss';
+import UserInfo from './pages/userInfo/UserInfo';
+import SearchPage from './pages/SearchPage/SearchPage';
+import VnpayReturn from './pages/VnpayReturn';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
   const isAdmin = useSelector((state) => state.user.isAdmin);
   return (
@@ -58,6 +59,7 @@ function App() {
         <Route path="/tablet/:id" element={<ProductPage />} />
         <Route path="/accessory/:id" element={<ProductPage />} />
         <Route path="/vnPay" element={<VnpayReturn />} />
+        <Route path="/searchbyimg" element={<SearchByImg />} />
 
         {/* end publicRoute */}
 

@@ -17,18 +17,18 @@ export default function ComparePage() {
   const [products, setProductsList] = useState([]);
   const [convertedProducts, setConvertedProducts] = useState([]);
   const compare = useLocation();
-  console.log('úeLocation ', compare);
+  // console.log('úeLocation ', compare);
 
-  console.log('compare.search: ', compare.search);
+  // console.log('compare.search: ', compare.search);
   var str = compare.search;
   var typeProduct = str.substring(str.indexOf('?') + 1, str.lastIndexOf('='));
-  console.log('type Product: ', typeProduct);
+  // console.log('type Product: ', typeProduct);
   const idProduct = new URLSearchParams(compare.search).get(typeProduct); // .serach là tham số bắt buộc để get query params
-  console.log('IDproduct: ', idProduct);
+  // console.log('IDproduct: ', idProduct);
   useEffect(() => {
     publicRequest.get(`/phone/compare?product=${idProduct}`).then((res) => {
       setProductsList(res.data);
-      console.log(res.data);
+      // console.log(res.data);
       window.history.pushState(
         {},
         'So Sánh',
@@ -78,8 +78,8 @@ export default function ComparePage() {
               {
                 <tr>
                   <th>Model</th>
-                  {products.map((item) => (
-                    <td>
+                  {products.map((item, i) => (
+                    <td key={i}>
                       <Link
                         to={`/phone/${item.slug[0].slug}-${item.slug[0].detail}`}
                       >

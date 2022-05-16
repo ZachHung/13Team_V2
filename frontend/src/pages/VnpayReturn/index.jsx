@@ -14,7 +14,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 
 const VnpayReturn = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [returnData, setReturnData] = useState(null);
   const userID = useSelector((state) => state.user.current._id);
   useEffect(() => {
@@ -33,7 +33,7 @@ const VnpayReturn = () => {
             .catch((err) => console.log(err))
       )
       .catch((err) => console.log(err));
-  }, []);
+  }, [searchParams, userID]);
 
   return (
     <>
