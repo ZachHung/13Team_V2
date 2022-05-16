@@ -385,6 +385,7 @@ class AccountController {
     //   .catch(next);
   }
   editProfileAdmin(req, res, next) {
+    
     user
       .findById(req.params.id)
       .then((users) => {
@@ -399,82 +400,113 @@ class AccountController {
       .catch(next);
   }
   updateProfileAdmin(req, res, next) {
-    const {
-      name,
-      email,
-      currentPassword,
-      newPassword,
-      newPasswordRepeat,
-      birthday,
-      gender,
-      province,
-      district,
-      ward,
-      addressdetail,
-      phoneNumber,
-    } = req.body;
-    const idUser = req.params.id;
     user
-      .findById(idUser)
-      .then((userRes) => {
-        if (!userRes) {
-          res.status(202).json({
-            message:
-              "Không tồn tại tài khoản, có thể đã gặp trục trặc, vui lòng kiểm tra lại phiên đăng nhập!",
-          });
-          res.redirect(URL + "admin/settings/");
-          return;
+      .updateOne(
+        {
+          _id: req.user.id,
+        },
+        {
+          name: req.body.username,
+          isAdmin: req.body.isAdmin,
+          phone: req.body.phone,
+          gender: req.body.gender,
+          birthday: req.body.birthday,
+          email: req.body.email,
+          address: {
+            province: req.body.province,
+            district: req.body.district,
+            ward: req.body.ward,
+            addressdetail: req.body.addressDetail,
+          },
         }
-        user
-          .findOne({ email: email })
-          .then((emailRes) => {
-            if (currentPassword || newPassword || newPasswordRepeat) {
-              if (
-                currentPassword !==
-                CryptoJS.AES.decrypt(
-                  userRes.password,
-                  process.env.PASS_SECRET
-                ).toString(CryptoJS.enc.Utf8)
-              ) {
+      )
+      .then((data) => {
+        if (data.modifiedCount != 0) {
+          user.findOne({ _id: req.user.id }).then((user) => {
+            const { password, ...others } = user._doc;
+            res.send(others);
+          });
+        }
+      });
+    // const {
+    //   username,
+    //   email,
+    //   currentPassword,
+    //   newPassword,
+    //   newPasswordRepeat,
+    //   birthday,
+    //   gender,
+    //   province,
+    //   district,
+    //   ward,
+    //   addressdetail,
+    //   phoneNumber,
+    // } = req.body;
+    // const idUser = req.params.id;
+    // user
+    //   .findById(idUser)
+    //   .then((userRes) => {
+    //     if (!userRes) {
+    //       res.status(202).json({
+    //         message:
+    //           "Không tồn tại tài khoản, có thể đã gặp trục trặc, vui lòng kiểm tra lại phiên đăng nhập!",
+    //       });
+    //       res.redirect(URL + "admin/settings/");
+    //       return;
+    //     }
+      //   user
+      //     .findOne({ email: email })
+      //     .then((emailRes) => {
+      //       if (currentPassword || newPassword || newPasswordRepeat) {
+      //         if (
+      //           currentPassword !==
+      //           CryptoJS.AES.decrypt(
+      //             userRes.password,
+      //             process.env.PASS_SECRET
+      //           ).toString(CryptoJS.enc.Utf8)
+      //         ) {
+      //           res.redirect(URL + "admin/settings/");
+      //           return;
+      //         } else if (newPassword !== newPasswordRepeat) {
+      //           res.redirect(URL + "admin/settings/");
+      //           return;
+      //         } else {
+      //           userRes.password = CryptoJS.AES.encrypt(
+      //             newPassword,
+      //             process.env.PASS_SECRET
+      //           );
+      //         }
+      //       }
+      //       else if (!currentPassword && !newPassword && !newPassword) {
+      //         if (userRes.name !== name) userRes.name = name;
+      //         if (userRes.phone !== phoneNumber) userRes.phone = phoneNumber;
+      //         if (userRes.birthday !== birthday) userRes.birthday = birthday;
+      //         if (userRes.gender !== gender) userRes.gender = gender;
+      //         if (userRes.address.province !== province)
+      //           userRes.address.province = province;
+      //         if (userRes.address.district !== district)
+      //           userRes.address.district = district;
+      //         if (userRes.address.ward !== ward) userRes.address.ward = ward;
+      //         if (userRes.address.addressdetail !== addressdetail)
+      //           userRes.address.addressdetail = addressdetail;
 
-                res.redirect(URL + "admin/settings/");
-                return;
-              } else if (newPassword !== newPasswordRepeat) {
-                res.redirect(URL + "admin/settings/");
-                return;
-              } else {
-                userRes.password = CryptoJS.AES.encrypt(
-                  newPassword,
-                  process.env.PASS_SECRET
-                );
-              }
-            }
-            else if (!currentPassword && !newPassword && !newPassword) {
-              if (userRes.name !== name) userRes.name = name;
-              if (userRes.email !== email) userRes.email = email;
-              if (userRes.phone !== phoneNumber) userRes.phone = phoneNumber;
-              if (userRes.birthday !== birthday) userRes.birthday = birthday;
-              if (userRes.gender !== gender) userRes.gender = gender;
-              if (userRes.address.province !== province)
-                userRes.address.province = province;
-              if (userRes.address.district !== district)
-                userRes.address.district = district;
-              if (userRes.address.ward !== ward) userRes.address.ward = ward;
-              if (userRes.address.addressdetail !== addressdetail)
-                userRes.address.addressdetail = addressdetail;
+      //         user
+      //           .updateOne({ _id: idUser }, userRes)
+      //           .then(() => {
+      //             if (data.modifiedCount != 0) {
+      //               user.findOne({ _id: req.user.id }).then((user) => {
+      //                 const { password, ...others } = user._doc;
+      //                 res.send(others);
+      //               });
+      //             }
+      //           })
+      //           .catch(next);
+      //       }
+      //     })
+      //     .catch(next);
 
-              user
-                .updateOne({ _id: idUser }, userRes)
-                .then(() => {
-                  res.redirect(URL + `admin/settings`);
-                })
-                .catch(next);
-            }
-          })
-          .catch(next);
-
-      })
-      .catch(next);
+      // })
+      // .catch(next);
   }
 }
 module.exports = new AccountController();

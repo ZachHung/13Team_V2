@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import axios from 'axios';
 import './AdminProfile.scss';
 import { useSelector } from 'react-redux';
 import { userRequest } from "../../utils/CallApi";
 import { hostServer } from "../../utils/const";
-import { Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
@@ -16,12 +16,30 @@ function AdminProfile () {
   const [district, setdistrict] = useState([]);
   const [province, setaddress] = useState([]);
   const [ward, setward] = useState([]);
-  
+  const [name, setName] = useState();
+  const [phone, setPhone] = useState();
+  const [email, setEmail] = useState();
+  const [gender, setGender] = useState();
+  const [birthday, setBirthday] = useState();
+  const provinceRef = useRef();
+  const districtRef = useRef();
+  const wardRef = useRef();
+  const detailRef = useRef();
+  const params = useParams();
+
   useEffect(() => {
     userRequest().get (`admin/settings/${user.current._id}`).then ((res) => {
-      console.log(res.data);
       setAdmin (res.data.user);
+      setName(res.data.user.name);
+      setEmail(res.data.user.email);
+      setPhone(res.data.user.phone);
+      setBirthday(res.data.user.birthday);
+      setGender(res.data.user.gender);
       setGetCurPwd(res.data.currentPwd);
+      provinceRef.current.value = user.address.province;
+      districtRef.current.value = user.address.district;
+      wardRef.current.value = user.address.ward;
+      detailRef.current.value = user.address.detail;
     });
   }, []);
 
@@ -37,9 +55,9 @@ function AdminProfile () {
 
   const Getdistrictbyprovince = () => {
     var province = document.getElementById("province").value;
+    provinceRef.current.value = document.getElementById("province").value;
     document.getElementById("district").value = "";
     document.getElementById("ward").value = "";
-    console.log(province);
     axios.get(hostServer + '/api/address/district/' + province).then((res) => {
         setdistrict(res.data.address);
     });
@@ -48,11 +66,20 @@ function AdminProfile () {
 const Getwardbydistrict = () => {
     var province = document.getElementById("province").value;
     var district = document.getElementById("district").value;
+    districtRef.current.value = document.getElementById("district").value;
     document.getElementById("ward").value = "";
-    axios.get(hostServer + '/api/address/ward/' + province + '/' + district).then((res) => {
+    axios.get(hostServer + '/api/address/ward/' + provinceRef.current.value + '/' + district).then((res) => {
         setward(res.data.address);
     });
 }
+
+const handleWard = (e) => {
+  wardRef.current.value = e.target.value
+
+};
+const handleAddressdetail = (e) => {
+  detailRef.current.value = e.target.value
+};
 
 const [curPwd, setCurPwd] = useState("");
 const [showCurPassword, setShowCurPassword] = useState(false);
@@ -62,25 +89,22 @@ const [newPwd, setNewPwd] = useState("");
 const [showNewPassword, setShowNewPassword] = useState(false);
 const handleShowNewPassword = () => {setShowNewPassword((value) => !value);};
 
-const [RePwd, setRePwd] = useState("");
+const [rePwd, setRePwd] = useState("");
 const [showRePassword, setShowRePassword] = useState(false);
 const handleShowRePassword = () => {setShowRePassword((value) => !value);};
 
 const handleCurPassChange = (e) =>{
-  console.log(e.target.value);
   if (e.target.value !== "" && e.target.value !== getCurPwd) document.getElementById('CurPassAlert').innerText = "Mật khẩu hiện tại không đúng, vui lòng nhập lại";
   else document.getElementById('CurPassAlert').innerText = "";
   setCurPwd(e.target.value);
 }
 const handleNewPassChange = (e) =>{
-  console.log(e.target.value);
   if (e.target.value.length < 6 && e.target.value.length > 0) {
     document.getElementById('NewPassAlert').innerText = "Mật khẩu cần ít nhất 6 ký tự";
   } else document.getElementById('NewPassAlert').innerText = "";
   setNewPwd(e.target.value);
 }
 const handleRePassChange = (e) =>{
-  console.log(e.target.value);
   if (e.target.value.length > 0) {
     if (e.target.value.length < 6) {
       document.getElementById('RePassAlert').innerText = "Mật khẩu cần ít nhất 6 ký tự";
@@ -95,18 +119,32 @@ const handleRePassChange = (e) =>{
   setRePwd(e.target.value);
 }
 
-const checkValid = (e) =>{
-  e.preventDefault()
-  if (curPwd === "" && newPwd === "" && RePwd === "") document.getElementById('btnSubmitAdProfile').disabled = false;
-  else document.getElementById('btnSubmitAdProfile').disabled = true;
+const handleSubmit = (e) => {
+  e.preventDefault();
+      userRequest()
+        .put(`admin/settings/update/${params.id}`, {
+            username: name,
+            phoneNumber: phone,
+            gender: gender,
+            birthday: birthday,
+            email: email,
+            currentPassword: curPwd,
+            newPassword: newPwd,
+            newPasswordRepeat: rePwd,
+            province: provinceRef.current.value,
+            district: districtRef.current.value,
+            ward: wardRef.current.value,
+            addressdetail: detailRef.current.value,
+        })
+        .then((res) => {
+        })
+        .catch((err) => console.log(err));
 }
 
-
   return (
-
     <div className="d-flex flex-column font-weight-bold" >
       <div className="container light-style flex-grow-1 container-p-y mb-5">
-      <form method="POST" action={hostServer + "/api/admin/settings/update/" + admin._id + "?_method=PUT"}>
+      <form>
           <div className="card overflow-hidden border-0">
             <div className="bg-profile">
               <h1 className="py-3">
@@ -268,7 +306,7 @@ const checkValid = (e) =>{
                           className="form-control inputAdProfile inputAdPass"
                           defaultValue={''}
                           type={showRePassword ? "string" : "password"}
-                          value={RePwd}
+                          value={rePwd}
                           onChange={(e) => handleRePassChange(e)}                                        
                         />
                         <FontAwesomeIcon
@@ -337,7 +375,7 @@ const checkValid = (e) =>{
                       <div className='lavel_2'>
                         <div className="mb-4">
                             <label className="form-label label_level_2">Thành phố/tỉnh</label>
-                            <select className="form-select my-input-tag" id='province' name='province' onChange={Getdistrictbyprovince} aria-label=".form-select-sm example">
+                            <select className="form-select my-input-tag" id='province' ref={provinceRef} name='province' onChange={Getdistrictbyprovince} aria-label=".form-select-sm example">
                                 <option hidden selected>{admin.address?.province}</option>
                                 {
                                     province?.map((province) => (
@@ -349,7 +387,7 @@ const checkValid = (e) =>{
 
                         <div className="mb-4">
                             <label className="form-label label_level_2">Quận/huyện</label>
-                            <select className="form-select my-input-tag" id='district' name='district' onChange={Getwardbydistrict} aria-label=".form-select-sm example">
+                            <select className="form-select my-input-tag" id='district' ref={districtRef} name='district' onChange={Getwardbydistrict} aria-label=".form-select-sm example">
                                 <option id="slt-dis" hidden selected>{admin.address?.district}</option>
                                 {
                                     district.districts?.map((district) => (
@@ -361,7 +399,7 @@ const checkValid = (e) =>{
 
                         <div className="mb-4">
                             <label className="form-label label_level_2">Phường/xã</label>
-                            <select className="form-select my-input-tag" id='ward' name='ward' aria-label=".form-select-sm example">
+                            <select className="form-select my-input-tag" id='ward' ref={wardRef} name='ward' aria-label=".form-select-sm example">
                                 <option hidden selected>{admin.address?.ward}</option>
                                 {
                                     ward.wards?.map((ward) => (
@@ -373,7 +411,7 @@ const checkValid = (e) =>{
 
                         <div className="mb-4">
                             <label className="form-label label_level_2">Địa chỉ cụ thể</label>
-                            <input type="text" className="form-control my-input-tag" id='addressdetail' name='addressdetail' defaultValue={admin.address?.addressdetail} />
+                            <input type="text" className="form-control my-input-tag" id='addressdetail' ref={detailRef} name='addressdetail' defaultValue={admin.address?.addressdetail} />
                         </div>
                     </div>
                     </div>
@@ -403,7 +441,7 @@ const checkValid = (e) =>{
               </div>
             </div>
             <div className="text-right">
-              <button className="btn my-btn-checkout" id="btnSubmitAdProfile" type='submit' onBlur={(e)=>checkValid(e)}>
+              <button className="btn my-btn-checkout" id="btnSubmitAdProfile" onClick={(e) => handleSubmit(e)}>
                     Thay đổi
               </button>     
             </div>
