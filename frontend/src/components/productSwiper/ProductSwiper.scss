@@ -49,9 +49,14 @@
       background-position: center;
       margin-right: 1rem !important;
 
-      img {
-        height: unset;
-        width: 100%;
+      .swiper__img {
+        display: flex;
+        justify-content: center;
+        height: 360px;
+        align-items: center;
+        img {
+          display: block;
+        }
       }
     }
   }
