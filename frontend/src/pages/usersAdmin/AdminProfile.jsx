@@ -64,7 +64,7 @@ function AdminProfile () {
 }
 
 const Getwardbydistrict = () => {
-    var province = document.getElementById("province").value;
+    //var province = document.getElementById("province").value;
     var district = document.getElementById("district").value;
     districtRef.current.value = document.getElementById("district").value;
     document.getElementById("ward").value = "";
@@ -79,6 +79,18 @@ const handleWard = (e) => {
 };
 const handleAddressdetail = (e) => {
   detailRef.current.value = e.target.value
+};
+const handleName = (e) => {
+  setName(e.target.value);
+};
+const handlePhone = (e) => {
+  setPhone(e.target.value);
+};
+const handleGender = (e) => {
+  setGender(e.target.value);
+};
+const handleBirthday = (e) => {
+  setBirthday(e.target.value);
 };
 
 const [curPwd, setCurPwd] = useState("");
@@ -124,7 +136,7 @@ const handleSubmit = (e) => {
       userRequest()
         .put(`admin/settings/update/${params.id}`, {
             username: name,
-            phoneNumber: phone,
+            phone: phone,
             gender: gender,
             birthday: birthday,
             email: email,
@@ -222,6 +234,7 @@ const handleSubmit = (e) => {
                         type="text"
                         className="form-control inputAdProfile"
                         defaultValue={admin.name}
+                        onChange={(e)=>{handleName(e)}}
                       />
                     </div>
                     
@@ -254,8 +267,7 @@ const handleSubmit = (e) => {
                           defaultValue={''}    
                           type={showCurPassword ? "string" : "password"}
                           value={curPwd}
-                          onChange={(e) => handleCurPassChange(e)} 
-                                          
+                          onChange={(e) => handleCurPassChange(e)}                                        
                         />
                         <FontAwesomeIcon
                             icon={showCurPassword ? faEye : faEyeSlash}
@@ -345,6 +357,7 @@ const handleSubmit = (e) => {
                         id="AdBirthday"
                         className="form-control inputAdProfile"
                         defaultValue={admin.birthday}
+                        onChange={(e)=>{handleBirthday(e)}}
                       />
                     </div>
                     <div className="form-group mb-3">
@@ -358,6 +371,7 @@ const handleSubmit = (e) => {
                         id="genders"
                         name='gender'
                         className="form-control selectGender"
+                        onChange={(e)=>{handleGender(e)}}
                       >
                         <option hidden defaultValue={admin.gender}>{admin.gender}</option>
                         <option id="Nam" value="Nam">Nam</option>
@@ -399,7 +413,7 @@ const handleSubmit = (e) => {
 
                         <div className="mb-4">
                             <label className="form-label label_level_2">Phường/xã</label>
-                            <select className="form-select my-input-tag" id='ward' ref={wardRef} name='ward' aria-label=".form-select-sm example">
+                            <select className="form-select my-input-tag" id='ward' ref={wardRef} onChange={(e) => handleWard(e)} name='ward' aria-label=".form-select-sm example">
                                 <option hidden selected>{admin.address?.ward}</option>
                                 {
                                     ward.wards?.map((ward) => (
@@ -411,7 +425,7 @@ const handleSubmit = (e) => {
 
                         <div className="mb-4">
                             <label className="form-label label_level_2">Địa chỉ cụ thể</label>
-                            <input type="text" className="form-control my-input-tag" id='addressdetail' ref={detailRef} name='addressdetail' defaultValue={admin.address?.addressdetail} />
+                            <input type="text" className="form-control my-input-tag" id='addressdetail' ref={detailRef} name='addressdetail' defaultValue={admin.address?.addressdetail} onChange={(e)=>{handleAddressdetail(e)}}/>
                         </div>
                     </div>
                     </div>
@@ -434,6 +448,7 @@ const handleSubmit = (e) => {
                         type="text"
                         className="form-control inputAdProfile"
                         defaultValue={admin.phone}
+                        onChange={(e) => handlePhone(e)}
                       />
                     </div>
                   </div>

@@ -384,8 +384,7 @@ class AccountController {
     //   .then(() => res.redirect(URL + "admin/customers/update/" + req.params.id))
     //   .catch(next);
   }
-  editProfileAdmin(req, res, next) {
-    
+  editProfileAdmin(req, res, next) {   
     user
       .findById(req.params.id)
       .then((users) => {
@@ -403,15 +402,13 @@ class AccountController {
     user
       .updateOne(
         {
-          _id: req.user.id,
+          email: req.body.email,
         },
         {
           name: req.body.username,
-          isAdmin: req.body.isAdmin,
           phone: req.body.phone,
           gender: req.body.gender,
           birthday: req.body.birthday,
-          email: req.body.email,
           address: {
             province: req.body.province,
             district: req.body.district,
@@ -422,7 +419,7 @@ class AccountController {
       )
       .then((data) => {
         if (data.modifiedCount != 0) {
-          user.findOne({ _id: req.user.id }).then((user) => {
+          user.findOne({ email: req.body.email }).then((user) => {
             const { password, ...others } = user._doc;
             res.send(others);
           });
