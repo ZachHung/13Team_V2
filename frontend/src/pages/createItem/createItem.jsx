@@ -38,6 +38,20 @@ function CreatePhoneAdminPage() {
         setBrandImage(e.target.files[0]);
         
       }
+      const validateNotNull=()=>
+      {
+        const msg={};
+        if(name==null||name=="")
+        {
+           msg.name="Tên không được để trống";
+           
+            
+        }
+        setErrorText(msg);
+        
+       
+       
+      }
       const validateAll=()=>{
           const msg={};
           if(name==""|| name==null)
@@ -133,10 +147,10 @@ function CreatePhoneAdminPage() {
                         console.log(url);
                         setFormData({...formData,["brandimage"]:`${url}`});
                         setUrlBrandImage(url);
-                        console.log(UrlBrandimage);
+                        //console.log(UrlBrandimage);
                         //setFormData({...formData,["brandimage"]:`${UrlBrandimage}`});
-                        console.log(formData)
-                        console.log(formData);
+                        //console.log(formData);
+                       // console.log(formData);
                         document.getElementById("image-new-brand").name = "brandimage";
                         document.getElementById("my-image-brand").style.display = "block";
                         document.getElementById("isLoading-brand").style.display = "none";
@@ -185,25 +199,25 @@ function CreatePhoneAdminPage() {
         Promise.all(promises)
         .then(()=>alert("Tất cả ảnh được upload"))
         .catch((err)=>console.log(err))
-        console.log("urls: ", urlImages);
-        console.log("imges", images);
-        console.log("urls length",urlImages.length);
-        console.log("urls thu o la  ", urlImages[0]);
+        // console.log("urls: ", urlImages);
+        // console.log("imges", images);
+        // console.log("urls length",urlImages.length);
+        // console.log("urls thu o la  ", urlImages[0]);
     }
-    
     const handleInput = (name, value) => {
         setErrorText("");
-        console.log(name,value);
+        //console.log(name,value);
         setFormData({ ...formData, [name]: `${value}` });
-        console.log(formData);
-        console.log(Object.keys(formData));
+        
         //alert(formData);
       };
+      //console.log(formData);
+        //console.log(Object.keys(formData));
       const handleSubmit = (e) => {
           const isValid=validateAll();
           if(!isValid) 
           {
-              alert("Vui lòng điền đủ thông ");
+              //alert("Vui lòng điền đủ thông ");
             toast.error("Vui Lòng Điền Đầy Đủ Thông Tin", {
                 position: "top-center",
                 autoClose: 2000,
@@ -213,7 +227,7 @@ function CreatePhoneAdminPage() {
                 draggable: true,
                 progress: undefined,
               });
-              return;
+              return ;
           }
         e.preventDefault();
         setFormData({...formData,['image']:urlImages});
@@ -254,6 +268,12 @@ function CreatePhoneAdminPage() {
             });
         
       };
+    const handleChangeType=e=>{
+       // console.log(e.target.value);
+        setType(e.target.value);
+       // console.log("Giá trị của type",type);
+        handleInput("type",e.target.value);
+    }
     return (
         <div className='container'>
             <h1 className="control-label">THÊM SẢN PHẨM MỚI </h1>
@@ -261,26 +281,26 @@ function CreatePhoneAdminPage() {
             <form id="createPhoneinfo"  >
                 <div className="form-group">
                     <label className="form-label">Tên sản phẩm</label>
-                    <input type="text" id="name" name='name' value={name} className="form-control my-input-tag " onBlur={validateAll}  onChange={(e)=>{setName(e.target.value);handleInput("name",name);} }   />
+                    <input type="text" id="name" name='name' value={name} className="form-control my-input-tag " onBlur={validateAll}  onChange={(e)=>{setName(e.target.value);handleInput("name",e.target.value);} }   />
                     <p className='text-danger thongbaoloi'>{errorText.name}</p>
                     <label  className="form-label" name='slug' >Slug</label>
-                    <input type="text" id="slug" name="slug"   value={slug} onBlur={validateAll} onChange={(e)=>{setSlug(e.target.value);handleInput("slug",slug);}} className="form-control input-lg my-input-tag" />
+                    <input type="text" id="slug" name="slug"   value={slug} onBlur={validateAll} onChange={(e)=>{setSlug(e.target.value);handleInput("slug",e.target.value);}} className="form-control input-lg my-input-tag" />
                 </div>
                 <p className='text-danger thongbaoloi'>{errorText.slug}</p>
                 <label className="form-label label-select my-input-tag">Chọn loại sản phẩm </label>
-                <select className="type_device my-input-tag" name='type'  id="type" value={type} onChange={(e)=>{setType(e.target.value);handleInput("type",e.target.value);}}  >
-                    <option value="Phone">Phone</option>
-                    <option value="Tablet">Tablet</option>
-                    <option value="Laptop">Laptop</option>
-                    <option value="Acessory">Accessory</option>
+                <select className="type_device my-input-tag" name='type'  id="type" value={type} onChange={handleChangeType}  >
+                    <option value="phone">Phone</option>
+                    <option value="tablet">Tablet</option>
+                    <option value="laptop">Laptop</option>
+                    <option value="acessory">Accessory</option>
                 </select>
                 <h2 className='form-label themmargin' >Thương hiệu</h2>
                 <label className='form-label' >Tên thương hiệu</label>
-                <input type="text" name='brand' placeholder='Apple' id="brand"  className="form-control my-input-tag" onBlur={validateAll} value={brand} onChange={(e)=>{setBrand(e.target.value);handleInput("brand",brand)}}  ></input>
+                <input type="text" name='brand' placeholder='Apple' id="brand"  className="form-control my-input-tag" onBlur={validateAll} value={brand} onChange={(e)=>{setBrand(e.target.value);handleInput("brand",e.target.value)}}  ></input>
                 <p className='text-danger thongbaoloi'>{errorText.brand}</p>
                 
                 <div id='my-image-brand' className='add-image-brand'>
-                            <input type="text" className="form-control mt-4 my-input-tag newImage-brand"  value={UrlBrandimage}  placeholder='Nhập vào đường dẫn' id="image-new-brand"  />
+                            <input type="text" className="form-control mt-4 my-input-tag newImage-brand"  defaultValue={UrlBrandimage}  placeholder='Nhập vào đường dẫn' id="image-new-brand"  />
                            
                         </div>
                         <div id='isLoading-brand' className='mt-4 add-info' >
@@ -302,11 +322,11 @@ function CreatePhoneAdminPage() {
                     
                 <div className="mb-3">
                     <label  className="form-label">Mô tả sản phẩm</label>
-                    <textarea className="form-control textareafont" id="description" rows="3" name='decription' onBlur={validateAll} value={decription} onChange={(e)=>{setDecription(e.target.value);handleInput("decription",decription);}}  ></textarea>
+                    <textarea className="form-control textareafont" id="description" rows="3" name='decription' onBlur={validateAll} value={decription} onChange={(e)=>{setDecription(e.target.value);handleInput("decription",e.target.value);}}  ></textarea>
                     <p className='text-danger thongbaoloi'>{errorText.decription}</p>
                 </div>
                 <div id='my-image' className='add-image'>
-                            <input type="text" className="form-control mt-4 my-input-tag newImage" defaultValue={urlImages} onChange={(e)=>{handleInput("image",urlImages)}} placeholder='Nhập vào đường dẫn' id="image-new" />
+                            <input type="text" className="form-control mt-4 my-input-tag newImage" defaultValue={urlImages} onChange={(e)=>{handleInput("image",e.target.value)}} placeholder='Nhập vào đường dẫn' id="image-new" />
                         </div>
                         <div id='isLoading' className='mt-4 add-info' >
                             <h3 className='text-center'>Đang tải...</h3>
@@ -316,7 +336,7 @@ function CreatePhoneAdminPage() {
                             <div className="row">
                                 <div className="col-10">
                                     <label htmlFor="formFile" className="label_level_2">Thêm hình ảnh sản phẩm</label>
-                                    <input className="form-control my-input-tag" type="file" onChange={handleChange} multiple="true" />
+                                    <input className="form-control my-input-tag" type="file" onChange={handleChange} multiple={true} />
                                 </div>
                                 <div className="col">
                                     <a className="btn btn-primary upload-bnt" onClick={handleUpload}>Tải lên</a>
@@ -328,31 +348,31 @@ function CreatePhoneAdminPage() {
                 <h3  >Thông tin màn hình</h3>
                 
                 <label className='form-label' >Kích thước màn hình</label>
-                <input type="text" className="form-control textareafont" id="size" name='size' onBlur={validateAll} value={size} onChange={(e)=>{setSize(e.target.value);handleInput("size",size);}} ></input>
+                <input type="text" className="form-control textareafont" id="size" name='size' onBlur={validateAll} value={size} onChange={(e)=>{setSize(e.target.value);handleInput("size",e.target.value);}} ></input>
                 <p className='text-danger thongbaoloi'>{errorText.size}</p>
                 <label className='form-label' >Công nghệ màn hình</label>
-                <input type="text" className="form-control textareafont" id="typescreen" name='typescreen' onBlur={validateAll} value={typescreen} onChange={(e)=>{setTypescreen(e.target.value);handleInput("typescreen",typescreen);}} ></input>
+                <input type="text" className="form-control textareafont" id="typescreen" name='typescreen' onBlur={validateAll} value={typescreen} onChange={(e)=>{setTypescreen(e.target.value);handleInput("typescreen",e.target.value);}} ></input>
                 <p className='text-danger thongbaoloi'>{errorText.typescreen}</p>
                 <label className='form-label' >
                     Độ phân giải
                 </label>
-                <input type="text" className="form-control textareafont" id="revolution" name='resolution' onBlur={validateAll} value={revolution} onChange={(e)=>{setRevolution(e.target.value);handleInput("resolution",revolution);}} ></input>
+                <input type="text" className="form-control textareafont" id="revolution" name='resolution' onBlur={validateAll} value={revolution} onChange={(e)=>{setRevolution(e.target.value);handleInput("resolution",e.target.value);}} ></input>
                 <p className='text-danger thongbaoloi'>{errorText.revolution}</p>
                 <h3>Camera Sau</h3>
                 <label className='form-label' >Số camera</label>
-                <input type="number" className="form-control textareafont" id="triple" name='triple' onBlur={validateAll} value={triple} onChange={(e)=>{setTriple(e.target.value);handleInput("triple",triple);}} ></input>
+                <input type="number" className="form-control textareafont" id="triple" name='triple' onBlur={validateAll} value={triple} onChange={(e)=>{setTriple(e.target.value);handleInput("triple",e.target.value);}} ></input>
                 <p className='text-danger thongbaoloi'>{errorText.triple}</p>
                 <label className='form-label' >Quay video</label>
-                <input type="text"className="form-control textareafont" id="video" name='video' onBlur={validateAll} value={video} onChange={(e)=>{setVideo(e.target.value);handleInput("video",video);}} ></input>
+                <input type="text"className="form-control textareafont" id="video" name='video' onBlur={validateAll} value={video} onChange={(e)=>{setVideo(e.target.value);handleInput("video",e.target.value);}} ></input>
                 <p className='text-danger thongbaoloi'>{errorText.video}</p>
                 <label className='form-label' >CPU</label>
-                <input type="text"className="form-control textareafont" placeholder='4GB'  id="cpu" name='cpu' onBlur={validateAll} value={cpu} onChange={(e)=>{setCpu(e.target.value);handleInput("cpu",cpu);}} ></input>
+                <input type="text"className="form-control textareafont"  id="cpu" name='cpu' onBlur={validateAll} value={cpu} onChange={(e)=>{setCpu(e.target.value);handleInput("cpu",e.target.value);}} ></input>
                 <p className='text-danger thongbaoloi'>{errorText.cpu}</p>
                 <label className='form-label' >Ram</label>
                 
-                <input type="text"className="form-control textareafont" id="ram" name='ram' onBlur={validateAll} value={ram} onChange={(e)=>{setRam(e.target.value);handleInput("ram",ram);}} ></input>
+                <input type="text"className="form-control textareafont"  placeholder='4GB' id="ram" name='ram' onBlur={validateAll} value={ram} onChange={(e)=>{setRam(e.target.value);handleInput("ram",e.target.value);}} ></input>
                 <p className='text-danger thongbaoloi'>{errorText.ram}</p>
-                <button className="btn btn-primary btn-lg btn-block form-control" onClick={handleSubmit} >Thêm sản phẩm mới</button>
+                <button type='button' className="btn btn-primary btn-lg btn-block form-control" onClick={handleSubmit} >Thêm sản phẩm mới</button>
             </form>
             <ToastContainer></ToastContainer>
         </div>

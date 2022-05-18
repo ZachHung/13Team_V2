@@ -529,7 +529,8 @@ class ItemController {
   async createPostOptions(req,res, next)
   {
     try{
-      //console.log(req.body);
+      console.log("aaaaaa");
+      console.log(req.body);
       var color=new Array();
       for(var i=0;i<req.body.color.length;i++)
       {
@@ -537,7 +538,8 @@ class ItemController {
           name:req.body.color[i],
           image:req.body.image[i],
           price:req.body.price[i],
-          discount:req.body.price[i]
+          discount:req.body.discount[i],
+          number: req.body.number[i]
         }
         color.push(temp);
       }
@@ -545,15 +547,16 @@ class ItemController {
       slug: req.body.slug,
       detail: req.body.detail,
       color: color,
-      item: req.params.id
+      item: req.params.id,
+      
     }
     //console.log(option);
-    console.log(req.body);
-    console.log(req.body.slug);
+    //console.log(req.body);
+    //console.log(req.body.slug);
     const createoption=new options(option);
     try
         { var result =await createoption.save()
-        .then((data)=>res.redirect(URL+"admin/products"))
+        .then((data)=>{res.json(data)})
         .catch(next);
         }
         catch(e)
@@ -572,3 +575,4 @@ class ItemController {
   }
 }
 module.exports = new ItemController();
+
