@@ -270,6 +270,7 @@ class AccountController {
     // */
   }
   update(req, res, next) {
+    console.log("oke")
     user
       .updateOne(
         {

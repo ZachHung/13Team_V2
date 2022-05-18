@@ -9,7 +9,7 @@ const {
 router.delete("/delete/:id", AccountController.deleteUsersAdmin);
 router.delete("/deleteMany", AccountController.deleteManyUsersAdmin);
 router.get("/edit/:id", verifyTokenAdmin, AccountController.edit);
-router.put("/update/:id", AccountController.updateUser);
+router.put("/update/:id",verifyTokenAdmin, AccountController.updateUser);
 router.get("/", AccountController.getUsersAdmin);
 
 module.exports = router;
