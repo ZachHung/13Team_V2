@@ -101,7 +101,7 @@ function UpdateItemDetail() {
                                         </div>
                                     ))}
                                     <div id="my-color" className="add-info my-color-hidden">
-                                        <label className="label_level_2">Màu</label>
+                                        <label className="label_level_2">Màu (<span className='require'>*</span>)</label>
                                         <input placeholder='Nhập vào tên màu' className="form-control my-input-tag name-new" id="name-new" />
                                         <br></br>
                                         <div className='lavel_2'>
@@ -109,7 +109,7 @@ function UpdateItemDetail() {
                                             <div className="mb-4 ">
                                                 <div className="row">
                                                     <div className="col-10">
-                                                        <label htmlFor="formFile" className="label_level_3">Hình ảnh</label>
+                                                        <label htmlFor="formFile" className="label_level_3">Hình ảnh (<span className='require'>*</span>)</label>
                                                         <input className="form-control my-input-tag file-input" type="file" onChange={handleChange} />
                                                         <div className='add-image'>
                                                             <input type='text' className='form-control my-input-tag image-new newImage' defaultValue={urlImage} />
@@ -125,22 +125,22 @@ function UpdateItemDetail() {
                                             </div>
 
                                             <div className="mb-4">
-                                                <label htmlFor="number" className="form-label label_level_3">Số lượng còn lại</label>
+                                                <label htmlFor="number" className="form-label label_level_3">Số lượng còn lại (<span className='require'>*</span>)</label>
                                                 <input placeholder='Nhập vào số lượng' className="form-control my-input-tag number-new" id="number-new" />
                                             </div>
 
                                             <div className="mb-4">
-                                                <label htmlFor="price" className="form-label label_level_3">Giá</label>
+                                                <label htmlFor="price" className="form-label label_level_3">Giá (<span className='require'>*</span>)</label>
                                                 <input placeholder='Nhập vào giá' className="form-control my-input-tag price-new" id="price-new" />
                                             </div>
 
                                             <div className="mb-4">
-                                                <label htmlFor="discount" className="form-label label_level_3">Giảm giá (%)</label>
+                                                <label htmlFor="discount" className="form-label label_level_3">Giảm giá (%) (<span className='require'>*</span>)</label>
                                                 <input placeholder='Nhập vào giảm giá' className="form-control my-input-tag discount-new" id="discount-new" />
                                             </div>
+                                            <label className='decri'>Vui lòng nhập đầy đủ thông tin bên trên</label>
                                         </div>
                                     </div>
-
 
                                     <button type="submit" className="btn btn-primary my-bnt">Lưu lại</button>
                                     <br />
@@ -159,6 +159,7 @@ function UpdateItemDetail() {
         </div>
     );
 }
+
 
 //show and hiden form add color
 function myFunction(index) {

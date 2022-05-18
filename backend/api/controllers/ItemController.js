@@ -398,23 +398,42 @@ class ItemController {
     var BD = req.body;
     var str = "";
 
-    req.body.name.forEach((element, index) => {
-      str = str +
-        '{"name": "' + element +
-        '", "image": "' + BD.image[index] +
-        '", "number": ' + + BD.number[index] +
-        ', "price": ' + BD.price[index] +
-        ', "discount": ' + BD.discount[index] + "\}, ";
-    });
-    str = '{"detail": "' + BD.detail + '", "color": [' + str + ']}'
-    str = str.replace(', ]', ']')
-    console.log(str)
 
-    str = JSON.parse(str);
+    if (Array.isArray(req.body.name)) {
+      req.body.name.forEach((element, index) => {
+        str = str +
+          '{"name": "' + element +
+          '", "image": "' + BD.image[index] +
+          '", "number": ' + + BD.number[index] +
+          ', "price": ' + BD.price[index] +
+          ', "discount": ' + BD.discount[index] + "\}, ";
+      });
+      str = '{"detail": "' + BD.detail + '", "color": [' + str + ']}'
+      str = str.replace(', ]', ']')
 
-    options.updateOne({ _id: req.params.id }, str)
-      .then(() => res.redirect(URL + 'admin/products/updateDetail/' + BD.id))
-      .catch(next)
+      str = JSON.parse(str);
+
+      options.updateOne({ _id: req.params.id }, str)
+        .then(() => res.redirect(URL + 'admin/products/updateDetail/' + BD.id))
+        .catch(next)
+    } else {
+      var data = {
+        detail: req.body.detail,
+        color: [{
+          name: req.body.name,
+          image: req.body.image,
+          number: req.body.number,
+          price: req.body.price,
+          discount: req.body.discount
+        }]
+      }
+
+      options.updateOne({ _id: req.params.id }, data)
+        .then(() => res.redirect(URL + 'admin/products/updateDetail/' + BD.id))
+        .catch(next)
+    }
+
+
   }
 
   async createPostItems(req, res, next) {
