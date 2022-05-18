@@ -12,12 +12,19 @@
     font-size: 16px;
     margin:5px 0;
   }
+.btnoption:hover{
+    cursor: pointer;
+    background-color: #09912f;
+}
   *{
       margin: 5px 0;
   }
  .custombtn{
-    font-size: 16px;
-    padding: 12px 21px;
+    font-size: 14px;
+    padding: 10px 14px;
+ }
+ .custombtn:hover{
+    cursor: pointer;
  }
  .my-input-tag{
     height: 30px;
@@ -43,4 +50,8 @@
 
 .textareafont{
     font-size: 15px;
+}
+.thongbaoloi{
+    font-weight: 300!important;
+    font-style: italic!important;
 }
