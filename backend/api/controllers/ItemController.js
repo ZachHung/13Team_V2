@@ -46,7 +46,7 @@ class ItemController {
                 if (i == 6) break;
               }
             }
-            items.find({ type: route }).then((itemPhone) => {});
+            items.find({ type: route }).then((itemPhone) => { });
             data = data
               .filter((dataitem) => dataitem.slug != type)
               .slice(0, 10);
@@ -107,7 +107,7 @@ class ItemController {
                 if (i == 6) break;
               }
             }
-            items.find({ type: route }).then((itemPhone) => {});
+            items.find({ type: route }).then((itemPhone) => { });
             data = data
               .filter((dataitem) => dataitem.slug != type)
               .slice(0, 10);
@@ -168,7 +168,7 @@ class ItemController {
                 if (i == 6) break;
               }
             }
-            items.find({ type: route }).then((itemPhone) => {});
+            items.find({ type: route }).then((itemPhone) => { });
             data = data
               .filter((dataitem) => dataitem.slug != type)
               .slice(0, 10);
@@ -229,7 +229,7 @@ class ItemController {
                 if (i == 6) break;
               }
             }
-            items.find({ type: route }).then((itemPhone) => {});
+            items.find({ type: route }).then((itemPhone) => { });
             data = data
               .filter((dataitem) => dataitem.slug != type)
               .slice(0, 10);
@@ -248,12 +248,12 @@ class ItemController {
       })
       .catch(next);
   }
-  getItemsAdmin (req, res, next) {
+  getItemsAdmin(req, res, next) {
     items
-      .aggregate ([
+      .aggregate([
         {
           $match: {
-            type: {$regex: /^/},
+            type: { $regex: /^/ },
           },
         },
         {
@@ -265,36 +265,36 @@ class ItemController {
           },
         },
       ])
-      .then (items => {
-        res.json ({
+      .then(items => {
+        res.json({
           items: items,
         });
       })
-      .catch (next);
+      .catch(next);
   }
 
-  async deleteItemAdmin (req, res, next) {
+  async deleteItemAdmin(req, res, next) {
     try {
       const itemDelID = req.params.id;
-      const itemsDel = await items.findById (itemDelID);
-      const optionsDel = await options.find ({slug: itemsDel.slug});
-      const delItems = await items.findByIdAndDelete (itemDelID);
+      const itemsDel = await items.findById(itemDelID);
+      const optionsDel = await options.find({ slug: itemsDel.slug });
+      const delItems = await items.findByIdAndDelete(itemDelID);
       for (let i = 0; i < optionsDel.length; i++) {
-        const delOptions = await options.deleteOne ({
-          _id: ObjectId (optionsDel[i]._id),
+        const delOptions = await options.deleteOne({
+          _id: ObjectId(optionsDel[i]._id),
         });
       }
     } catch (e) {
-      console.error (`[Error] ${e}`);
-      throw Error ('Có lỗi xảy ra, vui lòng thử lại!!');
+      console.error(`[Error] ${e}`);
+      throw Error('Có lỗi xảy ra, vui lòng thử lại!!');
     }
   }
 
-  deleteManyItemsAdmin(req, res, next){
+  deleteManyItemsAdmin(req, res, next) {
     const ids = req.body;
-    items.deleteMany({_id: {$in: ids}})
-    .then ()
-    .catch(next);
+    items.deleteMany({ _id: { $in: ids } })
+      .then()
+      .catch(next);
   }
 
   edit(req, res, next) {
@@ -380,7 +380,17 @@ class ItemController {
     req.body.techInfo = techInfoConvert.techInfo;
     console.log(req.body)
     items.updateOne({ _id: req.params.id }, req.body)
-      .then(() => res.redirect(URL + 'admin/products/update/' + req.params.id))
+      .then((data) => {
+        if (data.modifiedCount !== 0) {
+          res.json({
+            status: "true",
+          });
+        } else {
+          res.status(202).json({
+            message: "Lỗi Hệ Thống",
+          });
+        }
+      })
       .catch(next)
   }
 
@@ -388,30 +398,49 @@ class ItemController {
     var BD = req.body;
     var str = "";
 
-    req.body.name.forEach((element, index) => {
-      str = str +
-        '{"name": "' + element +
-        '", "image": "' + BD.image[index] +
-        '", "number": ' + + BD.number[index] +
-        ', "price": ' + BD.price[index] +
-        ', "discount": ' + BD.discount[index] + "\}, ";
-    });
-    str = '{"detail": "' + BD.detail + '", "color": [' + str + ']}'
-    str = str.replace(', ]', ']')
-    console.log(str)
-    
-    str = JSON.parse(str);
 
-    options.updateOne({ _id: req.params.id }, str)
-      .then(() => res.redirect(URL + 'admin/products/updateDetail/' + BD.id))
-      .catch(next)
+    if (Array.isArray(req.body.name)) {
+      req.body.name.forEach((element, index) => {
+        str = str +
+          '{"name": "' + element +
+          '", "image": "' + BD.image[index] +
+          '", "number": ' + + BD.number[index] +
+          ', "price": ' + BD.price[index] +
+          ', "discount": ' + BD.discount[index] + "\}, ";
+      });
+      str = '{"detail": "' + BD.detail + '", "color": [' + str + ']}'
+      str = str.replace(', ]', ']')
+
+      str = JSON.parse(str);
+
+      options.updateOne({ _id: req.params.id }, str)
+        .then(() => res.redirect(URL + 'admin/products/updateDetail/' + BD.id))
+        .catch(next)
+    } else {
+      var data = {
+        detail: req.body.detail,
+        color: [{
+          name: req.body.name,
+          image: req.body.image,
+          number: req.body.number,
+          price: req.body.price,
+          discount: req.body.discount
+        }]
+      }
+
+      options.updateOne({ _id: req.params.id }, data)
+        .then(() => res.redirect(URL + 'admin/products/updateDetail/' + BD.id))
+        .catch(next)
+    }
+
+
   }
 
-  async createPostItems(req,res,next)
-  {
+  async createPostItems(req, res, next) {
 
-    try{
+    try {
       console.log("aaaaaa");
+
       console.log(req.body);
         var techInfoConvert =
         [
@@ -501,31 +530,30 @@ class ItemController {
        
       
         res.status('200');
+
     }
-    catch(e)
-    {
+    catch (e) {
       console.log("error");
-      res.status(500).json({error: e.message});
+      res.status(500).json({ error: e.message });
     }
   }
 
-  async findItemById(req,res,next)
-  {
-    try{
-      var item =await items.findById(req.params.id)
-      .then((item)=>(
-        console.log(item),
-      res.json({
-        item: item,
-      })))
+  async findItemById(req, res, next) {
+    try {
+      var item = await items.findById(req.params.id)
+        .then((item) => (
+          console.log(item),
+          res.json({
+            item: item,
+          })))
       console.log(item);
     }
-    catch(e)
-    {
+    catch (e) {
       console.log("error");
-      res.status(500).json({error: e.message});
+      res.status(500).json({ error: e.message });
     }
   }
+
   async createPostOptions(req,res, next)
   {
     try{
@@ -565,11 +593,11 @@ class ItemController {
         }
   }
 
-  catch(e)
-  {
-    console.log("error");
-    res.status(500).json({error: e.message});
-  }
+
+    catch (e) {
+      console.log("error");
+      res.status(500).json({ error: e.message });
+    }
 
 
   }

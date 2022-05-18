@@ -2,12 +2,13 @@ const moment = require('moment');
 const purchase = require('../models/Purchase');
 const util = require('../../util/mongoose');
 const cart = require('../models/Cart');
+const { find } = require('../models/Purchase');
 var ObjectId = require('mongodb').ObjectId;
 var URL = 'http://localhost:3000/';
 
 // const ID = useId; //userID của người dùng đã đăng nhập
 const year = '2022';
-const useId = '624a9edb4eb751d723d37e7f';
+// const useId = '624a9edb4eb751d723d37e7f';
 class PurchaseController {
   index(req, res, next) {
     res.render('purchase');
@@ -64,7 +65,7 @@ class PurchaseController {
                   $set: { status: 'Đã giao hàng' },
                 }
               )
-              .then(() => {});
+              .then(() => { });
           }
         }
         res.json(data);
@@ -131,7 +132,7 @@ class PurchaseController {
         res.json(data);
       });
   }
-  checkout(req, res, next) {
+  repurchase(req, res, next) {
     cart
       .find({ userID: useId })
 
@@ -185,7 +186,49 @@ class PurchaseController {
       .then(() => res.redirect('back'))
       .catch(next);
   }
-
+  FindOne(req, res, next) {
+    const userId = req.params.userID;
+    const productId = req.params.productID;
+    purchase
+      .find(
+        {
+          $and: [{ userID: userId }, { 'list._id': productId }],
+        },
+        {
+          _id: 0,
+          list: { $elemMatch: { _id: productId } },
+        }
+      )
+      .then((data) => res.json(data))
+      .catch(next);
+  }
+  UpdateOne(req, res, next) {
+    const userId = req.params.userID;
+    const productId = req.params.productID;
+    purchase
+      .findOneAndUpdate(
+        {
+          $and: [
+            { userID: userId },
+            {
+              'list._id': productId,
+            },
+          ],
+        },
+        {
+          $set: {
+            'list.$[elem].deleted': true,
+          },
+        },
+        {
+          arrayFilters: [{ 'elem._id': productId }],
+        }
+      )
+      .then((data) => {
+        res.json(data);
+      })
+      .catch(next);
+  }
   // admin zone
   getAllPurchase(req, res, next) {
     purchase
@@ -338,34 +381,34 @@ class PurchaseController {
 
   getPurchasesAdmin(req, res, next) {
     purchase
-    .find()
-    .populate('userID')
-    .populate('list.optionID')
-    .populate({
-      path: 'list.optionID',
-      populate: {
-        path: 'item',
-        select: 'name type brand',
-      },
-    })
-    .then((data) => {
-      data = util.mutipleMongooseToObject(data);
+      .find()
+      .populate('userID')
+      .populate('list.optionID')
+      .populate({
+        path: 'list.optionID',
+        populate: {
+          path: 'item',
+          select: 'name type brand',
+        },
+      })
+      .then((data) => {
+        data = util.mutipleMongooseToObject(data);
 
-      for (let result of data) {
-        result.list = result.list.filter((list) => {
-          return list.optionID !== null;
-        });
-        for (let item of result.list) {
-          item.optionID.color = item.optionID.color.filter((color) => {
-            return color.name === item.color;
+        for (let result of data) {
+          result.list = result.list.filter((list) => {
+            return list.optionID !== null;
           });
-        } 
-      }
-      res.json({
-        purchase: data,
-      });
-    })
-    .catch(next);
+          for (let item of result.list) {
+            item.optionID.color = item.optionID.color.filter((color) => {
+              return color.name === item.color;
+            });
+          }
+        }
+        res.json({
+          purchase: data,
+        });
+      })
+      .catch(next);
   }
 
   async deletePurchasesAdmin(req, res, next) {
@@ -385,13 +428,14 @@ class PurchaseController {
     }
   }
 
-  deleteManyPurchasesAdmin(req, res, next){
+  deleteManyPurchasesAdmin(req, res, next) {
     const ids = req.body;
-     purchase.deleteMany({_id: {$in: ids}})
-     .then (() => res.redirect(URL + 'admin/orders'))
-     .catch(next);
+    purchase
+      .deleteMany({ _id: { $in: ids } })
+      .then(() => res.redirect(URL + 'admin/orders'))
+      .catch(next);
   }
-  
+
   detailPurchasesAdmin(req, res, next) {
     purchase
       .find({ _id: ObjectId(req.params.id) })
@@ -426,7 +470,6 @@ class PurchaseController {
   }
 
   edit(req, res, next) {
-
     purchase
       .find({ _id: ObjectId(req.params.id) })
       .populate('list.optionID')
@@ -459,9 +502,20 @@ class PurchaseController {
   }
 
   updatePurchase(req, res, next) {
+    console.log(req.params)
     purchase
       .updateOne({ _id: req.params.id }, req.body)
-      .then(() => res.redirect(URL + 'admin/orders'))
+      .then((data) => {
+        if (data.modifiedCount !== 0) {
+          res.json({
+            status: "true",
+          });
+        } else {
+          res.status(202).json({
+            message: "Lỗi Hệ Thống",
+          });
+        }
+      })
       .catch(next);
   }
 }

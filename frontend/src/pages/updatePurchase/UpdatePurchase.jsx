@@ -1,26 +1,67 @@
 import React from 'react';
 import './UpdatePurchase.scss';
 import { useEffect, useState } from 'react';
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { userRequest } from "../../utils/CallApi";
 import { hostServer } from "../../utils/const";
-
+import { toast } from "react-toastify";
 function UpdatePurchase() {
     const params = useParams();
-    const [purchase, setPhone] = useState([]);
+    const [purchase, setpurchase] = useState([]);
+    const [purchaseID, setPurchaseID] = useState();
+    const [status, setStatus] = useState();
+    const navigate = useNavigate();
+
     useEffect(() => {
         userRequest().get("admin/orders/edit/" + params.id).then((res) => {
             console.log(res.data.purchase)
-            setPhone(res.data.purchase);
+            setpurchase(res.data.purchase);
         });
     }, []);
 
+    const handleStatus = (e) => {
+        setStatus(e.target.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        userRequest()
+            .put(`admin/orders/update/${params.id}`, {
+                status: status,
+            })
+            .then((res) => {
+                toast.success("Cập Nhật Thành Công", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            })
+            .catch((err) => {
+                toast.error("Đã xảy ra lỗi, cập nhật thất bại", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                console.log(err);
+            });
+    };
+
     return (
+
         <div className="container mt-4 mb-4">
             {purchase.map((purchase) => (
                 <div>
                     <h1 className="text-center heading">Cập nhật trạng thái đơn hàng</h1>
-                    <form className="mt-4" method="POST" action={hostServer + "/api/admin/orders/update/" + purchase._id + "?_method=PUT"}>
+                    {/* <form className="mt-4" method="POST" action={hostServer + "/api/admin/orders/update/" + purchase._id + "?_method=PUT"}> */}
+                    <form className="mt-4">
                         <div className="mb-4">
                             <label className="form-label label_level_1">Mã đơn hàng</label>
                             <input disabled type="text" className="form-control my-input-tag" defaultValue={purchase._id} />
@@ -31,7 +72,7 @@ function UpdatePurchase() {
                         </div>
                         <div className="mb-4">
                             <label htmlFor="status" className="form-label label_level_1">Trạng thái đơn hàng</label>
-                            <select className="form-select my-input-tag" name='status'>
+                            <select className="form-select my-input-tag" name='status' onChange={handleStatus}>
                                 <option hidden selected>{purchase.status}</option>
                                 <option value="Đang giao hàng">Đang giao hàng</option>
                                 <option value="Đã giao hàng">Đã giao hàng</option>
@@ -65,7 +106,7 @@ function UpdatePurchase() {
                         }
 
                         <Link className="btn btn-primary my-bnt bnt-back" to='/admin/orders'>Quay lại</Link>
-                        <button type="submit" className="btn btn-primary my-bnt">Lưu lại</button>
+                        <button className="btn btn-primary my-bnt" onClick={handleSubmit}>Lưu lại</button>
                     </form>
                 </div>
             ))}

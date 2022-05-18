@@ -5,7 +5,7 @@ import { loginSuccess } from "../../redux/userRedux";
 import "./UserInfo.scss";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
-import { toast, ToastClassName, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const UserInfo = () => {
   const [loading, setLoading] = useState(true);
@@ -411,7 +411,6 @@ const UserInfo = () => {
               <input type="submit" value="Cập Nhật" onClick={handleSubmit} />
             </form>
           </div>
-          <ToastContainer></ToastContainer>
         </div>
       )}
 

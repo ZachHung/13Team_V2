@@ -15,6 +15,7 @@ const Purchase = new Schema(
         },
         quantity: { type: Number },
         color: String,
+        deleted: { type: Boolean, default: false },
       },
     ],
     status: { type: String, default: 'Đang giao hàng' },

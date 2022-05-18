@@ -1,28 +1,28 @@
-import React from "react";
-import { useEffect, useState } from "react";
-import { userRequest, publicRequest } from "../../utils/CallApi";
-import { useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from 'react';
+import { useEffect, useState } from 'react';
+import { userRequest, publicRequest } from '../../utils/CallApi';
+import { useSelector } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMobile,
   faMicrochip,
   faMemory,
   faHardDrive,
   faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+} from '@fortawesome/free-solid-svg-icons';
 
-import Swiper from "../../components/swiper/Swiper";
-import SwiperPromotion from "../../components/swiperPromotion/SwiperPromotion";
-import Header from "../../components/header";
-import Footer from "../../components/footer";
-import Pagination from "../../components/pagination";
-import { currentChange } from "../../utils/const";
-import SortProduct from "../../components/sortProduct";
-import ModalCompare from "../../components/modalCompare/modal";
-import ModalLimitCompare from "../../components/modalLitmitCompare/modalLimit";
-import "./PhonePage.scss";
+import Swiper from '../../components/swiper/Swiper';
+import SwiperPromotion from '../../components/swiperPromotion/SwiperPromotion';
+import Header from '../../components/header';
+import Footer from '../../components/footer';
+import Pagination from '../../components/pagination';
+import { currentChange } from '../../utils/const';
+import SortProduct from '../../components/sortProduct';
+import ModalCompare from '../../components/modalCompare/modal';
+import ModalLimitCompare from '../../components/modalLitmitCompare/modalLimit';
+import './PhonePage.scss';
 
 // const api = axios.create({
 //   baseURL: 'http://localhost:5000/api',
@@ -30,8 +30,9 @@ import "./PhonePage.scss";
 
 function PhonePage() {
   const location = useLocation();
-  const type = location.pathname.split("/")[1];
+  const type = location.pathname.split('/')[1];
   const user = useSelector((state) => state.user.current);
+  // console.log('user', user._id);
   const [phoneList, setPhoneList] = useState([]);
   var initialCheckedBrand;
   // retrive name brand array
@@ -43,7 +44,7 @@ function PhonePage() {
   const handleAddCart = (optionParam, colorParam, e) => {
     // if user is guest
     if (user == null || user == undefined) {
-      navigateCart("../login");
+      navigateCart('../login');
     }
     // if user is costumer
     else {
@@ -62,7 +63,7 @@ function PhonePage() {
   const handleBuyProduct = (optionParam, colorParam) => {
     // if user is guest
     if (user == null || user == undefined) {
-      navigateCart("../login");
+      navigateCart('../login');
     }
     // if user is costumer
     else {
@@ -73,7 +74,7 @@ function PhonePage() {
         })
         .then((res) => {})
         .catch((err) => console.log(err));
-      navigateCart("../cart");
+      navigateCart('../cart');
     }
   };
   // filter
@@ -86,33 +87,35 @@ function PhonePage() {
     });
   }, [type]);
 
-  var urlString = "";
+  var urlString = '';
   if (checkedBrand.length != 0 && checkedPrice.length != 0) {
-    let paramStringBrand = checkedBrand.join(",");
-    let paramStringPrice = checkedPrice.join(",");
+    let paramStringBrand = checkedBrand.join(',');
+    let paramStringPrice = checkedPrice.join(',');
     urlString = `?brand=${paramStringBrand}&price=${paramStringPrice}`;
   }
   if (checkedBrand.length == 0 && checkedPrice.length != 0) {
-    let paramStringPrice = checkedPrice.join(",");
+    let paramStringPrice = checkedPrice.join(',');
     urlString = `?price=${paramStringPrice}`;
   }
   if (checkedBrand.length != 0 && checkedPrice.length == 0) {
-    let paramStringBrand = checkedBrand.join(",");
+    let paramStringBrand = checkedBrand.join(',');
     urlString = `?brand=${paramStringBrand}`;
   }
   if (checkedBrand.length == 0 && checkedPrice.length == 0) {
-    urlString = "";
+    urlString = '';
   }
   // call api
 
   useEffect(() => {
     window.history.pushState(
       {},
-      "Tìm kiếm",
+      'Tìm kiếm',
       `http://localhost:3000/${type}${urlString}`
     );
     publicRequest.get(`/${type}${urlString}`).then((res) => {
       setPhoneList(res.data.items);
+      // console.log('data: ', res.data.items);
+      // console.log('urlString: ', `/${type}${urlString}`);
     });
   }, [urlString, type]);
 
@@ -141,10 +144,10 @@ function PhonePage() {
   };
   const handleCheckAllPrice = () => {
     setCheckedPrice([
-      "tren-14-trieu",
-      "duoi-2-trieu",
-      "tu-2-5-trieu",
-      "tu-5-14-trieu",
+      'tren-14-trieu',
+      'duoi-2-trieu',
+      'tu-2-5-trieu',
+      'tu-5-14-trieu',
     ]);
   };
   // compare
@@ -194,12 +197,84 @@ function PhonePage() {
   );
   // change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  //  set accessory
+  const handleRenderAccessory = (phone) => {
+    // console.log('type: ', type);
+    if (type === 'accessory') {
+      return (
+        <div>
+          {' '}
+          <span data-title="CPU">
+            <p>
+              <FontAwesomeIcon
+                icon={faMicrochip}
+                style={{ paddingRight: '5px' }}
+              />
+              {phone.techInfo[1].infoDetail[0].infoNum}
+            </p>
+          </span>
+          <span data-title="Màn hình">
+            <p>
+              <FontAwesomeIcon
+                icon={faMobile}
+                style={{ paddingRight: '5px' }}
+              />
+              {phone.techInfo[0].infoDetail[0].infoNum}
+            </p>
+          </span>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <span data-title="CPU">
+            <p>
+              <FontAwesomeIcon
+                icon={faMicrochip}
+                style={{ paddingRight: '5px' }}
+              />
+              {phone.techInfo[2].infoDetail[0].infoNum}
+            </p>
+          </span>
+          <span data-title="Màn hình">
+            <p>
+              <FontAwesomeIcon
+                icon={faMobile}
+                style={{ paddingRight: '5px' }}
+              />
+              {phone.techInfo[0].infoDetail[0].infoNum}
+            </p>
+          </span>
+          <span data-title="RAM">
+            <p>
+              <FontAwesomeIcon
+                icon={faMemory}
+                style={{ paddingRight: '5px' }}
+              />
+              {phone.techInfo[3].infoDetail[0].infoNum}
+            </p>
+          </span>
+
+          <span data-title="ROM">
+            <p>
+              <FontAwesomeIcon
+                icon={faHardDrive}
+                style={{ paddingRight: '5px' }}
+              />
+              {phone.slug[0].detail}
+            </p>
+          </span>
+        </div>
+      );
+    }
+  };
+
   return (
     <>
       <Header />
 
-      <div className='products-container'>
-        <section className='section products'>
+      <div className="products-container">
+        <section className="section products">
           <ModalCompare
             // className={`${checkedCompare.length == 0 ? 'modal-disable' : ''}`}
             // className={`modal-disable`}
@@ -208,64 +283,67 @@ function PhonePage() {
             type={type}
             urlImages={urlImages}
             handleClickCancelCompare={handleClickCancelCompare}
-            countCompare={checkedCompare.length}></ModalCompare>
+            countCompare={checkedCompare.length}
+          ></ModalCompare>
 
-          <SwiperPromotion className='swiper-promotion'></SwiperPromotion>
+          <SwiperPromotion className="swiper-promotion"></SwiperPromotion>
           <Swiper
             updateBrand={handleCheckBrand}
             updatePrice={handleCheckPrice}
-            type={type}></Swiper>
-          <div className='filter-checkbox'>
-            <span style={{ fontWeight: 500, paddingRight: "1rem" }}>
+            type={type}
+          ></Swiper>
+          <div className="filter-checkbox">
+            <span style={{ fontWeight: 500, paddingRight: '1rem' }}>
               Lọc theo:
             </span>
             {checkedBrand.map((item) => (
-              <span key={item} className='filter-span'>
+              <span key={item} className="filter-span">
                 {item}
                 <FontAwesomeIcon
                   icon={faXmark}
                   style={{
-                    paddingRight: "5px",
-                    paddingLeft: "5px",
-                    fontWeight: "300",
+                    paddingRight: '5px',
+                    paddingLeft: '5px',
+                    fontWeight: '300',
                   }}
                 />
               </span>
             ))}
             {checkedPrice.map((item) => (
-              <span key={item} className='filter-span'>
+              <span key={item} className="filter-span">
                 {item}
                 <FontAwesomeIcon
                   icon={faXmark}
                   style={{
-                    paddingRight: "5px",
-                    paddingLeft: "5px",
-                    fontWeight: "300",
+                    paddingRight: '5px',
+                    paddingLeft: '5px',
+                    fontWeight: '300',
                   }}
                 />
               </span>
             ))}
           </div>
           {/* <SortProduct
-            handleSortAsc={handleSortAsc}
-            handleSortDesc={handleSortDesc}
-          /> */}
-          <div className='products-layout container'>
-            <div className='filter'>
+              handleSortAsc={handleSortAsc}
+              handleSortDesc={handleSortDesc}
+            /> */}
+          <div className="products-layout container">
+            <div className="filter">
               <div>
-                <div className='block-title'>
+                <div className="block-title">
                   <h3>Thương hiệu</h3>
                 </div>
-                <ul className='block-content filter-brand'>
+                <ul className="block-content filter-brand">
                   <li
                     onClick={() => handleCheckAllBrand()}
-                    className='form-group'>
+                    className="form-group"
+                  >
                     <input
-                      type='checkbox'
+                      type="checkbox"
                       checked={
                         checkedBrand.length == 6 || checkedBrand.length == 0
                       }
-                      onChange={() => console.log("fix checked warning")}
+                      onChange={() => console.log('fix checked warning')}
                     />
                     <label>
                       <span>Tất cả</span>
@@ -275,11 +353,12 @@ function PhonePage() {
                     <li
                       key={item.name}
                       onClick={() => handleCheckBrand(item.name)}
-                      className='form-group'>
+                      className="form-group"
+                    >
                       <input
-                        type='checkbox'
+                        type="checkbox"
                         checked={checkedBrand.includes(item.name)}
-                        onChange={() => console.log("fix checked warning")}
+                        onChange={() => console.log('fix checked warning')}
                       />
                       <label>
                         <span>{item.name}</span>
@@ -290,67 +369,72 @@ function PhonePage() {
               </div>
 
               <div>
-                <div className='block-title'>
+                <div className="block-title">
                   <h3>Mức giá</h3>
                 </div>
-                <ul className='block-content'>
+                <ul className="block-content">
                   <li
                     onClick={() => handleCheckAllPrice()}
-                    className='form-group'>
+                    className="form-group"
+                  >
                     <input
-                      type='checkbox'
+                      type="checkbox"
                       checked={
                         checkedPrice.length == 4 || checkedPrice.length == 0
                       }
-                      onChange={() => console.log("fix checked warning")}
+                      onChange={() => console.log('fix checked warning')}
                     />
                     <label>
                       <span>Tất cả</span>
                     </label>
                   </li>
                   <li
-                    onClick={() => handleCheckPrice("duoi-2-trieu")}
-                    className='form-group'>
+                    onClick={() => handleCheckPrice('duoi-2-trieu')}
+                    className="form-group"
+                  >
                     <input
-                      type='checkbox'
-                      checked={checkedPrice.includes("duoi-2-trieu")}
-                      onChange={() => console.log("fix checked warning")}
+                      type="checkbox"
+                      checked={checkedPrice.includes('duoi-2-trieu')}
+                      onChange={() => console.log('fix checked warning')}
                     />
                     <label>
                       <span>Dưới 2 triệu</span>
                     </label>
                   </li>
                   <li
-                    onClick={() => handleCheckPrice("tu-2-5-trieu")}
-                    className='form-group'>
+                    onClick={() => handleCheckPrice('tu-2-5-trieu')}
+                    className="form-group"
+                  >
                     <input
-                      type='checkbox'
-                      checked={checkedPrice.includes("tu-2-5-trieu")}
-                      onChange={() => console.log("fix checked warning")}
+                      type="checkbox"
+                      checked={checkedPrice.includes('tu-2-5-trieu')}
+                      onChange={() => console.log('fix checked warning')}
                     />
                     <label>
                       <span>Từ 2 đến 5 triệu</span>
                     </label>
                   </li>
                   <li
-                    onClick={() => handleCheckPrice("tu-5-14-trieu")}
-                    className='form-group'>
+                    onClick={() => handleCheckPrice('tu-5-14-trieu')}
+                    className="form-group"
+                  >
                     <input
-                      checked={checkedPrice.includes("tu-5-14-trieu")}
-                      type='checkbox'
-                      onChange={() => console.log("fix checked warning")}
+                      checked={checkedPrice.includes('tu-5-14-trieu')}
+                      type="checkbox"
+                      onChange={() => console.log('fix checked warning')}
                     />
                     <label>
                       <span>Từ 5 đến 14 triệu</span>
                     </label>
                   </li>
                   <li
-                    onClick={() => handleCheckPrice("tren-14-trieu")}
-                    className='form-group'>
+                    onClick={() => handleCheckPrice('tren-14-trieu')}
+                    className="form-group"
+                  >
                     <input
-                      type='checkbox'
-                      checked={checkedPrice.includes("tren-14-trieu")}
-                      onChange={() => console.log("fix checked warning")}
+                      type="checkbox"
+                      checked={checkedPrice.includes('tren-14-trieu')}
+                      onChange={() => console.log('fix checked warning')}
                     />
                     <label>
                       <span>Trên 14 triệu</span>
@@ -360,115 +444,80 @@ function PhonePage() {
               </div>
             </div>
 
-            <div className='list-products'>
+            <div className="list-products">
               {currentProduct.map((phone) => (
-                <div key={phone._id} className='product-layout'>
-                  <div className='product'>
-                    <div className='img-container'>
+                <div key={phone._id} className="product-layout">
+                  <div className="product">
+                    <div className="img-container">
                       <div
                         className={`${
                           checkedCompare.length >= 2
-                            ? "form-group compare disabled"
-                            : "form-group compare"
+                            ? 'form-group compare disabled'
+                            : 'form-group compare'
                         }`}
                         onClick={() =>
-                          handleCheckCompare(
-                            phone._id,
-                            `${process.env.REACT_APP_SERVER_PATH}/${phone.image[0]}`
-                          )
-                        }>
+                          handleCheckCompare(phone._id, `${phone.image[0]}`)
+                        }
+                      >
                         <input
-                          type='checkbox'
+                          type="checkbox"
                           checked={checkedCompare.includes(phone._id)}
-                          onChange={() => console.log("fix checked warning")}
+                          onChange={() => console.log('fix checked warning')}
                         />
                         <label>
                           <span>So sánh</span>
                         </label>
                       </div>
                       <Link
-                        to={`/${type}/${phone.slug[0].slug}-${phone.slug[0].detail}`}>
+                        to={`/${type}/${phone.slug[0].slug}-${phone.slug[0].detail}`}
+                      >
                         <img src={`${phone.image[0]}`} alt={phone.name} />
                       </Link>
                     </div>
-                    <div className='info-product'>
-                      <div className='product-name'>
+                    <div className="info-product">
+                      <div className="product-name">
                         <Link to={`/`}>
                           <h3>{phone.name}</h3>
                         </Link>
                       </div>
 
-                      <div className='price'>
+                      <div className="price">
                         <span>
                           {currentChange(phone.slug[0].color[0].price)}
                         </span>
                       </div>
-                      <div className='config'>
-                        <div className='config-param'>
-                          <span data-title='CPU'>
-                            <p>
-                              <FontAwesomeIcon
-                                icon={faMicrochip}
-                                style={{ paddingRight: "5px" }}
-                              />
-                              {phone.techInfo[2].infoDetail[0].infoNum}
-                            </p>
-                          </span>
-                          <span data-title='Màn hình'>
-                            <p>
-                              <FontAwesomeIcon
-                                icon={faMobile}
-                                style={{ paddingRight: "5px" }}
-                              />
-                              {phone.techInfo[0].infoDetail[0].infoNum}
-                            </p>
-                          </span>
-                          <span data-title='RAM'>
-                            <p>
-                              <FontAwesomeIcon
-                                icon={faMemory}
-                                style={{ paddingRight: "5px" }}
-                              />
-                              {phone.techInfo[3].infoDetail[0].infoNum}
-                            </p>
-                          </span>
-
-                          <span data-title='ROM'>
-                            <p>
-                              <FontAwesomeIcon
-                                icon={faHardDrive}
-                                style={{ paddingRight: "5px" }}
-                              />
-                              {phone.slug[0].detail}
-                            </p>
-                          </span>
+                      <div className="config">
+                        <div className="config-param">
+                          {handleRenderAccessory(phone)}
                         </div>
                       </div>
-                      <div className='product-btn'>
-                        <form className='buy-btn'>
+                      <div className="product-btn">
+                        <form className="buy-btn">
                           <button
-                            className='btn btn-buy btn-sm'
-                            type='submit'
+                            className="btn btn-buy btn-sm"
+                            type="submit"
                             onClick={() =>
                               handleBuyProduct(
                                 phone.slug[0]._id,
                                 phone.slug[0].color[0].name
                               )
-                            }>
+                            }
+                          >
                             <p>MUA</p>
                           </button>
                         </form>
-                        <form className='add-btn'>
+                        <form className="add-btn">
                           <button
-                            className='btn btn-addCart btn-sm'
-                            type='submit'
+                            className="btn btn-addCart btn-sm"
+                            type="submit"
                             onClick={(e) =>
                               handleAddCart(
                                 phone.slug[0]._id,
                                 phone.slug[0].color[0].name,
                                 e
                               )
-                            }>
+                            }
+                          >
                             <p>THÊM VÀO GIỎ</p>
                           </button>
                         </form>

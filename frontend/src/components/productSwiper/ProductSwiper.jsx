@@ -19,7 +19,7 @@ export default function ProductSwiper({ swiperArray }) {
   const pathImage = process.env.REACT_APP_SERVER_PATH;
 
   return (
-    <div className='swiper__container'>
+    <div className="swiper__container">
       <Swiper
         style={{
           "--swiper-navigation-color": "#fff",
@@ -29,11 +29,14 @@ export default function ProductSwiper({ swiperArray }) {
         spaceBetween={10}
         thumbs={{ swiper: thumbsSwiper }}
         modules={[FreeMode, Navigation, Thumbs]}
-        className='mySwiper2'
-        ref={controlSwiper}>
+        className="mySwiper2"
+        ref={controlSwiper}
+      >
         {swiperArray.map((item, index) => (
           <SwiperSlide key={index}>
-            <img src={pathImage + item.image} />
+            <div className="swiper__img">
+              <img src={pathImage + item.image} />
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>
@@ -44,7 +47,8 @@ export default function ProductSwiper({ swiperArray }) {
         freeMode={true}
         watchSlidesProgress={true}
         modules={[FreeMode, Navigation, Thumbs]}
-        className='mySwiper'>
+        className="mySwiper"
+      >
         {swiperArray.map((item, index) => (
           <SwiperSlide key={index}>
             <img src={pathImage + item.image} />

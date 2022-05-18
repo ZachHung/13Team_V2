@@ -7,6 +7,6 @@ const {
 } = require('../middlewares/verificationHandler');
   
 router.put("/update/:id", AccountController.updateProfileAdmin);
-router.get("/:id", verifyTokenAdmin, AccountController.editProfileAdmin);
+router.get("/:id", AccountController.editProfileAdmin);
 
 module.exports = router;

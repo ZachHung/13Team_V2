@@ -64,10 +64,16 @@
         height: 85%;
       }
 
-      img {
-        width: 80%;
-        display: block;
-        margin: 2rem auto 1rem auto;
+      .product_img {
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img {
+          width: 80%;
+          display: block;
+          margin: 2rem auto 1rem auto;
+        }
       }
       .product__info {
         margin-left: 2rem;

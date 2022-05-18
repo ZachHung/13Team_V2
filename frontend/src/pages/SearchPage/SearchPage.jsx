@@ -34,13 +34,13 @@ function SearchPage() {
   const [productList, setProductList] = useState([]);
   var initialCheckedBrand;
   const search = useLocation().search;
-  console.log('search: ', search);
+  // console.log('search: ', search);
   const key = new URLSearchParams(search).get('key');
-  console.log('key: ', key);
+  // console.log('key: ', key);
 
   // retrive name brand array
   publicRequest.get(`/search/brand/name`).then((res) => {
-    console.log('branname out component', res.data);
+    // console.log('branname out component', res.data);
     initialCheckedBrand = res.data;
   });
 
@@ -82,7 +82,7 @@ function SearchPage() {
   };
   // filter
   const [brand, setBrand] = useState([]);
-  console.log('initialCheckedBrand', initialCheckedBrand);
+  // console.log('initialCheckedBrand', initialCheckedBrand);
   const [checkedBrand, setCheckedBrand] = useState([]);
   const [checkedPrice, setCheckedPrice] = useState([]);
   useEffect(() => {
@@ -111,7 +111,7 @@ function SearchPage() {
   // call api
 
   useEffect(() => {
-    console.log('urlString', urlString);
+    // console.log('urlString', urlString);
     window.history.pushState(
       {},
       'Tìm kiếm',
@@ -320,10 +320,7 @@ function SearchPage() {
                       <Link
                         to={`/${phone.type}/${phone.slug[0].slug}-${phone.slug[0].detail}`}
                       >
-                        <img
-                          src={`http://localhost:5000/${phone.image[0]}`}
-                          alt={phone.name}
-                        />
+                        <img src={`${phone.image[0]}`} alt={phone.name} />
                       </Link>
                     </div>
                     <div className="info-product">
