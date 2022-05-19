@@ -4,7 +4,7 @@ const util = require('../../util/mongoose');
 const cart = require('../models/Cart');
 const { find } = require('../models/Purchase');
 var ObjectId = require('mongodb').ObjectId;
-var URL = 'http://localhost:3000/';
+
 
 // const ID = useId; //userID của người dùng đã đăng nhập
 const year = '2022';

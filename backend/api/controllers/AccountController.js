@@ -11,7 +11,6 @@ var confirmCode = 1234;
 var emailRecovery = "tnhut806@gmail.com";
 var sender = "tnhut1234@outlook.com";
 var password = "Trannhut1";
-var URL = "http://localhost:3000/";
 
 let transporter = nodemailer.createTransport({
   host: "smtp-mail.outlook.com",

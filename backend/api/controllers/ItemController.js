@@ -274,25 +274,12 @@ class ItemController {
   }
 
   deleteItemAdmin(req, res, next) {
-    // try {
-    //   const itemDelID = req.params.id;
-    //   const itemsDel = await items.findById(itemDelID);
-    //   const optionsDel = await options.find({ slug: itemsDel.slug });
-    //   const delItems = await items.findByIdAndDelete(itemDelID);
-    //   for (let i = 0; i < optionsDel.length; i++) {
-    //     const delOptions = await options.deleteOne({
-    //       _id: ObjectId(optionsDel[i]._id),
-    //     });
-    //   }
-    // } catch (e) {
-    //   console.error(`[Error] ${e}`);
-    //   throw Error('Có lỗi xảy ra, vui lòng thử lại!!');
-    // }
     const itemDelID = req.params.id;
     items
       .findById(itemDelID)
       .then((data)=> {
-        options.find({ slug: data.slug })
+        options
+        .find({ slug: data.slug })
         .then(data1 => {
             if (data1){
               for (let i = 0; i < data1.length; i++) {
@@ -559,7 +546,6 @@ class ItemController {
         { var result =await createitem.save()
         .then((data)=>{
           res.json(data);
-          //res.redirect(URL+"admin/products")
          
     })
         .catch(next);
@@ -619,9 +605,6 @@ class ItemController {
       item: req.params.id,
       
     }
-    //console.log(option);
-    //console.log(req.body);
-    //console.log(req.body.slug);
     const createoption=new options(option);
     try
         { var result =await createoption.save()
