@@ -16,6 +16,8 @@ import { hostServer } from "../../utils/const";
 import Dialog, { DialogOK } from '../../components/deleteConfirm/Dialog';
 import { Link } from "react-router-dom";
 import { ceil } from 'lodash';
+import { toast } from 'react-toastify';
+
 function ItemsAdmin () {
   var index = 1;
   const [itemList, setItemList] = useState ([]);
@@ -87,10 +89,31 @@ function ItemsAdmin () {
     if (choose) {
       setItemList(itemList.filter((p) => p._id !== idItemRef.current));
       userRequest()
-        .delete(hostServer + `/api/admin/orders/delete/${idItemRef.current}`)
-        .then(res => {
+        .delete(hostServer + `/api/admin/products/delete/${idItemRef.current}`)
+        .then((res) => {
           setItemList(res.data.items);
-        });
+          toast.success("Xóa sản phẩm thành công", {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+      })
+      .catch((err) => {
+          toast.error("Đã xảy ra lỗi, xóa sản phẩm thất bại", {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          console.log(err);
+      });
       handleDialog("", false);
     } else {
       handleDialog("", false);
@@ -125,8 +148,28 @@ function ItemsAdmin () {
         setItemList(itemList.filter(i => selectedItem.indexOf(i) === -1));
         userRequest()
           .delete(hostServer + "/api/admin/products/deleteMany", {data: ids})
-          .then(res => {  
+          .then( (res) => {  
             setItemList(res.data.items);
+            toast.success("Xóa sản phẩm thành công", {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          })
+          .catch((err) => {
+                toast.error("Đã xảy ra lỗi, xóa sản phẩm thất bại", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  });
           })
         handleDialogs("", false);
       }

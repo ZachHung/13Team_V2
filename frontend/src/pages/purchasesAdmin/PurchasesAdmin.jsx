@@ -11,6 +11,7 @@ import { hostServer } from "../../utils/const";
 import Dialog, { DialogOK } from '../../components/deleteConfirm/Dialog';
 import { Link } from "react-router-dom";
 import { ceil } from 'lodash';
+import { toast } from 'react-toastify';
 function PurchasesAdmin() {
   var index = 1;
   const [purchaseList, setPurchaseList] = useState([]);
@@ -84,7 +85,27 @@ function PurchasesAdmin() {
         .delete(hostServer + `/api/admin/orders/delete/${idPurchaseRef.current}`)
         .then(res => {
           setPurchaseList(res.data.purchase);
-        });
+          toast.success("Xóa đơn hàng thành công", {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+      })
+      .catch((err) => {
+          toast.error("Đã xảy ra lỗi, xóa đơn hàng thất bại", {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          console.log(err)});
       handleDialog("", false);
     } else {
       handleDialog("", false);
@@ -124,6 +145,26 @@ function PurchasesAdmin() {
         .delete(hostServer + '/api/admin/orders/deleteMany', {data: ids})
           .then(res => {  
             setPurchaseList(res.data.purchase);
+            toast.success("Xóa đơn hàng thành công", {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          })
+          .catch((err) => {
+                toast.error("Đã xảy ra lỗi, xóa đơn hàng thất bại", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  });
           })
           handleDialogs("", false);
       }

@@ -312,31 +312,28 @@ class AccountController {
     const userId = req.params.id;
     user
     .deleteOne({_id: ObjectId(userId)})
-    .then((data)=> {
+    .then((data) => {
       if (data.modifiedCount != 0) {
-        user.find().then((dataRes) => {
-          res.json({user: dataRes},);
+        user.find({})
+        .then((userRes) => {       
+          res.json({user: userRes});
         });
       }
     })
     .catch(next);
-    // const userDelete = await user.findOne({ _id: ObjectId(userId) });
-    // if (userDelete) {
-    //   try {
-    //     const deleteUser = await userDelete.deleteOne({
-    //       _id: ObjectId(userId),
-    //     });
-    //   } catch (e) {
-    //     console.error(`[Error] ${e}`);
-    //     throw Error("Có lỗi xảy ra, vui lòng thử lại!!");
-    //   }
-    // }
   }
   deleteManyUsersAdmin(req, res, next) {
     const ids = req.body;
     user
       .deleteMany({ _id: { $in: ids } })
-      .then()
+      .then((data) => {
+        if (data.modifiedCount != 0) {
+          user.find()
+          .then((userRes) => {       
+            res.json({user: userRes});
+          });
+        }
+      })
       .catch(next);
   }
 
@@ -405,7 +402,6 @@ class AccountController {
       .catch(next);
   }
   updateProfileAdmin(req, res, next) {
-    //console.log(req.body.newPassword);
     var passChangeHash = CryptoJS.AES.encrypt(
          req.body.newPassword,
          process.env.PASS_SECRET,

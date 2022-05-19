@@ -292,8 +292,16 @@ class ItemController {
 
   deleteManyItemsAdmin(req, res, next) {
     const ids = req.body;
-    items.deleteMany({ _id: { $in: ids } })
-      .then()
+    items
+      .deleteMany({ _id: { $in: ids } })
+      .then((data) => {
+        if (data.modifiedCount != 0) {
+          user.find()
+          .then((itemRes) => {       
+            res.json({items: itemRes});
+          });
+        }
+      })
       .catch(next);
   }
 

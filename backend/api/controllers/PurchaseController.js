@@ -411,28 +411,33 @@ class PurchaseController {
       .catch(next);
   }
 
-  async deletePurchasesAdmin(req, res, next) {
+  deletePurchasesAdmin(req, res, next) {
     const purchaseId = req.params.id;
-    const purchaseDelete = await purchase.findOne({
-      _id: ObjectId(purchaseId),
-    });
-    if (purchaseDelete) {
-      try {
-        const deletePurchase = await purchaseDelete.deleteOne({
-          _id: ObjectId(purchaseId),
-        });
-      } catch (e) {
-        console.error(`[Error] ${e}`);
-        throw Error('Có lỗi xảy ra, vui lòng thử lại!!');
-      }
-    }
+    purchase
+      .deleteOne({_id: ObjectId(purchaseId)})
+      .then((data) => {
+        if (data.modifiedCount != 0) {
+          purchase.find({})
+          .then((purchaseRes) => {       
+            res.json({purchase: purchaseRes});
+          });
+        }
+      })
+      .catch(next);
   }
 
   deleteManyPurchasesAdmin(req, res, next) {
     const ids = req.body;
     purchase
       .deleteMany({ _id: { $in: ids } })
-      .then(() => res.redirect(URL + 'admin/orders'))
+      .then((data) => {
+        if (data.modifiedCount != 0) {
+          purchase.find()
+          .then((userRes) => {       
+            res.json({purchase: userRes});
+          });
+        }
+      })
       .catch(next);
   }
 
