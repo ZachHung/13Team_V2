@@ -262,12 +262,6 @@ class AccountController {
       .catch((err) => {
         res.send(err);
       });
-
-    /*
-    // res.render("userinfo", {
-    // 	user: req.session.user,
-    // });
-    // */
   }
   update(req, res, next) {
     console.log("oke")
@@ -314,19 +308,29 @@ class AccountController {
       .catch(next);
   }
 
-  async deleteUsersAdmin(req, res, next) {
+  deleteUsersAdmin(req, res, next) {
     const userId = req.params.id;
-    const userDelete = await user.findOne({ _id: ObjectId(userId) });
-    if (userDelete) {
-      try {
-        const deleteUser = await userDelete.deleteOne({
-          _id: ObjectId(userId),
+    user
+    .deleteOne({_id: ObjectId(userId)})
+    .then((data)=> {
+      if (data.modifiedCount != 0) {
+        user.find().then((dataRes) => {
+          res.json({user: dataRes},);
         });
-      } catch (e) {
-        console.error(`[Error] ${e}`);
-        throw Error("Có lỗi xảy ra, vui lòng thử lại!!");
       }
-    }
+    })
+    .catch(next);
+    // const userDelete = await user.findOne({ _id: ObjectId(userId) });
+    // if (userDelete) {
+    //   try {
+    //     const deleteUser = await userDelete.deleteOne({
+    //       _id: ObjectId(userId),
+    //     });
+    //   } catch (e) {
+    //     console.error(`[Error] ${e}`);
+    //     throw Error("Có lỗi xảy ra, vui lòng thử lại!!");
+    //   }
+    // }
   }
   deleteManyUsersAdmin(req, res, next) {
     const ids = req.body;
@@ -385,7 +389,8 @@ class AccountController {
     //   .then(() => res.redirect(URL + "admin/customers/update/" + req.params.id))
     //   .catch(next);
   }
-  editProfileAdmin(req, res, next) {   
+  editProfileAdmin(req, res, next) { 
+     
     user
       .findById(req.params.id)
       .then((users) => {
@@ -400,13 +405,19 @@ class AccountController {
       .catch(next);
   }
   updateProfileAdmin(req, res, next) {
+    //console.log(req.body.newPassword);
+    var passChangeHash = CryptoJS.AES.encrypt(
+         req.body.newPassword,
+         process.env.PASS_SECRET,
+      )
     user
       .updateOne(
         {
-          email: req.body.email,
+          _id: ObjectId(req.params.id),
         },
         {
           name: req.body.username,
+          password: `${passChangeHash}`,
           phone: req.body.phone,
           gender: req.body.gender,
           birthday: req.body.birthday,
@@ -421,8 +432,8 @@ class AccountController {
       .then((data) => {
         if (data.modifiedCount != 0) {
           user.findOne({ email: req.body.email }).then((user) => {
-            const { password, ...others } = user._doc;
-            res.send(others);
+            const {...users} = user._doc;
+            res.send(users);
           });
         }
       });

@@ -311,8 +311,8 @@ function CreatePhoneAdminPage() {
                 
                 <div id='my-image-brand' className='add-image-brand'>
                             <input type="text" className="form-control mt-4 my-input-tag newImage-brand"  defaultValue={UrlBrandimage}  placeholder='Nhập vào đường dẫn' id="image-new-brand"  />
-                           
-
+                        <div>  
+                        <div> 
                         </div>
                         <div className="col">
                             <a className="btn btn-primary upload-bnt" onClick={handleUploadBrandImage}>Tải lên</a>

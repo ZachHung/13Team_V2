@@ -70,7 +70,9 @@
   .hightlightInfo{
     color: #8b0000;
   }
-
+  .personalInfo{
+    font-weight: 500;
+  }
   input[type=date]{
     color: black;
   }
@@ -152,7 +154,9 @@
     background-color: #ffffff !important;
     border-radius: 0px !important;
   }
-  
+  .border-css{
+    margin-left: 7px;
+  }
   .account-settings-links .list-group-item:hover {
     font-weight: bold !important;
     color: #ffffff !important;

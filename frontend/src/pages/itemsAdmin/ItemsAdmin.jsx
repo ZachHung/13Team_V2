@@ -86,7 +86,7 @@ function ItemsAdmin () {
   const areUSureDelete = (choose) => {
     if (choose) {
       setItemList(itemList.filter((p) => p._id !== idItemRef.current));
-      axios
+      userRequest()
         .delete(hostServer + `/api/admin/orders/delete/${idItemRef.current}`)
         .then(res => {
           setItemList(res.data.items);
@@ -123,7 +123,7 @@ function ItemsAdmin () {
           ids.push(element._id);
         });
         setItemList(itemList.filter(i => selectedItem.indexOf(i) === -1));
-        axios
+        userRequest()
           .delete(hostServer + "/api/admin/products/deleteMany", {data: ids})
           .then(res => {  
             setItemList(res.data.items);
@@ -206,7 +206,7 @@ function ItemsAdmin () {
                 </td>
                 <th scope="row">{index++}</th>
                 <td>
-                  <Link to={`/admin/products/detail/${item._id}`}
+                  <Link to={`/admin/products/update/${item._id}`}
                     className="linkToItem"
                   >
                     {item.name}

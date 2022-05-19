@@ -7,15 +7,15 @@ import { hostServer } from "../../utils/const";
 import { useParams, Link } from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-
+import { toast } from "react-toastify";
 function AdminProfile () {
   const [admin, setAdmin] = useState ([]);
-  const [getCurPwd, setGetCurPwd] = useState ([]);
+  const [getCurPwd, setGetCurPwd] = useState ("");
   const [toggleState, setToggleState] = useState (1);
   const user = useSelector((state) => state.user);  
-  const [district, setdistrict] = useState([]);
-  const [province, setaddress] = useState([]);
-  const [ward, setward] = useState([]);
+  const [district, setDistrict] = useState([]);
+  const [province, setAddress] = useState([]);
+  const [ward, setWard] = useState([]);
   const [name, setName] = useState();
   const [phone, setPhone] = useState();
   const [email, setEmail] = useState();
@@ -25,11 +25,10 @@ function AdminProfile () {
   const districtRef = useRef();
   const wardRef = useRef();
   const detailRef = useRef();
-  const params = useParams();
 
   useEffect(() => {
-    userRequest().get (`admin/settings/${user.current._id}`).then ((res) => {
-      setAdmin (res.data.user);
+    userRequest().get ("admin/settings/" + user.current._id).then ((res) => {
+      setAdmin (res.data.user);     
       setName(res.data.user.name);
       setEmail(res.data.user.email);
       setPhone(res.data.user.phone);
@@ -39,7 +38,7 @@ function AdminProfile () {
       provinceRef.current.value = user.address.province;
       districtRef.current.value = user.address.district;
       wardRef.current.value = user.address.ward;
-      detailRef.current.value = user.address.detail;
+      detailRef.current.value = user.address.detailRef;
     });
   }, []);
 
@@ -49,7 +48,7 @@ function AdminProfile () {
 
   useEffect (() => {
     userRequest().get ('address/getalladress/').then (res => {
-      setaddress (res.data.address);
+      setAddress (res.data.address);
     });
   }, []);
 
@@ -59,7 +58,7 @@ function AdminProfile () {
     document.getElementById("district").value = "";
     document.getElementById("ward").value = "";
     axios.get(hostServer + '/api/address/district/' + province).then((res) => {
-        setdistrict(res.data.address);
+        setDistrict(res.data.address);
     });
 }
 
@@ -69,14 +68,14 @@ const Getwardbydistrict = () => {
     districtRef.current.value = document.getElementById("district").value;
     document.getElementById("ward").value = "";
     axios.get(hostServer + '/api/address/ward/' + provinceRef.current.value + '/' + district).then((res) => {
-        setward(res.data.address);
+        setWard(res.data.address);
     });
 }
 
 const handleWard = (e) => {
   wardRef.current.value = e.target.value
-
 };
+
 const handleAddressdetail = (e) => {
   detailRef.current.value = e.target.value
 };
@@ -110,6 +109,17 @@ const handleCurPassChange = (e) =>{
   else document.getElementById('CurPassAlert').innerText = "";
   setCurPwd(e.target.value);
 }
+const handleBlurCurPass = (e) => {
+  if (e.target.value !== "" && (newPwd === "" || rePwd === "")){
+    document.getElementById('NewPassAlert').innerText = "Không được để trống mật khẩu";
+    document.getElementById('RePassAlert').innerText = "Không được để trống mật khẩu xác nhận";
+    document.getElementById('')
+  }
+  else {
+    document.getElementById('NewPassAlert').innerText = "";
+    document.getElementById('RePassAlert').innerText = "";
+  }
+}
 const handleNewPassChange = (e) =>{
   if (e.target.value.length < 6 && e.target.value.length > 0) {
     document.getElementById('NewPassAlert').innerText = "Mật khẩu cần ít nhất 6 ký tự";
@@ -134,7 +144,7 @@ const handleRePassChange = (e) =>{
 const handleSubmit = (e) => {
   e.preventDefault();
       userRequest()
-        .put(`admin/settings/update/${params.id}`, {
+        .put("admin/settings/update/" + user.current._id, {
             username: name,
             phone: phone,
             gender: gender,
@@ -146,11 +156,30 @@ const handleSubmit = (e) => {
             province: provinceRef.current.value,
             district: districtRef.current.value,
             ward: wardRef.current.value,
-            addressdetail: detailRef.current.value,
+            addressDetail: detailRef.current.value,
         })
         .then((res) => {
-        })
-        .catch((err) => console.log(err));
+          toast.success("Cập Nhật Thành Công", {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+      })
+      .catch((err) => {
+          toast.error("Đã xảy ra lỗi, cập nhật thất bại", {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          console.log(err)});
 }
 
   return (
@@ -200,22 +229,21 @@ const handleSubmit = (e) => {
                   id="account-general"
                   role="tabpanel"
                 >
-                  <div className="card-body align-items-center adminBackground">
+                  <div className="card-body pb-2 align-items-center adminBackground">
                     {/* <img
                       src="https://res.cloudinary.com/cake-shop/image/upload/v1647313324/fhrml4yumdl42kk88jll.jpg?fbclid=IwAR1RAMOwX07c3l5KiHc22jGz89cISo9DG0gDFfXcXLIWzQVvDy5LntEN2YQ"
                       alt="avatar"
                       className="d-block ui-w-80 imgAdmin"
                     /> */}
-                    <h4 className="mt-4 p-0 textLarger hightlightInfo">
-                      QUẢN TRỊ VIÊN
-                    </h4>
+                    
                   </div>
-                  <hr className="m-0" />
+                  <h4 className="p-0 px-2 mt-3 textLarger hightlightInfo">
+                      QUẢN TRỊ VIÊN
+                  </h4>
+                  <hr className="mt-3 border-css" />
                   <div className="card-body">
                     <div className="form-group mb-3">
-                      <label htmlFor="emails" className="form-label labelTitle">
-                        E-mail
-                      </label>
+                      <label htmlFor="emails" className="form-label labelTitle">E-mail</label>
                       <input disabled
                         id="emails"
                         name="email"
@@ -251,7 +279,7 @@ const handleSubmit = (e) => {
                     <h4 className="p-0 mt-4 textLarger hightlightInfo">
                         ĐỔI MẬT KHẨU
                     </h4>
-                    <hr className="mb-4" />
+                    <hr className="mb-4 border-light" />
                     <div className="form-group mb-3">
                       <label
                         htmlFor="currentPasswords"
@@ -267,7 +295,8 @@ const handleSubmit = (e) => {
                           defaultValue={''}    
                           type={showCurPassword ? "string" : "password"}
                           value={curPwd}
-                          onChange={(e) => handleCurPassChange(e)}                                        
+                          onChange={(e) => handleCurPassChange(e)}
+                          onBlur={e => handleBlurCurPass(e)}                                       
                         />
                         <FontAwesomeIcon
                             icon={showCurPassword ? faEye : faEyeSlash}
@@ -339,7 +368,7 @@ const handleSubmit = (e) => {
                 >
                   <div className="card-body pb-2 mt-4">
                     <div className="form-group mb-3">
-                      <h3 className="textLarger hightlightInfo">
+                      <h3 className="textLarger hightlightInfo personalInfo">
                         THÔNG TIN CÁ NHÂN
                       </h3>
                       <hr className="border-light mb-3" />

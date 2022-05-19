@@ -81,7 +81,7 @@ function UsersAdmin() {
   const areUSureDelete = (choose) => {
     if (choose) {
       setUserList(userList.filter((p) => p._id !== idUserRef.current));
-      axios
+      userRequest()
         .delete(hostServer + `/api/admin/customers/delete/${idUserRef.current}`)
         .then(res => {
           setUserList(res.data.user);
@@ -120,7 +120,7 @@ function UsersAdmin() {
           ids.push(element._id);
         });
         setUserList(userList.filter(x => selectedUsers.indexOf(x) === -1));
-        axios
+        userRequest()
           .delete(hostServer + "/api/admin/customers/deleteMany", {data: ids})
           .then(res => {  
             setUserList(res.data.user);
@@ -202,7 +202,7 @@ function UsersAdmin() {
                 <th scope="row" style={{ "width": "4%" }}>{index++}</th>
                 <td style={{ "width": "5%" }}>
                   <Link
-                    to={`/admin/customers/detail/id=${user._id}`}
+                    to={`/admin/customers/update/${user._id}`}
                     className="linkToUser"
                   >
                     {user.name}

@@ -80,7 +80,7 @@ function PurchasesAdmin() {
   const areUSureDelete = (choose) => {
     if (choose) {
       setPurchaseList(purchaseList.filter((p) => p._id !== idPurchaseRef.current));
-      axios
+      userRequest()
         .delete(hostServer + `/api/admin/orders/delete/${idPurchaseRef.current}`)
         .then(res => {
           setPurchaseList(res.data.purchase);
@@ -120,7 +120,7 @@ function PurchasesAdmin() {
           ids.push(element._id);
         });
         setPurchaseList(purchaseList.filter(x => selectedPurchases.indexOf(x) === -1));
-        axios
+        userRequest()
         .delete(hostServer + '/api/admin/orders/deleteMany', {data: ids})
           .then(res => {  
             setPurchaseList(res.data.purchase);
