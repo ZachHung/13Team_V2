@@ -4,12 +4,15 @@ const cart = require("../models/Cart");
 const address = require("../models/Address");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
+const { reset } = require("nodemon");
 require("dotenv").config();
 var ObjectId = require("mongodb").ObjectId;
-
+var recoveryCode = 9450;
+var confirmCode = 1234;
+var emailRecovery = "tnhut806@gmail.com";
 var sender = process.env.NODEMAILER_MAIL;
 var password = process.env.NODEMAILER_PASSWORD;
-var recoveryCode = 1902;
+
 let transporter = nodemailer.createTransport({
   host: "smtp-mail.outlook.com",
   port: 587,
@@ -34,7 +37,7 @@ function sendMail(desMail, Message) {
     subject: "Mã Xác Thực Gmail", // Subject line
     text: `${Message} ${code}`, // plain text body
   });
-
+  console.log(code);
   return code;
 }
 class AccountController {
@@ -261,7 +264,7 @@ class AccountController {
       });
   }
   update(req, res, next) {
-    console.log("oke")
+    console.log("oke");
     user
       .updateOne(
         {
@@ -308,16 +311,15 @@ class AccountController {
   deleteUsersAdmin(req, res, next) {
     const userId = req.params.id;
     user
-    .deleteOne({_id: ObjectId(userId)})
-    .then((data) => {
-      if (data.modifiedCount != 0) {
-        user.find({})
-        .then((userRes) => {       
-          res.json({user: userRes});
-        });
-      }
-    })
-    .catch(next);
+      .deleteOne({ _id: ObjectId(userId) })
+      .then((data) => {
+        if (data.modifiedCount != 0) {
+          user.find({}).then((userRes) => {
+            res.json({ user: userRes });
+          });
+        }
+      })
+      .catch(next);
   }
   deleteManyUsersAdmin(req, res, next) {
     const ids = req.body;
@@ -325,9 +327,8 @@ class AccountController {
       .deleteMany({ _id: { $in: ids } })
       .then((data) => {
         if (data.modifiedCount != 0) {
-          user.find()
-          .then((userRes) => {       
-            res.json({user: userRes});
+          user.find().then((userRes) => {
+            res.json({ user: userRes });
           });
         }
       })
@@ -382,12 +383,7 @@ class AccountController {
     //   .then(() => res.redirect(URL + "admin/customers/update/" + req.params.id))
     //   .catch(next);
   }
-<<<<<<< HEAD
   editProfileAdmin(req, res, next) {
-=======
-  editProfileAdmin(req, res, next) { 
-     
->>>>>>> 6cf9498b36f6571021412c9071d77589a9d4ac0e
     user
       .findById(req.params.id)
       .then((users) => {
@@ -402,9 +398,9 @@ class AccountController {
   }
   updateProfileAdmin(req, res, next) {
     var passChangeHash = CryptoJS.AES.encrypt(
-         req.body.newPassword,
-         process.env.PASS_SECRET,
-      )
+      req.body.newPassword,
+      process.env.PASS_SECRET
+    );
     user
       .updateOne(
         {
@@ -427,7 +423,7 @@ class AccountController {
       .then((data) => {
         if (data.modifiedCount != 0) {
           user.findOne({ email: req.body.email }).then((user) => {
-            const {...users} = user._doc;
+            const { ...users } = user._doc;
             res.send(users);
           });
         }
