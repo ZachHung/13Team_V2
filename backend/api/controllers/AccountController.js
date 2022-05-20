@@ -6,14 +6,6 @@ const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 var ObjectId = require("mongodb").ObjectId;
-<<<<<<< HEAD
-=======
-var recoveryCode = 9450;
-var confirmCode = 1234;
-var emailRecovery = "tnhut806@gmail.com";
-var sender = "tnhut1234@outlook.com";
-var password = "Trannhut1";
->>>>>>> 6cf9498b36f6571021412c9071d77589a9d4ac0e
 
 var sender = process.env.NODEMAILER_MAIL;
 var password = process.env.NODEMAILER_PASSWORD;
