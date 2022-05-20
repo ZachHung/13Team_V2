@@ -13,22 +13,24 @@ import "react-toastify/dist/ReactToastify.css";
 
 function CreatePhoneAdminPage() {
 
-    const [name, setName] = useState('');
-    const [slug, setSlug] = useState('');
-    const [type, setType] = useState('');
-    const [brand, setBrand] = useState('');
-    const [brandimage, setBrandImage] = useState('');
-    const [UrlBrandimage, setUrlBrandImage] = useState('');
-    const [decription, setDecription] = useState('');
-    const [image, setImage] = useState('');
-    const [images, setImages] = useState([]);
-    const [revolution, setRevolution] = useState('');
-    const [size, setSize] = useState('');
-    const [typescreen, setTypescreen] = useState('');
-    const [triple, setTriple] = useState('');
-    const [video, setVideo] = useState('');
-    const [ram, setRam] = useState('');
-    const [cpu, setCpu] = useState('');
+    
+    const [name,setName]=useState('');
+    const [slug,setSlug]=useState('');
+    const [type,setType]=useState('');
+    const[brand,setBrand]=useState('');
+    const[brandimage,setBrandImage]=useState('');
+    const[UrlBrandimage,setUrlBrandImage]=useState('');
+    const [decription,setDecription]=useState('');
+    const [image, setImage]=useState('');
+    const [images, setImages]=useState([]);
+    const [revolution,setRevolution]=useState('');
+    const [size, setSize]=useState('');
+    const [typescreen,setTypescreen]=useState('');
+    const [triple,setTriple]=useState('');
+    const [video,setVideo]=useState('');
+    const [ram,setRam]=useState('');
+    const [cpu,setCpu]=useState('');
+    var typetemp;
 
     const [errorText, setErrorText] = useState("");
     const [formData, setFormData] = useState({});
@@ -37,83 +39,90 @@ function CreatePhoneAdminPage() {
     //Upload anh thuong hieu
     function handleChangeBrandImage(e) {
         if (e.target.files[0])
-            setBrandImage(e.target.files[0]);
 
-    }
-    const validateNotNull = () => {
-        const msg = {};
-        if (name == null || name == "") {
-            msg.name = "Tên không được để trống";
-
-
-        }
-        setErrorText(msg);
-
-
-
-    }
-    const validateAll = () => {
-        const msg = {};
-        if (name == "" || name == null) {
-            msg.name = "Tên không được để trống";
-        }
-        else {
-            if (slug == "" || slug == null) {
-                msg.slug = "Từ khóa không được viết tắt";
-            }
-            else {
-                if (brand == "" || brand == null) {
-                    msg.brand = "Thương hiệu không được để trống";
+        setBrandImage(e.target.files[0]);
+        
+      }
+      
+      const validateAll=()=>{
+          const msg={};
+          if(name==""|| name==null)
+          {
+              msg.name="Tên không được để trống";
+          }
+          else
+          {
+             if(slug==""||slug==null)
+             {
+              msg.slug="Từ khóa không được viết tắt";
                 }
-                else {
-                    if (decription == "" || decription == null) {
-                        msg.decription = "Mô tả không được để trống";
-                    }
-                    else {
-                        if (size == "" || size == null) {
-                            msg.size = "Kích thước màn hình không được để trống";
-                        }
-                        else {
-                            if (typescreen == "" || typescreen == null) {
-                                msg.typescreen = "Loại màn hình không được để trống."
-                            }
-                            else {
-                                if (revolution == "" || revolution == null) {
-                                    msg.revolution = "Độ phân giải màn hình không được để trống";
-                                }
-                                else {
-                                    if (triple == "" || triple == null || parseInt(triple <= 0)) {
-                                        msg.triple = "Số camera không được để trống hoặc không thể nhỏ hơn hoặc bằng 0";
-                                    }
-                                    else {
-                                        if (video == "" || video == null) {
-                                            msg.video = "Thông tin về quay video không được để trống";
-                                        }
-                                        else {
-                                            if (cpu == "" || cpu == null) {
-                                                msg.cpu = "Chip xử lý không được để trống";
-                                            }
-                                            else {
-                                                var regex = /^\d+[G][B]$/;
-                                                if (ram == "" || ram == null || !regex.test(ram)) {
-                                                    msg.ram = "Thông tin về ram không được để trống hoặc thông tin không đúng định dạng";
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        setErrorText(msg);
-        if (Object.keys(msg).length > 0) return false;
-        return true;
-    }
-    const handleUploadBrandImage = e => {
+                else
+          {
+              if(brand==""||brand==null)
+              {
+                  msg.brand="Thương hiệu không được để trống";
+              }
+              else
+              {
+                  if(decription==""||decription==null)
+                  {
+                      msg.decription="Mô tả không được để trống";
+                  }
+                  else
+                  {
+                      if(size==""||size==null)
+                      {
+                          msg.size="Kích thước màn hình không được để trống";
+                      }
+                      else{
+                      if(typescreen==""|| typescreen==null)
+                      {
+                          msg.typescreen="Loại màn hình không được để trống."
+                      }
+                      else
+                      {
+                          if(revolution==""|| revolution==null)
+                          {
+                              msg.revolution="Độ phân giải màn hình không được để trống";
+                          }
+                          else
+                          {
+                              if(triple==""||triple==null||parseInt(triple<=0))
+                              {
+                                  msg.triple="Số camera không được để trống hoặc không thể nhỏ hơn hoặc bằng 0";
+                              }
+                              else
+                              {if(video==""||video==null)
+                              {
+                                  msg.video="Thông tin về quay video không được để trống";
+                              }
+                              else{
+                                  if(cpu==""||cpu==null)
+                                  {
+                                      msg.cpu="Chip xử lý không được để trống";
+                                  }
+                                  else
+                                  { 
+                                      var regex=/^\d+[G][B]$/;
+                                      if(ram==""||ram==null||!regex.test(ram))
+                                      {
+                                          msg.ram="Thông tin về ram không được để trống hoặc thông tin không đúng định dạng";
+                                      }
+                                  }
+                              }}
+                          }
+                      }
+                  }
+              }}
+          }
+         }
+        
+          setErrorText(msg);
+          if(Object.keys(msg).length>0) return false;
+          return true;   
+      }
+      const handleUploadBrandImage = e => {
+          
 
         document.getElementById("isLoading-brand").style.display = "block"
         const uploadTask = storage.ref(`images/${brandimage.name}`).put(brandimage);
@@ -129,7 +138,7 @@ function CreatePhoneAdminPage() {
                     .child(brandimage.name)
                     .getDownloadURL()
                     .then(url => {
-                        console.log(url);
+                        //console.log(url);
                         setFormData({ ...formData, ["brandimage"]: `${url}` });
                         setUrlBrandImage(url);
 
@@ -138,7 +147,7 @@ function CreatePhoneAdminPage() {
                         //console.log(formData);
                         // console.log(formData);
 
-                        document.getElementById("image-new-brand").name = "brandimage";
+                        //document.getElementById("image-new-brand").name = "brandimage";
                         document.getElementById("my-image-brand").style.display = "block";
                         document.getElementById("isLoading-brand").style.display = "none";
                     });
@@ -171,19 +180,19 @@ function CreatePhoneAdminPage() {
                         .child(image.name)
                         .getDownloadURL()
                         .then(urls => {
-                            console.log(urls);
+                            //console.log(urls);
 
                             handleInput("image", urls);
                             setUrls((prevState) => [...prevState, urls]);
 
                             document.getElementById("image-new").name = "image";
                             document.getElementById("my-image").style.display = "block";
-                            document.getElementById("isLoading").style.display = "none"
+                            document.getElementById("isLoading").style.display = "none";
                         });
                 }
             );
         })
-        document.getElementById("isLoading").style.display = "block"
+        document.getElementById("isLoading").style.display = "block";
         Promise.all(promises)
 
             .then(() => alert("Tất cả ảnh được upload"))
@@ -219,25 +228,31 @@ function CreatePhoneAdminPage() {
             return;
         }
         e.preventDefault();
-        setFormData({ ...formData, ['image']: urlImages });
 
+        setFormData({...formData,['image']:urlImages});
+        //setFormData({...formData,['type']:typetemp});
         alert(formData);
+        
+          //dispatch(loginStart());
+          var formdata1=formData;
+          //console.log(typetemp);
+          formdata1.type=type;
+          //console.log(formdata1);
+          userRequest()
+          .post("admin/products",formdata1).then((res) => {
+              console.log(res.data);
+             
+              toast.success("Thêm Thành Công", {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
 
-        //dispatch(loginStart());
-        userRequest()
-            .post("admin/products", formData).then((res) => {
-                console.log(res.data);
-
-                toast.success("Thêm Thành Công", {
-                    position: "top-center",
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-                console.log(res.data.message);
+                //console.log(res.data.message);
 
 
 
@@ -256,12 +271,18 @@ function CreatePhoneAdminPage() {
                 });
             });
 
-    };
-    const handleChangeType = e => {
-        // console.log(e.target.value);
+        
+      };
+    const handleChangeType=e=>{
+       
+       typetemp=`${e.target.value}`;
+       //console.log(typetemp);
+      // handleInput("type",typetemp);
         setType(e.target.value);
-        // console.log("Giá trị của type",type);
-        handleInput("type", e.target.value);
+       // console.log("Giá trị của type",type);
+       //console.log(type);
+        //console.log(formData);
+
     }
 
     return (
@@ -278,13 +299,17 @@ function CreatePhoneAdminPage() {
                     <input type="text" id="slug" name="slug" value={slug} onBlur={validateAll} onChange={(e) => { setSlug(e.target.value); handleInput("slug", e.target.value); }} className="form-control input-lg my-input-tag" />
                 </div>
                 <p className='text-danger thongbaoloi'>{errorText.slug}</p>
-                <label className="form-label label-select my-input-tag">Chọn loại sản phẩm </label>
-                <select className="type_device my-input-tag" name='type' id="type" value={type} onChange={handleChangeType}  >
+
+                <label className="form-label label-select my-input-tag">Loại sản phẩm </label>
+                <select className="type_device my-input-tag" name='type'  id="type" onChange={handleChangeType}  >
+                    <option disabled selected>Chọn loại sản phẩm</option>
+
                     <option value="phone">Phone</option>
                     <option value="tablet">Tablet</option>
                     <option value="laptop">Laptop</option>
                     <option value="acessory">Accessory</option>
                 </select>
+    
                 <h2 className='form-label themmargin' >Thương hiệu</h2>
                 <label className='form-label' >Tên thương hiệu</label>
                 <input type="text" name='brand' placeholder='Apple' id="brand" className="form-control my-input-tag" onBlur={validateAll} value={brand} onChange={(e) => { setBrand(e.target.value); handleInput("brand", e.target.value) }}  ></input>
@@ -292,17 +317,13 @@ function CreatePhoneAdminPage() {
 
 
                 <div id='my-image-brand' className='add-image-brand'>
-                    <input type="text" className="form-control mt-4 my-input-tag newImage-brand" defaultValue={UrlBrandimage} placeholder='Nhập vào đường dẫn' id="image-new-brand" />
 
-
-                </div>
-                <div className="col">
-                    <a className="btn btn-primary upload-bnt" onClick={handleUploadBrandImage}>Tải lên</a>
-
-                
-
-                </div>
-
+                            <input type="text" className="form-control mt-4 my-input-tag newImage-brand"  defaultValue={UrlBrandimage} onChange={(e)=>{handleInput("brandimage",e.target.value)}}  placeholder='Nhập vào đường dẫn' id="image-new-brand"  />
+                            </div>
+                        <div id='isLoading-brand' className='mt-4 add-info' >
+                            <h3 className='text-center'>Đang tải...</h3>
+                        
+                        </div>
 
                         <div className="mb-4 mt-4">
                             <div className="row">
