@@ -12,6 +12,7 @@ import { toast, ToastClassName, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function CreatePhoneAdminPage() {
+
     
     const [name,setName]=useState('');
     const [slug,setSlug]=useState('');
@@ -30,6 +31,7 @@ function CreatePhoneAdminPage() {
     const [ram,setRam]=useState('');
     const [cpu,setCpu]=useState('');
     var typetemp;
+
     const [errorText, setErrorText] = useState("");
     const [formData, setFormData] = useState({});
     // const [image, setImage] = useState(null);
@@ -37,6 +39,7 @@ function CreatePhoneAdminPage() {
     //Upload anh thuong hieu
     function handleChangeBrandImage(e) {
         if (e.target.files[0])
+
         setBrandImage(e.target.files[0]);
         
       }
@@ -120,6 +123,7 @@ function CreatePhoneAdminPage() {
       }
       const handleUploadBrandImage = e => {
           
+
         document.getElementById("isLoading-brand").style.display = "block"
         const uploadTask = storage.ref(`images/${brandimage.name}`).put(brandimage);
         uploadTask.on(
@@ -134,14 +138,14 @@ function CreatePhoneAdminPage() {
                     .child(brandimage.name)
                     .getDownloadURL()
                     .then(url => {
-                        console.log(url);
-                        setFormData({...formData,["brandimage"]:`${url}`});
+                        //console.log(url);
+                        setFormData({ ...formData, ["brandimage"]: `${url}` });
                         setUrlBrandImage(url);
 
-                        console.log(UrlBrandimage);
+                        //console.log(UrlBrandimage);
                         //setFormData({...formData,["brandimage"]:`${UrlBrandimage}`});
                         //console.log(formData);
-                       // console.log(formData);
+                        // console.log(formData);
 
                         //document.getElementById("image-new-brand").name = "brandimage";
                         document.getElementById("my-image-brand").style.display = "block";
@@ -176,10 +180,10 @@ function CreatePhoneAdminPage() {
                         .child(image.name)
                         .getDownloadURL()
                         .then(urls => {
-                            console.log(urls);
+                            //console.log(urls);
 
-                            handleInput("image",urls);
-                            setUrls((prevState)=>[...prevState,urls]);
+                            handleInput("image", urls);
+                            setUrls((prevState) => [...prevState, urls]);
 
                             document.getElementById("image-new").name = "image";
                             document.getElementById("my-image").style.display = "block";
@@ -191,8 +195,8 @@ function CreatePhoneAdminPage() {
         document.getElementById("isLoading").style.display = "block";
         Promise.all(promises)
 
-        .then(()=>alert("Tất cả ảnh được upload"))
-        .catch((err)=>console.log(err))
+            .then(() => alert("Tất cả ảnh được upload"))
+            .catch((err) => console.log(err))
         // console.log("urls: ", urlImages);
         // console.log("imges", images);
         // console.log("urls length",urlImages.length);
@@ -204,15 +208,14 @@ function CreatePhoneAdminPage() {
         //console.log(name,value);
         setFormData({ ...formData, [name]: `${value}` });
 
-       
-      };
-      //console.log(formData);
-        //console.log(Object.keys(formData));
-      const handleSubmit = (e) => {
-          const isValid=validateAll();
-          if(!isValid) 
-          {
-              //alert("Vui lòng điền đủ thông ");
+
+    };
+    //console.log(formData);
+    //console.log(Object.keys(formData));
+    const handleSubmit = (e) => {
+        const isValid = validateAll();
+        if (!isValid) {
+            //alert("Vui lòng điền đủ thông ");
             toast.error("Vui Lòng Điền Đầy Đủ Thông Tin", {
                 position: "top-center",
                 autoClose: 2000,
@@ -221,19 +224,20 @@ function CreatePhoneAdminPage() {
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
-              });
-              return ;
-          }
+            });
+            return;
+        }
         e.preventDefault();
+
         setFormData({...formData,['image']:urlImages});
         //setFormData({...formData,['type']:typetemp});
         alert(formData);
         
           //dispatch(loginStart());
           var formdata1=formData;
-          console.log(typetemp);
+          //console.log(typetemp);
           formdata1.type=type;
-          console.log(formdata1);
+          //console.log(formdata1);
           userRequest()
           .post("admin/products",formdata1).then((res) => {
               console.log(res.data);
@@ -247,54 +251,59 @@ function CreatePhoneAdminPage() {
                 draggable: true,
                 progress: undefined,
               });
-                console.log(res.data.message);
-                
-                
-                
-              
+
+                //console.log(res.data.message);
+
+
+
+
             })
             .catch((res) => {
-              console.log(res);
-              toast.error('Không thêm sản phẩm được!', {
-                position: "top-center",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
+                console.log(res);
+                toast.error('Không thêm sản phẩm được!', {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
                 });
             });
+
         
       };
     const handleChangeType=e=>{
        
        typetemp=`${e.target.value}`;
-       console.log(typetemp);
+       //console.log(typetemp);
       // handleInput("type",typetemp);
         setType(e.target.value);
        // console.log("Giá trị của type",type);
-       console.log(type);
-        console.log(formData);
+       //console.log(type);
+        //console.log(formData);
+
     }
 
     return (
         <div className='container'>
             <h1 className="control-label">THÊM SẢN PHẨM MỚI </h1>
             {/* method="POST" action="http://localhost:5000/api/admin/products" */}
-            <form id="createPhoneinfo"  >
+            <form id="createPhoneinfo">
                 <div className="form-group">
                     <label className="form-label">Tên sản phẩm</label>
 
-                    <input type="text" id="name" name='name' value={name} className="form-control my-input-tag " onBlur={validateAll}  onChange={(e)=>{setName(e.target.value);handleInput("name",e.target.value);} }   />
+                    <input type="text" id="name" name='name' value={name} className="form-control my-input-tag " onBlur={validateAll} onChange={(e) => { setName(e.target.value); handleInput("name", e.target.value); }} />
                     <p className='text-danger thongbaoloi'>{errorText.name}</p>
-                    <label  className="form-label" name='slug' >Slug</label>
-                    <input type="text" id="slug" name="slug"   value={slug} onBlur={validateAll} onChange={(e)=>{setSlug(e.target.value);handleInput("slug",e.target.value);}} className="form-control input-lg my-input-tag" />
+                    <label className="form-label" name='slug' >Slug</label>
+                    <input type="text" id="slug" name="slug" value={slug} onBlur={validateAll} onChange={(e) => { setSlug(e.target.value); handleInput("slug", e.target.value); }} className="form-control input-lg my-input-tag" />
                 </div>
                 <p className='text-danger thongbaoloi'>{errorText.slug}</p>
+
                 <label className="form-label label-select my-input-tag">Loại sản phẩm </label>
                 <select className="type_device my-input-tag" name='type'  id="type" onChange={handleChangeType}  >
                     <option disabled selected>Chọn loại sản phẩm</option>
+
                     <option value="phone">Phone</option>
                     <option value="tablet">Tablet</option>
                     <option value="laptop">Laptop</option>
@@ -303,10 +312,12 @@ function CreatePhoneAdminPage() {
     
                 <h2 className='form-label themmargin' >Thương hiệu</h2>
                 <label className='form-label' >Tên thương hiệu</label>
-                <input type="text" name='brand' placeholder='Apple' id="brand"  className="form-control my-input-tag" onBlur={validateAll} value={brand} onChange={(e)=>{setBrand(e.target.value);handleInput("brand",e.target.value)}}  ></input>
+                <input type="text" name='brand' placeholder='Apple' id="brand" className="form-control my-input-tag" onBlur={validateAll} value={brand} onChange={(e) => { setBrand(e.target.value); handleInput("brand", e.target.value) }}  ></input>
                 <p className='text-danger thongbaoloi'>{errorText.brand}</p>
-                
+
+
                 <div id='my-image-brand' className='add-image-brand'>
+
                             <input type="text" className="form-control mt-4 my-input-tag newImage-brand"  defaultValue={UrlBrandimage} onChange={(e)=>{handleInput("brandimage",e.target.value)}}  placeholder='Nhập vào đường dẫn' id="image-new-brand"  />
                             </div>
                         <div id='isLoading-brand' className='mt-4 add-info' >
@@ -380,10 +391,10 @@ function CreatePhoneAdminPage() {
                 <input type="text"className="form-control textareafont"  placeholder='4GB' id="ram" name='ram' onBlur={validateAll} value={ram} onChange={(e)=>{setRam(e.target.value);handleInput("ram",e.target.value);}} ></input>
                 <p className='text-danger thongbaoloi'>{errorText.ram}</p>
                 <button type='button' className="btn btn-primary btn-lg btn-block form-control" onClick={handleSubmit} >Thêm sản phẩm mới</button>
-            </form>
-            <ToastContainer></ToastContainer>
+            </form >
+        <ToastContainer></ToastContainer>
 
-        </div>
+        </div >
 
     );
 }

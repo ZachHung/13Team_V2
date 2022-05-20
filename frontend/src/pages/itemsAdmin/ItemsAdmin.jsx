@@ -271,7 +271,7 @@ function ItemsAdmin () {
                     to={`/admin/products/addOptions/${item._id}`}
                     className="formMethod"
                   >
-                    <button className=" formMethod btnEditItem btn btn-outline-info">
+                    <button className=" formMethod btnEditItem btn btn-outline-info mb-2">
                       Thêm lựa chọn <FontAwesomeIcon icon={faAdd} />
                     </button>
                   </Link>  

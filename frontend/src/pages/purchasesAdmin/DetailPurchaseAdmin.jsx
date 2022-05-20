@@ -30,7 +30,8 @@ function DetailPurchaseAdmin () {
   return (
     <div
       className="d-flex flex-column marginTop">
-      <Link className='btn btnback' to={"/admin/orders/"}>&#8592; Quay lại</Link>
+   <Link className='btn btnback' to='/admin/orders/'>&#8592; Quay lại</Link>
+
     {/* <FontAwesomeIcon >{faTrashAlt}<a className='btn btn-outline-primary btndelete' href='/admin/orders/'>Xóa đơn hàng</a> </FontAwesomeIcon> */}
     {purchaseDetail?.map ((purchase) => (
         <div className="purCart text-white" style={{"border": '2px solid #0c517d'}}>
