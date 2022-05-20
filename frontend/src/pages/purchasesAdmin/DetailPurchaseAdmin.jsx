@@ -5,7 +5,7 @@ import {faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import './DetailPurchaseAdmin.scss';
 import {useEffect, useState} from 'react';
 import {format} from 'date-fns';
-import {useParams} from 'react-router-dom';
+import {useParams, Link} from 'react-router-dom';
 import { userRequest } from "../../utils/CallApi";
 import { currentChange } from "../../utils/const";
 
@@ -30,7 +30,7 @@ function DetailPurchaseAdmin () {
   return (
     <div
       className="d-flex flex-column marginTop">
-   <a className='btn btnback' href='/admin/orders/'>&#8592; Quay lại</a>
+   <Link className='btn btnback' to='/admin/orders/'>&#8592; Quay lại</Link>
     {/* <FontAwesomeIcon >{faTrashAlt}<a className='btn btn-outline-primary btndelete' href='/admin/orders/'>Xóa đơn hàng</a> </FontAwesomeIcon> */}
     {purchaseDetail?.map ((purchase) => (
         <div className="purCart text-white" style={{"border": '2px solid #0c517d'}}>

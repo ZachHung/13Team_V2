@@ -202,7 +202,7 @@ function UsersAdmin() {
                 <th scope="row" style={{ "width": "4%" }}>{index++}</th>
                 <td style={{ "width": "5%" }}>
                   <Link
-                    to={`/admin/customers/detail/id=${user._id}`}
+                    to={`/admin/customers/update/${user._id}`}
                     className="linkToUser"
                   >
                     {user.name}

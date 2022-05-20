@@ -206,7 +206,7 @@ function ItemsAdmin () {
                 </td>
                 <th scope="row">{index++}</th>
                 <td>
-                  <Link to={`/admin/products/detail/${item._id}`}
+                  <Link to={`/admin/products/update/${item._id}`}
                     className="linkToItem"
                   >
                     {item.name}
@@ -228,7 +228,7 @@ function ItemsAdmin () {
                     to={`/admin/products/addOptions/${item._id}`}
                     className="formMethod"
                   >
-                    <button className=" formMethod btnEditItem btn btn-outline-info">
+                    <button className=" formMethod btnEditItem btn btn-outline-info mb-2">
                       Thêm lựa chọn <FontAwesomeIcon icon={faAdd} />
                     </button>
                   </Link>  
