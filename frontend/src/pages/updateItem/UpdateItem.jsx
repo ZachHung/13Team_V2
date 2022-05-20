@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import { storage } from '../../firebase';
 import { Link } from "react-router-dom";
-
+import { toast } from "react-toastify";
 function UpdateItem() {
     const params = useParams();
     const [item, setPhone] = useState([]);
@@ -58,7 +58,7 @@ function UpdateItem() {
             e.target.classList.add("remove")
             e.target.classList.remove("image")
         }
-    }; 
+    };
 
 
 
@@ -101,8 +101,28 @@ function UpdateItem() {
 
             })
             .then(() => {
+                toast.success("Cập Nhật Thành Công", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                toast.error("Đã xảy ra lỗi, cập nhật thất bại", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                console.log(err)
+            });
     };
 
     return (
@@ -130,7 +150,7 @@ function UpdateItem() {
                         <p className='decri'>Xóa đường dẫn để xóa hình ảnh sản phẩm đó</p>
                         {item.image?.map(images => (
                             <div>
-                                <input type="text" onBlur={CheckImage}  className="form-control mt-4 my-input-tag image" placeholder='Hình này sẽ bị xóa' defaultValue={images} id="image" name="image" />
+                                <input type="text" onBlur={CheckImage} className="form-control mt-4 my-input-tag image" placeholder='Hình này sẽ bị xóa' defaultValue={images} id="image" name="image" />
                             </div>
                         ))}
                         <div id='my-image' className='add-image'>

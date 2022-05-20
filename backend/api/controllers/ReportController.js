@@ -4,7 +4,6 @@ const util = require('../../util/mongoose');
 const user = require('../models/User');
 const item = require('../models/Item');
 var ObjectId = require('mongodb').ObjectId;
-var URL = 'http://localhost:3000/';
 
 class ReportController {
     async overall(req, res, next) {

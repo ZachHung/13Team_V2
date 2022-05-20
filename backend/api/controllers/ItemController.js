@@ -273,27 +273,55 @@ class ItemController {
       .catch(next);
   }
 
-  async deleteItemAdmin(req, res, next) {
-    try {
-      const itemDelID = req.params.id;
-      const itemsDel = await items.findById(itemDelID);
-      const optionsDel = await options.find({ slug: itemsDel.slug });
-      const delItems = await items.findByIdAndDelete(itemDelID);
-      for (let i = 0; i < optionsDel.length; i++) {
-        const delOptions = await options.deleteOne({
-          _id: ObjectId(optionsDel[i]._id),
-        });
-      }
-    } catch (e) {
-      console.error(`[Error] ${e}`);
-      throw Error('Có lỗi xảy ra, vui lòng thử lại!!');
-    }
+  deleteItemAdmin(req, res, next) {
+    const itemDelID = req.params.id;
+    items
+      .findById(itemDelID)
+      .then((data)=> {
+        options
+        .find({ slug: data.slug })
+        .then(data1 => {
+            if (data1){
+              for (let i = 0; i < data1.length; i++) {
+                options.deleteOne({
+                  _id: ObjectId(data1[i]._id),
+                })
+                .then()
+                .catch(next);
+              } 
+            }
+            else {
+
+            }
+        })
+        .catch(next);
+      })
+      .then((data2) => {
+        items.findByIdAndDelete(itemDelID)
+        .then(data3 => {
+          if (data3.modifiedCount != 0) {
+            items.find()
+            .then((itemRes) => {       
+              res.json({items: itemRes});
+            });
+          }
+        })
+      })
+      .catch(next);
   }
 
   deleteManyItemsAdmin(req, res, next) {
     const ids = req.body;
-    items.deleteMany({ _id: { $in: ids } })
-      .then()
+    items
+      .deleteMany({ _id: { $in: ids } })
+      .then((data) => {
+        if (data.modifiedCount != 0) {
+          items.find()
+          .then((itemRes) => {       
+            res.json({items: itemRes});
+          });
+        }
+      })
       .catch(next);
   }
 
@@ -398,23 +426,42 @@ class ItemController {
     var BD = req.body;
     var str = "";
 
-    req.body.name.forEach((element, index) => {
-      str = str +
-        '{"name": "' + element +
-        '", "image": "' + BD.image[index] +
-        '", "number": ' + + BD.number[index] +
-        ', "price": ' + BD.price[index] +
-        ', "discount": ' + BD.discount[index] + "\}, ";
-    });
-    str = '{"detail": "' + BD.detail + '", "color": [' + str + ']}'
-    str = str.replace(', ]', ']')
-    console.log(str)
 
-    str = JSON.parse(str);
+    if (Array.isArray(req.body.name)) {
+      req.body.name.forEach((element, index) => {
+        str = str +
+          '{"name": "' + element +
+          '", "image": "' + BD.image[index] +
+          '", "number": ' + + BD.number[index] +
+          ', "price": ' + BD.price[index] +
+          ', "discount": ' + BD.discount[index] + "\}, ";
+      });
+      str = '{"detail": "' + BD.detail + '", "color": [' + str + ']}'
+      str = str.replace(', ]', ']')
 
-    options.updateOne({ _id: req.params.id }, str)
-      .then(() => res.redirect(URL + 'admin/products/updateDetail/' + BD.id))
-      .catch(next)
+      str = JSON.parse(str);
+
+      options.updateOne({ _id: req.params.id }, str)
+        .then(() => res.redirect(URL + 'admin/products/updateDetail/' + BD.id))
+        .catch(next)
+    } else {
+      var data = {
+        detail: req.body.detail,
+        color: [{
+          name: req.body.name,
+          image: req.body.image,
+          number: req.body.number,
+          price: req.body.price,
+          discount: req.body.discount
+        }]
+      }
+
+      options.updateOne({ _id: req.params.id }, data)
+        .then(() => res.redirect(URL + 'admin/products/updateDetail/' + BD.id))
+        .catch(next)
+    }
+
+
   }
 
   async createPostItems(req, res, next) {
@@ -422,94 +469,95 @@ class ItemController {
     try {
       console.log("aaaaaa");
 
-      var techInfoConvert = {
-        techInfo: [
-          {
-            infoType: "Màn hình",
-            infoDetail: [
-              {
-                infoName: "kích Thước Màn Hình",
-                infoNum: req.body.size
-              },
-              {
-                infoName: "Công nghệ màn hình",
-                infoNum: req.body.typescreen
-              },
-              {
-                infoName: "Độ phân giải màn hình",
-                infoNum: req.body.resolution
-              }
-            ]
-          },
-          {
-            infoType: "Camera sau",
-            infoDetail: [
-              {
-                infoName: "Camera sau",
-                infoNum: req.body.triple
-              },
-              {
-                infoName: "Quay video",
-                infoNum: req.body.video
-              }
-            ]
-          },
-          {
-            infoType: "CPU",
-            infoDetail: [
-              {
-                infoName: "Chip xử lí",
-                infoNum: req.body.cpu
-              }
-            ]
-          },
-          {
-            infoType: "RAM",
-            infoDetail: [
-              {
-                infoName: "Bộ nhớ trong",
-                infoNum: req.body.ram
-              }
-            ]
-          }
-        ]
-      }
-      const brand1 = {
-        name: req.body.brand,
-        brandImage: req.body.brandimage
-      }
-      var url = req.body.image.split(',');
-      const item = {
-        name: req.body.name,
-        type: req.body.type,
-        description: req.body.description,
-        image: url,
-        slug: req.body.slug,
-        techInfo: techInfoConvert,
-        brand: brand1
-      }
-      console.log(item);
-      const createitem = new items(item);
+      console.log(req.body);
+        var techInfoConvert =
+        [
+            {
+              infoType: "Màn hình",
+              infoDetail: [
+                {
+                  infoName: "kích Thước Màn Hình",
+                  infoNum: req.body.size
+                },
+                {
+                  infoName: "Công nghệ màn hình",
+                  infoNum: req.body.typescreen
+                },
+                {
+                  infoName: "Độ phân giải màn hình",
+                  infoNum: req.body.resolution
+                }
+              ]
+            },
+            {
+              infoType: "Camera sau",
+              infoDetail: [
+                {
+                  infoName: "Camera sau",
+                  infoNum: req.body.triple
+                },
+                {
+                  infoName: "Quay video",
+                  infoNum: req.body.video
+                }
+              ]
+            },
+            {
+              infoType: "CPU",
+              infoDetail: [
+                {
+                  infoName: "Chip xử lí",
+                  infoNum: req.body.cpu
+                }
+              ]
+            },
+            {
+              infoType: "RAM",
+              infoDetail: [
+                {
+                  infoName: "Bộ nhớ trong",
+                  infoNum: req.body.ram
+                }
+              ]
+            }
+          ]
+        
+        const brand1={
+          name: req.body.brand,
+          brandImage: req.body.brandimage
+        }
+        var url=req.body.image.split(',');
+        const item={
+          name: req.body.name,
+          type: req.body.type,
+          description: req.body.decription,
+          image:url,
+          slug: req.body.slug,
+          techInfo:techInfoConvert,
+          brand: brand1
+        }
+        console.log(item);
+        const createitem=new items(item);
+       
+        console.log(createitem);
+        // req.body.techInfo = techInfoConvert.techInfo;
+        
+        try
+        { var result =await createitem.save()
+        .then((data)=>{
+          res.json(data);
+         
+    })
+        .catch(next);
+        }
+        catch(e)
+        {
+          console.log(e.message);
+        }
+       
+      
+        res.status('200');
 
-      console.log(createitem);
-      // req.body.techInfo = techInfoConvert.techInfo;
-
-      try {
-        var result = await createitem.save()
-          .then((data) => {
-
-            res.redirect(URL + "admin/products"
-            )
-
-          })
-          .catch(next);
-      }
-      catch (e) {
-        console.log(e.message);
-      }
-
-
-      res.status('200');
     }
     catch (e) {
       console.log("error");
@@ -532,38 +580,43 @@ class ItemController {
       res.status(500).json({ error: e.message });
     }
   }
-  async createPostOptions(req, res, next) {
-    try {
-      //console.log(req.body);
-      var color = new Array();
-      for (var i = 0; i < req.body.color.length; i++) {
-        var temp = {
-          name: req.body.color[i],
-          image: req.body.image[i],
-          price: req.body.price[i],
-          discount: req.body.price[i]
+
+  async createPostOptions(req,res, next)
+  {
+    try{
+      console.log("aaaaaa");
+      console.log(req.body);
+      var color=new Array();
+      for(var i=0;i<req.body.color.length;i++)
+      {
+        var temp={
+          name:req.body.color[i],
+          image:req.body.image[i],
+          price:req.body.price[i],
+          discount:req.body.discount[i],
+          number: req.body.number[i]
         }
         color.push(temp);
       }
-      const option = {
-        slug: req.body.slug,
-        detail: req.body.detail,
-        color: color,
-        item: req.params.id
-      }
-      //console.log(option);
-      console.log(req.body);
-      console.log(req.body.slug);
-      const createoption = new options(option);
-      try {
-        var result = await createoption.save()
-          .then((data) => res.redirect(URL + "admin/products"))
-          .catch(next);
-      }
-      catch (e) {
-        console.log(e.message);
-      }
+    const option={
+      slug: req.body.slug,
+      detail: req.body.detail,
+      color: color,
+      item: req.params.id,
+      
     }
+    const createoption=new options(option);
+    try
+        { var result =await createoption.save()
+        .then((data)=>{res.json(data)})
+        .catch(next);
+        }
+        catch(e)
+        {
+          console.log(e.message);
+        }
+  }
+
 
     catch (e) {
       console.log("error");
@@ -574,3 +627,4 @@ class ItemController {
   }
 }
 module.exports = new ItemController();
+

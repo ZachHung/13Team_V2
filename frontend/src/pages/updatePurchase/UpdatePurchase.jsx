@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { userRequest } from "../../utils/CallApi";
 import { hostServer } from "../../utils/const";
-
+import { toast } from "react-toastify";
 function UpdatePurchase() {
     const params = useParams();
     const [purchase, setpurchase] = useState([]);
@@ -30,9 +30,28 @@ function UpdatePurchase() {
                 status: status,
             })
             .then((res) => {
-
+                toast.success("Cập Nhật Thành Công", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                toast.error("Đã xảy ra lỗi, cập nhật thất bại", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                console.log(err);
+            });
     };
 
     return (

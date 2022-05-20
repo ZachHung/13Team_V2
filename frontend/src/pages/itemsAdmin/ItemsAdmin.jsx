@@ -16,6 +16,8 @@ import { hostServer } from "../../utils/const";
 import Dialog, { DialogOK } from '../../components/deleteConfirm/Dialog';
 import { Link } from "react-router-dom";
 import { ceil } from 'lodash';
+import { toast } from 'react-toastify';
+
 function ItemsAdmin () {
   var index = 1;
   const [itemList, setItemList] = useState ([]);
@@ -86,11 +88,32 @@ function ItemsAdmin () {
   const areUSureDelete = (choose) => {
     if (choose) {
       setItemList(itemList.filter((p) => p._id !== idItemRef.current));
-      axios
-        .delete(hostServer + `/api/admin/orders/delete/${idItemRef.current}`)
-        .then(res => {
+      userRequest()
+        .delete(hostServer + `/api/admin/products/delete/${idItemRef.current}`)
+        .then((res) => {
           setItemList(res.data.items);
-        });
+          toast.success("Xóa sản phẩm thành công", {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+      })
+      .catch((err) => {
+          toast.error("Đã xảy ra lỗi, xóa sản phẩm thất bại", {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          console.log(err);
+      });
       handleDialog("", false);
     } else {
       handleDialog("", false);
@@ -123,10 +146,30 @@ function ItemsAdmin () {
           ids.push(element._id);
         });
         setItemList(itemList.filter(i => selectedItem.indexOf(i) === -1));
-        axios
+        userRequest()
           .delete(hostServer + "/api/admin/products/deleteMany", {data: ids})
-          .then(res => {  
+          .then( (res) => {  
             setItemList(res.data.items);
+            toast.success("Xóa sản phẩm thành công", {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          })
+          .catch((err) => {
+                toast.error("Đã xảy ra lỗi, xóa sản phẩm thất bại", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  });
           })
         handleDialogs("", false);
       }
@@ -206,7 +249,7 @@ function ItemsAdmin () {
                 </td>
                 <th scope="row">{index++}</th>
                 <td>
-                  <Link to={`/admin/products/detail/${item._id}`}
+                  <Link to={`/admin/products/update/${item._id}`}
                     className="linkToItem"
                   >
                     {item.name}

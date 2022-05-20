@@ -6,6 +6,14 @@ const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 var ObjectId = require("mongodb").ObjectId;
+<<<<<<< HEAD
+=======
+var recoveryCode = 9450;
+var confirmCode = 1234;
+var emailRecovery = "tnhut806@gmail.com";
+var sender = "tnhut1234@outlook.com";
+var password = "Trannhut1";
+>>>>>>> 6cf9498b36f6571021412c9071d77589a9d4ac0e
 
 var sender = process.env.NODEMAILER_MAIL;
 var password = process.env.NODEMAILER_PASSWORD;
@@ -259,14 +267,9 @@ class AccountController {
       .catch((err) => {
         res.send(err);
       });
-
-    /*
-    // res.render("userinfo", {
-    // 	user: req.session.user,
-    // });
-    // */
   }
   update(req, res, next) {
+    console.log("oke")
     user
       .updateOne(
         {
@@ -310,25 +313,32 @@ class AccountController {
       .catch(next);
   }
 
-  async deleteUsersAdmin(req, res, next) {
+  deleteUsersAdmin(req, res, next) {
     const userId = req.params.id;
-    const userDelete = await user.findOne({ _id: ObjectId(userId) });
-    if (userDelete) {
-      try {
-        const deleteUser = await userDelete.deleteOne({
-          _id: ObjectId(userId),
+    user
+    .deleteOne({_id: ObjectId(userId)})
+    .then((data) => {
+      if (data.modifiedCount != 0) {
+        user.find({})
+        .then((userRes) => {       
+          res.json({user: userRes});
         });
-      } catch (e) {
-        console.error(`[Error] ${e}`);
-        throw Error("Có lỗi xảy ra, vui lòng thử lại!!");
       }
-    }
+    })
+    .catch(next);
   }
   deleteManyUsersAdmin(req, res, next) {
     const ids = req.body;
     user
       .deleteMany({ _id: { $in: ids } })
-      .then()
+      .then((data) => {
+        if (data.modifiedCount != 0) {
+          user.find()
+          .then((userRes) => {       
+            res.json({user: userRes});
+          });
+        }
+      })
       .catch(next);
   }
 
@@ -380,7 +390,12 @@ class AccountController {
     //   .then(() => res.redirect(URL + "admin/customers/update/" + req.params.id))
     //   .catch(next);
   }
+<<<<<<< HEAD
   editProfileAdmin(req, res, next) {
+=======
+  editProfileAdmin(req, res, next) { 
+     
+>>>>>>> 6cf9498b36f6571021412c9071d77589a9d4ac0e
     user
       .findById(req.params.id)
       .then((users) => {
@@ -394,13 +409,18 @@ class AccountController {
       .catch(next);
   }
   updateProfileAdmin(req, res, next) {
+    var passChangeHash = CryptoJS.AES.encrypt(
+         req.body.newPassword,
+         process.env.PASS_SECRET,
+      )
     user
       .updateOne(
         {
-          email: req.body.email,
+          _id: ObjectId(req.params.id),
         },
         {
           name: req.body.username,
+          password: `${passChangeHash}`,
           phone: req.body.phone,
           gender: req.body.gender,
           birthday: req.body.birthday,
@@ -415,8 +435,8 @@ class AccountController {
       .then((data) => {
         if (data.modifiedCount != 0) {
           user.findOne({ email: req.body.email }).then((user) => {
-            const { password, ...others } = user._doc;
-            res.send(others);
+            const {...users} = user._doc;
+            res.send(users);
           });
         }
       });

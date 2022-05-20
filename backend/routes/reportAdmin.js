@@ -6,9 +6,9 @@ const {
     verifyTokenAdmin
 } = require('../middlewares/verificationHandler');
 
-router.get("/overall", ReportController.overall)
-router.get("/summary", ReportController.getSummary)
-router.get("/getdatachart", ReportController.getDataChart)
+router.get("/overall", verifyTokenAdmin, ReportController.overall)
+router.get("/summary", verifyTokenAdmin, ReportController.getSummary)
+router.get("/getdatachart", verifyTokenAdmin, ReportController.getDataChart)
 
 
 module.exports = router;
