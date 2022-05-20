@@ -4,15 +4,12 @@ const cart = require("../models/Cart");
 const address = require("../models/Address");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
-const { reset } = require("nodemon");
+require("dotenv").config();
 var ObjectId = require("mongodb").ObjectId;
-var recoveryCode = 9450;
-var confirmCode = 1234;
-var emailRecovery = "tnhut806@gmail.com";
-var sender = "tnhut1234@outlook.com";
-var password = "Trannhut1";
-var URL = "http://localhost:3000/";
 
+var sender = process.env.NODEMAILER_MAIL;
+var password = process.env.NODEMAILER_PASSWORD;
+var recoveryCode = 1902;
 let transporter = nodemailer.createTransport({
   host: "smtp-mail.outlook.com",
   port: 587,
@@ -37,7 +34,7 @@ function sendMail(desMail, Message) {
     subject: "Mã Xác Thực Gmail", // Subject line
     text: `${Message} ${code}`, // plain text body
   });
-  console.log(code);
+
   return code;
 }
 class AccountController {
@@ -257,7 +254,7 @@ class AccountController {
               });
             }
           })
-          .catch((err) => { });
+          .catch((err) => {});
       })
       .catch((err) => {
         res.send(err);
@@ -343,7 +340,6 @@ class AccountController {
   }
 
   updateUser(req, res, next) {
-
     user
       .updateOne(
         {
@@ -384,15 +380,14 @@ class AccountController {
     //   .then(() => res.redirect(URL + "admin/customers/update/" + req.params.id))
     //   .catch(next);
   }
-  editProfileAdmin(req, res, next) {   
+  editProfileAdmin(req, res, next) {
     user
       .findById(req.params.id)
       .then((users) => {
-        const curPass =
-          CryptoJS.AES.decrypt(
-            users.password,
-            process.env.PASS_SECRET
-          ).toString(CryptoJS.enc.Utf8);
+        const curPass = CryptoJS.AES.decrypt(
+          users.password,
+          process.env.PASS_SECRET
+        ).toString(CryptoJS.enc.Utf8);
 
         res.json({ user: users, currentPwd: curPass });
       })
@@ -451,59 +446,59 @@ class AccountController {
     //       res.redirect(URL + "admin/settings/");
     //       return;
     //     }
-      //   user
-      //     .findOne({ email: email })
-      //     .then((emailRes) => {
-      //       if (currentPassword || newPassword || newPasswordRepeat) {
-      //         if (
-      //           currentPassword !==
-      //           CryptoJS.AES.decrypt(
-      //             userRes.password,
-      //             process.env.PASS_SECRET
-      //           ).toString(CryptoJS.enc.Utf8)
-      //         ) {
-      //           res.redirect(URL + "admin/settings/");
-      //           return;
-      //         } else if (newPassword !== newPasswordRepeat) {
-      //           res.redirect(URL + "admin/settings/");
-      //           return;
-      //         } else {
-      //           userRes.password = CryptoJS.AES.encrypt(
-      //             newPassword,
-      //             process.env.PASS_SECRET
-      //           );
-      //         }
-      //       }
-      //       else if (!currentPassword && !newPassword && !newPassword) {
-      //         if (userRes.name !== name) userRes.name = name;
-      //         if (userRes.phone !== phoneNumber) userRes.phone = phoneNumber;
-      //         if (userRes.birthday !== birthday) userRes.birthday = birthday;
-      //         if (userRes.gender !== gender) userRes.gender = gender;
-      //         if (userRes.address.province !== province)
-      //           userRes.address.province = province;
-      //         if (userRes.address.district !== district)
-      //           userRes.address.district = district;
-      //         if (userRes.address.ward !== ward) userRes.address.ward = ward;
-      //         if (userRes.address.addressdetail !== addressdetail)
-      //           userRes.address.addressdetail = addressdetail;
+    //   user
+    //     .findOne({ email: email })
+    //     .then((emailRes) => {
+    //       if (currentPassword || newPassword || newPasswordRepeat) {
+    //         if (
+    //           currentPassword !==
+    //           CryptoJS.AES.decrypt(
+    //             userRes.password,
+    //             process.env.PASS_SECRET
+    //           ).toString(CryptoJS.enc.Utf8)
+    //         ) {
+    //           res.redirect(URL + "admin/settings/");
+    //           return;
+    //         } else if (newPassword !== newPasswordRepeat) {
+    //           res.redirect(URL + "admin/settings/");
+    //           return;
+    //         } else {
+    //           userRes.password = CryptoJS.AES.encrypt(
+    //             newPassword,
+    //             process.env.PASS_SECRET
+    //           );
+    //         }
+    //       }
+    //       else if (!currentPassword && !newPassword && !newPassword) {
+    //         if (userRes.name !== name) userRes.name = name;
+    //         if (userRes.phone !== phoneNumber) userRes.phone = phoneNumber;
+    //         if (userRes.birthday !== birthday) userRes.birthday = birthday;
+    //         if (userRes.gender !== gender) userRes.gender = gender;
+    //         if (userRes.address.province !== province)
+    //           userRes.address.province = province;
+    //         if (userRes.address.district !== district)
+    //           userRes.address.district = district;
+    //         if (userRes.address.ward !== ward) userRes.address.ward = ward;
+    //         if (userRes.address.addressdetail !== addressdetail)
+    //           userRes.address.addressdetail = addressdetail;
 
-      //         user
-      //           .updateOne({ _id: idUser }, userRes)
-      //           .then(() => {
-      //             if (data.modifiedCount != 0) {
-      //               user.findOne({ _id: req.user.id }).then((user) => {
-      //                 const { password, ...others } = user._doc;
-      //                 res.send(others);
-      //               });
-      //             }
-      //           })
-      //           .catch(next);
-      //       }
-      //     })
-      //     .catch(next);
+    //         user
+    //           .updateOne({ _id: idUser }, userRes)
+    //           .then(() => {
+    //             if (data.modifiedCount != 0) {
+    //               user.findOne({ _id: req.user.id }).then((user) => {
+    //                 const { password, ...others } = user._doc;
+    //                 res.send(others);
+    //               });
+    //             }
+    //           })
+    //           .catch(next);
+    //       }
+    //     })
+    //     .catch(next);
 
-      // })
-      // .catch(next);
+    // })
+    // .catch(next);
   }
 }
 module.exports = new AccountController();
