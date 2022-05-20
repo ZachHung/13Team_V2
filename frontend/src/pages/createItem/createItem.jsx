@@ -29,7 +29,7 @@ function CreatePhoneAdminPage() {
     const [video,setVideo]=useState('');
     const [ram,setRam]=useState('');
     const [cpu,setCpu]=useState('');
-
+    var typetemp;
     const [errorText, setErrorText] = useState("");
     const [formData, setFormData] = useState({});
     // const [image, setImage] = useState(null);
@@ -40,20 +40,7 @@ function CreatePhoneAdminPage() {
         setBrandImage(e.target.files[0]);
         
       }
-      const validateNotNull=()=>
-      {
-        const msg={};
-        if(name==null||name=="")
-        {
-           msg.name="Tên không được để trống";
-           
-            
-        }
-        setErrorText(msg);
-        
-       
-       
-      }
+      
       const validateAll=()=>{
           const msg={};
           if(name==""|| name==null)
@@ -132,7 +119,7 @@ function CreatePhoneAdminPage() {
           return true;   
       }
       const handleUploadBrandImage = e => {
-
+          
         document.getElementById("isLoading-brand").style.display = "block"
         const uploadTask = storage.ref(`images/${brandimage.name}`).put(brandimage);
         uploadTask.on(
@@ -151,12 +138,12 @@ function CreatePhoneAdminPage() {
                         setFormData({...formData,["brandimage"]:`${url}`});
                         setUrlBrandImage(url);
 
-                        //console.log(UrlBrandimage);
+                        console.log(UrlBrandimage);
                         //setFormData({...formData,["brandimage"]:`${UrlBrandimage}`});
                         //console.log(formData);
                        // console.log(formData);
 
-                        document.getElementById("image-new-brand").name = "brandimage";
+                        //document.getElementById("image-new-brand").name = "brandimage";
                         document.getElementById("my-image-brand").style.display = "block";
                         document.getElementById("isLoading-brand").style.display = "none";
                     });
@@ -196,12 +183,12 @@ function CreatePhoneAdminPage() {
 
                             document.getElementById("image-new").name = "image";
                             document.getElementById("my-image").style.display = "block";
-                            document.getElementById("isLoading").style.display = "none"
+                            document.getElementById("isLoading").style.display = "none";
                         });
                 }
             );
         })
-        document.getElementById("isLoading").style.display = "block"
+        document.getElementById("isLoading").style.display = "block";
         Promise.all(promises)
 
         .then(()=>alert("Tất cả ảnh được upload"))
@@ -239,12 +226,16 @@ function CreatePhoneAdminPage() {
           }
         e.preventDefault();
         setFormData({...formData,['image']:urlImages});
-        
+        //setFormData({...formData,['type']:typetemp});
         alert(formData);
         
           //dispatch(loginStart());
+          var formdata1=formData;
+          console.log(typetemp);
+          formdata1.type=type;
+          console.log(formdata1);
           userRequest()
-          .post("admin/products",formData).then((res) => {
+          .post("admin/products",formdata1).then((res) => {
               console.log(res.data);
              
               toast.success("Thêm Thành Công", {
@@ -277,10 +268,14 @@ function CreatePhoneAdminPage() {
         
       };
     const handleChangeType=e=>{
-       // console.log(e.target.value);
+       
+       typetemp=`${e.target.value}`;
+       console.log(typetemp);
+      // handleInput("type",typetemp);
         setType(e.target.value);
        // console.log("Giá trị của type",type);
-        handleInput("type",e.target.value);
+       console.log(type);
+        console.log(formData);
     }
 
     return (
@@ -297,29 +292,27 @@ function CreatePhoneAdminPage() {
                     <input type="text" id="slug" name="slug"   value={slug} onBlur={validateAll} onChange={(e)=>{setSlug(e.target.value);handleInput("slug",e.target.value);}} className="form-control input-lg my-input-tag" />
                 </div>
                 <p className='text-danger thongbaoloi'>{errorText.slug}</p>
-                <label className="form-label label-select my-input-tag">Chọn loại sản phẩm </label>
-                <select className="type_device my-input-tag" name='type'  id="type" value={type} onChange={handleChangeType}  >
+                <label className="form-label label-select my-input-tag">Loại sản phẩm </label>
+                <select className="type_device my-input-tag" name='type'  id="type" onChange={handleChangeType}  >
+                    <option disabled selected>Chọn loại sản phẩm</option>
                     <option value="phone">Phone</option>
                     <option value="tablet">Tablet</option>
                     <option value="laptop">Laptop</option>
                     <option value="acessory">Accessory</option>
                 </select>
+    
                 <h2 className='form-label themmargin' >Thương hiệu</h2>
                 <label className='form-label' >Tên thương hiệu</label>
                 <input type="text" name='brand' placeholder='Apple' id="brand"  className="form-control my-input-tag" onBlur={validateAll} value={brand} onChange={(e)=>{setBrand(e.target.value);handleInput("brand",e.target.value)}}  ></input>
                 <p className='text-danger thongbaoloi'>{errorText.brand}</p>
                 
                 <div id='my-image-brand' className='add-image-brand'>
-                            <input type="text" className="form-control mt-4 my-input-tag newImage-brand"  defaultValue={UrlBrandimage}  placeholder='Nhập vào đường dẫn' id="image-new-brand"  />
-                        <div>  
-                        <div> 
+                            <input type="text" className="form-control mt-4 my-input-tag newImage-brand"  defaultValue={UrlBrandimage} onChange={(e)=>{handleInput("brandimage",e.target.value)}}  placeholder='Nhập vào đường dẫn' id="image-new-brand"  />
+                            </div>
+                        <div id='isLoading-brand' className='mt-4 add-info' >
+                            <h3 className='text-center'>Đang tải...</h3>
+                        
                         </div>
-                        <div className="col">
-                            <a className="btn btn-primary upload-bnt" onClick={handleUploadBrandImage}>Tải lên</a>
-                        </div>
-                    </div>
-                </div>
-
 
                         <div className="mb-4 mt-4">
                             <div className="row">
