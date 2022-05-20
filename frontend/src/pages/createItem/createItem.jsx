@@ -289,6 +289,7 @@ function CreatePhoneAdminPage() {
                 <label className='form-label' >Tên thương hiệu</label>
                 <input type="text" name='brand' placeholder='Apple' id="brand" className="form-control my-input-tag" onBlur={validateAll} value={brand} onChange={(e) => { setBrand(e.target.value); handleInput("brand", e.target.value) }}  ></input>
                 <p className='text-danger thongbaoloi'>{errorText.brand}</p>
+<<<<<<< HEAD
 
                 <div id='my-image-brand' className='add-image-brand'>
                     <input type="text" className="form-control mt-4 my-input-tag newImage-brand" defaultValue={UrlBrandimage} placeholder='Nhập vào đường dẫn' id="image-new-brand" />
@@ -297,6 +298,18 @@ function CreatePhoneAdminPage() {
                 </div>
                 <div className="col">
                     <a className="btn btn-primary upload-bnt" onClick={handleUploadBrandImage}>Tải lên</a>
+=======
+                
+                <div id='my-image-brand' className='add-image-brand'>
+                            <input type="text" className="form-control mt-4 my-input-tag newImage-brand"  defaultValue={UrlBrandimage}  placeholder='Nhập vào đường dẫn' id="image-new-brand"  />
+                        <div>  
+                        <div> 
+                        </div>
+                        <div className="col">
+                            <a className="btn btn-primary upload-bnt" onClick={handleUploadBrandImage}>Tải lên</a>
+                        </div>
+                    </div>
+>>>>>>> 37e0ab196aaa3c9a1f339a0a7bc05cf514541013
                 </div>
 
 

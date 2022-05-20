@@ -11,6 +11,7 @@ import { hostServer } from "../../utils/const";
 import Dialog, { DialogOK } from '../../components/deleteConfirm/Dialog';
 import { Link } from "react-router-dom";
 import { ceil } from 'lodash';
+import { toast } from 'react-toastify';
 
 function UsersAdmin() {
   var index = 1;
@@ -81,10 +82,31 @@ function UsersAdmin() {
   const areUSureDelete = (choose) => {
     if (choose) {
       setUserList(userList.filter((p) => p._id !== idUserRef.current));
-      axios
+      userRequest()
         .delete(hostServer + `/api/admin/customers/delete/${idUserRef.current}`)
-        .then(res => {
+        .then((res) => {
           setUserList(res.data.user);
+          toast.success("Xóa người dùng thành công", {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+      })
+      .catch((err) => {
+          toast.error("Đã xảy ra lỗi, xóa người dùng thất bại", {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          console.log(err);
         });
       handleDialog("", false);
     } else {
@@ -120,11 +142,31 @@ function UsersAdmin() {
           ids.push(element._id);
         });
         setUserList(userList.filter(x => selectedUsers.indexOf(x) === -1));
-        axios
+        userRequest()
           .delete(hostServer + "/api/admin/customers/deleteMany", {data: ids})
           .then(res => {  
-            setUserList(res.data.user);
+            setUserList(res.data.user);         
+            toast.success("Xóa người dùng thành công", {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
           })
+          .catch((err) => {
+                toast.error("Đã xảy ra lỗi, xóa người dùng thất bại", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  });
+          })                
         handleDialogs("", false);
       }
       else {
