@@ -206,11 +206,11 @@ function UsersAdmin() {
       <div className="p-3">
         <div className="d-flex align-items-center mb-4 qlsp">
           <h1 className="mr-3 fw-bold UserTitle"><FontAwesomeIcon icon={faUserAlt}></FontAwesomeIcon> Quản lý người dùng</h1>
-          <Link to={`/admin/customers/create/`}>
+          {/* <Link to={`/admin/customers/create/`}>
             <button className="btnAddNewUser btn btn-success">
             <FontAwesomeIcon icon={faCirclePlus}></FontAwesomeIcon> Thêm người dùng mới
             </button>
-          </Link>
+          </Link> */}
           <button className="btnDeleteAllUsers btn btn-danger" onClick={()=>handleDeleteMany()}>
             <FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon> Xóa người dùng
           </button>
