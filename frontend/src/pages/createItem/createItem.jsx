@@ -195,7 +195,7 @@ function CreatePhoneAdminPage() {
         document.getElementById("isLoading").style.display = "block";
         Promise.all(promises)
 
-            .then(() => alert("Tất cả ảnh được upload"))
+            .then()
             .catch((err) => console.log(err))
         // console.log("urls: ", urlImages);
         // console.log("imges", images);
@@ -231,7 +231,7 @@ function CreatePhoneAdminPage() {
 
         setFormData({...formData,['image']:urlImages});
         //setFormData({...formData,['type']:typetemp});
-        alert(formData);
+        // alert(formData);
         
           //dispatch(loginStart());
           var formdata1=formData;
