@@ -148,7 +148,7 @@ const UserInfo = () => {
             loginSuccess({ ...res.data, accessToken: user.accessToken })
           );
           toast.success("Cập Nhật Thành Công", {
-            position: "top-center",
+            position: "top-right",
             autoClose: 2000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -159,7 +159,7 @@ const UserInfo = () => {
         });
     } else {
       toast.error("Vui Lòng Điền Đầy Đủ Thông Tin", {
-        position: "top-center",
+        position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,

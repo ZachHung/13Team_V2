@@ -1,28 +1,30 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { userRequest, publicRequest } from '../../utils/CallApi';
-import { useSelector } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from "react";
+import { useEffect, useState } from "react";
+import { userRequest, publicRequest } from "../../utils/CallApi";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { addQuantity } from "../../redux/cart";
+import { toast } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMobile,
   faMicrochip,
   faMemory,
   faHardDrive,
   faXmark,
-} from '@fortawesome/free-solid-svg-icons';
+} from "@fortawesome/free-solid-svg-icons";
 
-import Swiper from '../../components/swiper/Swiper';
-import SwiperPromotion from '../../components/swiperPromotion/SwiperPromotion';
-import Header from '../../components/header';
-import Footer from '../../components/footer';
-import Pagination from '../../components/pagination';
-import { currentChange } from '../../utils/const';
-import SortProduct from '../../components/sortProduct';
-import ModalCompare from '../../components/modalCompare/modal';
-import ModalLimitCompare from '../../components/modalLitmitCompare/modalLimit';
-import './PhonePage.scss';
+import Swiper from "../../components/swiper/Swiper";
+import SwiperPromotion from "../../components/swiperPromotion/SwiperPromotion";
+import Header from "../../components/header";
+import Footer from "../../components/footer";
+import Pagination from "../../components/pagination";
+import { currentChange } from "../../utils/const";
+import SortProduct from "../../components/sortProduct";
+import ModalCompare from "../../components/modalCompare/modal";
+import ModalLimitCompare from "../../components/modalLitmitCompare/modalLimit";
+import "./PhonePage.scss";
 
 // const api = axios.create({
 //   baseURL: 'http://localhost:5000/api',
@@ -30,7 +32,8 @@ import './PhonePage.scss';
 
 function PhonePage() {
   const location = useLocation();
-  const type = location.pathname.split('/')[1];
+  const dispatch = useDispatch();
+  const type = location.pathname.split("/")[1];
   const user = useSelector((state) => state.user.current);
   // console.log('user', user._id);
   const [phoneList, setPhoneList] = useState([]);
@@ -44,7 +47,7 @@ function PhonePage() {
   const handleAddCart = (optionParam, colorParam, e) => {
     // if user is guest
     if (user == null || user == undefined) {
-      navigateCart('../login');
+      navigateCart("../login");
     }
     // if user is costumer
     else {
@@ -54,7 +57,18 @@ function PhonePage() {
           optionID: optionParam,
           color: colorParam,
         })
-        .then((res) => {})
+        .then((res) => {
+          toast.success("Thêm Vào Giỏ Hàng Thành Công", {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          dispatch(addQuantity());
+        })
         .catch((err) => console.log(err));
     }
   };
@@ -63,7 +77,7 @@ function PhonePage() {
   const handleBuyProduct = (optionParam, colorParam) => {
     // if user is guest
     if (user == null || user == undefined) {
-      navigateCart('../login');
+      navigateCart("../login");
     }
     // if user is costumer
     else {
@@ -74,7 +88,7 @@ function PhonePage() {
         })
         .then((res) => {})
         .catch((err) => console.log(err));
-      navigateCart('../cart');
+      navigateCart("../cart");
     }
   };
   // filter
@@ -87,29 +101,29 @@ function PhonePage() {
     });
   }, [type]);
 
-  var urlString = '';
+  var urlString = "";
   if (checkedBrand.length != 0 && checkedPrice.length != 0) {
-    let paramStringBrand = checkedBrand.join(',');
-    let paramStringPrice = checkedPrice.join(',');
+    let paramStringBrand = checkedBrand.join(",");
+    let paramStringPrice = checkedPrice.join(",");
     urlString = `?brand=${paramStringBrand}&price=${paramStringPrice}`;
   }
   if (checkedBrand.length == 0 && checkedPrice.length != 0) {
-    let paramStringPrice = checkedPrice.join(',');
+    let paramStringPrice = checkedPrice.join(",");
     urlString = `?price=${paramStringPrice}`;
   }
   if (checkedBrand.length != 0 && checkedPrice.length == 0) {
-    let paramStringBrand = checkedBrand.join(',');
+    let paramStringBrand = checkedBrand.join(",");
     urlString = `?brand=${paramStringBrand}`;
   }
   if (checkedBrand.length == 0 && checkedPrice.length == 0) {
-    urlString = '';
+    urlString = "";
   }
   // call api
 
   useEffect(() => {
     window.history.pushState(
       {},
-      'Tìm kiếm',
+      "Tìm kiếm",
       `http://localhost:3000/${type}${urlString}`
     );
     publicRequest.get(`/${type}${urlString}`).then((res) => {
@@ -144,10 +158,10 @@ function PhonePage() {
   };
   const handleCheckAllPrice = () => {
     setCheckedPrice([
-      'tren-14-trieu',
-      'duoi-2-trieu',
-      'tu-2-5-trieu',
-      'tu-5-14-trieu',
+      "tren-14-trieu",
+      "duoi-2-trieu",
+      "tu-2-5-trieu",
+      "tu-5-14-trieu",
     ]);
   };
   // compare
@@ -200,15 +214,15 @@ function PhonePage() {
   //  set accessory
   const handleRenderAccessory = (phone) => {
     // console.log('type: ', type);
-    if (type === 'accessory') {
+    if (type === "accessory") {
       return (
         <div>
-          {' '}
+          {" "}
           <span data-title="CPU">
             <p>
               <FontAwesomeIcon
                 icon={faMicrochip}
-                style={{ paddingRight: '5px' }}
+                style={{ paddingRight: "5px" }}
               />
               {phone.techInfo[1].infoDetail[0].infoNum}
             </p>
@@ -217,7 +231,7 @@ function PhonePage() {
             <p>
               <FontAwesomeIcon
                 icon={faMobile}
-                style={{ paddingRight: '5px' }}
+                style={{ paddingRight: "5px" }}
               />
               {phone.techInfo[0].infoDetail[0].infoNum}
             </p>
@@ -231,7 +245,7 @@ function PhonePage() {
             <p>
               <FontAwesomeIcon
                 icon={faMicrochip}
-                style={{ paddingRight: '5px' }}
+                style={{ paddingRight: "5px" }}
               />
               {phone.techInfo[2].infoDetail[0].infoNum}
             </p>
@@ -240,7 +254,7 @@ function PhonePage() {
             <p>
               <FontAwesomeIcon
                 icon={faMobile}
-                style={{ paddingRight: '5px' }}
+                style={{ paddingRight: "5px" }}
               />
               {phone.techInfo[0].infoDetail[0].infoNum}
             </p>
@@ -249,7 +263,7 @@ function PhonePage() {
             <p>
               <FontAwesomeIcon
                 icon={faMemory}
-                style={{ paddingRight: '5px' }}
+                style={{ paddingRight: "5px" }}
               />
               {phone.techInfo[3].infoDetail[0].infoNum}
             </p>
@@ -259,7 +273,7 @@ function PhonePage() {
             <p>
               <FontAwesomeIcon
                 icon={faHardDrive}
-                style={{ paddingRight: '5px' }}
+                style={{ paddingRight: "5px" }}
               />
               {phone.slug[0].detail}
             </p>
@@ -293,7 +307,7 @@ function PhonePage() {
             type={type}
           ></Swiper>
           <div className="filter-checkbox">
-            <span style={{ fontWeight: 500, paddingRight: '1rem' }}>
+            <span style={{ fontWeight: 500, paddingRight: "1rem" }}>
               Lọc theo:
             </span>
             {checkedBrand.map((item) => (
@@ -302,9 +316,9 @@ function PhonePage() {
                 <FontAwesomeIcon
                   icon={faXmark}
                   style={{
-                    paddingRight: '5px',
-                    paddingLeft: '5px',
-                    fontWeight: '300',
+                    paddingRight: "5px",
+                    paddingLeft: "5px",
+                    fontWeight: "300",
                   }}
                 />
               </span>
@@ -315,9 +329,9 @@ function PhonePage() {
                 <FontAwesomeIcon
                   icon={faXmark}
                   style={{
-                    paddingRight: '5px',
-                    paddingLeft: '5px',
-                    fontWeight: '300',
+                    paddingRight: "5px",
+                    paddingLeft: "5px",
+                    fontWeight: "300",
                   }}
                 />
               </span>
@@ -343,7 +357,7 @@ function PhonePage() {
                       checked={
                         checkedBrand.length == 6 || checkedBrand.length == 0
                       }
-                      onChange={() => console.log('fix checked warning')}
+                      onChange={() => console.log("fix checked warning")}
                     />
                     <label>
                       <span>Tất cả</span>
@@ -358,7 +372,7 @@ function PhonePage() {
                       <input
                         type="checkbox"
                         checked={checkedBrand.includes(item.name)}
-                        onChange={() => console.log('fix checked warning')}
+                        onChange={() => console.log("fix checked warning")}
                       />
                       <label>
                         <span>{item.name}</span>
@@ -382,59 +396,59 @@ function PhonePage() {
                       checked={
                         checkedPrice.length == 4 || checkedPrice.length == 0
                       }
-                      onChange={() => console.log('fix checked warning')}
+                      onChange={() => console.log("fix checked warning")}
                     />
                     <label>
                       <span>Tất cả</span>
                     </label>
                   </li>
                   <li
-                    onClick={() => handleCheckPrice('duoi-2-trieu')}
+                    onClick={() => handleCheckPrice("duoi-2-trieu")}
                     className="form-group"
                   >
                     <input
                       type="checkbox"
-                      checked={checkedPrice.includes('duoi-2-trieu')}
-                      onChange={() => console.log('fix checked warning')}
+                      checked={checkedPrice.includes("duoi-2-trieu")}
+                      onChange={() => console.log("fix checked warning")}
                     />
                     <label>
                       <span>Dưới 2 triệu</span>
                     </label>
                   </li>
                   <li
-                    onClick={() => handleCheckPrice('tu-2-5-trieu')}
+                    onClick={() => handleCheckPrice("tu-2-5-trieu")}
                     className="form-group"
                   >
                     <input
                       type="checkbox"
-                      checked={checkedPrice.includes('tu-2-5-trieu')}
-                      onChange={() => console.log('fix checked warning')}
+                      checked={checkedPrice.includes("tu-2-5-trieu")}
+                      onChange={() => console.log("fix checked warning")}
                     />
                     <label>
                       <span>Từ 2 đến 5 triệu</span>
                     </label>
                   </li>
                   <li
-                    onClick={() => handleCheckPrice('tu-5-14-trieu')}
+                    onClick={() => handleCheckPrice("tu-5-14-trieu")}
                     className="form-group"
                   >
                     <input
-                      checked={checkedPrice.includes('tu-5-14-trieu')}
+                      checked={checkedPrice.includes("tu-5-14-trieu")}
                       type="checkbox"
-                      onChange={() => console.log('fix checked warning')}
+                      onChange={() => console.log("fix checked warning")}
                     />
                     <label>
                       <span>Từ 5 đến 14 triệu</span>
                     </label>
                   </li>
                   <li
-                    onClick={() => handleCheckPrice('tren-14-trieu')}
+                    onClick={() => handleCheckPrice("tren-14-trieu")}
                     className="form-group"
                   >
                     <input
                       type="checkbox"
-                      checked={checkedPrice.includes('tren-14-trieu')}
-                      onChange={() => console.log('fix checked warning')}
+                      checked={checkedPrice.includes("tren-14-trieu")}
+                      onChange={() => console.log("fix checked warning")}
                     />
                     <label>
                       <span>Trên 14 triệu</span>
@@ -452,8 +466,8 @@ function PhonePage() {
                       <div
                         className={`${
                           checkedCompare.length >= 2
-                            ? 'form-group compare disabled'
-                            : 'form-group compare'
+                            ? "form-group compare disabled"
+                            : "form-group compare"
                         }`}
                         onClick={() =>
                           handleCheckCompare(phone._id, `${phone.image[0]}`)
@@ -462,7 +476,7 @@ function PhonePage() {
                         <input
                           type="checkbox"
                           checked={checkedCompare.includes(phone._id)}
-                          onChange={() => console.log('fix checked warning')}
+                          onChange={() => console.log("fix checked warning")}
                         />
                         <label>
                           <span>So sánh</span>
