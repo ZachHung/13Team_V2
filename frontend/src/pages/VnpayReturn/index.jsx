@@ -26,7 +26,7 @@ const VnpayReturn = () => {
       })
       .then(
         (data) =>
-          data.message === "Success" &&
+          data.code === "00" &&
           userRequest()
             .post(`cart/purchase/${userID}`)
             .then()
@@ -42,7 +42,7 @@ const VnpayReturn = () => {
         <section className='content vnpay'>
           <div className='empty-cart'>
             {returnData !== null ? (
-              returnData.message === "Success" ? (
+              returnData.code === "00" ? (
                 <>
                   <h1>Thanh toán thành công</h1>
                   <FontAwesomeIcon icon={faCircleCheck} />
@@ -59,15 +59,7 @@ const VnpayReturn = () => {
                   </Link>
                 </>
               )
-            ) : (
-              <>
-                <h1>Đã có lỗi xảy ra</h1>
-                <FontAwesomeIcon icon={faExclamationCircle} />
-                <Link to='/cart' className='confirm-btn'>
-                  Về giỏ hàng của bạn
-                </Link>
-              </>
-            )}
+            ) : null}
           </div>
         </section>
       </div>

@@ -205,9 +205,9 @@ function PurchasesAdmin() {
         <div className="d-flex align-items-center mb-4 qlsp">
           <h1 className="mr-3 fw-bold PurTitle"><FontAwesomeIcon icon={faReceipt}></FontAwesomeIcon> Quản lý đơn hàng</h1>
           <Link to={`/admin/orders/create/`}>
-            <button className="btnAddNewPurchase btn btn-success">
+            {/* <button className="btnAddNewPurchase btn btn-success">
             <FontAwesomeIcon icon={faCirclePlus}></FontAwesomeIcon> Thêm đơn hàng mới
-            </button>
+            </button> */}
           </Link>
           &nbsp;
           <button className="btnDeleteAllPurs btn btn-danger" onClick={()=>handleDeleteMany()}>
@@ -273,7 +273,7 @@ function PurchasesAdmin() {
                   &nbsp;
                   <Link className='formMethod' to={'/admin/orders/'}>
                     <button
-                      className="formMethod btnDeletePurchase btn btn-outline-danger"
+                      className="formMethod btnDeletePurchase btn btn-outline-danger mt-2"
                       onClick={() => handleDelete (purchase._id, purchase)}
                       >Xóa đơn hàng <FontAwesomeIcon icon={faTrashAlt} />
                     </button>

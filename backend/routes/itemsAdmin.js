@@ -9,7 +9,7 @@ router.delete("/delete/:id", verifyTokenAdmin, ItemController.deleteItemAdmin);
 router.delete("/deleteMany", verifyTokenAdmin, ItemController.deleteManyItemsAdmin);
 router.get("/edit/:id", verifyTokenAdmin, ItemController.edit);
 router.put("/update/:id", verifyTokenAdmin, ItemController.updateItem);
-router.put("/updateDetail/:id", verifyTokenAdmin, ItemController.updateItemDetail);
+router.put("/updateDetail/:id", ItemController.updateItemDetail);
 router.get("/", verifyTokenAdmin, ItemController.getItemsAdmin);
 router.post("/", verifyTokenAdmin, ItemController.createPostItems);
 
