@@ -346,7 +346,7 @@ class AccountController {
     user
       .updateOne(
         {
-          _id: req.user.id,
+          _id: req.params.id,
         },
         {
           name: req.body.username,
