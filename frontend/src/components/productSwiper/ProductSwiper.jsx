@@ -16,7 +16,7 @@ import { FreeMode, Navigation, Thumbs } from "swiper";
 export default function ProductSwiper({ swiperArray }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const controlSwiper = useRef();
-  const pathImage = process.env.REACT_APP_SERVER_PATH;
+  const pathImage = "";
 
   return (
     <div className="swiper__container">

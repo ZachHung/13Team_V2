@@ -15,7 +15,7 @@ const ProductOption = ({
   idOption,
   changeSlide,
 }) => {
-  const pathImage = process.env.REACT_APP_SERVER_PATH;
+  const pathImage = "";
   const user = useSelector((state) => state.user.current);
   const dispatch = useDispatch();
   const navigate = useNavigate();

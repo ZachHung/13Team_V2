@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { currentChange } from "../../utils/const";
 import "./ProductSame.scss";
 const ProductSame = ({ sameArray }) => {
-  const pathImage = process.env.REACT_APP_SERVER_PATH;
+  const pathImage = "";
   const Price = (item) => {
     let price = ((100 - item.discount) * item.price) / 100;
     price = currentChange(price);

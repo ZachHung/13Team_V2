@@ -1,9 +1,9 @@
-.modal-disable{
+.modal-disable {
   display: none !important;
 }
 .products-container {
   // checkbox css
-  
+
   .form-group input {
     padding: 0;
     height: initial;
@@ -12,22 +12,22 @@
     display: none;
     cursor: pointer;
   }
-  
+
   .form-group label {
     position: relative;
     cursor: pointer;
     padding-left: 0;
     left: 0%;
     margin-left: -10rem;
-
   }
-  
+
   .form-group label:before {
-    content:'';
+    content: "";
     -webkit-appearance: none;
     background-color: transparent;
     border: 2px solid #0079bf;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+      inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
     padding: 10px;
     display: inline-block;
     position: relative;
@@ -35,9 +35,9 @@
     cursor: pointer;
     margin-right: 5px;
   }
-  
+
   .form-group input:checked + label:after {
-    content: '';
+    content: "";
     display: block;
     position: absolute;
     top: 2px;
@@ -47,34 +47,32 @@
     border: solid #0079bf;
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
-    
   }
-  
-  // compare product 
-  .disabled{
+
+  // compare product
+  .disabled {
     pointer-events: none;
     opacity: 0.7;
   }
-  .compare{
-    
+  .compare {
     margin-left: 0;
     padding-left: 0;
     margin-bottom: 2rem;
   }
-  .all-check{
+  .all-check {
     color: rebeccapurple;
     margin-left: 0;
     padding-left: 0;
   }
-  .filter-checkbox{
-    .brand-swiper, .price-swiper {
+  .filter-checkbox {
+    .brand-swiper,
+    .price-swiper {
       margin-bottom: 2rem;
       margin-top: 1rem;
       cursor: pointer;
-  
     }
-    
-    .filter-span{
+
+    .filter-span {
       display: inline-flex;
       -webkit-box-align: center;
       align-items: center;
@@ -87,7 +85,7 @@
       border: solid 1px #b4bdce;
       margin: 0 10px 6px 0;
       cursor: pointer;
-      &:hover{
+      &:hover {
         font-weight: bold;
       }
     }
@@ -97,15 +95,14 @@
     @media screen and (max-width: 480px) {
       margin-left: 3rem;
       margin-top: 2rem;
-      .slide{
-        img{
+      .slide {
+        img {
           width: 85%;
         }
       }
     }
   }
-  
-  
+
   .filter-box {
     display: flex;
     flex-direction: row;
@@ -131,16 +128,15 @@
     cursor: pointer;
     border-radius: 5px;
   }
-  
+
   .product:hover {
     border-radius: 2rem;
     border: solid 0.1rem var(--grey2);
-    
   }
   // chia cột lọc thương hiệu, giá 1 cột, danh sách sản phẩm 3 cột
   .products-layout {
     display: grid;
-    grid-template-columns:  3fr;
+    grid-template-columns: 3fr;
     gap: 0 1rem;
     margin-right: 2rem;
   }
@@ -148,12 +144,12 @@
   .list-products {
     display: grid;
     grid-template-columns: repeat(3, 250px); // lặp lại số sp trên 1 dòng
-
+    min-height: 100vh;
     gap: 3rem;
     margin: 0 auto;
     margin-right: 8%;
   }
- 
+
   .list-products form {
     display: flex;
     align-items: center;
@@ -303,7 +299,7 @@
   }
 
   .config-param span:after {
-    content: '';
+    content: "";
     position: absolute;
     z-index: 1;
     left: 40%;
@@ -325,7 +321,6 @@
     display: flex;
     flex-direction: row;
     gap: 0.3rem;
-    
   }
 
   .product-btn .btn {
@@ -334,7 +329,7 @@
     white-space: nowrap;
     border-radius: 1rem;
     padding: 0.9rem 2.2rem 0.9rem 2.1rem;
-    line-height: 16px; 
+    line-height: 16px;
     cursor: pointer;
   }
   .product-btn .btn p {
@@ -443,13 +438,12 @@
   #page1 {
     background-color: var(--primary);
   }
- 
 
   .header-spacer,
   .footer-spacer {
   }
   // responsive for mobile
- 
+
   @media screen and (max-width: 480px) {
     section {
       max-width: auto;
@@ -494,7 +488,7 @@
       height: 2.5rem;
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     }
-    
+
     .config {
       padding: 0.5rem 1.5rem 0;
 
@@ -508,9 +502,7 @@
       position: relative;
     }
     .form-group label {
-      
       margin-left: -5rem;
-  
     }
   }
 }

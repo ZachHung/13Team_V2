@@ -1,4 +1,4 @@
-export const hostServer = "http://localhost:5000";
+export const hostServer = process.env.REACT_APP_SERVER_PATH;
 export const currentChange = (price) => {
   price = new Intl.NumberFormat("vi-VN", {
     style: "currency",

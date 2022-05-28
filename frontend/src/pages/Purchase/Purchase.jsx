@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import moment from 'moment';
-import Header from '../../components/header';
-import Footer from '../../components/footer';
-import { Link, useNavigate } from 'react-router-dom';
-import { userRequest } from '../../utils/CallApi';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import moment from "moment";
+import Header from "../../components/header";
+import Footer from "../../components/footer";
+import { Link, useNavigate } from "react-router-dom";
+import { userRequest } from "../../utils/CallApi";
+import { useDispatch, useSelector } from "react-redux";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-import './Purchase.scss';
-import { hostServer, currentChange, formatDate } from '../../utils/const';
-import ModalPopUp from '../../components/modal';
+import "./Purchase.scss";
+import { hostServer, currentChange, formatDate } from "../../utils/const";
+import ModalPopUp from "../../components/modal";
 
 export default function Purchase() {
   const [productsList, setProductsList] = useState([]);
@@ -23,7 +23,7 @@ export default function Purchase() {
 
   // console.log('user', user._id);
   const [clickedDeleteButton, setClickedDeleteButton] = useState({
-    productID: '',
+    productID: "",
   });
   const [activeStatus, setActiveStatus] = useState({
     all: true,
@@ -109,7 +109,7 @@ export default function Purchase() {
         color: color,
       })
       .then(() => {
-        navigateCart('../cart');
+        navigateCart("../cart");
       })
       .catch((err) => console.log(err));
   };
@@ -123,18 +123,18 @@ export default function Purchase() {
                 <p>
                   Thương hiệu:
                   <strong id="brandProduct">
-                    {' '}
-                    {item.optionID.item.brand.name}{' '}
-                  </strong>{' '}
-                  | Ngày mua:{' '}
+                    {" "}
+                    {item.optionID.item.brand.name}{" "}
+                  </strong>{" "}
+                  | Ngày mua:{" "}
                   <strong id="dateProduct">
-                    {moment(product.createAt).format('LLLL')}
+                    {moment(product.createAt).format("LLLL")}
                   </strong>
                 </p>
               </div>
               <div className="status">
                 <p>
-                  Trạng thái:{' '}
+                  Trạng thái:{" "}
                   <strong id="statusProduct">{product.status}</strong>
                 </p>
               </div>
@@ -145,12 +145,12 @@ export default function Purchase() {
                 <script>var bool = true</script>
                 <img
                   id="imgProduct"
-                  src={`${hostServer}/${item.optionID.color[0].image}`}
+                  src={`${item.optionID.color[0].image}`}
                   alt=""
                 />
                 <div className="name_num">
                   <p className="name" id="nameProduct">
-                    {item.optionID.item.name}{' '}
+                    {item.optionID.item.name}{" "}
                   </p>
                   <p className="num">
                     x<strong id="numProduct">{item.quantity} </strong>
@@ -166,14 +166,14 @@ export default function Purchase() {
                 <p>
                   <strong id="priceProduct">
                     {currentChange(item.optionID.color[0].price)}
-                  </strong>{' '}
+                  </strong>{" "}
                 </p>
               </div>
             </a>
             <hr />
           </div>
           <div className="price">
-            <div className="action" style={{ marginBottom: '3rem' }}>
+            <div className="action" style={{ marginBottom: "3rem" }}>
               <button
                 className="btn  "
                 type="submit"
@@ -189,7 +189,7 @@ export default function Purchase() {
               </button>
             </div>
             <p id="totalPrice">
-              Tổng số tiền:{' '}
+              Tổng số tiền:{" "}
               <strong>
                 {currentChange(item.optionID.color[0].price * item.quantity)}
               </strong>
@@ -206,7 +206,7 @@ export default function Purchase() {
     <>
       <Header />
       <ModalPopUp
-        name={'lịch sử mua hàng'}
+        name={"lịch sử mua hàng"}
         modalState={modalState}
         handelClickConfirm={handelClickConfirm}
         toogleState={setModalState}
@@ -214,7 +214,7 @@ export default function Purchase() {
       <section className="container_purchase">
         <div className="status_menu">
           <div
-            className={activeStatus.all ? 'statusAll active' : 'statusAll'}
+            className={activeStatus.all ? "statusAll active" : "statusAll"}
             onClick={() => handleClickAllProduct()}
           >
             <a>Tất cả</a>
@@ -222,8 +222,8 @@ export default function Purchase() {
           <div
             className={
               activeStatus.delivering
-                ? 'statusDelivering active'
-                : 'statusDelivering'
+                ? "statusDelivering active"
+                : "statusDelivering"
             }
             onClick={() => handleClickDelivering()}
           >
@@ -232,8 +232,8 @@ export default function Purchase() {
           <div
             className={
               activeStatus.delivered
-                ? 'statusDelivered active'
-                : 'statusDelivered'
+                ? "statusDelivered active"
+                : "statusDelivered"
             }
             onClick={() => handleClickDelivered()}
           >
