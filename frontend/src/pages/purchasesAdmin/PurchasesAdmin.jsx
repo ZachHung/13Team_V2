@@ -228,8 +228,8 @@ function PurchasesAdmin() {
                 <th scope="col" style={{"width":"7%"}}>Tên khách hàng</th>
                 <th scope="col" style={{"width":"10%"}}>Ngày đặt hàng</th>
                 {/* <th scope="col">Tổng tiền</th> */}
-                <th scope="col" style={{"width":"10%"}}>Phương thức thanh toán</th> 
-                <th scope="col" style={{"width":"10%"}}>Tình trạng thanh toán</th>         
+                {/* <th scope="col" style={{"width":"10%"}}>Phương thức thanh toán</th> 
+                <th scope="col" style={{"width":"10%"}}>Tình trạng thanh toán</th>          */}
                 <th scope="col" style={{"width":"10%"}}>Tình trạng giao hàng</th>             
                 <th scope="col" style={{"width":"10%"}}>Thời gian</th>
                 <th scope="col" style={{"width":"18%"}}>Tùy chọn</th>
@@ -255,8 +255,8 @@ function PurchasesAdmin() {
                     'yyyy-MM-dd kk:mm:ss'
                   )}
                 </td>
-                <td></td>
-                <td></td>
+                {/* <td></td>
+                <td></td> */}
                 <td>{purchase.status}</td>
                 <td> 
                   { (purchase.status !== "Đã giao hàng" && purchase.status !== "Đã hủy" ) ? "" : format(
