@@ -1,5 +1,4 @@
 const express = require("express");
-const morgan = require("morgan");
 const cors = require("cors");
 const path = require("path");
 const cookieSession = require("cookie-session");
@@ -29,8 +28,10 @@ if (process.env.NODE_ENV === "production") {
   );
 }
 //HTTP logger (only when in dev mode)
-process.env.NODE_ENV === "development" && app.use(morgan("combined"));
-
+if (process.env.NODE_ENV === "development") {
+  const morgan = require("morgan");
+  app.use(morgan("combined"));
+}
 // API calls
 app.use(
   cors({
