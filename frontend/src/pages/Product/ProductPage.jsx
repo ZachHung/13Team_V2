@@ -47,10 +47,10 @@ const ProductPage = () => {
             <h1>{data.item.name}</h1>
           </div>
           <div className="product__detail">
-            <div className="product__swiper col-md-4" ref={SwiperChild}>
+            <div className="product__swiper col-lg-4" ref={SwiperChild}>
               <ProductSwiper swiperArray={data.color}></ProductSwiper>
             </div>
-            <div className="product__options col-md-4">
+            <div className="product__options col-lg-4">
               <ProductOption
                 capacityOptions={data.options}
                 colorOptions={data.color}
@@ -59,7 +59,7 @@ const ProductPage = () => {
                 changeSlide={changeSlide}
               ></ProductOption>
             </div>
-            <div className="product__about col-md-4">
+            <div className="product__about col-lg-4">
               <ProductAbout
                 demoArray={data.demoinfo}
                 handleOpenInfo={handleOpenInfo}

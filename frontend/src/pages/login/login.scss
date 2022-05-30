@@ -1,3 +1,4 @@
+@use "../../scss/abstracts/" as *;
 .container_login {
   background-color: #cae5e8;
   display: flex;
@@ -21,7 +22,7 @@
       @media only screen and (max-width: 739px) {
         display: block;
         text-align: center;
-        font-size: 40px;
+        font-size: 30px;
         margin: 20px 0px;
         padding: 0;
       }
@@ -34,6 +35,13 @@
         padding: 0;
         display: flex;
         justify-content: center;
+        align-items: center;
+      }
+      @include tablet {
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
       .form_wrapper {
         background-color: #fff;
@@ -78,7 +86,9 @@
             gap: 2rem;
             display: flex;
             align-items: center;
-
+            @include mobile {
+              width: 90%;
+            }
             svg {
               font-size: 30px;
               width: 30px;

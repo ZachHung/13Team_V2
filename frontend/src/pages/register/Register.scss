@@ -1,3 +1,4 @@
+@use "../../scss/abstracts/" as *;
 .container_register {
   background-color: #cae5e8;
   display: flex;
@@ -36,6 +37,11 @@
       display: flex;
       align-items: center;
       @media only screen and (max-width: 739px) {
+        padding: 0;
+        display: flex;
+        justify-content: center;
+      }
+      @include tablet {
         padding: 0;
         display: flex;
         justify-content: center;

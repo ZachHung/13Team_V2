@@ -1,3 +1,4 @@
+@use "../../scss/abstracts/" as *;
 .swiper__container {
   .swiper-button-prev {
     display: none;
@@ -56,6 +57,12 @@
         align-items: center;
         img {
           display: block;
+          @include tablet {
+            width: 60%;
+          }
+          @include mobile {
+            width: 80%;
+          }
         }
       }
     }

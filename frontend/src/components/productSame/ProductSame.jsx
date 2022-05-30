@@ -25,6 +25,10 @@ const ProductSame = ({ sameArray }) => {
               spaceBetween: 10,
             },
             768: {
+              slidesPerView: 3,
+              spaceBetween: 20,
+            },
+            1336: {
               slidesPerView: 5,
               spaceBetween: 20,
             },

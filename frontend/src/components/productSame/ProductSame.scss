@@ -1,5 +1,9 @@
+@use "../../scss/abstracts/" as *;
 .productSame__container {
   margin: 2rem 20rem;
+  @include tablet {
+    margin: 2rem 10rem;
+  }
   @media only screen and (max-width: 739px) {
     margin: 2rem 2rem;
   }
@@ -61,7 +65,7 @@
       text-align: none;
       transition: transform ease 0.2s;
       @media only screen and (max-width: 768px) {
-        height: 85%;
+        height: 100%;
       }
 
       .product_img {
@@ -80,6 +84,7 @@
         @media only screen and (max-width: 768px) {
           margin-left: 1rem;
         }
+
         .product__name {
           font-weight: bold;
           font-size: 1.4rem;
@@ -90,16 +95,22 @@
         .product__newPrice {
           color: #d70018;
           font-size: 1.4rem;
-          @media only screen and (max-width: 768px) {
+          @include tablet {
             font-size: 1.2rem;
+          }
+          @media only screen and (max-width: 768px) {
+            font-size: 1rem;
           }
         }
         .product__oldPrice {
           margin-left: 1rem;
           font-size: 1.4rem;
           text-decoration: line-through;
-          @media only screen and (max-width: 768px) {
+          @include tablet {
             font-size: 1.2rem;
+          }
+          @media only screen and (max-width: 768px) {
+            font-size: 1rem;
           }
         }
       }
