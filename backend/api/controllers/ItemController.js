@@ -1,7 +1,8 @@
 const items = require("../models/Item");
 const options = require("../models/Option");
-const ObjectId = require('mongodb').ObjectId;
-const URL = "http://localhost:3000/";
+const ObjectId = require("mongodb").ObjectId;
+require("dotenv").config();
+const URL = process.env.CLIENT_PATH;
 
 class ItemController {
   detailItem(req, res, next) {
@@ -46,7 +47,7 @@ class ItemController {
                 if (i == 6) break;
               }
             }
-            items.find({ type: route }).then((itemPhone) => { });
+            items.find({ type: route }).then((itemPhone) => {});
             data = data
               .filter((dataitem) => dataitem.slug != type)
               .slice(0, 10);
@@ -107,7 +108,7 @@ class ItemController {
                 if (i == 6) break;
               }
             }
-            items.find({ type: route }).then((itemPhone) => { });
+            items.find({ type: route }).then((itemPhone) => {});
             data = data
               .filter((dataitem) => dataitem.slug != type)
               .slice(0, 10);
@@ -168,7 +169,7 @@ class ItemController {
                 if (i == 6) break;
               }
             }
-            items.find({ type: route }).then((itemPhone) => { });
+            items.find({ type: route }).then((itemPhone) => {});
             data = data
               .filter((dataitem) => dataitem.slug != type)
               .slice(0, 10);
@@ -229,7 +230,7 @@ class ItemController {
                 if (i == 6) break;
               }
             }
-            items.find({ type: route }).then((itemPhone) => { });
+            items.find({ type: route }).then((itemPhone) => {});
             data = data
               .filter((dataitem) => dataitem.slug != type)
               .slice(0, 10);
@@ -258,14 +259,14 @@ class ItemController {
         },
         {
           $lookup: {
-            from: 'options',
-            localField: 'slug',
-            foreignField: 'slug',
-            as: 'slug',
+            from: "options",
+            localField: "slug",
+            foreignField: "slug",
+            as: "slug",
           },
         },
       ])
-      .then(items => {
+      .then((items) => {
         res.json({
           items: items,
         });
@@ -277,35 +278,32 @@ class ItemController {
     const itemDelID = req.params.id;
     items
       .findById(itemDelID)
-      .then((data)=> {
+      .then((data) => {
         options
-        .find({ slug: data.slug })
-        .then(data1 => {
-            if (data1){
+          .find({ slug: data.slug })
+          .then((data1) => {
+            if (data1) {
               for (let i = 0; i < data1.length; i++) {
-                options.deleteOne({
-                  _id: ObjectId(data1[i]._id),
-                })
-                .then()
-                .catch(next);
-              } 
+                options
+                  .deleteOne({
+                    _id: ObjectId(data1[i]._id),
+                  })
+                  .then()
+                  .catch(next);
+              }
+            } else {
             }
-            else {
-
-            }
-        })
-        .catch(next);
+          })
+          .catch(next);
       })
       .then((data2) => {
-        items.findByIdAndDelete(itemDelID)
-        .then(data3 => {
+        items.findByIdAndDelete(itemDelID).then((data3) => {
           if (data3.modifiedCount != 0) {
-            items.find()
-            .then((itemRes) => {       
-              res.json({items: itemRes});
+            items.find().then((itemRes) => {
+              res.json({ items: itemRes });
             });
           }
-        })
+        });
       })
       .catch(next);
   }
@@ -316,9 +314,8 @@ class ItemController {
       .deleteMany({ _id: { $in: ids } })
       .then((data) => {
         if (data.modifiedCount != 0) {
-          items.find()
-          .then((itemRes) => {       
-            res.json({items: itemRes});
+          items.find().then((itemRes) => {
+            res.json({ items: itemRes });
           });
         }
       })
@@ -326,13 +323,13 @@ class ItemController {
   }
 
   edit(req, res, next) {
-    const id = ObjectId(req.params.id)
+    const id = ObjectId(req.params.id);
     console.log(id);
     items
       .aggregate([
         {
           $match: {
-            _id: id
+            _id: id,
           },
         },
         {
@@ -343,7 +340,8 @@ class ItemController {
             as: "slug",
           },
         },
-      ]).then((items) => {
+      ])
+      .then((items) => {
         res.json({
           items: items,
         });
@@ -359,55 +357,56 @@ class ItemController {
           infoDetail: [
             {
               infoName: "kích Thước Màn Hình",
-              infoNum: req.body.infoNum[0]
+              infoNum: req.body.infoNum[0],
             },
             {
               infoName: "Công nghệ màn hình",
-              infoNum: req.body.infoNum[1]
+              infoNum: req.body.infoNum[1],
             },
             {
               infoName: "Độ phân giải màn hình",
-              infoNum: req.body.infoNum[2]
-            }
-          ]
+              infoNum: req.body.infoNum[2],
+            },
+          ],
         },
         {
           infoType: "Camera sau",
           infoDetail: [
             {
               infoName: "Camera sau",
-              infoNum: req.body.infoNum[3]
+              infoNum: req.body.infoNum[3],
             },
             {
               infoName: "Quay video",
-              infoNum: req.body.infoNum[4]
-            }
-          ]
+              infoNum: req.body.infoNum[4],
+            },
+          ],
         },
         {
           infoType: "CPU",
           infoDetail: [
             {
               infoName: "Chip xử lí",
-              infoNum: req.body.infoNum[5]
-            }
-          ]
+              infoNum: req.body.infoNum[5],
+            },
+          ],
         },
         {
           infoType: "RAM",
           infoDetail: [
             {
               infoName: "Bộ nhớ trong",
-              infoNum: req.body.infoNum[6]
-            }
-          ]
-        }
-      ]
-    }
+              infoNum: req.body.infoNum[6],
+            },
+          ],
+        },
+      ],
+    };
 
     req.body.techInfo = techInfoConvert.techInfo;
-    console.log(req.body)
-    items.updateOne({ _id: req.params.id }, req.body)
+    console.log(req.body);
+    items
+      .updateOne({ _id: req.params.id }, req.body)
       .then((data) => {
         if (data.modifiedCount !== 0) {
           res.json({
@@ -419,147 +418,148 @@ class ItemController {
           });
         }
       })
-      .catch(next)
+      .catch(next);
   }
 
   updateItemDetail(req, res, next) {
     var BD = req.body;
     var str = "";
 
-
     if (Array.isArray(req.body.name)) {
       req.body.name.forEach((element, index) => {
-        str = str +
-          '{"name": "' + element +
-          '", "image": "' + BD.image[index] +
-          '", "number": ' + + BD.number[index] +
-          ', "price": ' + BD.price[index] +
-          ', "discount": ' + BD.discount[index] + "\}, ";
+        str =
+          str +
+          '{"name": "' +
+          element +
+          '", "image": "' +
+          BD.image[index] +
+          '", "number": ' +
+          +BD.number[index] +
+          ', "price": ' +
+          BD.price[index] +
+          ', "discount": ' +
+          BD.discount[index] +
+          "}, ";
       });
-      str = '{"detail": "' + BD.detail + '", "color": [' + str + ']}'
-      str = str.replace(', ]', ']')
+      str = '{"detail": "' + BD.detail + '", "color": [' + str + "]}";
+      str = str.replace(", ]", "]");
 
       str = JSON.parse(str);
 
-      options.updateOne({ _id: req.params.id }, str)
-        .then(() => res.redirect(URL + 'admin/products/updateDetail/' + BD.id))
-        .catch(next)
+      options
+        .updateOne({ _id: req.params.id }, str)
+        .then(() => res.redirect(URL + "admin/products/updateDetail/" + BD.id))
+        .catch(next);
     } else {
       var data = {
         detail: req.body.detail,
-        color: [{
-          name: req.body.name,
-          image: req.body.image,
-          number: req.body.number,
-          price: req.body.price,
-          discount: req.body.discount
-        }]
-      }
+        color: [
+          {
+            name: req.body.name,
+            image: req.body.image,
+            number: req.body.number,
+            price: req.body.price,
+            discount: req.body.discount,
+          },
+        ],
+      };
 
-      options.updateOne({ _id: req.params.id }, data)
-        .then(() => res.redirect(URL + 'admin/products/updateDetail/' + BD.id))
-        .catch(next)
+      options
+        .updateOne({ _id: req.params.id }, data)
+        .then(() => res.redirect(URL + "admin/products/updateDetail/" + BD.id))
+        .catch(next);
     }
-
-
   }
 
   async createPostItems(req, res, next) {
-
     try {
       console.log("aaaaaa");
 
       console.log(req.body);
-        var techInfoConvert =
-        [
-            {
-              infoType: "Màn hình",
-              infoDetail: [
-                {
-                  infoName: "kích Thước Màn Hình",
-                  infoNum: req.body.size
-                },
-                {
-                  infoName: "Công nghệ màn hình",
-                  infoNum: req.body.typescreen
-                },
-                {
-                  infoName: "Độ phân giải màn hình",
-                  infoNum: req.body.resolution
-                }
-              ]
-            },
-            {
-              infoType: "Camera sau",
-              infoDetail: [
-                {
-                  infoName: "Camera sau",
-                  infoNum: req.body.triple
-                },
-                {
-                  infoName: "Quay video",
-                  infoNum: req.body.video
-                }
-              ]
-            },
-            {
-              infoType: "CPU",
-              infoDetail: [
-                {
-                  infoName: "Chip xử lí",
-                  infoNum: req.body.cpu
-                }
-              ]
-            },
-            {
-              infoType: "RAM",
-              infoDetail: [
-                {
-                  infoName: "Bộ nhớ trong",
-                  infoNum: req.body.ram
-                }
-              ]
-            }
-          ]
-        
-        const brand1={
-          name: req.body.brand,
-          brandImage: req.body.brandimage
-        }
-        var url=req.body.image.split(',');
-        const item={
-          name: req.body.name,
-          type: req.body.type,
-          description: req.body.decription,
-          image:url,
-          slug: req.body.slug,
-          techInfo:techInfoConvert,
-          brand: brand1
-        }
-        console.log(item);
-        const createitem=new items(item);
-       
-        console.log(createitem);
-        // req.body.techInfo = techInfoConvert.techInfo;
-        
-        try
-        { var result =await createitem.save()
-        .then((data)=>{
-          res.json(data);
-         
-    })
-        .catch(next);
-        }
-        catch(e)
+      var techInfoConvert = [
         {
-          console.log(e.message);
-        }
-       
-      
-        res.status('200');
+          infoType: "Màn hình",
+          infoDetail: [
+            {
+              infoName: "kích Thước Màn Hình",
+              infoNum: req.body.size,
+            },
+            {
+              infoName: "Công nghệ màn hình",
+              infoNum: req.body.typescreen,
+            },
+            {
+              infoName: "Độ phân giải màn hình",
+              infoNum: req.body.resolution,
+            },
+          ],
+        },
+        {
+          infoType: "Camera sau",
+          infoDetail: [
+            {
+              infoName: "Camera sau",
+              infoNum: req.body.triple,
+            },
+            {
+              infoName: "Quay video",
+              infoNum: req.body.video,
+            },
+          ],
+        },
+        {
+          infoType: "CPU",
+          infoDetail: [
+            {
+              infoName: "Chip xử lí",
+              infoNum: req.body.cpu,
+            },
+          ],
+        },
+        {
+          infoType: "RAM",
+          infoDetail: [
+            {
+              infoName: "Bộ nhớ trong",
+              infoNum: req.body.ram,
+            },
+          ],
+        },
+      ];
 
-    }
-    catch (e) {
+      const brand1 = {
+        name: req.body.brand,
+        brandImage: req.body.brandimage,
+      };
+      var url = req.body.image.split(",");
+      const item = {
+        name: req.body.name,
+        type: req.body.type,
+        description: req.body.decription,
+        image: url,
+        slug: req.body.slug,
+        techInfo: techInfoConvert,
+        brand: brand1,
+      };
+      console.log(item);
+      const createitem = new items(item);
+
+      console.log(createitem);
+      // req.body.techInfo = techInfoConvert.techInfo;
+
+      try {
+        var result = await createitem
+          .save()
+          .then((data) => {
+            res.json(data);
+          })
+          .catch(next);
+      } catch (e) {
+        console.log(e.message);
+      }
+
+      res.status("200");
+    } catch (e) {
       console.log("error");
       res.status(500).json({ error: e.message });
     }
@@ -567,64 +567,57 @@ class ItemController {
 
   async findItemById(req, res, next) {
     try {
-      var item = await items.findById(req.params.id)
-        .then((item) => (
+      var item = await items.findById(req.params.id).then(
+        (item) => (
           console.log(item),
           res.json({
             item: item,
-          })))
+          })
+        )
+      );
       console.log(item);
-    }
-    catch (e) {
+    } catch (e) {
       console.log("error");
       res.status(500).json({ error: e.message });
     }
   }
 
-  async createPostOptions(req,res, next)
-  {
-    try{
+  async createPostOptions(req, res, next) {
+    try {
       console.log("aaaaaa");
       console.log(req.body);
-      var color=new Array();
-      for(var i=0;i<req.body.color.length;i++)
-      {
-        var temp={
-          name:req.body.color[i],
-          image:req.body.image[i],
-          price:req.body.price[i],
-          discount:req.body.discount[i],
-          number: req.body.number[i]
-        }
+      var color = new Array();
+      for (var i = 0; i < req.body.color.length; i++) {
+        var temp = {
+          name: req.body.color[i],
+          image: req.body.image[i],
+          price: req.body.price[i],
+          discount: req.body.discount[i],
+          number: req.body.number[i],
+        };
         color.push(temp);
       }
-    const option={
-      slug: req.body.slug,
-      detail: req.body.detail,
-      color: color,
-      item: req.params.id,
-      
-    }
-    const createoption=new options(option);
-    try
-        { var result =await createoption.save()
-        .then((data)=>{res.json(data)})
-        .catch(next);
-        }
-        catch(e)
-        {
-          console.log(e.message);
-        }
-  }
-
-
-    catch (e) {
+      const option = {
+        slug: req.body.slug,
+        detail: req.body.detail,
+        color: color,
+        item: req.params.id,
+      };
+      const createoption = new options(option);
+      try {
+        var result = await createoption
+          .save()
+          .then((data) => {
+            res.json(data);
+          })
+          .catch(next);
+      } catch (e) {
+        console.log(e.message);
+      }
+    } catch (e) {
       console.log("error");
       res.status(500).json({ error: e.message });
     }
-
-
   }
 }
 module.exports = new ItemController();
-

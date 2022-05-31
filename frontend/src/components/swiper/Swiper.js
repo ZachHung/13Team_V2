@@ -1,12 +1,8 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import "./Swiper.scss";
-
-const api = axios.create({
-  baseURL: "http://localhost:5000/api",
-});
+import { publicRequest } from "../../utils/CallApi";
 
 export default ({ updateBrand, updatePrice, type }) => {
   const [brand, setBrand] = useState([]);
@@ -16,7 +12,7 @@ export default ({ updateBrand, updatePrice, type }) => {
   }
 
   useEffect(() => {
-    api.get(urlAPI).then((res) => {
+    publicRequest.get(urlAPI).then((res) => {
       setBrand(res.data);
     });
   }, [type]);

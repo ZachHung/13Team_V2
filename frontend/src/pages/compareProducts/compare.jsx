@@ -1,17 +1,13 @@
-import { useNavigate, useLocation } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
-import './compare.scss';
-import axios from 'axios';
-import { publicRequest } from '../../utils/CallApi';
-import { currentChange } from '../../utils/const';
-import { Link } from 'react-router-dom';
+import { useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import "./compare.scss";
+import axios from "axios";
+import { publicRequest } from "../../utils/CallApi";
+import { currentChange } from "../../utils/const";
+import { Link } from "react-router-dom";
 
-import Header from '../../components/header';
-import Footer from '../../components/footer';
-
-// const api = axios.create({
-//   baseURL: 'http://localhost:5000/api',
-// });
+import Header from "../../components/header";
+import Footer from "../../components/footer";
 
 export default function ComparePage() {
   const [products, setProductsList] = useState([]);
@@ -21,7 +17,7 @@ export default function ComparePage() {
 
   // console.log('compare.search: ', compare.search);
   var str = compare.search;
-  var typeProduct = str.substring(str.indexOf('?') + 1, str.lastIndexOf('='));
+  var typeProduct = str.substring(str.indexOf("?") + 1, str.lastIndexOf("="));
   // console.log('type Product: ', typeProduct);
   const idProduct = new URLSearchParams(compare.search).get(typeProduct); // .serach là tham số bắt buộc để get query params
   // console.log('IDproduct: ', idProduct);
@@ -31,7 +27,7 @@ export default function ComparePage() {
       // console.log(res.data);
       window.history.pushState(
         {},
-        'So Sánh',
+        "So Sánh",
         `http://localhost:3000/compare?${typeProduct}=${res.data[0].slug[0].slug}-${res.data[0].slug[0].detail},${res.data[1].slug[0].slug}-${res.data[1].slug[0].detail}`
       );
     });
@@ -58,7 +54,7 @@ export default function ComparePage() {
         </tr>
       ));
     } else {
-      console.log('undefined r, check lai di');
+      console.log("undefined r, check lai di");
     }
   };
 
@@ -72,7 +68,7 @@ export default function ComparePage() {
     return (
       <>
         <Header />
-        <div className="comparePage-container">
+        <div className='comparePage-container'>
           <table>
             <tbody>
               {
@@ -86,7 +82,7 @@ export default function ComparePage() {
                         <img src={`${item.image[0]}`} alt={item.name} />
                       </Link>
                       <h3>{item.name}</h3>
-                      <div className="price">
+                      <div className='price'>
                         <span>
                           {currentChange(item.slug[0].color[0].price)}
                         </span>
