@@ -14,7 +14,7 @@ import {
   faTruck,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
-import { setQuantity } from "../../redux/cart";
+import { setQuantity, setZero } from "../../redux/cart";
 import ModalPopUp from "../../components/modal";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -102,10 +102,10 @@ const CartPage = () => {
     if (payment === "cod") {
       userRequest()
         .post(`cart/purchase/${user.current._id}`)
-        .then(
-          (res) =>
-            res.status === 200 && navigate("../purchase", { replace: true })
-        )
+        .then((res) => {
+          dispatch(setZero());
+          res.status === 200 && navigate("../purchase", { replace: true });
+        })
         .catch((err) => console.log(err));
     } else {
       userRequest()

@@ -11,9 +11,10 @@ import "./style.scss";
 import { useEffect } from "react";
 import { publicRequest, userRequest } from "../../utils/CallApi";
 import { useState } from "react";
-import { useSelector } from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
+import { setZero } from "../../redux/cart";
 const VnpayReturn = () => {
+  const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const [returnData, setReturnData] = useState(null);
   const userID = useSelector((state) => state.user.current._id);
@@ -29,7 +30,9 @@ const VnpayReturn = () => {
           data.code === "00" &&
           userRequest()
             .post(`cart/purchase/${userID}`)
-            .then()
+            .then(() => {
+              dispatch(setZero());
+            })
             .catch((err) => console.log(err))
       )
       .catch((err) => console.log(err));
@@ -38,15 +41,15 @@ const VnpayReturn = () => {
   return (
     <>
       <Header></Header>
-      <div className='cartPage'>
-        <section className='content vnpay'>
-          <div className='empty-cart'>
+      <div className="cartPage">
+        <section className="content vnpay">
+          <div className="empty-cart">
             {returnData !== null ? (
               returnData.code === "00" ? (
                 <>
                   <h1>Thanh toán thành công</h1>
                   <FontAwesomeIcon icon={faCircleCheck} />
-                  <Link to='/purchase' className='confirm-btn'>
+                  <Link to="/purchase" className="confirm-btn">
                     Tới lịch sử mua hàng
                   </Link>
                 </>
@@ -54,7 +57,7 @@ const VnpayReturn = () => {
                 <>
                   <h1>Đã có lỗi xảy ra</h1>
                   <FontAwesomeIcon icon={faExclamationCircle} />
-                  <Link to='/cart' className='confirm-btn'>
+                  <Link to="/cart" className="confirm-btn">
                     Về giỏ hàng của bạn
                   </Link>
                 </>
