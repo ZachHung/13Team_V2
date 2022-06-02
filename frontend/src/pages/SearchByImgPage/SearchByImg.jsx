@@ -1,17 +1,17 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import './SearchByImg.scss';
-import Header from '../../components/header';
-import Footer from '../../components/footer';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
+import "./SearchByImg.scss";
+import Header from "../../components/header";
+import Footer from "../../components/footer";
 function SearchByImg() {
   const [urlsImage, setUrlsImage] = useState([]);
   const [pathsImage, setPathsImage] = useState([]);
   const [state, setState] = useState({
     previewImageUrl: false,
     imageHeight: 200,
-    imagePrediction: '',
+    imagePrediction: "",
   });
   const [imageFile, setImageFile] = useState();
   // Function for previewing the chosen image
@@ -34,17 +34,17 @@ function SearchByImg() {
     generatePreviewImageUrl(file, (previewImageUrl) => {
       setState({
         previewImageUrl,
-        imagePrediction: '',
+        imagePrediction: "",
       });
     });
   };
   // Function for sending image to the backend
   const uploadHandler = (e) => {
     const formData = new FormData();
-    formData.append('file', imageFile, 'img.png');
+    formData.append("file", imageFile, "img.png");
     var t0 = performance.now();
     axios
-      .post('http://127.0.0.1:5000/searchbyimg', formData)
+      .post("http://127.0.0.1:5000/searchbyimg", formData)
       .then(function (response, data) {
         data = response.data;
         var t1 = performance.now();
@@ -54,21 +54,21 @@ function SearchByImg() {
         setPathsImage(Object.values(eval(data[0])));
         setUrlsImage(Object(eval(data[1])));
         console.log(
-          'The time it took to predict the image ' +
+          "The time it took to predict the image " +
             (t1 - t0) +
-            ' milliseconds.'
+            " milliseconds."
         );
       });
   };
 
   const handleRenderImage = () => {
     return pathsImage.map((path, i) => (
-      <div className="product-layout" key={i}>
-        <div className="product">
-          <div className="img-container">
+      <div className='product-layout' key={i}>
+        <div className='product'>
+          <div className='img-container'>
             <Link to={`/${urlsImage[i]}`}>
-              <img className="image-product" key={i} src={`${path}`}></img>
-              <p className="view-this">Xem sản phẩm </p>
+              <img className='image-product' key={i} src={`${path}`}></img>
+              <p className='view-this'>Xem sản phẩm </p>
             </Link>
           </div>
         </div>
@@ -82,32 +82,32 @@ function SearchByImg() {
   return (
     <>
       <Header />
-      <div className="container-sbi">
+      <div className='container-sbi'>
         <p>Tải hình ảnh bạn muốn tìm kiếm</p>
 
         {/* Button for choosing an image */}
         <div>
-          <input type="file" name="file" onChange={handleChange} />
+          <input type='file' name='file' onChange={handleChange} />
         </div>
 
         {/* Button for sending image to backend */}
         <div>
-          <input type="submit" onClick={uploadHandler} />
+          <input type='submit' onClick={uploadHandler} />
         </div>
 
         {/* Field for previewing the chosen image */}
         <div>
           {state.previewImageUrl && (
             <img
-              className="preview-img"
+              className='preview-img'
               height={state.imageHeight}
-              alt=""
+              alt=''
               src={state.previewImageUrl}
             />
           )}
         </div>
         <h3>Kết quả tìm kiếm</h3>
-        <div className="list-products">{handleRenderImage()}</div>
+        <div className='list-products'>{handleRenderImage()}</div>
       </div>
       <Footer />
     </>

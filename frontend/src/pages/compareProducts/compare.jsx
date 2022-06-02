@@ -1,7 +1,6 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import "./compare.scss";
-import axios from "axios";
 import { publicRequest } from "../../utils/CallApi";
 import { currentChange } from "../../utils/const";
 import { Link } from "react-router-dom";

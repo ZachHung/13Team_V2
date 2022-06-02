@@ -1,9 +1,7 @@
 import React from "react";
-import { orderBy } from "lodash";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { userRequest } from "../../utils/CallApi";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,13 +14,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import Swiper from "../../components/swiper/Swiper";
-import SwiperPromotion from "../../components/swiperPromotion/SwiperPromotion";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import Pagination from "../../components/pagination";
 import { currentChange } from "../../utils/const";
 import { publicRequest } from "../../utils/CallApi";
-import SortProduct from "../../components/sortProduct";
 import "./SearchPage.scss";
 
 function SearchPage() {

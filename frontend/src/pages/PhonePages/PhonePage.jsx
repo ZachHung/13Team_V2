@@ -21,9 +21,7 @@ import Header from "../../components/header";
 import Footer from "../../components/footer";
 import Pagination from "../../components/pagination";
 import { currentChange } from "../../utils/const";
-import SortProduct from "../../components/sortProduct";
 import ModalCompare from "../../components/modalCompare/modal";
-import ModalLimitCompare from "../../components/modalLitmitCompare/modalLimit";
 import "./PhonePage.scss";
 
 function PhonePage() {

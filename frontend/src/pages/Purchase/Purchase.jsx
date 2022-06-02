@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import moment from "moment";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { userRequest } from "../../utils/CallApi";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 import "./Purchase.scss";
-import { hostServer, currentChange, formatDate } from "../../utils/const";
+import { currentChange } from "../../utils/const";
 import ModalPopUp from "../../components/modal";
 
 export default function Purchase() {
@@ -116,55 +115,55 @@ export default function Purchase() {
   const handleRenderProduct = (item, product) => {
     if (!item.deleted) {
       return (
-        <div key={item._id} className="single_product">
-          <div className="info">
-            <div className="brand_status">
-              <div className="brand">
+        <div key={item._id} className='single_product'>
+          <div className='info'>
+            <div className='brand_status'>
+              <div className='brand'>
                 <p>
                   Thương hiệu:
-                  <strong id="brandProduct">
+                  <strong id='brandProduct'>
                     {" "}
                     {item.optionID.item.brand.name}{" "}
                   </strong>{" "}
                   | Ngày mua:{" "}
-                  <strong id="dateProduct">
+                  <strong id='dateProduct'>
                     {moment(product.createAt).format("LLLL")}
                   </strong>
                 </p>
               </div>
-              <div className="status">
+              <div className='status'>
                 <p>
                   Trạng thái:{" "}
-                  <strong id="statusProduct">{product.status}</strong>
+                  <strong id='statusProduct'>{product.status}</strong>
                 </p>
               </div>
             </div>
             <hr />
-            <a href="/phone/iphone11-256GB" className="name_price">
-              <div className="img_name">
+            <a href='/phone/iphone11-256GB' className='name_price'>
+              <div className='img_name'>
                 <script>var bool = true</script>
                 <img
-                  id="imgProduct"
+                  id='imgProduct'
                   src={`${item.optionID.color[0].image}`}
-                  alt=""
+                  alt=''
                 />
-                <div className="name_num">
-                  <p className="name" id="nameProduct">
+                <div className='name_num'>
+                  <p className='name' id='nameProduct'>
                     {item.optionID.item.name}{" "}
                   </p>
-                  <p className="num">
-                    x<strong id="numProduct">{item.quantity} </strong>
+                  <p className='num'>
+                    x<strong id='numProduct'>{item.quantity} </strong>
                   </p>
-                  <p className="num">
-                    Màu: <strong id="colorProduct">{item.color}</strong>
+                  <p className='num'>
+                    Màu: <strong id='colorProduct'>{item.color}</strong>
                     {/* Màu: <strong id="colorProduct">{item._id}</strong> */}
                   </p>
                 </div>
               </div>
 
-              <div className="price_one_product">
+              <div className='price_one_product'>
                 <p>
-                  <strong id="priceProduct">
+                  <strong id='priceProduct'>
                     {currentChange(item.optionID.color[0].price)}
                   </strong>{" "}
                 </p>
@@ -172,23 +171,23 @@ export default function Purchase() {
             </a>
             <hr />
           </div>
-          <div className="price">
-            <div className="action" style={{ marginBottom: "3rem" }}>
+          <div className='price'>
+            <div className='action' style={{ marginBottom: "3rem" }}>
               <button
-                className="btn  "
-                type="submit"
+                className='btn  '
+                type='submit'
                 onClick={() => handleRepurchase(item.optionID._id, item.color)}
               >
                 Mua lại
               </button>
               <button
-                className="btn "
+                className='btn '
                 onClick={() => handleClickedDeleteButton(item._id)}
               >
                 Xóa
               </button>
             </div>
-            <p id="totalPrice">
+            <p id='totalPrice'>
               Tổng số tiền:{" "}
               <strong>
                 {currentChange(item.optionID.color[0].price * item.quantity)}
@@ -211,8 +210,8 @@ export default function Purchase() {
         handelClickConfirm={handelClickConfirm}
         toogleState={setModalState}
       />
-      <section className="container_purchase">
-        <div className="status_menu">
+      <section className='container_purchase'>
+        <div className='status_menu'>
           <div
             className={activeStatus.all ? "statusAll active" : "statusAll"}
             onClick={() => handleClickAllProduct()}
@@ -241,19 +240,19 @@ export default function Purchase() {
           </div>
         </div>
 
-        <div className="search">
+        <div className='search'>
           <input
-            type="text"
-            className="searchTerm"
-            id="searchBoxPurchase"
-            placeholder=" Tìm kiếm lịch sử mua hàng... "
+            type='text'
+            className='searchTerm'
+            id='searchBoxPurchase'
+            placeholder=' Tìm kiếm lịch sử mua hàng... '
           />
-          <button type="submit" className="searchButton">
+          <button type='submit' className='searchButton'>
             <FontAwesomeIcon icon={faSearch} />
           </button>
         </div>
         {productsList.map((product) => (
-          <div className="products" key={product._id}>
+          <div className='products' key={product._id}>
             {product.list.map((item) => handleRenderProduct(item, product))}
           </div>
         ))}

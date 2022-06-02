@@ -1,14 +1,11 @@
 import React from "react";
 import "./createItem.scss";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { publicRequest } from "../../utils/CallApi";
+import { useState } from "react";
 import { userRequest } from "../../utils/CallApi";
 
 import { storage } from "../../firebase";
 
-import { toast, ToastClassName, ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function CreatePhoneAdminPage() {
@@ -19,7 +16,6 @@ function CreatePhoneAdminPage() {
   const [brandimage, setBrandImage] = useState("");
   const [UrlBrandimage, setUrlBrandImage] = useState("");
   const [decription, setDecription] = useState("");
-  const [image, setImage] = useState("");
   const [images, setImages] = useState([]);
   const [revolution, setRevolution] = useState("");
   const [size, setSize] = useState("");
