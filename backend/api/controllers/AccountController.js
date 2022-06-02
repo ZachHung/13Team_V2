@@ -4,7 +4,6 @@ const cart = require("../models/Cart");
 const address = require("../models/Address");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
-const { reset } = require("nodemon");
 require("dotenv").config();
 var ObjectId = require("mongodb").ObjectId;
 var recoveryCode = 9450;
