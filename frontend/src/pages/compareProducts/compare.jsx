@@ -28,7 +28,7 @@ export default function ComparePage() {
       window.history.pushState(
         {},
         "So Sánh",
-        `http://localhost:3000/compare?${typeProduct}=${res.data[0].slug[0].slug}-${res.data[0].slug[0].detail},${res.data[1].slug[0].slug}-${res.data[1].slug[0].detail}`
+        `/compare?${typeProduct}=${res.data[0].slug[0].slug}-${res.data[0].slug[0].detail},${res.data[1].slug[0].slug}-${res.data[1].slug[0].detail}`
       );
     });
   }, []);

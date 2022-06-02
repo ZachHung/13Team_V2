@@ -26,10 +26,6 @@ import ModalCompare from "../../components/modalCompare/modal";
 import ModalLimitCompare from "../../components/modalLitmitCompare/modalLimit";
 import "./PhonePage.scss";
 
-// const api = axios.create({
-//   baseURL: 'http://localhost:5000/api',
-// });
-
 function PhonePage() {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -121,11 +117,7 @@ function PhonePage() {
   // call api
 
   useEffect(() => {
-    window.history.pushState(
-      {},
-      "Tìm kiếm",
-      `http://localhost:3000/${type}${urlString}`
-    );
+    window.history.pushState({}, "Tìm kiếm", `/${type}${urlString}`);
     publicRequest.get(`/${type}${urlString}`).then((res) => {
       setPhoneList(res.data.items);
       // console.log('data: ', res.data.items);
@@ -218,7 +210,7 @@ function PhonePage() {
       return (
         <div>
           {" "}
-          <span data-title="CPU">
+          <span data-title='CPU'>
             <p>
               <FontAwesomeIcon
                 icon={faMicrochip}
@@ -227,7 +219,7 @@ function PhonePage() {
               {phone.techInfo[1].infoDetail[0].infoNum}
             </p>
           </span>
-          <span data-title="Màn hình">
+          <span data-title='Màn hình'>
             <p>
               <FontAwesomeIcon
                 icon={faMobile}
@@ -241,7 +233,7 @@ function PhonePage() {
     } else {
       return (
         <div>
-          <span data-title="CPU">
+          <span data-title='CPU'>
             <p>
               <FontAwesomeIcon
                 icon={faMicrochip}
@@ -250,7 +242,7 @@ function PhonePage() {
               {phone.techInfo[2].infoDetail[0].infoNum}
             </p>
           </span>
-          <span data-title="Màn hình">
+          <span data-title='Màn hình'>
             <p>
               <FontAwesomeIcon
                 icon={faMobile}
@@ -259,7 +251,7 @@ function PhonePage() {
               {phone.techInfo[0].infoDetail[0].infoNum}
             </p>
           </span>
-          <span data-title="RAM">
+          <span data-title='RAM'>
             <p>
               <FontAwesomeIcon
                 icon={faMemory}
@@ -269,7 +261,7 @@ function PhonePage() {
             </p>
           </span>
 
-          <span data-title="ROM">
+          <span data-title='ROM'>
             <p>
               <FontAwesomeIcon
                 icon={faHardDrive}
@@ -287,8 +279,8 @@ function PhonePage() {
     <>
       <Header />
 
-      <div className="products-container">
-        <section className="section products">
+      <div className='products-container'>
+        <section className='section products'>
           <ModalCompare
             // className={`${checkedCompare.length == 0 ? 'modal-disable' : ''}`}
             // className={`modal-disable`}
@@ -300,18 +292,18 @@ function PhonePage() {
             countCompare={checkedCompare.length}
           ></ModalCompare>
 
-          <SwiperPromotion className="swiper-promotion"></SwiperPromotion>
+          <SwiperPromotion className='swiper-promotion'></SwiperPromotion>
           <Swiper
             updateBrand={handleCheckBrand}
             updatePrice={handleCheckPrice}
             type={type}
           ></Swiper>
-          <div className="filter-checkbox">
+          <div className='filter-checkbox'>
             <span style={{ fontWeight: 500, paddingRight: "1rem" }}>
               Lọc theo:
             </span>
             {checkedBrand.map((item) => (
-              <span key={item} className="filter-span">
+              <span key={item} className='filter-span'>
                 {item}
                 <FontAwesomeIcon
                   icon={faXmark}
@@ -324,7 +316,7 @@ function PhonePage() {
               </span>
             ))}
             {checkedPrice.map((item) => (
-              <span key={item} className="filter-span">
+              <span key={item} className='filter-span'>
                 {item}
                 <FontAwesomeIcon
                   icon={faXmark}
@@ -341,19 +333,19 @@ function PhonePage() {
               handleSortAsc={handleSortAsc}
               handleSortDesc={handleSortDesc}
             /> */}
-          <div className="products-layout container">
-            <div className="filter">
+          <div className='products-layout container'>
+            <div className='filter'>
               <div>
-                <div className="block-title">
+                <div className='block-title'>
                   <h3>Thương hiệu</h3>
                 </div>
-                <ul className="block-content filter-brand">
+                <ul className='block-content filter-brand'>
                   <li
                     onClick={() => handleCheckAllBrand()}
-                    className="form-group"
+                    className='form-group'
                   >
                     <input
-                      type="checkbox"
+                      type='checkbox'
                       checked={
                         checkedBrand.length == 6 || checkedBrand.length == 0
                       }
@@ -367,10 +359,10 @@ function PhonePage() {
                     <li
                       key={item.name}
                       onClick={() => handleCheckBrand(item.name)}
-                      className="form-group"
+                      className='form-group'
                     >
                       <input
-                        type="checkbox"
+                        type='checkbox'
                         checked={checkedBrand.includes(item.name)}
                         onChange={() => console.log("fix checked warning")}
                       />
@@ -383,16 +375,16 @@ function PhonePage() {
               </div>
 
               <div>
-                <div className="block-title">
+                <div className='block-title'>
                   <h3>Mức giá</h3>
                 </div>
-                <ul className="block-content">
+                <ul className='block-content'>
                   <li
                     onClick={() => handleCheckAllPrice()}
-                    className="form-group"
+                    className='form-group'
                   >
                     <input
-                      type="checkbox"
+                      type='checkbox'
                       checked={
                         checkedPrice.length == 4 || checkedPrice.length == 0
                       }
@@ -404,10 +396,10 @@ function PhonePage() {
                   </li>
                   <li
                     onClick={() => handleCheckPrice("duoi-2-trieu")}
-                    className="form-group"
+                    className='form-group'
                   >
                     <input
-                      type="checkbox"
+                      type='checkbox'
                       checked={checkedPrice.includes("duoi-2-trieu")}
                       onChange={() => console.log("fix checked warning")}
                     />
@@ -417,10 +409,10 @@ function PhonePage() {
                   </li>
                   <li
                     onClick={() => handleCheckPrice("tu-2-5-trieu")}
-                    className="form-group"
+                    className='form-group'
                   >
                     <input
-                      type="checkbox"
+                      type='checkbox'
                       checked={checkedPrice.includes("tu-2-5-trieu")}
                       onChange={() => console.log("fix checked warning")}
                     />
@@ -430,11 +422,11 @@ function PhonePage() {
                   </li>
                   <li
                     onClick={() => handleCheckPrice("tu-5-14-trieu")}
-                    className="form-group"
+                    className='form-group'
                   >
                     <input
                       checked={checkedPrice.includes("tu-5-14-trieu")}
-                      type="checkbox"
+                      type='checkbox'
                       onChange={() => console.log("fix checked warning")}
                     />
                     <label>
@@ -443,10 +435,10 @@ function PhonePage() {
                   </li>
                   <li
                     onClick={() => handleCheckPrice("tren-14-trieu")}
-                    className="form-group"
+                    className='form-group'
                   >
                     <input
-                      type="checkbox"
+                      type='checkbox'
                       checked={checkedPrice.includes("tren-14-trieu")}
                       onChange={() => console.log("fix checked warning")}
                     />
@@ -458,11 +450,11 @@ function PhonePage() {
               </div>
             </div>
 
-            <div className="list-products">
+            <div className='list-products'>
               {currentProduct.map((phone) => (
-                <div key={phone._id} className="product-layout">
-                  <div className="product">
-                    <div className="img-container">
+                <div key={phone._id} className='product-layout'>
+                  <div className='product'>
+                    <div className='img-container'>
                       <div
                         className={`${
                           checkedCompare.length >= 2
@@ -474,7 +466,7 @@ function PhonePage() {
                         }
                       >
                         <input
-                          type="checkbox"
+                          type='checkbox'
                           checked={checkedCompare.includes(phone._id)}
                           onChange={() => console.log("fix checked warning")}
                         />
@@ -488,28 +480,28 @@ function PhonePage() {
                         <img src={`${phone.image[0]}`} alt={phone.name} />
                       </Link>
                     </div>
-                    <div className="info-product">
-                      <div className="product-name">
+                    <div className='info-product'>
+                      <div className='product-name'>
                         <Link to={`/`}>
                           <h3>{phone.name}</h3>
                         </Link>
                       </div>
 
-                      <div className="price">
+                      <div className='price'>
                         <span>
                           {currentChange(phone.slug[0].color[0].price)}
                         </span>
                       </div>
-                      <div className="config">
-                        <div className="config-param">
+                      <div className='config'>
+                        <div className='config-param'>
                           {handleRenderAccessory(phone)}
                         </div>
                       </div>
-                      <div className="product-btn">
-                        <form className="buy-btn">
+                      <div className='product-btn'>
+                        <form className='buy-btn'>
                           <button
-                            className="btn btn-buy btn-sm"
-                            type="submit"
+                            className='btn btn-buy btn-sm'
+                            type='submit'
                             onClick={() =>
                               handleBuyProduct(
                                 phone.slug[0]._id,
@@ -520,10 +512,10 @@ function PhonePage() {
                             <p>MUA</p>
                           </button>
                         </form>
-                        <form className="add-btn">
+                        <form className='add-btn'>
                           <button
-                            className="btn btn-addCart btn-sm"
-                            type="submit"
+                            className='btn btn-addCart btn-sm'
+                            type='submit'
                             onClick={(e) =>
                               handleAddCart(
                                 phone.slug[0]._id,
