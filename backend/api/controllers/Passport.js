@@ -19,7 +19,6 @@ passport.use(
       User.findOne({
         email: profile.email,
       }).then((data) => {
-        console.log(data);
         if (!data) {
           User.create({
             email: profile.email,
@@ -45,10 +44,7 @@ passport.use(
                 done(null, { ...others, accessToken });
               })
               .catch((err) => {
-                res.json({
-                  status: "false",
-                  message: "Lỗi database vui lòng nhập lại mã",
-                });
+                done(err);
               });
           });
         } else {
