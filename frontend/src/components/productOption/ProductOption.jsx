@@ -42,13 +42,14 @@ const ProductOption = ({
     setColorValue(colorOptions[index].name);
     setColor(index);
     changeSlide(index);
+    setNewPrice(Price(colorOptions[index]));
+    currentChange(colorOptions[index].price);
   };
   useEffect(() => {
     setColor(colorOptions.length);
     for (let i = 0; i < colorOptions.length; i++) {
       if (colorOptions[i].number !== 0) {
         handleCapcity(i);
-
         break;
       }
     }
